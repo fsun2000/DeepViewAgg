@@ -1,0 +1,21 @@
+#!/bin/bash
+
+#SBATCH --partition=gpu_titanrtx_shared
+#SBATCH --gpus=1
+#SBATCH --job-name=dva_scannet
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=5
+#SBATCH --time=48:00:00
+#SBATCH --mem=168000M
+#SBATCH --output=job_logs/train_scannet_cont.out
+
+cd $HOME/DeepViewAgg
+
+module purge
+
+module load 2021
+module load CUDA/11.3.1
+
+#export C_INCLUDE_PATH="/home/fsun/DeepViewAgg/sparsehash:$CPLUS_INCLUDE_PATH"
+export HYDRA_FULL_ERROR=1
+./scripts/train_scannet.sh
