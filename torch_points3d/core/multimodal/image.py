@@ -269,6 +269,10 @@ class SameSettingImageData:
         self.mappings = mappings
         self.mask = mask
         self.visibility = visibility
+        
+        # Attribute for storing Mask2Former predicted masks
+        self.m2f_pred_mask = None
+        self.m2f_pred_mask_path = None
 
         # self.debug()
 

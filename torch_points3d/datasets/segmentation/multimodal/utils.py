@@ -108,8 +108,6 @@ def read_image_pose_pairs(
     for idx in idx_to_pop:
         image_names.pop(idx)
         pose_names.pop(idx)
-
-    print(f"{pose_dir} pose_names: ", pose_names)
                 
     # Print orphans
     if not image_names == pose_names:

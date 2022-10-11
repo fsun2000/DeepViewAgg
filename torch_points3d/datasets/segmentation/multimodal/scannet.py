@@ -7,6 +7,12 @@ from torch_points3d.datasets.base_dataset_multimodal import BaseDatasetMM
 from torch_points3d.core.multimodal.data import MMData
 from tqdm.auto import tqdm as tq
 from itertools import repeat
+from PIL import Image
+from torchvision.transforms.functional import pil_to_tensor
+
+
+import os
+import os.path as osp
 
 
 log = logging.getLogger(__name__)
@@ -105,11 +111,12 @@ class ScannetMM(Scannet):
 
     def __init__(
             self, *args, img_ref_size=(320, 240), pre_transform_image=None,
-            transform_image=None, neucon_metas_dir='', **kwargs):
+            transform_image=None, neucon_metas_dir='', m2f_preds_dirname='', **kwargs):
         self.pre_transform_image = pre_transform_image
         self.transform_image = transform_image
         self.img_ref_size = img_ref_size
         self.neucon_metas_dir = neucon_metas_dir
+        self.m2f_preds_dirname = m2f_preds_dirname
         super(ScannetMM, self).__init__(*args, **kwargs)
 
     def process(self):
@@ -275,6 +282,37 @@ class ScannetMM(Scannet):
         # Run image transforms
         if self.transform_image is not None:
             data, images = self.transform_image(data, images)
+            
+        # Load Mask2Former predicted masks        
+        if self.m2f_preds_dirname:
+            if len(images) > 1:
+                print(f"ImageData contains {len(images)} different camera settings!")
+                for i in len(images):
+                    print(f"{i}th setting:")
+                    print(images[i].path)
+            
+            first_img_path = images[0].path[0]
+            m2f_dir = first_img_path.split(os.sep)[:-3]
+            m2f_dir = os.sep.join([*m2f_dir, self.m2f_preds_dirname])
+            
+            m2f_masks = []
+            m2f_mask_paths = []
+            for rgb_path in images[0].path:
+
+                m2f_filename, ext = osp.splitext(rgb_path.split(os.sep)[-1])
+                m2f_filename += '.png'
+                
+                pred_mask_path = osp.join(m2f_dir, m2f_filename)
+                pred_mask = Image.open(pred_mask_path)
+                
+                m2f_masks.append(pil_to_tensor(pred_mask))   # maybe need to be saved as floats
+                m2f_mask_paths.append(pred_mask_path)
+                                
+            m2f_masks = torch.stack(m2f_masks)
+                
+            # Store M2F pred mask in data
+            images[0].m2f_pred_mask = m2f_masks
+            images[0].m2f_pred_mask_path = np.array(m2f_mask_paths)
 
         return MMData(data, image=images)
 
@@ -352,6 +390,7 @@ class ScannetDatasetMM(BaseDatasetMM, ABC):
         frame_intrinsics: int = dataset_opt.get('frame_intrinsics', True)
         frame_skip: int = dataset_opt.get('frame_skip', 50)
         neucon_metas_dir: str = dataset_opt.get('neucon_metas_dir', '')
+        m2f_preds_dirname: str = dataset_opt.get('m2f_preds_dirname', '')
 
         print("initialize train dataset")
         self.train_dataset = ScannetMM(
@@ -374,7 +413,8 @@ class ScannetDatasetMM(BaseDatasetMM, ABC):
             frame_pose=frame_pose,
             frame_intrinsics=frame_intrinsics,
             frame_skip=frame_skip,
-            neucon_metas_dir=neucon_metas_dir
+            neucon_metas_dir=neucon_metas_dir,
+            m2f_preds_dirname=m2f_preds_dirname
         )
         print("initialize val dataset")
         self.val_dataset = ScannetMM(
@@ -397,7 +437,8 @@ class ScannetDatasetMM(BaseDatasetMM, ABC):
             frame_pose=frame_pose,
             frame_intrinsics=frame_intrinsics,
             frame_skip=frame_skip,
-            neucon_metas_dir=neucon_metas_dir
+            neucon_metas_dir=neucon_metas_dir,
+            m2f_preds_dirname=m2f_preds_dirname
         )
 
 #         self.test_dataset = ScannetMM(
@@ -420,7 +461,8 @@ class ScannetDatasetMM(BaseDatasetMM, ABC):
 #             frame_pose=frame_pose,
 #             frame_intrinsics=frame_intrinsics,
 #             frame_skip=frame_skip,
-#             neucon_metas_dir=neucon_metas_dir
+#             neucon_metas_dir=neucon_metas_dir,
+#             m2f_preds_dirname=m2f_preds_dirname
 #         )
 
     @property
