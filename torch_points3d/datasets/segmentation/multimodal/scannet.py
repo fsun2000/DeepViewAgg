@@ -105,10 +105,11 @@ class ScannetMM(Scannet):
 
     def __init__(
             self, *args, img_ref_size=(320, 240), pre_transform_image=None,
-            transform_image=None, **kwargs):
+            transform_image=None, neucon_metas_dir='', **kwargs):
         self.pre_transform_image = pre_transform_image
         self.transform_image = transform_image
         self.img_ref_size = img_ref_size
+        self.neucon_metas_dir = neucon_metas_dir
         super(ScannetMM, self).__init__(*args, **kwargs)
 
     def process(self):
@@ -172,7 +173,8 @@ class ScannetMM(Scannet):
                     for i_file, p_file in read_image_pose_pairs(
                         osp.join(scan_sens_dir, 'color'),
                         osp.join(scan_sens_dir, 'pose'),
-                        image_suffix='.jpg', pose_suffix='.txt', skip_freq=self.frame_skip)]
+                        image_suffix='.jpg', pose_suffix='.txt', skip_freq=self.frame_skip,
+                        neucon_metas_dir=self.neucon_metas_dir)]
 
                 # Aggregate all RGB image paths
                 path = np.array([info['path'] for info in image_info_list])
@@ -349,6 +351,7 @@ class ScannetDatasetMM(BaseDatasetMM, ABC):
         frame_pose: int = dataset_opt.get('frame_pose', True)
         frame_intrinsics: int = dataset_opt.get('frame_intrinsics', True)
         frame_skip: int = dataset_opt.get('frame_skip', 50)
+        neucon_metas_dir: str = dataset_opt.get('neucon_metas_dir', '')
 
         print("initialize train dataset")
         self.train_dataset = ScannetMM(
@@ -370,7 +373,8 @@ class ScannetDatasetMM(BaseDatasetMM, ABC):
             frame_rgb=frame_rgb,
             frame_pose=frame_pose,
             frame_intrinsics=frame_intrinsics,
-            frame_skip=frame_skip
+            frame_skip=frame_skip,
+            neucon_metas_dir=neucon_metas_dir
         )
         print("initialize val dataset")
         self.val_dataset = ScannetMM(
@@ -392,7 +396,8 @@ class ScannetDatasetMM(BaseDatasetMM, ABC):
             frame_rgb=frame_rgb,
             frame_pose=frame_pose,
             frame_intrinsics=frame_intrinsics,
-            frame_skip=frame_skip
+            frame_skip=frame_skip,
+            neucon_metas_dir=neucon_metas_dir
         )
 
 #         self.test_dataset = ScannetMM(
@@ -414,7 +419,8 @@ class ScannetDatasetMM(BaseDatasetMM, ABC):
 #             frame_rgb=frame_rgb,
 #             frame_pose=frame_pose,
 #             frame_intrinsics=frame_intrinsics,
-#             frame_skip=frame_skip
+#             frame_skip=frame_skip,
+#             neucon_metas_dir=neucon_metas_dir
 #         )
 
     @property

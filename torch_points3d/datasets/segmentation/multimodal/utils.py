@@ -8,7 +8,7 @@ from torch_points3d.core.multimodal.image import SameSettingImageData
 
 def read_image_pose_pairs(
         image_dir, pose_dir, image_suffix='_rgb.png',
-        pose_suffix='_pose.json', skip_names=None, verbose=False, skip_freq=50):
+        pose_suffix='_pose.json', skip_names=None, verbose=False, skip_freq=50, neucon_metas_dir='True'):
     """
     Search for all image-pose correspondences in the directories.
     Return the list of image-pose pairs. Orphans are ignored.
@@ -61,9 +61,22 @@ def read_image_pose_pairs(
         int(osp.basename(x).replace(pose_suffix, ''))
         for x in glob.glob(osp.join(pose_dir, '*' + pose_suffix))])
 
-    pose_names_subset = [str(pose_names[i]) for i in range(len(pose_names)) if i % skip_freq == 0]    
-
     
+    # Neucon metas
+    if neucon_metas_dir:        
+        scene_id = image_dir.split(os.sep)[-3]
+        meta_file = np.load(osp.join(neucon_metas_dir, scene_id, 'fragments.pkl'), allow_pickle=True)
+        
+        image_ids = []
+        for d in meta_file:
+            image_ids += d['image_ids']
+                    
+        pose_names_subset = sorted(list(set(pose_names) & set(image_ids)))
+        pose_names_subset = [str(x) for x in pose_names_subset]
+    # process according to skip-freq
+    else:
+        pose_names_subset = [str(pose_names[i]) for i in range(len(pose_names)) if i % skip_freq == 0]    
+
     #skip_names = skip_names if skip_names is not None else []
     #image_names = [x for x in image_names if x not in skip_names]
     #pose_names = [x for x in pose_names if x not in skip_names]
