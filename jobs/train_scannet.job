@@ -5,9 +5,9 @@
 #SBATCH --job-name=dva_scannet
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=5
-#SBATCH --time=48:00:00
-#SBATCH --mem=168000M
-#SBATCH --output=job_logs/train_scannet_cont.out
+#SBATCH --time=00:30:00
+#SBATCH --mem=64000M
+#SBATCH --output=job_logs/test_sparseconv3d.out
 
 cd $HOME/DeepViewAgg
 

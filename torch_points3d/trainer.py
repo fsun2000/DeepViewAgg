@@ -80,7 +80,7 @@ class Trainer:
             self._cfg.training.checkpoint_dir, self._cfg.model_name,
             "", run_config=self._cfg, resume=resume)
             
-        print("self._checkpoint: ", self._checkpoint)
+        print("self._cfg.training.checkpoint_dir: ", self._cfg.training.checkpoint_dir)
 
         # Recover the merged config from Checkpoint
         self._cfg = self._checkpoint.run_config
@@ -94,6 +94,8 @@ class Trainer:
             self._dataset: BaseDataset = instantiate_dataset(self._cfg.data)
             self._model: BaseModel = instantiate_model(
                 copy.deepcopy(self._cfg), self._dataset)
+#             print("skipped self._model.instantiate_optimizers(self._cfg, 'cuda' in device)")
+#             print("skipped self._model.set_pretrained_weights()")
             self._model.instantiate_optimizers(self._cfg, "cuda" in device)
             self._model.set_pretrained_weights()
             if not self._checkpoint.validate(self._dataset.used_properties):

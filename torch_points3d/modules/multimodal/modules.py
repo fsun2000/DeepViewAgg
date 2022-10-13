@@ -90,6 +90,7 @@ class MultimodalBlockDown(nn.Module, ABC):
             #  3D information only be updated once all modality branches
             #  have been run on the same input ?
             mod_branch = getattr(self, m)
+            
             mm_data_dict = mod_branch(mm_data_dict, m)
 
         # Conv on the main 3D modality
@@ -307,6 +308,8 @@ class UnimodalBranch(nn.Module, ABC):
             mm_data_dict['x_3d'], (torch.Tensor, type(None)))
         x_3d = mm_data_dict['x_3d'].F if is_sparse_3d else mm_data_dict['x_3d']
         mod_data = mm_data_dict['modalities'][modality]
+        
+
 
         # Check whether the modality carries multi-setting data
         is_multi_shape = isinstance(mod_data.x, list)

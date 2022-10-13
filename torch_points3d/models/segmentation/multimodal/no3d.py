@@ -72,7 +72,7 @@ class No3D(BaseModel, ABC):
         else:
             self.labels = None
 
-    def forward(self, *args, **kwargs):
+    def forward(self, *args, **kwargs):      
         data = self.backbone(self.input)
         features = data.x
         seen_mask = data.seen

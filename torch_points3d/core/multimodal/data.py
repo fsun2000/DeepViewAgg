@@ -83,6 +83,7 @@ class MMData(object):
     def to(self, device):
         out = self.clone()
         out.data = out.data.to(device)
+
         out.modalities = {mod: data_mod.to(device)
                           for mod, data_mod in out.modalities.items()}
         return out

@@ -68,9 +68,13 @@ class No3DEncoder(BackboneBasedModel, ABC):
         -----------
         data: MMData object
         """
+        
         data = data.to(self.device)
+       
+        
+        
         self.input = {
-            'x_3d': getattr(data, 'x', None),
+            'x_3d': getattr(data.data, 'x', None),   # Feng: adjusted from original 'getattr(data, 'x', None)', now it properly moves to gpu
             'x_seen': None,
             'modalities': data.modalities}
         if data.pos is not None:

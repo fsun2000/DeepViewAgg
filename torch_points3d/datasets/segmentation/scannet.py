@@ -1062,18 +1062,32 @@ class Scannet(InMemoryDataset):
                 if self.use_multiprocessing:
                     with multiprocessing.get_context("spawn").Pool(processes=self.process_workers) as pool:
                         datas = pool.starmap(Scannet.process_func, args)
+                # Save each data item instead of first accumulating every item
                 else:
-                    datas = []
-                    #############################
                     for arg in args:
-                        data = Scannet.process_func(*arg)
-                        datas.append(data)
+                        scan_name = arg[3]
+                        print("scan_name: ", scan_name)
+                        path_to_raw_scan = osp.join(self.processed_raw_paths[i], "{}.pt".format(scan_name))
+                        if not osp.exists(path_to_raw_scan):
+                            data = Scannet.process_func(*arg)
+                            id_scan = int(data.id_scan.item())
+                            scan_name = mapping_idx_to_scan_names[id_scan]
+                            torch.save(data, path_to_raw_scan)
+                # Load datas
+                raw_scan_paths = [osp.join(self.processed_raw_paths[i], "{}.pt".format(scan_name)) for scan_name in scan_names]
+                datas = [torch.load(path_to_raw_scan) for path_to_raw_scan in raw_scan_paths]
+#                 else:
+#                     datas = []
+#                     #############################
+#                     for arg in args:
+#                         data = Scannet.process_func(*arg)
+#                         datas.append(data)
 
-                for data in datas:
-                    id_scan = int(data.id_scan.item())
-                    scan_name = mapping_idx_to_scan_names[id_scan]
-                    path_to_raw_scan = osp.join(self.processed_raw_paths[i], "{}.pt".format(scan_name))
-                    torch.save(data, path_to_raw_scan)
+#                 for data in datas:
+#                     id_scan = int(data.id_scan.item())
+#                     scan_name = mapping_idx_to_scan_names[id_scan]
+#                     path_to_raw_scan = osp.join(self.processed_raw_paths[i], "{}.pt".format(scan_name))
+#                     torch.save(data, path_to_raw_scan)
 
                 if self.pre_transform:
                     datas = [self.pre_transform(data) for data in datas]
@@ -1082,6 +1096,12 @@ class Scannet(InMemoryDataset):
                 print("SAVING TO {}".format(self.processed_paths[i]), flush=True)
 
                 torch.save(self.collate(datas), self.processed_paths[i])
+                
+                # Remove the individually processed raw_scan files
+                for path_to_raw_scan in raw_scan_paths:
+                    if osp.exists(path_to_raw_scan):
+                        os.remove(path_to_raw_scan)
+                    
 
     def _remap_labels(self, semantic_label):
         """Remaps labels to [0 ; num_labels -1]. Can be overriden."""

@@ -4,7 +4,7 @@ defaults:
 
 # These parameters are intended to be specified in dedicated configs
 resolution_3d: 0.03  # Point cloud resolution
-resolution_2d: [640, 480]  # Image resolution, other resolutions have not been tested in combination with Mask2Former labels and may result in bugs!
+resolution_2d: [320, 240]  # Image resolution, other resolutions have not been tested in combination with Mask2Former labels and may result in bugs!
 exact_splatting_2d: True  # Whether only exact mappings are preserved after splatting
 
 class: scannet.ScannetDatasetMM
@@ -16,7 +16,7 @@ use_instance_labels: False
 use_instance_bboxes: False
 donotcare_class_ids: []
 use_category: False
-process_workers: 3 #   8
+process_workers: 1 #   8
 apply_rotation: True
 mode: "last"
 frame_depth: True  # set this to True if you need to use ScanNet depth maps. Defaulting to False to save space and preprocessing time
@@ -109,8 +109,8 @@ multimodal:  # Each modality must be inserted in a dedicated 'multimodal' sectio
         proj_upscale: 1
         r_max: 8
         r_min: 0.05
-        train_pixel_credit: 50  # Choose based on GPU capacity, model ko/pixel cost and 3D batch_size
-        test_pixel_credit: 50
+        train_pixel_credit: 25  # Choose based on GPU capacity, model ko/pixel cost and 3D batch_size
+        test_pixel_credit: 25
         k_coverage: 2
 
     pre_transform:

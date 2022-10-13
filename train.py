@@ -11,8 +11,7 @@ def main(cfg):
         print(OmegaConf.to_yaml(cfg))
 
     trainer = Trainer(cfg)
-    print("trainer")
-    print(trainer)
+    
     trainer.train()
     #
     # # https://github.com/facebookresearch/hydra/issues/440
