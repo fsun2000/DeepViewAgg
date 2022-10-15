@@ -278,7 +278,7 @@ class ScannetMM(Scannet):
         i_split = self.SPLITS.index(self.split)
         images = torch.load(osp.join(
             self.processed_2d_paths[i_split], scan_name + '.pt'))
-
+        
         # Run image transforms
         if self.transform_image is not None:
             data, images = self.transform_image(data, images)
@@ -304,8 +304,10 @@ class ScannetMM(Scannet):
                 
                 pred_mask_path = osp.join(m2f_dir, m2f_filename)
                 pred_mask = Image.open(pred_mask_path)
+                pred_mask = pred_mask.resize(self.img_ref_size, resample=Image.NEAREST)
                 
                 m2f_masks.append(pil_to_tensor(pred_mask))   # maybe need to be saved as floats
+                
                 m2f_mask_paths.append(pred_mask_path)
                                 
             m2f_masks = torch.stack(m2f_masks)

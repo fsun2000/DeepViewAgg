@@ -2,12 +2,12 @@
 
 #SBATCH --partition=gpu_titanrtx_shared
 #SBATCH --gpus=1
-#SBATCH --job-name=dva_scannet
+#SBATCH --job-name=no3d
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=5
-#SBATCH --time=00:30:00
-#SBATCH --mem=64000M
-#SBATCH --output=job_logs/test_sparseconv3d.out
+#SBATCH --cpus-per-task=6
+#SBATCH --time=60:00:00
+#SBATCH --mem=128000M
+#SBATCH --output=job_logs/dva/train_no3d.out
 
 cd $HOME/DeepViewAgg
 
@@ -18,4 +18,5 @@ module load CUDA/11.3.1
 
 #export C_INCLUDE_PATH="/home/fsun/DeepViewAgg/sparsehash:$CPLUS_INCLUDE_PATH"
 export HYDRA_FULL_ERROR=1
-./scripts/train_scannet.sh
+
+./scripts/train_scannet_no3d.sh
