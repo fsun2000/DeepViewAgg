@@ -6,7 +6,7 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=6
 #SBATCH --time=60:00:00
-#SBATCH --mem=128000M
+#SBATCH --mem=180000M
 #SBATCH --output=job_logs/dva/train_sparseconv3d.out
 
 cd $HOME/DeepViewAgg
