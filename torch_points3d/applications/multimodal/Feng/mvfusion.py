@@ -8,6 +8,9 @@ from torch_points3d.core.common_modules.base_modules import MLP
 from torch_points3d.core.multimodal.data import MMData
 from torch_geometric.data import Batch
 
+from torch_points3d.modules.multimodal.pooling import BimodalCSRPool
+
+
 log = logging.getLogger(__name__)
 
 
@@ -52,6 +55,9 @@ class MVFusionEncoder(MVFusionBackboneBasedModel, ABC):
             self.mlp = MLP(
                 [default_output_nc, self.output_nc], activation=torch.nn.ReLU(),
                 bias=False)
+            
+        # pooling modules
+        self.atomic_pooling = BimodalCSRPool(mode='max', save_last=False)
 
     @property
     def has_mlp_head(self):
@@ -102,8 +108,21 @@ class MVFusionEncoder(MVFusionBackboneBasedModel, ABC):
         """
         self._set_input(data)
         mm_data_dict = self.input
-        for i in range(len(self.down_modules)):
-            mm_data_dict = self.down_modules[i](mm_data_dict)
+        
+        
+#         for i in range(len(self.down_modules)):
+#             mm_data_dict = self.down_modules[i](mm_data_dict)
+            
+        # Apply atomic-level pooling which was in `down_modules`
+        
+    
+        # Feng:
+        # 1. do view-sampling per point
+        # 2. run viewing conditions through Attention Transformer
+        # 3. save those in mm_data_dict['modalities'][modality]?
+            
+            
+            
 
         # Discard the modalities used in the down modules, only
         # 3D point features are expected to be used in subsequent

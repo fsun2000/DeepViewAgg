@@ -68,6 +68,9 @@ class BimodalCSRPool(nn.Module, ABC):
                 csr_idx.shape[0] - 1, device=x_mod.device).repeat_interleave(
                 csr_idx[1:] - csr_idx[:-1])
             self._last_view_num = csr_idx[1:] - csr_idx[:-1]
+        if not torch.equal(x_mod, x_pool):
+            print("In BimodalCSRPool/Atomic Pooling, x_mod and x_pool are not equal!")
+            exit()
         return x_pool
 
 

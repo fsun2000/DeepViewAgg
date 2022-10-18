@@ -38,7 +38,7 @@ class MVFusionBackboneBasedModel(BaseModel, ABC):
         * down_conv
         """
         opt = copy.deepcopy(opt)
-        super(BackboneBasedModel, self).__init__(opt)
+        super(MVFusionBackboneBasedModel, self).__init__(opt)
         self._spatial_ops_dict = {"neighbour_finder": [], "sampler": []}
 
         # Check if one of the supported modalities is present in the config
@@ -158,17 +158,17 @@ class MVFusionBackboneBasedModel(BaseModel, ABC):
                         unet_cls = self._module_factories[m].get_module('UNET')
                         conv = unet_cls(opt.down_conv[m])
                     else:
-                        conv = self._build_module(
-                            opt.down_conv[m].down_conv, i, modality=m)
+#                         conv = self._build_module(
+#                             opt.down_conv[m].down_conv, i, modality=m)
                     atomic_pool = self._build_module(
                         opt.down_conv[m].atomic_pooling, i, modality=m,
                         flow='ATOMIC')
-                    view_pool = self._build_module(
-                        opt.down_conv[m].view_pooling, i, modality=m,
-                        flow='VIEW')
-                    fusion = self._build_module(
-                        opt.down_conv[m].fusion, i, modality=m,
-                        flow='FUSION')
+#                     view_pool = self._build_module(
+#                         opt.down_conv[m].view_pooling, i, modality=m,
+#                         flow='VIEW')
+#                     fusion = self._build_module(
+#                         opt.down_conv[m].fusion, i, modality=m,
+#                         flow='FUSION')
 
                     opt_branch = fetch_arguments_from_list(
                         opt.down_conv[m], i, SPECIAL_NAMES)
@@ -181,8 +181,8 @@ class MVFusionBackboneBasedModel(BaseModel, ABC):
 
                     # Group modules into a UnimodalBranch and update the
                     # branches at the proper branching point
-                    branches[idx][m] = UnimodalBranch(
-                        conv, atomic_pool, view_pool, fusion, drop_3d=drop_3d,
+                    branches[idx][m] = UnimodalBranchOnlyAtomicPool(
+                        atomic_pool, drop_3d=drop_3d,
                         drop_mod=drop_mod, keep_last_view=keep_last_view,
                         checkpointing=checkpointing, out_channels=out_channels,
                         interpolate=interpolate)
