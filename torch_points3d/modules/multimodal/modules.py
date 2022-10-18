@@ -395,7 +395,7 @@ class UnimodalBranchOnlyAtomicPool(nn.Module, ABC):
         # Extract mapped features from the feature maps of each input
         # modality setting
         ########## NOTE: only Mask2Former feature map!
-        x_mod = mod_data.get_mapped_m2f_features(interpolate=self.interpolate)
+        x_mod_m2f = mod_data.get_mapped_m2f_features(interpolate=self.interpolate)
         
         
         
@@ -404,16 +404,22 @@ class UnimodalBranchOnlyAtomicPool(nn.Module, ABC):
 
         # Atomic pooling of the modality features on each separate
         # setting
-        x_mod = self.forward_atomic_pool(x_3d, x_mod, mod_data.atomic_csr_indexing)
+        x_mod_m2f = self.forward_atomic_pool(x_3d, x_mod_m2f, mod_data.atomic_csr_indexing)
 
 #         # View pooling of the modality features
 #         x_mod, mod_data, csr_idx = self.forward_view_pool(x_3d, x_mod, mod_data)
+
+        if is_multi_shape:
+            print("modality data is multi setting")
+            csr_idx = mod_data.view_cat_csr_indexing
+        else:
+            csr_idx = mod_data.view_csr_indexing
 
         # Compute the boolean mask of seen points
         x_seen = csr_idx[1:] > csr_idx[:-1]
 
         # Dropout 3D or modality features
-        x_3d, x_mod, mod_data = self.forward_dropout(x_3d, x_mod, mod_data)
+        x_3d, x_mod_m2f, mod_data = self.forward_dropout(x_3d, x_mod_m2f, mod_data)
 
         
         

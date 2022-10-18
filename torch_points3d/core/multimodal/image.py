@@ -1291,6 +1291,38 @@ class SameSettingImageData:
         return x
 
 
+    def get_mapped_m2f_features(self, interpolate=False):
+        """Return the mapped features, with optional interpolation. If
+        `interpolate=False`, the mappings will be adjusted to
+        `self.img_size`: the current size of the feature map `self.x`.
+        """
+        # Compute the feature map's sampling ratio between the input
+        # `mapping_size` and the current `img_size`
+        # TODO: treat scales independently. Careful with min or max
+        #  depending on upscale and downscale
+        scale = 1 / self.downscale
+
+        # If not interpolating, set the mapping to the proper scale
+        if interpolate:
+            mappings = self.mappings
+        else:
+            mappings = self.mappings.rescale_images(scale)
+            print("M2F masks have to be rescaled with scale ", scale)
+            raise NotImplementedError
+
+        # Index the features with/without interpolation
+        if interpolate and scale != 1:
+            resolution = torch.Tensor([self.mapping_size]).to(self.device)
+            coords = mappings.pixels / (resolution - 1)
+            coords = coords[:, [1, 0]]  # pixel mappings are in (W, H) format
+            batch = mappings.feature_map_indexing[0]
+            x = sparse_interpolation(self.m2f_pred_mask, coords, batch)
+        else:
+            x = self.m2f_pred_mask[mappings.feature_map_indexing]
+
+        return x
+
+
 class SameSettingImageBatch(SameSettingImageData):
     """Wrapper class of SameSettingImageData to build a batch from a
     list of SameSettingImageData and reconstruct it afterwards.
@@ -1531,6 +1563,14 @@ class ImageData:
         feature map `self.x`.
         """
         return [im.get_mapped_features(interpolate=interpolate) for im in self]
+
+    def get_mapped_m2f_features(self, interpolate=False):
+        """Return the list of mapped features for each image, with
+        optional interpolation. If `interpolate=False`, the mappings
+        will be adjusted to `self.img_size`: the current size of the
+        feature map `self.x`.
+        """
+        return [im.get_mapped_m2f_features(interpolate=interpolate) for im in self]
 
     @property
     def feature_map_indexing(self):

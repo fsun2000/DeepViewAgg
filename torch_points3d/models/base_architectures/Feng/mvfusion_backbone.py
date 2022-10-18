@@ -6,7 +6,7 @@ from torch_points3d.datasets.base_dataset import BaseDataset
 from torch_points3d.models.base_architectures import ModalityFactory, get_factory
 from torch_points3d.models.base_model import BaseModel
 from torch_points3d.modules.multimodal.modules import MultimodalBlockDown, \
-    UnimodalBranch, IdentityBranch
+    UnimodalBranch, IdentityBranch, UnimodalBranchOnlyAtomicPool
 from torch_points3d.utils.config import is_list, fetch_arguments_from_list, \
     fetch_modalities, getattr_recursive
 from torch_points3d.core.multimodal.data import MODALITY_NAMES
@@ -59,6 +59,11 @@ class MVFusionBackboneBasedModel(BaseModel, ABC):
         - where the same convolution is given for each layer, and
         arguments are given in lists.
         """
+        print("opt:  ", opt)
+
+        raise NotImplementedError
+
+
         # Initialize the down module list
         self.down_modules = nn.ModuleList()
 
@@ -126,66 +131,68 @@ class MVFusionBackboneBasedModel(BaseModel, ABC):
 
             for m in self.modalities:
 
-                # Get the branching indices
-                b_idx = opt.down_conv[m].branching_index
-                b_idx = [b_idx] if not is_list(b_idx) else b_idx
+                # # Get the branching indices
+                # b_idx = opt.down_conv[m].branching_index
+                # b_idx = [b_idx] if not is_list(b_idx) else b_idx
+                #
+                # # Check whether the modality module is a UNet
+                # is_unet = getattr(opt.down_conv[m], 'up_conv', None) is not None
+                # assert not is_unet or len(b_idx) == 1, \
+                #     f"Cannot build a {m}-specific UNet with multiple " \
+                #     f"branching indices. Consider removing the 'up_conv' " \
+                #     f"from the {m} modality or providing a single branching " \
+                #     f"index."
+                #
+                # # Ensure the modality has no modules pointing to the
+                # # same branching index
+                # assert len(set(b_idx)) == len(b_idx), \
+                #     f"Cannot build multimodal model: some '{m}' blocks have " \
+                #     f"the same branching index."
+                #
+                # # Build the branches
+                # for i, idx in enumerate(b_idx):
 
-                # Check whether the modality module is a UNet
-                is_unet = getattr(opt.down_conv[m], 'up_conv', None) is not None
-                assert not is_unet or len(b_idx) == 1, \
-                    f"Cannot build a {m}-specific UNet with multiple " \
-                    f"branching indices. Consider removing the 'up_conv' " \
-                    f"from the {m} modality or providing a single branching " \
-                    f"index."
+                ############ NOTE: MVFusion has a single branch (for M2F features)
 
-                # Ensure the modality has no modules pointing to the
-                # same branching index
-                assert len(set(b_idx)) == len(b_idx), \
-                    f"Cannot build multimodal model: some '{m}' blocks have " \
-                    f"the same branching index."
+                # # Ensure the branching index matches the down_conv
+                # # length
+                # assert idx < n_mm_blocks, \
+                #     f"Cannot build multimodal model: branching index " \
+                #     f"'{idx}' of modality '{m}' is too large for the " \
+                #     f"'{n_mm_blocks}' multimodal blocks."
+                #
+                # if is_unet:
+                #     unet_cls = self._module_factories[m].get_module('UNET')
+                #     conv = unet_cls(opt.down_conv[m])
+                # else:
+                #     conv = self._build_module(
+                #         opt.down_conv[m].down_conv, i, modality=m)
+                atomic_pool = self._build_module(
+                    opt.down_conv[m].atomic_pooling, i, modality=m,
+                    flow='ATOMIC')
+                # view_pool = self._build_module(
+                #     opt.down_conv[m].view_pooling, i, modality=m,
+                #     flow='VIEW')
+                # fusion = self._build_module(
+                #     opt.down_conv[m].fusion, i, modality=m,
+                #     flow='FUSION')
 
-                # Build the branches
-                for i, idx in enumerate(b_idx):
+                opt_branch = fetch_arguments_from_list(
+                    opt.down_conv[m], i, SPECIAL_NAMES)
+                drop_3d = opt_branch.get('drop_3d', 0)
+                drop_mod = opt_branch.get('drop_mod', 0)
+                keep_last_view = opt_branch.get('keep_last_view', False)
+                checkpointing = opt_branch.get('checkpointing', '')
+                out_channels = opt_branch.get('out_channels', None)
+                interpolate = opt_branch.get('interpolate', False)
 
-                    # Ensure the branching index matches the down_conv
-                    # length
-                    assert idx < n_mm_blocks, \
-                        f"Cannot build multimodal model: branching index " \
-                        f"'{idx}' of modality '{m}' is too large for the " \
-                        f"'{n_mm_blocks}' multimodal blocks."
-
-                    if is_unet:
-                        unet_cls = self._module_factories[m].get_module('UNET')
-                        conv = unet_cls(opt.down_conv[m])
-                    else:
-#                         conv = self._build_module(
-#                             opt.down_conv[m].down_conv, i, modality=m)
-                    atomic_pool = self._build_module(
-                        opt.down_conv[m].atomic_pooling, i, modality=m,
-                        flow='ATOMIC')
-#                     view_pool = self._build_module(
-#                         opt.down_conv[m].view_pooling, i, modality=m,
-#                         flow='VIEW')
-#                     fusion = self._build_module(
-#                         opt.down_conv[m].fusion, i, modality=m,
-#                         flow='FUSION')
-
-                    opt_branch = fetch_arguments_from_list(
-                        opt.down_conv[m], i, SPECIAL_NAMES)
-                    drop_3d = opt_branch.get('drop_3d', 0)
-                    drop_mod = opt_branch.get('drop_mod', 0)
-                    keep_last_view = opt_branch.get('keep_last_view', False)
-                    checkpointing = opt_branch.get('checkpointing', '')
-                    out_channels = opt_branch.get('out_channels', None)
-                    interpolate = opt_branch.get('interpolate', False)
-
-                    # Group modules into a UnimodalBranch and update the
-                    # branches at the proper branching point
-                    branches[idx][m] = UnimodalBranchOnlyAtomicPool(
-                        atomic_pool, drop_3d=drop_3d,
-                        drop_mod=drop_mod, keep_last_view=keep_last_view,
-                        checkpointing=checkpointing, out_channels=out_channels,
-                        interpolate=interpolate)
+                # Group modules into a UnimodalBranch and update the
+                # branches at the proper branching point
+                branches[idx][m] = UnimodalBranchOnlyAtomicPool(
+                    atomic_pool, drop_3d=drop_3d,
+                    drop_mod=drop_mod, keep_last_view=keep_last_view,
+                    checkpointing=checkpointing, out_channels=out_channels,
+                    interpolate=interpolate)
 
             # Update the down_modules list
             down_modules = [
