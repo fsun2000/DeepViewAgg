@@ -5,9 +5,9 @@
 #SBATCH --job-name=no3d
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=6
-#SBATCH --time=60:00:00
-#SBATCH --mem=180000M
-#SBATCH --output=job_logs/dva/train_no3d.out
+#SBATCH --time=01:00:00
+#SBATCH --mem=190000M
+#SBATCH --output=job_logs/dva/train_no3d_debug.out
 
 cd $HOME/DeepViewAgg
 

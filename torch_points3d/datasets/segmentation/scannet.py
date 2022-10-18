@@ -1135,6 +1135,7 @@ class Scannet(InMemoryDataset):
         version = pyg.__version__.split('.')
         is_new_pyg = int(version[0]) >= 2 or int(version[1]) >= 7
         
+        print(f"this is a {self.split} dataset object")
         print(""" DeepViewAgg/torch_points3d/datasets/segmentation/scannet.py,
         line 1118:
         (Feng) on my conda installation, this block causes a max 

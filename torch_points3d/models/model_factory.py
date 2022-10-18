@@ -15,6 +15,9 @@ def instantiate_model(config, dataset) -> BaseModel:
     # Get task and model_name
     task = config.data.task
     tested_model_name = config.model_name
+    
+    print("task: ", task)
+    print("tested_model_name: ", tested_model_name)
 
     # Find configs
     models = config.get('models')
@@ -41,5 +44,9 @@ def instantiate_model(config, dataset) -> BaseModel:
             "In %s.py, there should be a subclass of BaseDataset with class name that matches %s in lowercase."
             % (model_module, class_name)
         )
+    print("class_name: ", class_name)
+    print("model_cls: ", model_cls)    
+    
     model = model_cls(model_config, "dummy", dataset, modellib)
+    print("model: ", model)
     return model
