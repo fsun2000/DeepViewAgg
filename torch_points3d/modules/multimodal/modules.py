@@ -305,8 +305,6 @@ class UnimodalBranchOnlyAtomicPool(nn.Module, ABC):
         x_3d = mm_data_dict['x_3d'].F if is_sparse_3d else mm_data_dict['x_3d']
         mod_data = mm_data_dict['modalities'][modality]
         
-
-
         # Check whether the modality carries multi-setting data
         is_multi_shape = isinstance(mod_data.x, list)
 
@@ -396,8 +394,13 @@ class UnimodalBranchOnlyAtomicPool(nn.Module, ABC):
 
         # Extract mapped features from the feature maps of each input
         # modality setting
-        # NOTE: only Mask2Former feature map!
+        ########## NOTE: only Mask2Former feature map!
         x_mod = mod_data.get_mapped_m2f_features(interpolate=self.interpolate)
+        
+        
+        
+        
+        
 
         # Atomic pooling of the modality features on each separate
         # setting
