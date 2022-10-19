@@ -12,7 +12,6 @@ site
 kernels/dispositions/*
 notebooks/*checkpoints
 notebooks/*.html
-notebooks/*
 py_scripts
 .ipynb_checkpoints
 measurements/*.pickle
@@ -23,8 +22,6 @@ docs_old
 /test/kernels/dispositions
 *.egg-info*
 *.prof
-notebooks/*.yaml
-notebooks/*.ipynb
 
 # Python egg metadata, regenerated from source files by setuptools.
 /*.egg
