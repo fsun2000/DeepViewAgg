@@ -1,0 +1,32 @@
+# @package models
+defaults:
+  - segmentation/default
+
+MVFusion:
+    # 6.1 M params - 23.8 Mo on the GPU - ~7.2 ko/pixel at training time
+    class: Feng.mvfusion.MVFusion_model
+    down_conv:
+        image:
+            down_conv:
+                module_name: ADE20KResNet18PPM
+                frozen: False
+            atomic_pooling:
+                module_name: BimodalCSRPool
+                mode: max
+            view_pooling:
+                module_name: GroupBimodalCSRPool
+                in_map: 8
+                in_mod: 512
+                num_groups: 4
+                use_mod: False
+                gating: True
+                group_scaling: True
+                map_encoder: DeepSetFeat
+                use_num: True
+                pool: max
+                fusion: concatenation
+            fusion:
+                module_name: BimodalFusion
+                mode: residual
+            drop_mod: 0.1
+            branching_index: 0

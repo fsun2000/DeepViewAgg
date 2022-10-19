@@ -62,8 +62,9 @@ class MultimodalBlockDown(nn.Module, ABC):
             assert (m in MODALITY_NAMES), \
                 f"Invalid kwarg modality '{m}', expected one of " \
                 f"{MODALITY_NAMES}."
-            assert isinstance(kwargs[m], (UnimodalBranch, IdentityBranch)), \
-                f"Expected a UnimodalBranch module for '{m}' modality " \
+            assert isinstance(kwargs[m], (UnimodalBranch, IdentityBranch)) or \
+                   isinstance(kwargs[m], (UnimodalBranchOnlyAtomicPool, IdentityBranch)), \
+                f"Expected a UnimodalBranch or UnimodalBranchOnlyAtomicPool module for '{m}' modality " \
                 f"but got {type(kwargs[m])} instead."
             setattr(self, m, kwargs[m])
             self._modalities.append(m)

@@ -34,6 +34,9 @@ def instantiate_model(config, dataset) -> BaseModel:
     model_module = ".".join(["torch_points3d.models", task, module])
     modellib = importlib.import_module(model_module)
 
+    print("class_name: ", class_name)
+    print("model_module: ", model_module)
+    
     model_cls = None
     for name, cls in modellib.__dict__.items():
         if name.lower() == class_name.lower():
@@ -44,8 +47,7 @@ def instantiate_model(config, dataset) -> BaseModel:
             "In %s.py, there should be a subclass of BaseDataset with class name that matches %s in lowercase."
             % (model_module, class_name)
         )
-    print("class_name: ", class_name)
-    print("model_cls: ", model_cls)    
+#     print("model_cls: ", model_cls)    
     
     model = model_cls(model_config, "dummy", dataset, modellib)
     print("model: ", model)

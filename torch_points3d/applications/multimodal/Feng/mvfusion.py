@@ -2,7 +2,7 @@ import logging
 from abc import ABC
 
 import torch
-from torch_points3d.models.base_architectures.backbone.Feng.mvfusion_backbone import MVFusionBackboneBasedModel
+from torch_points3d.models.base_architectures.backbone import MVFusionBackboneBasedModel
 from torch_points3d.applications.utils import extract_output_nc
 from torch_points3d.core.common_modules.base_modules import MLP
 from torch_points3d.core.multimodal.data import MMData
@@ -18,6 +18,10 @@ class MVFusionEncoder(MVFusionBackboneBasedModel, ABC):
     """Encoder structure for multimodal models without 3D data.
 
     Inspired from torchpoints_3d.applications.sparseconv3d.
+    
+    
+    Feng modification: this structure creates multi-view fused features for each 3D point,
+        based on its Mask2Former view-wise predictions and the viewing conditions.
     """
 
     def __init__(
@@ -75,11 +79,9 @@ class MVFusionEncoder(MVFusionBackboneBasedModel, ABC):
         -----------
         data: MMData object
         """
-        
-        data = data.to(self.device)
-       
-        
-        
+        print("temprarily skip moving data to device in applications")
+        data = data#.to(self.device)
+
         self.input = {
             'x_3d': getattr(data.data, 'x', None),   # Feng: adjusted from original 'getattr(data, 'x', None)', now it properly moves to gpu
             'x_seen': None,
@@ -106,23 +108,30 @@ class MVFusionEncoder(MVFusionBackboneBasedModel, ABC):
             - pos [N, 3] (coords or real pos if xyz is in data)
             - x [N, output_nc]
         """
+        print("mm_data_dict: ", data)
+
         self._set_input(data)
         mm_data_dict = self.input
         
         
-#         for i in range(len(self.down_modules)):
-#             mm_data_dict = self.down_modules[i](mm_data_dict)
+        print("self.down_modules: ", self.down_modules)
+        
+        # Apply ONLY atomic-level pooling which is in `down_modules`
+        for i in range(len(self.down_modules)):
+            mm_data_dict = self.down_modules[i](mm_data_dict)
             
-        # Apply atomic-level pooling which was in `down_modules`
         
     
         # Feng:
         # 1. do view-sampling per point
         # 2. run viewing conditions through Attention Transformer
         # 3. save those in mm_data_dict['modalities'][modality]?
+        print("pooled mm_data_dict: ", mm_data_dict)
+        print(mm_data_dict.modalities['image'])
             
             
             
+        raise NotImplementedError
 
         # Discard the modalities used in the down modules, only
         # 3D point features are expected to be used in subsequent

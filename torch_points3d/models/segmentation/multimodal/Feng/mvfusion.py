@@ -157,8 +157,8 @@ class MVFusion(BaseModel, ABC):
         self.loss_seg.backward()
 
 
-# class No3DFeatureFusion(No3D):
-#     _HAS_HEAD = True
+class MVFusion_model(MVFusion):
+    _HAS_HEAD = True
 
 
 # class No3DLogitFusion(No3D):
