@@ -315,6 +315,8 @@ class ScannetMM(Scannet):
             # Store M2F pred mask in data
             images[0].m2f_pred_mask = m2f_masks
             images[0].m2f_pred_mask_path = np.array(m2f_mask_paths)
+            
+        print(MMData(data, image=images).modalities['image'][0].m2f_pred_mask_path)
 
         return MMData(data, image=images)
 

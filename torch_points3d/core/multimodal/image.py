@@ -206,20 +206,24 @@ class SameSettingImageData:
         mappings:ImageMapping       mappings between 3D points and the images
         visibility:VisibilityModel  visibility model used to compute the mappings
         mask:BoolTensor             projection mask
+        
+        m2f_pred_mask:Tensor        tensor of M2F predicted labels. labels range from [0,20]
+        m2f_pred_mask_path:numpy.ndarray [N] paths
     """
-    _numpy_keys = ['path']
+    _numpy_keys = ['path', 'm2f_pred_mask_path']
     _pinhole_keys = ['fx', 'fy', 'mx', 'my']
     _fisheye_keys = ['xi', 'k1', 'k2', 'gamma1', 'gamma2', 'u0', 'v0']
     _torch_keys = ['pos', 'opk', 'extrinsic', 'crop_offsets', 'rollings'] \
         + _pinhole_keys + _fisheye_keys
     _map_key = 'mappings'
     _x_key = 'x'
+    _m2f_pred_mask_key = 'm2f_pred_mask'
     _mask_key = 'mask'
     _visi_key = 'visibility'
     _shared_keys = [
         'ref_size', 'proj_upscale', 'downscale', 'crop_size', _mask_key,
         _visi_key]
-    _own_keys = _numpy_keys + _torch_keys + [_map_key, _x_key]
+    _own_keys = _numpy_keys + _torch_keys + [_map_key, _x_key, _m2f_pred_mask_key]
     _keys = _shared_keys + _own_keys
 
     def __init__(
@@ -228,7 +232,8 @@ class SameSettingImageData:
             downscale=1, rollings=None, crop_size=None, crop_offsets=None,
             x=None, mappings=None, mask=None, visibility=None, fx=None,
             fy=None, mx=None, my=None, xi=None, k1=None, k2=None, gamma1=None,
-            gamma2=None, u0=None, v0=None, extrinsic=None, **kwargs):
+            gamma2=None, u0=None, v0=None, extrinsic=None,
+            m2f_pred_mask=None, m2f_pred_mask_path=None, **kwargs):
 
         # Initialize the private internal state attributes
         self._ref_size = None
@@ -271,8 +276,10 @@ class SameSettingImageData:
         self.visibility = visibility
         
         # Attribute for storing Mask2Former predicted masks
-        self.m2f_pred_mask = None
-        self.m2f_pred_mask_path = None
+        self.m2f_pred_mask = m2f_pred_mask
+        self.m2f_pred_mask_path = m2f_pred_mask_path
+        
+        print("HEEEYYYYY self.m2f_pred_mask_path ",self.m2f_pred_mask_path)
 
         # self.debug()
 
@@ -611,6 +618,8 @@ class SameSettingImageData:
                  for im, roll in zip(self.x, self.rollings)]
             x = torch.cat([im.unsqueeze(0) for im in x])
             self.x = x
+            
+        print("Image features are rolled, but M2F masks are not!")
 
         # Roll the mappings
         if self.mappings is not None:
@@ -716,6 +725,9 @@ class SameSettingImageData:
                 for im, o in zip(self.x, crop_offsets)]
             x = torch.cat([im.unsqueeze(0) for im in x])
             self.x = x
+            
+        if self.m2f_pred_mask is not None:
+            print("update_cropping has been called, but Mask2Former pred masks are not cropped properly!")
 
         # Update the mappings
         if self.mappings is not None:
@@ -1149,7 +1161,9 @@ class SameSettingImageData:
             mappings=self.mappings.select_images(idx)
             if self.mappings is not None else None,
             mask=self.mask.clone() if self.mask is not None else None,
-            visibility=copy.deepcopy(self.visibility) if hasattr(self, 'visibility') else None)
+            visibility=copy.deepcopy(self.visibility) if hasattr(self, 'visibility') else None,
+            m2f_pred_mask=self.m2f_pred_mask if self.m2f_pred_mask else None,
+            m2f_pred_mask_path=self.m2f_pred_mask_path if self.m2f_pred_mask_path else None)
 
     def __iter__(self):
         """Iteration mechanism.
@@ -1163,7 +1177,7 @@ class SameSettingImageData:
 
     def __repr__(self):
         return f"{self.__class__.__name__}(num_views={self.num_views}, " \
-               f"num_points={self.num_points}, device={self.device})"
+               f"num_points={self.num_points}, m2f_pred_mask={self.m2f_pred_mask}, device={self.device})"
 
     def clone(self):
         """Returns a shallow copy of self, except for 'x' and
@@ -1307,8 +1321,8 @@ class SameSettingImageData:
             mappings = self.mappings
         else:
             mappings = self.mappings.rescale_images(scale)
-            print("M2F masks have to be rescaled with scale ", scale)
-            raise NotImplementedError
+            if scale < 1.:
+                print("Warning: M2F pixel coordinates are being rescaled with ratio < 1. This functionality has not been checked before")
 
         # Index the features with/without interpolation
         if interpolate and scale != 1:
@@ -1336,6 +1350,8 @@ class SameSettingImageBatch(SameSettingImageData):
 
     def __init__(self, **kwargs):
         super(SameSettingImageBatch, self).__init__(**kwargs)
+        
+        print("Initialized a SameSettingImageBatch: ", self)
         self.__sizes__ = None
 
     @property
@@ -1363,6 +1379,7 @@ class SameSettingImageBatch(SameSettingImageData):
         batch_dict = image_data_list[0].to_dict()
         sizes = [image_data_list[0].num_views]
         for key in SameSettingImageData._own_keys:
+            print("key: ", key)
             batch_dict[key] = [batch_dict[key]]
 
         # Only stack if all SameSettingImageData have the same shared
@@ -1394,6 +1411,7 @@ class SameSettingImageBatch(SameSettingImageData):
 
         # Concatenate numpy array attributes
         for key in SameSettingImageData._numpy_keys:
+            print("batched in SameSettingImageBatch: ", key)
             batch_dict[key] = np.concatenate(batch_dict[key])
 
         # Concatenate torch array attributes. Special care needed here
@@ -1402,8 +1420,11 @@ class SameSettingImageBatch(SameSettingImageData):
         # attributes
         for key in SameSettingImageData._torch_keys:
             try:
+                print("batched in SameSettingImageBatch: ", key)
                 batch_dict[key] = torch.cat(batch_dict[key])
             except:
+                print("except call for key ", key)
+                print(f"{key} is None")
                 batch_dict[key] = None
 
         # Concatenate images, unless one of the items does not have
@@ -1413,7 +1434,15 @@ class SameSettingImageBatch(SameSettingImageData):
         else:
             batch_dict[SameSettingImageData._x_key] = torch.cat(
                 batch_dict[SameSettingImageData._x_key])
-
+            
+        # Concatenate M2F masks, unless one of the items does not have M2F masks
+        if any(img is None for img in batch_dict[SameSettingImageData._m2f_pred_mask_key]):
+            batch_dict[SameSettingImageData._m2f_pred_mask_key] = None
+        else:
+            batch_dict[SameSettingImageData._m2f_pred_mask_key] = torch.cat(
+                batch_dict[SameSettingImageData._m2f_pred_mask_key])
+        
+        
         # Batch mappings, unless one of the items does not have mappings
         if any(mpg is None
                for mpg in batch_dict[SameSettingImageData._map_key]):
@@ -1427,6 +1456,8 @@ class SameSettingImageBatch(SameSettingImageData):
         # sizes
         batch = SameSettingImageBatch(**batch_dict)
         batch.__sizes__ = np.array(sizes)
+        
+        print("created a SameSettingImageBatch: ", batch)
 
         return batch
 
@@ -1468,9 +1499,14 @@ class ImageData:
     @property
     def x(self):
         return [im.x for im in self]
+    
+    @property
+    def m2f_pred_mask(self):
+        return [im.m2f_pred_mask for im in self]
 
     @x.setter
     def x(self, x_list):
+        print("ImageData x is set outside of __init__ or cloning functions")
         assert x_list is None or isinstance(x_list, list), \
             f"Expected a List but got {type(x_list)} instead."
 
@@ -1522,7 +1558,7 @@ class ImageData:
     def __repr__(self):
         return f"{self.__class__.__name__}(num_settings={self.num_settings}, " \
                f"num_views={self.num_views}, num_points={self.num_points}, " \
-               f"device={self.device})"
+               f"m2f_pred_mask={self.m2f_pred_mask}, device={self.device})"
 
     def select_points(self, idx, mode='pick'):
         return self.__class__([
@@ -1650,16 +1686,21 @@ class ImageBatch(ImageData):
     the same sorder.
     """
 
-    def __init__(self, image_list: List[SameSettingImageData]):
+    def __init__(self, image_list: List[SameSettingImageData]):        
         super(ImageBatch, self).__init__(image_list)
         self.__il_sizes__ = None
         self.__hashes__ = None
         self.__il_idx_dict__ = None
         self.__im_idx_dict__ = None
         self.__cum_pts__ = None
+        
+        print("ImageBatch initiated: ", self)
+
 
     @staticmethod
     def from_data_list(image_data_list):
+        print("ImageBatch.from_data_list(image_data_list) called :", image_data_list)
+            
         assert isinstance(image_data_list, list) and len(image_data_list) > 0
         assert all(isinstance(x, ImageData) for x in image_data_list)
 
@@ -1695,6 +1736,8 @@ class ImageBatch(ImageData):
 
         # Batch the SameSettingImageData for each hash
         batches = [SameSettingImageBatch.from_data_list(x) for x in batches]
+        
+        print("Batched SameSettingImageBatch into ImageBatch:", batches)
 
         # Update the ImageBatches' mappings pointers to account for
         # global points reindexing
@@ -1716,6 +1759,9 @@ class ImageBatch(ImageData):
         return msi_batch
 
     def to_data_list(self):
+        print("ImageBatch.to_data_list() called")
+        
+        
         assert (self.__il_sizes__ is not None
                 and self.__hashes__ is not None
                 and self.__il_idx_dict__ is not None
