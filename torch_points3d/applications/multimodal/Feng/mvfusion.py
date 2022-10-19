@@ -62,6 +62,9 @@ class MVFusionEncoder(MVFusionBackboneBasedModel, ABC):
             
         # pooling modules
         self.atomic_pooling = BimodalCSRPool(mode='max', save_last=False)
+        
+        # dirty fix, hardcode N_VIEWS
+        self.n_views = 9
 
     @property
     def has_mlp_head(self):
@@ -81,9 +84,9 @@ class MVFusionEncoder(MVFusionBackboneBasedModel, ABC):
         """
         print("temprarily skip moving data to device in applications")
         data = data#.to(self.device)
-
+        
         self.input = {
-            'x_3d': getattr(data.data, 'x', None),   # Feng: adjusted from original 'getattr(data, 'x', None)', now it properly moves to gpu
+            'x_3d': getattr(data, 'x', None),   # Feng: adjusted from original 'getattr(data, 'x', None)', now it properly moves to gpu
             'x_seen': None,
             'modalities': data.modalities}
         if data.pos is not None:
@@ -108,14 +111,31 @@ class MVFusionEncoder(MVFusionBackboneBasedModel, ABC):
             - pos [N, 3] (coords or real pos if xyz is in data)
             - x [N, output_nc]
         """
-        print("mm_data_dict: ", data)
+        print()
+        print("data: ", data)
+                
+        # Take subset of only seen points
+        # idx mapping from each pixel to point
+        # NOTE: each point is contained multiple times if it has multiple correspondences
+        im_data = data.modalities['image']
+        dense_idx_list = [
+                    torch.arange(im.num_points, device=im_data.device).repeat_interleave(
+                        im.view_csr_indexing[1:] - im.view_csr_indexing[:-1])
+                    for im in im_data]
+        # take subset of only seen points without re-indexing the same point
+        seen_data = data[dense_idx_list[0].unique()]
 
-        self._set_input(data)
+        del im_data, data
+        
+        raise NotImplementedError
+
+        
+        self._set_input(seen_data)
         mm_data_dict = self.input
         
+        print("mm_data_dict with only seen points: ", mm_data_dict)
         
-        print("self.down_modules: ", self.down_modules)
-        
+                
         # Apply ONLY atomic-level pooling which is in `down_modules`
         for i in range(len(self.down_modules)):
             mm_data_dict = self.down_modules[i](mm_data_dict)
@@ -123,13 +143,27 @@ class MVFusionEncoder(MVFusionBackboneBasedModel, ABC):
         
     
         # Feng:
-        # 1. do view-sampling per point
+        # DONE 1. do view-sampling per point
         # 2. run viewing conditions through Attention Transformer
         # 3. save those in mm_data_dict['modalities'][modality]?
         print("pooled mm_data_dict: ", mm_data_dict)
-        print(mm_data_dict.modalities['image'])
+        image_batch = mm_data_dict['modalities']['image']
+        print("image_batch: ", image_batch)
+        
+        
+        if len(image_batch) > 1:
+            print("image_batch has more than 1 entries! ")
             
-            
+        print(image_batch[0].__dict__.keys())
+        
+        raise NotImplementedError
+
+
+
+        # Gather 9 (valid and invalid) viewing conditions for each point
+        # Invalid viewing conditions serve as padding
+        viewing_feats = self.extract_viewing_data_per_point(seen_mm_data)
+
             
         raise NotImplementedError
 
@@ -161,3 +195,49 @@ class MVFusionEncoder(MVFusionBackboneBasedModel, ABC):
 #                 out[m].last_view_x_mod = self.mlp(out[m].last_view_x_mod)
 
         return out
+
+    def extract_viewing_data_per_point(self, mm_data):
+        n_views = self.n_views
+
+        image_data = mm_data.modalities['image']
+        csr_idx = image_data.view_cat_csr_indexing
+
+        viewing_conditions = image_data[0].mappings.values[2]
+
+        # Add pixel validity as first feature
+        viewing_conditions = torch.cat((torch.ones(viewing_conditions.shape[0], 1).to(viewing_conditions.device),
+                                        viewing_conditions), dim=1)
+
+
+        # Calculate amount of empty views. There should be n_points * n_views filled view conditions in total.
+        n_seen = csr_idx[1:] - csr_idx[:-1]
+
+        unfilled_points = n_seen[n_seen < n_views]
+        n_views_to_fill = int(len(unfilled_points) * n_views - sum(unfilled_points))
+
+        random_invalid_views = viewing_conditions[np.random.choice(range(len(viewing_conditions)), size=n_views_to_fill, replace=True)]
+        # set pixel validity to invalid
+        random_invalid_views[:, 0] = 0
+
+
+        # concat viewing conditions and random invalid views, then index the tensor such that each point
+        # either has 9 valid subsampled views, or is filled to 9 views with random views
+        combined_tensor = torch.cat((viewing_conditions, random_invalid_views), dim=0)
+
+        unused_invalid_view_idx = len(viewing_conditions)
+        combined_idx = []
+        for i, n in enumerate(n_seen):
+            if n < n_views:
+                n_empty_views = n_views -  n
+                combined_idx += list(range(csr_idx[i], csr_idx[i+1])) + \
+                                list(range(unused_invalid_view_idx, unused_invalid_view_idx + n_empty_views))
+                unused_invalid_view_idx += n_empty_views
+            elif n > n_views:
+                sampled_idx = sorted(np.random.choice(range(csr_idx[i], csr_idx[i+1]), size=n_views, replace=False))
+                combined_idx += sampled_idx
+            else:
+                combined_idx += list(range(csr_idx[i], csr_idx[i+1]))
+
+        # re-index tensor for MVFusion format
+        combined_tensor = combined_tensor[combined_idx]    
+        return combined_tensor.reshape(mm_data.num_points, n_views, -1)

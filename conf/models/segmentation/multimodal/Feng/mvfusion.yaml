@@ -28,5 +28,5 @@ MVFusion:
             fusion:
                 module_name: BimodalFusion
                 mode: residual
-            drop_mod: 0.1
+            drop_mod: 0.0
             branching_index: 0

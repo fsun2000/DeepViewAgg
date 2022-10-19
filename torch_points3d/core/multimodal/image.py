@@ -279,8 +279,6 @@ class SameSettingImageData:
         self.m2f_pred_mask = m2f_pred_mask
         self.m2f_pred_mask_path = m2f_pred_mask_path
         
-        print("HEEEYYYYY self.m2f_pred_mask_path ",self.m2f_pred_mask_path)
-
         # self.debug()
 
     def debug(self):
@@ -1162,8 +1160,8 @@ class SameSettingImageData:
             if self.mappings is not None else None,
             mask=self.mask.clone() if self.mask is not None else None,
             visibility=copy.deepcopy(self.visibility) if hasattr(self, 'visibility') else None,
-            m2f_pred_mask=self.m2f_pred_mask if self.m2f_pred_mask else None,
-            m2f_pred_mask_path=self.m2f_pred_mask_path if self.m2f_pred_mask_path else None)
+            m2f_pred_mask=self.m2f_pred_mask if self.m2f_pred_mask is not None else None,
+            m2f_pred_mask_path=self.m2f_pred_mask_path if self.m2f_pred_mask_path is not None else None)
 
     def __iter__(self):
         """Iteration mechanism.
@@ -1350,8 +1348,6 @@ class SameSettingImageBatch(SameSettingImageData):
 
     def __init__(self, **kwargs):
         super(SameSettingImageBatch, self).__init__(**kwargs)
-        
-        print("Initialized a SameSettingImageBatch: ", self)
         self.__sizes__ = None
 
     @property
@@ -1410,7 +1406,6 @@ class SameSettingImageBatch(SameSettingImageData):
 
         # Concatenate numpy array attributes
         for key in SameSettingImageData._numpy_keys:
-            print("batched in SameSettingImageBatch: ", key)
             batch_dict[key] = np.concatenate(batch_dict[key])
 
         # Concatenate torch array attributes. Special care needed here
@@ -1419,11 +1414,8 @@ class SameSettingImageBatch(SameSettingImageData):
         # attributes
         for key in SameSettingImageData._torch_keys:
             try:
-                print("batched in SameSettingImageBatch: ", key)
                 batch_dict[key] = torch.cat(batch_dict[key])
             except:
-                print("except call for key ", key)
-                print(f"{key} is None")
                 batch_dict[key] = None
 
         # Concatenate images, unless one of the items does not have
@@ -1456,8 +1448,6 @@ class SameSettingImageBatch(SameSettingImageData):
         batch = SameSettingImageBatch(**batch_dict)
         batch.__sizes__ = np.array(sizes)
         
-        print("created a SameSettingImageBatch: ", batch)
-
         return batch
 
     def to_data_list(self):
@@ -1693,13 +1683,9 @@ class ImageBatch(ImageData):
         self.__im_idx_dict__ = None
         self.__cum_pts__ = None
         
-        print("ImageBatch initiated: ", self)
-
 
     @staticmethod
-    def from_data_list(image_data_list):
-        print("ImageBatch.from_data_list(image_data_list) called :", image_data_list)
-            
+    def from_data_list(image_data_list):            
         assert isinstance(image_data_list, list) and len(image_data_list) > 0
         assert all(isinstance(x, ImageData) for x in image_data_list)
 
@@ -1736,8 +1722,6 @@ class ImageBatch(ImageData):
         # Batch the SameSettingImageData for each hash
         batches = [SameSettingImageBatch.from_data_list(x) for x in batches]
         
-        print("Batched SameSettingImageBatch into ImageBatch:", batches)
-
         # Update the ImageBatches' mappings pointers to account for
         # global points reindexing
         for h, im in zip(hashes, batches):
@@ -1757,10 +1741,7 @@ class ImageBatch(ImageData):
 
         return msi_batch
 
-    def to_data_list(self):
-        print("ImageBatch.to_data_list() called")
-        
-        
+    def to_data_list(self):        
         assert (self.__il_sizes__ is not None
                 and self.__hashes__ is not None
                 and self.__il_idx_dict__ is not None

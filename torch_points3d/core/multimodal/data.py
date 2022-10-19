@@ -25,8 +25,6 @@ class MMData(object):
     """
 
     def __init__(self, data: Data, **kwargs):
-        print("MMData initialized with kwargs: ", kwargs)
-        print("and its data: ", data)
         self.data = data
         self.modalities = kwargs
         self.mapping_key = MAPPING_KEY
@@ -153,8 +151,6 @@ class MMBatch(MMData):
     """
 
     def __init__(self, data, **kwargs):
-        print("MMBatch initialized with kwags: ", kwargs)
-        print("and its data: ", data)
         super(MMBatch, self).__init__(data, **kwargs)
         self.__sizes__ = None
 
@@ -183,7 +179,6 @@ class MMBatch(MMData):
 
     @staticmethod
     def from_mm_data_list(mm_data_list):
-        print("MMBatch.from_mm_data_list(mm_data_list) called: ", mm_data_list)
         assert isinstance(mm_data_list, list) and len(mm_data_list) > 0
         assert all([isinstance(mm_data, MMData) for mm_data in mm_data_list])
         assert all([set(mm_data.modalities.keys())
@@ -210,7 +205,6 @@ class MMBatch(MMData):
         return batch
 
     def to_mm_data_list(self):
-        print("MMBatch.to_mm_data_list() called: ", self)
         if self.__sizes__ is None:
             raise RuntimeError(
                 'Cannot reconstruct multimodal data list from batch '
