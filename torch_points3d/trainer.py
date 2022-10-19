@@ -202,7 +202,6 @@ class Trainer:
                 
                 print("data from dataloader: ", data)
                 print("ImageBatch: ", data.modalities['image'])
-                print("ImageBatch attributes: ", data.modalities['image'][0].__dict__.keys())
                 
                 t_data = time.time() - iter_data_time
                 iter_start_time = time.time()

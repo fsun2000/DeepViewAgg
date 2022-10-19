@@ -1177,7 +1177,7 @@ class SameSettingImageData:
 
     def __repr__(self):
         return f"{self.__class__.__name__}(num_views={self.num_views}, " \
-               f"num_points={self.num_points}, m2f_pred_mask={self.m2f_pred_mask}, device={self.device})"
+               f"num_points={self.num_points}, m2f_pred_mask={self.m2f_pred_mask.shape}, device={self.device})"
 
     def clone(self):
         """Returns a shallow copy of self, except for 'x' and
@@ -1379,7 +1379,6 @@ class SameSettingImageBatch(SameSettingImageData):
         batch_dict = image_data_list[0].to_dict()
         sizes = [image_data_list[0].num_views]
         for key in SameSettingImageData._own_keys:
-            print("key: ", key)
             batch_dict[key] = [batch_dict[key]]
 
         # Only stack if all SameSettingImageData have the same shared
@@ -1558,7 +1557,7 @@ class ImageData:
     def __repr__(self):
         return f"{self.__class__.__name__}(num_settings={self.num_settings}, " \
                f"num_views={self.num_views}, num_points={self.num_points}, " \
-               f"m2f_pred_mask={self.m2f_pred_mask}, device={self.device})"
+               f"m2f_pred_mask={self.m2f_pred_mask[0].shape}, device={self.device})"
 
     def select_points(self, idx, mode='pick'):
         return self.__class__([

@@ -419,8 +419,13 @@ class UnimodalBranchOnlyAtomicPool(nn.Module, ABC):
         # Compute the boolean mask of seen points
         x_seen = csr_idx[1:] > csr_idx[:-1]
 
-        # Dropout 3D or modality features
-        x_3d, x_mod_m2f, mod_data = self.forward_dropout(x_3d, x_mod_m2f, mod_data)
+        ### Feng: disable M2F feature dropout because it has no practical use
+#         # Dropout 3D or modality features
+#         print("self.drop_3d", self.drop_3d)
+#         print("self.drop_mod", self.drop_mod)
+#         print("x_3d", x_3d)
+#         print("x_mod_m2f", x_mod_m2f)
+#         x_3d, x_mod_m2f, mod_data = self.forward_dropout(x_3d, x_mod_m2f, mod_data)
 
         
         
