@@ -1208,7 +1208,10 @@ class SameSettingImageData:
             ref_size=self.ref_size, proj_upscale=self.proj_upscale,
             downscale=self.downscale, rollings=self.rollings.to(device),
             crop_size=self.crop_size, crop_offsets=self.crop_offsets.to(device),
-            visibility=self.visibility)
+            visibility=self.visibility,
+            m2f_pred_mask=self.m2f_pred_mask.to(device),
+            m2f_pred_mask_path=self.m2f_pred_mask_path
+            )
         out._x = self.x.to(device) if self.x is not None else None
         out._mappings = self.mappings.to(device) if self.mappings is not None \
             else None

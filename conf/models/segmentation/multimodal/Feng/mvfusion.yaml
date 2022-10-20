@@ -30,3 +30,17 @@ MVFusion:
                 mode: residual
             drop_mod: 0.0
             branching_index: 0
+    transformer:
+        n_views: 9
+        in_map: 9        # mapping feature size
+        in_m2f: 20       # M2F one-hot encoded label size
+        embed_dim: 36
+        hidden_dim: 144
+        num_heads: 2
+        num_layers: 4
+        use_batch_norm: False
+        feat_downproj_dim: None
+        dropout: 0.0
+        mlp_dropout: 0.0 # final layer dropout
+        use_attn_mask: True          # Transformer attention masking
+        use_csr_mask: True           # Transformer pixel validity masking

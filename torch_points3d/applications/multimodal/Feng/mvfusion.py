@@ -9,7 +9,11 @@ from torch_points3d.core.common_modules.base_modules import MLP
 from torch_points3d.core.multimodal.data import MMData
 from torch_geometric.data import Batch
 
+### Feng
 from torch_points3d.modules.multimodal.pooling import BimodalCSRPool
+import sys
+sys.path.append("/home/fsun/thesis/modeling")
+from compare_methods import DVA_cls_5_fusion_7
 
 
 log = logging.getLogger(__name__)
@@ -61,12 +65,15 @@ class MVFusionEncoder(MVFusionBackboneBasedModel, ABC):
                 [default_output_nc, self.output_nc], activation=torch.nn.ReLU(),
                 bias=False)
             
-        # pooling modules
+        # modules
         self.atomic_pooling = BimodalCSRPool(mode='max', save_last=False)
         
-        # dirty fix, hardcode N_VIEWS
-        self.n_views = 9
-
+        self.fusion = DVA_cls_5_fusion_7(model_config['transformer'])
+        print(self.fusion)
+        
+        self.n_views = model_config['transformer'].n_views
+        self.n_classes = model_config['transformer']['n_classes']
+        
     @property
     def has_mlp_head(self):
         return self._has_mlp_head
@@ -83,11 +90,13 @@ class MVFusionEncoder(MVFusionBackboneBasedModel, ABC):
         -----------
         data: MMData object
         """
-        print("temprarily skip moving data to device in applications")
-        data = data#.to(self.device)
+#         print("temprarily skip moving data to device in applications")
+#         print("data before to device", data)
+        data = data.to(self.device)
+#         print("data after to device: ", data)
         
         self.input = {
-            'x_3d': getattr(data, 'x', None),   # Feng: adjusted from original 'getattr(data, 'x', None)', now it properly moves to gpu
+            'x_3d': getattr(data.data, 'x', None),   # Feng: adjusted from original 'getattr(data, 'x', None)', now it properly moves to gpu
             'x_seen': None,
             'modalities': data.modalities}
         if data.pos is not None:
@@ -124,6 +133,8 @@ class MVFusionEncoder(MVFusionBackboneBasedModel, ABC):
                         im.view_csr_indexing[1:] - im.view_csr_indexing[:-1])
                     for im in im_data]
         # take subset of only seen points without re-indexing the same point
+        ### TODO: this converts data from MMBatch to MMData class when slicing
+        ### Does this cause any errors downstream?
         data = data[dense_idx_list[0].unique()]
         
         print()
@@ -145,31 +156,42 @@ class MVFusionEncoder(MVFusionBackboneBasedModel, ABC):
         # DONE 1. do view-sampling per point
         # 2. run viewing conditions through Attention Transformer
         # 3. save those in mm_data_dict['modalities'][modality]?
-        print("pooled mm_data_dict: ", mm_data_dict)
         image_batch = mm_data_dict['modalities']['image']
         print("image_batch: ", image_batch)
         
-        
-        if len(image_batch) > 1:
-            print("image_batch has more than 1 entries! ")
             
-        print(image_batch[0].__dict__.keys())
-
         # Gather 9 (valid and invalid) viewing conditions for each point
         # Invalid viewing conditions serve as padding
-        viewing_feats = self.extract_viewing_data_per_point(data)
-        
+        viewing_feats, m2f_feats = self.get_view_dependent_features(data)
+                
         # Mask2Former predictions per view as feature
-        m2f_feats = image_batch.get_mapped_m2f_features(interpolate=True)
-        if len(m2f_feats) > 1:
-            print("m2f_feats list should only have a len of 1!")
         # Adjust previously used label mapping [0, 21] with 0 being invalid, to [-1, 20].
         # As M2F model does not produce 0 preds, updated labels are within [0, 19]
-        m2f_feats = m2f_feats[0] - 1   
+        m2f_feats = m2f_feats - 1   
+        
+        print('m2f_feats.shape',m2f_feats.shape)
+        m2f_feats = torch.nn.functional.one_hot(m2f_feats.squeeze().long(), self.n_classes)
+        print('m2f_feats.shape,',m2f_feats.shape)
         
         ### Multi-view fusion of M2F and viewing conditions using Transformer
         
-
+        print("viewing_feats.shape: ", viewing_feats.shape)
+        invalid_pixel_mask = viewing_feats[:, :, 0] == 0.
+        print("invalid_pixel_mask.shape: ", invalid_pixel_mask.shape)
+        
+        fusion_input = {
+            'invalid_pixels_mask': invalid_pixel_mask.to(self.device),
+            'viewing_features': viewing_feats.to(self.device),
+            'one_hot_mask_labels': m2f_feats.to(self.device)
+        }
+        
+        print(fusion_input)
+        
+        raise ValueError
+        
+        # get logits
+        out_scores = self.fusion(fusion_input)
+        
             
         # Discard the modalities used in the down modules, only
         # 3D point features are expected to be used in subsequent
@@ -177,6 +199,11 @@ class MVFusionEncoder(MVFusionBackboneBasedModel, ABC):
         # proper point positions and modality-generated features.
         out = Batch(
             x=mm_data_dict['x_3d'], pos=self.xyz, seen=mm_data_dict['x_seen'])
+        
+        
+        #### FENG TEMP SOLUTION: according to code down below, we can save
+        # out_scores in out.x
+        out.x = out_scores
 
         # TODO: this always passes the modality feature maps in the
         #  output dictionary. May not be relevant at inference time,
@@ -200,34 +227,43 @@ class MVFusionEncoder(MVFusionBackboneBasedModel, ABC):
 
         return out
 
-    def extract_viewing_data_per_point(self, mm_data):
+    def get_view_dependent_features(self, mm_data):
         n_views = self.n_views
 
         image_data = mm_data.modalities['image']
         csr_idx = image_data.view_cat_csr_indexing
 
         viewing_conditions = image_data[0].mappings.values[2]
+        
+        assert len(image_data) == 1
+        m2f_mapped_feats = image_data[0].get_mapped_m2f_features(interpolate=True)
+        
+        print("viewing condition shape", viewing_conditions.shape)
+        print("m2f_maped_feats.shape :", m2f_mapped_feats.shape)
+        
 
         # Add pixel validity as first feature
         viewing_conditions = torch.cat((torch.ones(viewing_conditions.shape[0], 1).to(viewing_conditions.device),
                                         viewing_conditions), dim=1)
 
-
         # Calculate amount of empty views. There should be n_points * n_views filled view conditions in total.
         n_seen = csr_idx[1:] - csr_idx[:-1]
-
         unfilled_points = n_seen[n_seen < n_views]
         n_views_to_fill = int(len(unfilled_points) * n_views - sum(unfilled_points))
 
+        # generate random viewing conditions
         random_invalid_views = viewing_conditions[np.random.choice(range(len(viewing_conditions)), size=n_views_to_fill, replace=True)]
         # set pixel validity to invalid
         random_invalid_views[:, 0] = 0
+        random_m2f_preds = m2f_mapped_feats[np.random.choice(range(len(viewing_conditions)), size=n_views_to_fill, replace=True)]
 
 
         # concat viewing conditions and random invalid views, then index the tensor such that each point
         # either has 9 valid subsampled views, or is filled to 9 views with random views
         combined_tensor = torch.cat((viewing_conditions, random_invalid_views), dim=0)
-
+        combined_m2f_tensor = torch.cat((m2f_mapped_feats, random_m2f_preds), dim=0)
+        
+        
         unused_invalid_view_idx = len(viewing_conditions)
         combined_idx = []
         for i, n in enumerate(n_seen):
@@ -243,5 +279,7 @@ class MVFusionEncoder(MVFusionBackboneBasedModel, ABC):
                 combined_idx += list(range(csr_idx[i], csr_idx[i+1]))
 
         # re-index tensor for MVFusion format
-        combined_tensor = combined_tensor[combined_idx]    
-        return combined_tensor.reshape(mm_data.num_points, n_views, -1)
+        combined_tensor = combined_tensor[combined_idx]
+        combined_m2f_tensor = combined_m2f_tensor[combined_idx]
+        
+        return combined_tensor.reshape(mm_data.num_points, n_views, -1), combined_m2f_tensor.reshape(mm_data.num_points, n_views)

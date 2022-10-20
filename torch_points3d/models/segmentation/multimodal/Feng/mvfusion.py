@@ -29,13 +29,14 @@ class MVFusion(BaseModel, ABC):
         super().__init__(option)
 
         # UnwrappedUnetBasedModel init
+        option['transformer']['n_classes'] = dataset.num_classes
         self.backbone = MVFusionEncoder(option, model_type, dataset, modules)
         self._modalities = self.backbone._modalities
 
         # Segmentation head init
-#         if self._HAS_HEAD:
-        self.head = nn.Sequential(nn.Linear(self.backbone.output_nc,
-                                            dataset.num_classes))
+        if self._HAS_HEAD:
+            self.head = nn.Sequential(nn.Linear(self.backbone.output_nc,
+                                                dataset.num_classes))
         self.loss_names = ["loss_seg"]
 
 #         # Control the loss mechanism with MODALITY_VIEW_LOSS. If set to
@@ -88,17 +89,19 @@ class MVFusion(BaseModel, ABC):
         #  the Dash visualization app.
         for m in self.modalities:
             for i in range(self.input.modalities[m].num_settings):
-#                 if self._HAS_HEAD:
-                f_map = data[m][i].x
-                s = f_map.shape
-                f_map = f_map.permute(1, 0, 2, 3).reshape(s[1], -1).T
-                f_map = self.head(f_map)
-                f_map = f_map.T.reshape(f_map.shape[1], s[0], s[2], s[3]).permute(1, 0, 2, 3)
-                self.input.modalities[m][i].pred = f_map
-                self.input.modalities[m][i].feat = data[m][i].x
-#                 else:
-#                     self.input.modalities[m][i].pred = data[m][i].x
-
+                if self._HAS_HEAD:
+                    f_map = data[m][i].x
+                    s = f_map.shape
+                    f_map = f_map.permute(1, 0, 2, 3).reshape(s[1], -1).T
+                    f_map = self.head(f_map)
+                    f_map = f_map.T.reshape(f_map.shape[1], s[0], s[2], s[3]).permute(1, 0, 2, 3)
+                    self.input.modalities[m][i].pred = f_map
+                    self.input.modalities[m][i].feat = data[m][i].x
+                else:
+                    self.input.modalities[m][i].pred = data[m][i].x
+        
+    
+        # Feng: directly use the logits output from DVA_cls_5_fusion_7 class with MLP_head inside
         logits = self.head(features) if self._HAS_HEAD else features
         self.output = F.log_softmax(logits, dim=-1)
 
@@ -158,7 +161,7 @@ class MVFusion(BaseModel, ABC):
 
 
 class MVFusion_model(MVFusion):
-    _HAS_HEAD = True
+    _HAS_HEAD = False
 
 
 # class No3DLogitFusion(No3D):
