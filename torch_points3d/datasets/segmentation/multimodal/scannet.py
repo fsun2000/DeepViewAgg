@@ -111,12 +111,13 @@ class ScannetMM(Scannet):
 
     def __init__(
             self, *args, img_ref_size=(320, 240), pre_transform_image=None,
-            transform_image=None, neucon_metas_dir='', m2f_preds_dirname='', **kwargs):
+            transform_image=None, neucon_metas_dir='', m2f_preds_dirname='', load_m2f_masks=False, **kwargs):
         self.pre_transform_image = pre_transform_image
         self.transform_image = transform_image
         self.img_ref_size = img_ref_size
         self.neucon_metas_dir = neucon_metas_dir
         self.m2f_preds_dirname = m2f_preds_dirname
+        self.load_m2f_masks = load_m2f_masks
         super(ScannetMM, self).__init__(*args, **kwargs)
 
     def process(self):
@@ -273,6 +274,10 @@ class ScannetMM(Scannet):
         mapping_idx_to_scan = getattr(
             self, f"MAPPING_IDX_TO_SCAN_{self.split.upper()}_NAMES")
         scan_name = mapping_idx_to_scan[int(data.id_scan.item())]
+        
+        print("idx: ", idx)
+        print("scan_name: ", scan_name)
+        print("mapping_idx_to_scan", mapping_idx_to_scan)
 
         # Load the corresponding 2D data and mappings
         i_split = self.SPLITS.index(self.split)
@@ -283,8 +288,8 @@ class ScannetMM(Scannet):
         if self.transform_image is not None:
             data, images = self.transform_image(data, images)
             
-        # Load Mask2Former predicted masks        
-        if self.m2f_preds_dirname:
+        # Load Mask2Former predicted masks if dirname is given in dataset config       
+        if self.m2f_preds_dirname is not None and self.load_m2f_masks is True:
             if len(images) > 1:
                 print(f"ImageData contains {len(images)} different camera settings!")
                 for i in len(images):
@@ -316,8 +321,19 @@ class ScannetMM(Scannet):
             images[0].m2f_pred_mask = m2f_masks
             images[0].m2f_pred_mask_path = np.array(m2f_mask_paths)
             
-        print(MMData(data, image=images).modalities['image'][0].m2f_pred_mask_path)
-
+            # Take subset of only seen points
+            # NOTE: each point is contained multiple times if it has multiple correspondences
+            dense_idx_list = [
+                        torch.arange(im.num_points, device=images.device).repeat_interleave(
+                            im.view_csr_indexing[1:] - im.view_csr_indexing[:-1])
+                        for im in images]
+            
+            
+            data = MMData(data, image=images)
+            # take subset of only seen points without re-indexing the same point
+            data = data[dense_idx_list[0].unique()]
+            return data
+                                                
         return MMData(data, image=images)
 
     @staticmethod
@@ -395,6 +411,7 @@ class ScannetDatasetMM(BaseDatasetMM, ABC):
         frame_skip: int = dataset_opt.get('frame_skip', 50)
         neucon_metas_dir: str = dataset_opt.get('neucon_metas_dir', '')
         m2f_preds_dirname: str = dataset_opt.get('m2f_preds_dirname', '')
+        load_m2f_masks: bool = dataset_opt.get('load_m2f_masks', False)
 
         print("initialize train dataset")
         self.train_dataset = ScannetMM(
@@ -418,7 +435,8 @@ class ScannetDatasetMM(BaseDatasetMM, ABC):
             frame_intrinsics=frame_intrinsics,
             frame_skip=frame_skip,
             neucon_metas_dir=neucon_metas_dir,
-            m2f_preds_dirname=m2f_preds_dirname
+            m2f_preds_dirname=m2f_preds_dirname,
+            load_m2f_masks=load_m2f_masks
         )
         print("initialize val dataset")
         self.val_dataset = ScannetMM(
@@ -442,7 +460,8 @@ class ScannetDatasetMM(BaseDatasetMM, ABC):
             frame_intrinsics=frame_intrinsics,
             frame_skip=frame_skip,
             neucon_metas_dir=neucon_metas_dir,
-            m2f_preds_dirname=m2f_preds_dirname
+            m2f_preds_dirname=m2f_preds_dirname,
+            load_m2f_masks=load_m2f_masks
         )
 
 #         self.test_dataset = ScannetMM(

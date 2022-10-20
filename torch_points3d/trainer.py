@@ -42,6 +42,10 @@ class Trainer:
     """
 
     def __init__(self, cfg):
+        if cfg.model_name == 'MVFusion':
+            cfg['data']['load_m2f_masks'] = True
+        else:
+            cfg['data']['load_m2f_masks'] = False
         self._cfg = cfg
         self._initialize_trainer()
 

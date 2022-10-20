@@ -17,7 +17,7 @@ log = logging.getLogger(__name__)
 
 class MVFusion(BaseModel, ABC):
 
-#     _MODALITY_VIEW_LOSS = None
+    _MODALITY_VIEW_LOSS = None
 
     def __init__(self, option, model_type, dataset, modules):
 #         # No3D should not be directly instantiated, child classes should
