@@ -1,6 +1,7 @@
 import logging
 from abc import ABC
 
+import numpy as np
 import torch
 from torch_points3d.models.base_architectures.backbone import MVFusionBackboneBasedModel
 from torch_points3d.applications.utils import extract_output_nc
@@ -123,14 +124,12 @@ class MVFusionEncoder(MVFusionBackboneBasedModel, ABC):
                         im.view_csr_indexing[1:] - im.view_csr_indexing[:-1])
                     for im in im_data]
         # take subset of only seen points without re-indexing the same point
-        seen_data = data[dense_idx_list[0].unique()]
-
-        del im_data, data
+        data = data[dense_idx_list[0].unique()]
         
-        raise NotImplementedError
-
+        print()
+        print("seen_data: ", data)
         
-        self._set_input(seen_data)
+        self._set_input(data)
         mm_data_dict = self.input
         
         print("mm_data_dict with only seen points: ", mm_data_dict)
@@ -155,18 +154,23 @@ class MVFusionEncoder(MVFusionBackboneBasedModel, ABC):
             print("image_batch has more than 1 entries! ")
             
         print(image_batch[0].__dict__.keys())
-        
-        raise NotImplementedError
-
-
 
         # Gather 9 (valid and invalid) viewing conditions for each point
         # Invalid viewing conditions serve as padding
-        viewing_feats = self.extract_viewing_data_per_point(seen_mm_data)
+        viewing_feats = self.extract_viewing_data_per_point(data)
+        
+        # Mask2Former predictions per view as feature
+        m2f_feats = image_batch.get_mapped_m2f_features(interpolate=True)
+        if len(m2f_feats) > 1:
+            print("m2f_feats list should only have a len of 1!")
+        # Adjust previously used label mapping [0, 21] with 0 being invalid, to [-1, 20].
+        # As M2F model does not produce 0 preds, updated labels are within [0, 19]
+        m2f_feats = m2f_feats[0] - 1   
+        
+        ### Multi-view fusion of M2F and viewing conditions using Transformer
+        
 
             
-        raise NotImplementedError
-
         # Discard the modalities used in the down modules, only
         # 3D point features are expected to be used in subsequent
         # modules. Restore the input Data object equipped with the

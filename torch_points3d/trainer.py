@@ -200,9 +200,6 @@ class Trainer:
         with Ctq(train_loader) as tq_train_loader:
             for i, data in enumerate(tq_train_loader):
                 
-                print("data from dataloader: ", data)
-                print("ImageBatch: ", data.modalities['image'])
-                
                 t_data = time.time() - iter_data_time
                 iter_start_time = time.time()
                 self._model.set_input(data, self._device)
