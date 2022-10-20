@@ -65,11 +65,13 @@ class MVFusion(BaseModel, ABC):
 
         if hasattr(data, 'batch') and data.batch is not None:
             self.batch_idx = data.batch.squeeze()
+            print("Input has batch idx: ", self.batch_idx)
         else:
             self.batch_idx = None
 
         if hasattr(data, 'y') and data.y is not None:
             self.labels = data.y.to(self.device)
+            print("Input has labels: ", self.labels.shape)
         else:
             self.labels = None
 

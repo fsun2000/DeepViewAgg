@@ -82,25 +82,25 @@ class MVFusionEncoder(MVFusionBackboneBasedModel, ABC):
     def output_nc(self):
         return self._output_nc
 
-    def _set_input(self, data: MMData):
-        """Unpack input data from the dataloader and perform necessary
-        pre-processing steps.
+#     def _set_input(self, data: MMData):
+#         """Unpack input data from the dataloader and perform necessary
+#         pre-processing steps.
 
-        Parameters
-        -----------
-        data: MMData object
-        """
-#         print("temprarily skip moving data to device in applications")
-#         print("data before to device", data)
-        data = data.to(self.device)
-#         print("data after to device: ", data)
+#         Parameters
+#         -----------
+#         data: MMData object
+#         """
+# #         print("temprarily skip moving data to device in applications")
+# #         print("data before to device", data)
+#         data = data.to(self.device)
+# #         print("data after to device: ", data)
         
-        self.input = {
-            'x_3d': getattr(data.data, 'x', None),   # Feng: adjusted from original 'getattr(data, 'x', None)', now it properly moves to gpu
-            'x_seen': None,
-            'modalities': data.modalities}
-        if data.pos is not None:
-            self.xyz = data.pos
+#         self.input = {
+#             'x_3d': getattr(data, 'x', None),   # Feng: adjusted from original 'getattr(data, 'x', None)', now it properly moves to gpu
+#             'x_seen': None,
+#             'modalities': data.modalities}
+#         if data.pos is not None:
+#             self.xyz = data.pos
 
     def forward(self, data, *args, **kwargs):
         """Run forward pass. Expects a MMData object for input, with
@@ -121,8 +121,6 @@ class MVFusionEncoder(MVFusionBackboneBasedModel, ABC):
             - pos [N, 3] (coords or real pos if xyz is in data)
             - x [N, output_nc]
         """
-        print()
-        print("data: ", data)
                 
         # Take subset of only seen points
         # idx mapping from each pixel to point
@@ -136,30 +134,14 @@ class MVFusionEncoder(MVFusionBackboneBasedModel, ABC):
         ### TODO: this converts data from MMBatch to MMData class when slicing
         ### Does this cause any errors downstream?
         data = data[dense_idx_list[0].unique()]
+
         
-        print()
-        print("seen_data: ", data)
-        
-        self._set_input(data)
-        mm_data_dict = self.input
-        
-        print("mm_data_dict with only seen points: ", mm_data_dict)
-        
-                
+        """  
         # Apply ONLY atomic-level pooling which is in `down_modules`
         for i in range(len(self.down_modules)):
             mm_data_dict = self.down_modules[i](mm_data_dict)
-            
-        
+        """
     
-        # Feng:
-        # DONE 1. do view-sampling per point
-        # 2. run viewing conditions through Attention Transformer
-        # 3. save those in mm_data_dict['modalities'][modality]?
-        image_batch = mm_data_dict['modalities']['image']
-        print("image_batch: ", image_batch)
-        
-            
         # Gather 9 (valid and invalid) viewing conditions for each point
         # Invalid viewing conditions serve as padding
         viewing_feats, m2f_feats = self.get_view_dependent_features(data)
@@ -168,42 +150,40 @@ class MVFusionEncoder(MVFusionBackboneBasedModel, ABC):
         # Adjust previously used label mapping [0, 21] with 0 being invalid, to [-1, 20].
         # As M2F model does not produce 0 preds, updated labels are within [0, 19]
         m2f_feats = m2f_feats - 1   
-        
-        print('m2f_feats.shape',m2f_feats.shape)
         m2f_feats = torch.nn.functional.one_hot(m2f_feats.squeeze().long(), self.n_classes)
-        print('m2f_feats.shape,',m2f_feats.shape)
         
         ### Multi-view fusion of M2F and viewing conditions using Transformer
-        
-        print("viewing_feats.shape: ", viewing_feats.shape)
+        # TODO: remove assumption that pixel validity is the 1st feature
         invalid_pixel_mask = viewing_feats[:, :, 0] == 0.
-        print("invalid_pixel_mask.shape: ", invalid_pixel_mask.shape)
         
         fusion_input = {
             'invalid_pixels_mask': invalid_pixel_mask.to(self.device),
             'viewing_features': viewing_feats.to(self.device),
             'one_hot_mask_labels': m2f_feats.to(self.device)
         }
-        
-        print(fusion_input)
-        
-        raise ValueError
-        
+                        
         # get logits
         out_scores = self.fusion(fusion_input)
         
+        csr_idx = data.modalities['image'][0].view_csr_indexing
+        print("data", data)
+        print("data['modalities']['image']: ", data.modalities['image'])
+        print("data['modalities']['image'][0]: ", data.modalities['image'][0])
+
+        print("data['x_seen']", (csr_idx[1:] > csr_idx[:-1]))
+        print("x_seen shape: ", (csr_idx[1:] > csr_idx[:-1]).shape)
             
         # Discard the modalities used in the down modules, only
         # 3D point features are expected to be used in subsequent
         # modules. Restore the input Data object equipped with the
         # proper point positions and modality-generated features.
+        csr_idx = data.modalities['image'][0].view_csr_indexing
         out = Batch(
-            x=mm_data_dict['x_3d'], pos=self.xyz, seen=mm_data_dict['x_seen'])
+            x=out_scores, 
+            pos=data.pos.to(self.device), 
+            seen=(csr_idx[1:] > csr_idx[:-1]).to(self.device))
+        out=out.to(self.device)
         
-        
-        #### FENG TEMP SOLUTION: according to code down below, we can save
-        # out_scores in out.x
-        out.x = out_scores
 
         # TODO: this always passes the modality feature maps in the
         #  output dictionary. May not be relevant at inference time,
@@ -214,16 +194,19 @@ class MVFusionEncoder(MVFusionBackboneBasedModel, ABC):
             # x_mod = getattr(mm_data_dict['modalities'][m], 'last_view_x_mod', None)
             # if x_mod is not None:
             #     out[m] = mm_data_dict['modalities'][m]
-            out[m] = mm_data_dict['modalities'][m]
+            #####out[m] = mm_data_dict['modalities'][m]
+            
+            # Feng:
+            out[m] = data.modalities[m]
 
-#         # Apply the MLP head, if any
-#         if self.has_mlp_head:
-#             # Apply to the 3D features
-#             out.x = self.mlp(out.x)
+        # Apply the MLP head, if any
+        if self.has_mlp_head:
+            # Apply to the 3D features
+            out.x = self.mlp(out.x)
 
-#             # Apply to the last modality-based view-level features
-#             for m in [mod for mod in self.modalities if mod in out.keys]:
-#                 out[m].last_view_x_mod = self.mlp(out[m].last_view_x_mod)
+            # Apply to the last modality-based view-level features
+            for m in [mod for mod in self.modalities if mod in out.keys]:
+                out[m].last_view_x_mod = self.mlp(out[m].last_view_x_mod)
 
         return out
 
