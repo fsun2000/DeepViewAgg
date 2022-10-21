@@ -84,8 +84,6 @@ class Trainer:
             self._cfg.training.checkpoint_dir, self._cfg.model_name,
             "", run_config=self._cfg, resume=resume)
             
-        print("self._cfg.training.checkpoint_dir: ", self._cfg.training.checkpoint_dir)
-
         # Recover the merged config from Checkpoint
         self._cfg = self._checkpoint.run_config
 

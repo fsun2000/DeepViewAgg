@@ -274,10 +274,6 @@ class ScannetMM(Scannet):
         mapping_idx_to_scan = getattr(
             self, f"MAPPING_IDX_TO_SCAN_{self.split.upper()}_NAMES")
         scan_name = mapping_idx_to_scan[int(data.id_scan.item())]
-        
-        print("idx: ", idx)
-        print("scan_name: ", scan_name)
-        print("mapping_idx_to_scan", mapping_idx_to_scan)
 
         # Load the corresponding 2D data and mappings
         i_split = self.SPLITS.index(self.split)

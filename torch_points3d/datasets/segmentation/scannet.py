@@ -1135,13 +1135,13 @@ class Scannet(InMemoryDataset):
         version = pyg.__version__.split('.')
         is_new_pyg = int(version[0]) >= 2 or int(version[1]) >= 7
         
-        print(f"this is a {self.split} dataset object")
-        print(""" DeepViewAgg/torch_points3d/datasets/segmentation/scannet.py,
-        line 1118:
-        (Feng) on my conda installation, this block causes a max 
-        depth recursion error. Return super().indices() for now as it 
-        results in no problems on my torch_geometric=1.7.2 and 
-        pytorch=1.12.1 installation.""")
+        ### Feng: NOTE
+#         (Feng) on my conda installation, this block causes a max 
+#         depth recursion error. Return super().indices() for now as it 
+#         results in no problems on my torch_geometric=1.7.2 and 
+#         pytorch=1.12.1 installation.
+
+
 #         if is_new_pyg:
 #             return range(len(self)) if self._indices is None else self._indices
         return super().indices()

@@ -1,5 +1,6 @@
 import logging
 from abc import ABC
+import time
 
 import numpy as np
 import torch
@@ -69,7 +70,6 @@ class MVFusionEncoder(MVFusionBackboneBasedModel, ABC):
         self.atomic_pooling = BimodalCSRPool(mode='max', save_last=False)
         
         self.fusion = DVA_cls_5_fusion_7(model_config['transformer'])
-        print(self.fusion)
         
         self.n_views = model_config['transformer'].n_views
         self.n_classes = model_config['transformer']['n_classes']
@@ -121,22 +121,23 @@ class MVFusionEncoder(MVFusionBackboneBasedModel, ABC):
             - pos [N, 3] (coords or real pos if xyz is in data)
             - x [N, output_nc]
         """
-                
-        # Take subset of only seen points
-        # idx mapping from each pixel to point
-        # NOTE: each point is contained multiple times if it has multiple correspondences
-        im_data = data.modalities['image']
-        dense_idx_list = [
-                    torch.arange(im.num_points, device=im_data.device).repeat_interleave(
-                        im.view_csr_indexing[1:] - im.view_csr_indexing[:-1])
-                    for im in im_data]
-        # take subset of only seen points without re-indexing the same point
-        ### TODO: this converts data from MMBatch to MMData class when slicing
-        ### Does this cause any errors downstream?
-        data = data[dense_idx_list[0].unique()]
+           
+        ### Feng: this has been moved to dataset __getitem__
+#         # Take subset of only seen points
+#         # idx mapping from each pixel to point
+#         # NOTE: each point is contained multiple times if it has multiple correspondences
+#         im_data = data.modalities['image']
+#         dense_idx_list = [
+#                     torch.arange(im.num_points, device=im_data.device).repeat_interleave(
+#                         im.view_csr_indexing[1:] - im.view_csr_indexing[:-1])
+#                     for im in im_data]
+#         # take subset of only seen points without re-indexing the same point
+#         ### TODO: this converts data from MMBatch to MMData class when slicing
+#         ### Does this cause any errors downstream?
+#         data = data[dense_idx_list[0].unique()]
 
         
-        """  
+        """  Feng: temporarily skip this as we do not use 3d data, and we only have 1 ImageSetting
         # Apply ONLY atomic-level pooling which is in `down_modules`
         for i in range(len(self.down_modules)):
             mm_data_dict = self.down_modules[i](mm_data_dict)
@@ -144,7 +145,10 @@ class MVFusionEncoder(MVFusionBackboneBasedModel, ABC):
     
         # Gather 9 (valid and invalid) viewing conditions for each point
         # Invalid viewing conditions serve as padding
+        
+        s = time.time()
         viewing_feats, m2f_feats = self.get_view_dependent_features(data)
+        print(time.time() - s, flush=True)
                 
         # Mask2Former predictions per view as feature
         # Adjust previously used label mapping [0, 21] with 0 being invalid, to [-1, 20].
@@ -166,12 +170,6 @@ class MVFusionEncoder(MVFusionBackboneBasedModel, ABC):
         out_scores = self.fusion(fusion_input)
         
         csr_idx = data.modalities['image'][0].view_csr_indexing
-        print("data", data)
-        print("data['modalities']['image']: ", data.modalities['image'])
-        print("data['modalities']['image'][0]: ", data.modalities['image'][0])
-
-        print("data['x_seen']", (csr_idx[1:] > csr_idx[:-1]))
-        print("x_seen shape: ", (csr_idx[1:] > csr_idx[:-1]).shape)
             
         # Discard the modalities used in the down modules, only
         # 3D point features are expected to be used in subsequent
@@ -221,8 +219,6 @@ class MVFusionEncoder(MVFusionBackboneBasedModel, ABC):
         assert len(image_data) == 1
         m2f_mapped_feats = image_data[0].get_mapped_m2f_features(interpolate=True)
         
-        print("viewing condition shape", viewing_conditions.shape)
-        print("m2f_maped_feats.shape :", m2f_mapped_feats.shape)
         
 
         # Add pixel validity as first feature
