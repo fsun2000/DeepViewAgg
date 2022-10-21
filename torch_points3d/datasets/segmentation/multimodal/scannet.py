@@ -269,6 +269,7 @@ class ScannetMM(Scannet):
         # Get the 3D point sample and apply transforms
         data = self.get(idx)
         data = data if self.transform is None else self.transform(data)
+        
 
         # Recover the scan name
         mapping_idx_to_scan = getattr(
@@ -283,6 +284,7 @@ class ScannetMM(Scannet):
         # Run image transforms
         if self.transform_image is not None:
             data, images = self.transform_image(data, images)
+        
             
         # Load Mask2Former predicted masks if dirname is given in dataset config       
         if self.m2f_preds_dirname is not None and self.load_m2f_masks is True:
@@ -328,10 +330,66 @@ class ScannetMM(Scannet):
             data = MMData(data, image=images)
             # take subset of only seen points without re-indexing the same point
             data = data[dense_idx_list[0].unique()]
+            
             return data
-                                                
+        
         return MMData(data, image=images)
 
+    def get_view_dependent_features(self, mm_data):
+        n_views = self.n_views
+
+        image_data = mm_data.modalities['image']
+        csr_idx = image_data.view_cat_csr_indexing
+
+        viewing_conditions = image_data[0].mappings.values[2]
+        
+        assert len(image_data) == 1
+        m2f_mapped_feats = image_data[0].get_mapped_m2f_features(interpolate=True)
+        
+        
+
+        # Add pixel validity as first feature
+        viewing_conditions = torch.cat((torch.ones(viewing_conditions.shape[0], 1).to(viewing_conditions.device),
+                                        viewing_conditions), dim=1)
+
+        # Calculate amount of empty views. There should be n_points * n_views filled view conditions in total.
+        n_seen = csr_idx[1:] - csr_idx[:-1]
+        unfilled_points = n_seen[n_seen < n_views]
+        n_views_to_fill = int(len(unfilled_points) * n_views - sum(unfilled_points))
+
+        # generate random viewing conditions
+        random_invalid_views = viewing_conditions[np.random.choice(range(len(viewing_conditions)), size=n_views_to_fill, replace=True)]
+        # set pixel validity to invalid
+        random_invalid_views[:, 0] = 0
+        random_m2f_preds = m2f_mapped_feats[np.random.choice(range(len(viewing_conditions)), size=n_views_to_fill, replace=True)]
+
+
+        # concat viewing conditions and random invalid views, then index the tensor such that each point
+        # either has 9 valid subsampled views, or is filled to 9 views with random views
+        combined_tensor = torch.cat((viewing_conditions, random_invalid_views), dim=0)
+        combined_m2f_tensor = torch.cat((m2f_mapped_feats, random_m2f_preds), dim=0)
+        
+        
+        unused_invalid_view_idx = len(viewing_conditions)
+        combined_idx = []
+        for i, n in enumerate(n_seen):
+            if n < n_views:
+                n_empty_views = n_views -  n
+                combined_idx += list(range(csr_idx[i], csr_idx[i+1])) + \
+                                list(range(unused_invalid_view_idx, unused_invalid_view_idx + n_empty_views))
+                unused_invalid_view_idx += n_empty_views
+            elif n > n_views:
+                sampled_idx = sorted(np.random.choice(range(csr_idx[i], csr_idx[i+1]), size=n_views, replace=False))
+                combined_idx += sampled_idx
+            else:
+                combined_idx += list(range(csr_idx[i], csr_idx[i+1]))
+
+        # re-index tensor for MVFusion format
+        combined_tensor = combined_tensor[combined_idx]
+        combined_m2f_tensor = combined_m2f_tensor[combined_idx]
+        
+        return combined_tensor.reshape(mm_data.num_points, n_views, -1), combined_m2f_tensor.reshape(mm_data.num_points, n_views)
+    
     @staticmethod
     def uncollate(data_collated, slices_dict, scan_id_to_name, skip_keys=[]):
         r"""Reverses collate. Transforms a collated Data and associated

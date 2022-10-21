@@ -1175,7 +1175,7 @@ class SameSettingImageData:
 
     def __repr__(self):
         return f"{self.__class__.__name__}(num_views={self.num_views}, " \
-               f"num_points={self.num_points}, m2f_pred_mask={self.m2f_pred_mask.shape}, device={self.device})"
+               f"num_points={self.num_points}, device={self.device})"
 
     def clone(self):
         """Returns a shallow copy of self, except for 'x' and
@@ -1209,7 +1209,7 @@ class SameSettingImageData:
             downscale=self.downscale, rollings=self.rollings.to(device),
             crop_size=self.crop_size, crop_offsets=self.crop_offsets.to(device),
             visibility=self.visibility,
-            m2f_pred_mask=self.m2f_pred_mask.to(device),
+            m2f_pred_mask=self.m2f_pred_mask.to(device) if self.m2f_pred_mask else None,
             m2f_pred_mask_path=self.m2f_pred_mask_path
             )
         out._x = self.x.to(device) if self.x is not None else None
@@ -1407,9 +1407,12 @@ class SameSettingImageBatch(SameSettingImageData):
                 # .to_data_list
                 sizes.append(image_data.num_views)
 
-        # Concatenate numpy array attributes
+        # Concatenate numpy array attributes. Special care if loading of M2F labels is skipped
         for key in SameSettingImageData._numpy_keys:
-            batch_dict[key] = np.concatenate(batch_dict[key])
+            try:
+                batch_dict[key] = np.concatenate(batch_dict[key])
+            except:
+                batch_dict[key] = None
 
         # Concatenate torch array attributes. Special care needed here
         # for backward compatibility with former version of
@@ -1550,7 +1553,7 @@ class ImageData:
     def __repr__(self):
         return f"{self.__class__.__name__}(num_settings={self.num_settings}, " \
                f"num_views={self.num_views}, num_points={self.num_points}, " \
-               f"m2f_pred_mask={self.m2f_pred_mask[0].shape}, device={self.device})"
+               f"device={self.device})"
 
     def select_points(self, idx, mode='pick'):
         return self.__class__([

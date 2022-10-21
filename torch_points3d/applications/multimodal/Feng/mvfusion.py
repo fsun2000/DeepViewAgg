@@ -67,8 +67,6 @@ class MVFusionEncoder(MVFusionBackboneBasedModel, ABC):
                 bias=False)
             
         # modules
-        self.atomic_pooling = BimodalCSRPool(mode='max', save_last=False)
-        
         self.fusion = DVA_cls_5_fusion_7(model_config['transformer'])
         
         self.n_views = model_config['transformer'].n_views

@@ -191,10 +191,11 @@ class MMBatch(MMData):
             [mm_data.data for mm_data in mm_data_list])
 
         # Convert list of modality-specific data to their batch
-        # counterpart
+        # counterpart        
         modalities = {mod: data_mod.get_batch_type().from_data_list(
             [mm_data.modalities[mod] for mm_data in mm_data_list])
             for mod, data_mod in mm_data_list[0].modalities.items()}
+
 
         # Instantiate the MMBatch and set the __sizes__ to allow input
         # MMData list MMBatch.recovery with to_mm_data_list()
