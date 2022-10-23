@@ -1,0 +1,420 @@
+[2022-10-21 16:03:56,776][torch_points3d.trainer][INFO] - DEVICE : cuda
+initialize train dataset
+temporarily hard code N-views in get_view_dependent_features()
+initialize val dataset
+temporarily hard code N-views in get_view_dependent_features()
+task:  segmentation.multimodal
+tested_model_name:  MVFusion
+data:  MMData(
+    data = Data(coords=[59665, 3], grid_size=[1], id_scan=[1], mapping_index=[59665], origin_id=[59665], pos=[59665, 3], x=[59665, 9, 10], y=[59665])
+    image = ImageData(num_settings=1, num_views=100, num_points=59665, device=cpu)
+)
+data.data:  Data(coords=[59665, 3], grid_size=[1], id_scan=[1], mapping_index=[59665], origin_id=[59665], pos=[59665, 3], x=[59665, 9, 10], y=[59665])
+class_name:  MVFusion_model
+model_module:  torch_points3d.models.segmentation.multimodal.Feng.mvfusion
+opt:   {'class': 'Feng.mvfusion.MVFusion_model', 'down_conv': {'image': {'down_conv': {'module_name': 'ADE20KResNet18PPM', 'frozen': False}, 'atomic_pooling': {'module_name': 'BimodalCSRPool', 'mode': 'max'}, 'view_pooling': {'module_name': 'GroupBimodalCSRPool', 'in_map': 8, 'in_mod': 512, 'num_groups': 4, 'use_mod': False, 'gating': True, 'group_scaling': True, 'map_encoder': 'DeepSetFeat', 'use_num': True, 'pool': 'max', 'fusion': 'concatenation'}, 'fusion': {'module_name': 'BimodalFusion', 'mode': 'residual'}, 'drop_mod': 0.0, 'branching_index': 0}}, 'transformer': {'n_views': 9, 'in_map': 9, 'in_m2f': 20, 'embed_dim': 36, 'hidden_dim': 144, 'num_heads': 2, 'num_layers': 4, 'use_batch_norm': False, 'feat_downproj_dim': None, 'dropout': 0.0, 'mlp_dropout': 0.0, 'use_attn_mask': True, 'use_csr_mask': True, 'n_classes': 20}}
+model:  MVFusion_model(
+  (backbone): MVFusionEncoder(
+    (down_modules): ModuleList(
+      (0): MultimodalBlockDown(
+        (block_1): Identity()
+        (block_2): Identity()
+        (image): UnimodalBranchOnlyAtomicPool(
+          drop_3d=None
+          drop_mod=None
+          keep_last_view=False
+          checkpointing=
+          (atomic_pool): BimodalCSRPool()
+        )
+      )
+    )
+    (fusion): DVA_cls_5_fusion_7(
+      (fusion): TransformerFusion(
+        (input_layer): Linear(in_features=29, out_features=36, bias=True)
+        (transformer_layers): ModuleList(
+          (0): AttentionBlock(
+            (norm_1): LayerNorm((36,), eps=1e-05, elementwise_affine=True)
+            (norm_2): LayerNorm((36,), eps=1e-05, elementwise_affine=True)
+            (attn): MultiheadAttention(
+              (out_proj): NonDynamicallyQuantizableLinear(in_features=36, out_features=36, bias=True)
+            )
+            (linear): Sequential(
+              (0): Linear(in_features=36, out_features=144, bias=True)
+              (1): GELU(approximate=none)
+              (2): Dropout(p=0.0, inplace=False)
+              (3): Linear(in_features=144, out_features=36, bias=True)
+              (4): Dropout(p=0.0, inplace=False)
+            )
+          )
+          (1): AttentionBlock(
+            (norm_1): LayerNorm((36,), eps=1e-05, elementwise_affine=True)
+            (norm_2): LayerNorm((36,), eps=1e-05, elementwise_affine=True)
+            (attn): MultiheadAttention(
+              (out_proj): NonDynamicallyQuantizableLinear(in_features=36, out_features=36, bias=True)
+            )
+            (linear): Sequential(
+              (0): Linear(in_features=36, out_features=144, bias=True)
+              (1): GELU(approximate=none)
+              (2): Dropout(p=0.0, inplace=False)
+              (3): Linear(in_features=144, out_features=36, bias=True)
+              (4): Dropout(p=0.0, inplace=False)
+            )
+          )
+          (2): AttentionBlock(
+            (norm_1): LayerNorm((36,), eps=1e-05, elementwise_affine=True)
+            (norm_2): LayerNorm((36,), eps=1e-05, elementwise_affine=True)
+            (attn): MultiheadAttention(
+              (out_proj): NonDynamicallyQuantizableLinear(in_features=36, out_features=36, bias=True)
+            )
+            (linear): Sequential(
+              (0): Linear(in_features=36, out_features=144, bias=True)
+              (1): GELU(approximate=none)
+              (2): Dropout(p=0.0, inplace=False)
+              (3): Linear(in_features=144, out_features=36, bias=True)
+              (4): Dropout(p=0.0, inplace=False)
+            )
+          )
+          (3): AttentionBlock(
+            (norm_1): LayerNorm((36,), eps=1e-05, elementwise_affine=True)
+            (norm_2): LayerNorm((36,), eps=1e-05, elementwise_affine=True)
+            (attn): MultiheadAttention(
+              (out_proj): NonDynamicallyQuantizableLinear(in_features=36, out_features=36, bias=True)
+            )
+            (linear): Sequential(
+              (0): Linear(in_features=36, out_features=144, bias=True)
+              (1): GELU(approximate=none)
+              (2): Dropout(p=0.0, inplace=False)
+              (3): Linear(in_features=144, out_features=36, bias=True)
+              (4): Dropout(p=0.0, inplace=False)
+            )
+          )
+        )
+        (dropout): Dropout(p=0.0, inplace=False)
+      )
+      (mlp_head): Sequential(
+        (0): Dropout(p=0.0, inplace=False)
+        (1): LayerNorm((36,), eps=1e-05, elementwise_affine=True)
+        (2): Linear(in_features=36, out_features=80, bias=True)
+        (3): Linear(in_features=80, out_features=20, bias=True)
+      )
+    )
+  )
+)
+[2022-10-21 16:04:06,999][torch_points3d.core.schedulers.bn_schedulers][INFO] - Setting batchnorm momentum at 0.02
+task:  segmentation.multimodal
+tested_model_name:  MVFusion
+[2022-10-21 16:04:07,154][torch_points3d.trainer][WARNING] - The model will not be able to be used from pretrained weights without the corresponding dataset. Current properties are {'feature_dimension': 9, 'num_classes': 20}
+[2022-10-21 16:04:07,154][torch_points3d.trainer][INFO] - MVFusion_model(
+  (backbone): MVFusionEncoder(
+    (down_modules): ModuleList(
+      (0): MultimodalBlockDown(
+        (block_1): Identity()
+        (block_2): Identity()
+        (image): UnimodalBranchOnlyAtomicPool(
+          drop_3d=None
+          drop_mod=None
+          keep_last_view=False
+          checkpointing=
+          (atomic_pool): BimodalCSRPool()
+        )
+      )
+    )
+    (fusion): DVA_cls_5_fusion_7(
+      (fusion): TransformerFusion(
+        (input_layer): Linear(in_features=29, out_features=36, bias=True)
+        (transformer_layers): ModuleList(
+          (0): AttentionBlock(
+            (norm_1): LayerNorm((36,), eps=1e-05, elementwise_affine=True)
+            (norm_2): LayerNorm((36,), eps=1e-05, elementwise_affine=True)
+            (attn): MultiheadAttention(
+              (out_proj): NonDynamicallyQuantizableLinear(in_features=36, out_features=36, bias=True)
+            )
+            (linear): Sequential(
+              (0): Linear(in_features=36, out_features=144, bias=True)
+              (1): GELU(approximate=none)
+              (2): Dropout(p=0.0, inplace=False)
+              (3): Linear(in_features=144, out_features=36, bias=True)
+              (4): Dropout(p=0.0, inplace=False)
+            )
+          )
+          (1): AttentionBlock(
+            (norm_1): LayerNorm((36,), eps=1e-05, elementwise_affine=True)
+            (norm_2): LayerNorm((36,), eps=1e-05, elementwise_affine=True)
+            (attn): MultiheadAttention(
+              (out_proj): NonDynamicallyQuantizableLinear(in_features=36, out_features=36, bias=True)
+            )
+            (linear): Sequential(
+              (0): Linear(in_features=36, out_features=144, bias=True)
+              (1): GELU(approximate=none)
+              (2): Dropout(p=0.0, inplace=False)
+              (3): Linear(in_features=144, out_features=36, bias=True)
+              (4): Dropout(p=0.0, inplace=False)
+            )
+          )
+          (2): AttentionBlock(
+            (norm_1): LayerNorm((36,), eps=1e-05, elementwise_affine=True)
+            (norm_2): LayerNorm((36,), eps=1e-05, elementwise_affine=True)
+            (attn): MultiheadAttention(
+              (out_proj): NonDynamicallyQuantizableLinear(in_features=36, out_features=36, bias=True)
+            )
+            (linear): Sequential(
+              (0): Linear(in_features=36, out_features=144, bias=True)
+              (1): GELU(approximate=none)
+              (2): Dropout(p=0.0, inplace=False)
+              (3): Linear(in_features=144, out_features=36, bias=True)
+              (4): Dropout(p=0.0, inplace=False)
+            )
+          )
+          (3): AttentionBlock(
+            (norm_1): LayerNorm((36,), eps=1e-05, elementwise_affine=True)
+            (norm_2): LayerNorm((36,), eps=1e-05, elementwise_affine=True)
+            (attn): MultiheadAttention(
+              (out_proj): NonDynamicallyQuantizableLinear(in_features=36, out_features=36, bias=True)
+            )
+            (linear): Sequential(
+              (0): Linear(in_features=36, out_features=144, bias=True)
+              (1): GELU(approximate=none)
+              (2): Dropout(p=0.0, inplace=False)
+              (3): Linear(in_features=144, out_features=36, bias=True)
+              (4): Dropout(p=0.0, inplace=False)
+            )
+          )
+        )
+        (dropout): Dropout(p=0.0, inplace=False)
+      )
+      (mlp_head): Sequential(
+        (0): Dropout(p=0.0, inplace=False)
+        (1): LayerNorm((36,), eps=1e-05, elementwise_affine=True)
+        (2): Linear(in_features=36, out_features=80, bias=True)
+        (3): Linear(in_features=80, out_features=20, bias=True)
+      )
+    )
+  )
+)
+[2022-10-21 16:04:07,155][torch_points3d.utils.colors][INFO] - [0;32mOptimizer: SGD (
+Parameter Group 0
+    dampening: 0.1
+    foreach: None
+    initial_lr: 0.1
+    lr: 0.1
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 0.0001
+)[0m
+[2022-10-21 16:04:07,155][torch_points3d.utils.colors][INFO] - [0;32mLearning Rate Scheduler: ExponentialLR({'gamma': 0.9885}, update_scheduler_on=on_epoch)[0m
+[2022-10-21 16:04:07,155][torch_points3d.utils.colors][INFO] - [0;32mBatchNorm Scheduler: BNMomentumScheduler(base_momentum: 0.02, update_scheduler_on=on_epoch)[0m
+[2022-10-21 16:04:07,155][torch_points3d.utils.colors][INFO] - [0;32mAccumulated gradients: None[0m
+[2022-10-21 16:04:07,155][torch_points3d.trainer][INFO] - Model size = 69848
+[2022-10-21 16:04:07,156][torch_points3d.trainer][INFO] - Dataset: ScannetDatasetMM 
+[0;95mtrain_pre_batch_collate_transform [0m= None
+[0;95mval_pre_batch_collate_transform [0m= None
+[0;95mtest_pre_batch_collate_transform [0m= None
+[0;95mpre_transform [0m= Compose([
+    SaveOriginalPosId,
+    PCAComputePointwise(num_neighbors=50, r=None, use_full_pos=False, use_cuda=False, use_faiss=False, ncells=None, nprobes=10, chunk_size=1000000),
+    EigenFeatures(norm=True, linearity=True, planarity=True, scattering=True, temperature=None),
+    RemoveAttributes(attr_names=['eigenvalues', 'eigenvectors'], strict=False),
+])
+[0;95mtest_transform [0m= Compose([
+    GridSampling3D(grid_size=0.03, quantize_coords=True, mode=last),
+    XYZFeature(axis=['z']),
+    AddFeatsByKeys(pos_z=True, rgb=False, linearity=False, norm=False, planarity=False, scattering=False),
+])
+[0;95mtrain_transform [0m= Compose([
+    ElasticDistortion(apply_distorsion=True, granularity=[0.2, 0.8], magnitude=[0.4, 1.6]),
+    Random3AxisRotation(apply_rotation=True, rot_x=8, rot_y=8, rot_z=180),
+    Random symmetry of axes: x=True, y=True, z=False,
+    RandomScaleAnisotropic([0.9, 1.1]),
+    GridSampling3D(grid_size=0.03, quantize_coords=True, mode=last),
+    XYZFeature(axis=['z']),
+    AddFeatsByKeys(pos_z=True, rgb=False, linearity=False, norm=False, planarity=False, scattering=False),
+])
+[0;95mval_transform [0m= Compose([
+    GridSampling3D(grid_size=0.03, quantize_coords=True, mode=last),
+    XYZFeature(axis=['z']),
+    AddFeatsByKeys(pos_z=True, rgb=False, linearity=False, norm=False, planarity=False, scattering=False),
+])
+[0;95minference_transform [0m= Compose([
+    SaveOriginalPosId,
+    PCAComputePointwise(num_neighbors=50, r=None, use_full_pos=False, use_cuda=False, use_faiss=False, ncells=None, nprobes=10, chunk_size=1000000),
+    EigenFeatures(norm=True, linearity=True, planarity=True, scattering=True, temperature=None),
+    RemoveAttributes(attr_names=['eigenvalues', 'eigenvectors'], strict=False),
+    GridSampling3D(grid_size=0.03, quantize_coords=True, mode=last),
+    XYZFeature(axis=['z']),
+    AddFeatsByKeys(pos_z=True, rgb=False, linearity=False, norm=False, planarity=False, scattering=False),
+])
+[0;95mpre_transform_image [0m= ComposeMultiModal([
+    LoadImages(ref_size=[320, 240], crop_size=None, crop_offsets=None, downscale=None, show_progress=False),
+    NonStaticMask(ref_size=(320, 240), proj_upscale=1, n_sample=5),
+    MapImages(key=mapping_index, verbose=False, cylinder=False, ref_size=[320, 240], proj_upscale=1, method=SplattingVisibility, use_cuda=False, kwargs={'voxel': 0.03, 'r_max': 8, 'r_min': 0.05, 'exact': True, 'camera': 'scannet'}),
+    NeighborhoodBasedMappingFeatures(k_list=[50], voxel=0.01, compute_density=True, compute_occlusion=True, use_faiss=False, use_cuda=False, ncells=None, nprobes=10, verbose=True),
+])
+[0;95mtest_transform_image [0m= ComposeMultiModal([
+    SelectMappingFromPointId(key=mapping_index),
+    ToImageData(),
+    PickImagesFromMemoryCredit(credit=7680000, use_coverage=True, k_coverage=2),
+    ToFloatImage(),
+    Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+])
+[0;95mtrain_transform_image [0m= ComposeMultiModal([
+    SelectMappingFromPointId(key=mapping_index),
+    ToImageData(),
+    PickImagesFromMemoryCredit(credit=7680000, use_coverage=True, k_coverage=2),
+    JitterMappingFeatures(sigma=0.02, clip=0.03),
+    ColorJitter(brightness=[0.4, 1.6], contrast=[0.4, 1.6], saturation=[0.30000000000000004, 1.7], hue=None),
+    RandomHorizontalFlip(p=0.5),
+    ToFloatImage(),
+    Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+])
+[0;95mval_transform_image [0m= ComposeMultiModal([
+    SelectMappingFromPointId(key=mapping_index),
+    ToImageData(),
+    PickImagesFromMemoryCredit(credit=7680000, use_coverage=True, k_coverage=2),
+    ToFloatImage(),
+    Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+])
+[0;95minference_transform_image [0m= ComposeMultiModal([
+    LoadImages(ref_size=[320, 240], crop_size=None, crop_offsets=None, downscale=None, show_progress=False),
+    NonStaticMask(ref_size=(320, 240), proj_upscale=1, n_sample=5),
+    MapImages(key=mapping_index, verbose=False, cylinder=False, ref_size=[320, 240], proj_upscale=1, method=SplattingVisibility, use_cuda=False, kwargs={'voxel': 0.03, 'r_max': 8, 'r_min': 0.05, 'exact': True, 'camera': 'scannet'}),
+    NeighborhoodBasedMappingFeatures(k_list=[50], voxel=0.01, compute_density=True, compute_occlusion=True, use_faiss=False, use_cuda=False, ncells=None, nprobes=10, verbose=True),
+    SelectMappingFromPointId(key=mapping_index),
+    ToImageData(),
+    PickImagesFromMemoryCredit(credit=7680000, use_coverage=True, k_coverage=2),
+    ToFloatImage(),
+    Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+])
+Size of [0;95mtrain_dataset [0m= 3
+Size of [0;95mtest_dataset [0m= 0
+Size of [0;95mval_dataset [0m= 3
+[0;95mBatch size =[0m 3
+data:  MMData(
+    data = Data(coords=[59156, 3], grid_size=[1], id_scan=[1], mapping_index=[59156], origin_id=[59156], pos=[59156, 3], x=[59156, 9, 10], y=[59156])
+    image = ImageData(num_settings=1, num_views=100, num_points=59156, device=cpu)
+)
+data.data:  Data(coords=[59156, 3], grid_size=[1], id_scan=[1], mapping_index=[59156], origin_id=[59156], pos=[59156, 3], x=[59156, 9, 10], y=[59156])
+[2022-10-21 16:04:15,686][torch_points3d.datasets.base_dataset][INFO] - Available stage selection datasets: [0;95m ['val'] [0m
+[2022-10-21 16:04:15,686][torch_points3d.datasets.base_dataset][INFO] - The models will be selected using the metrics on following dataset: [0;95m val [0m
+[2022-10-21 16:04:17,785][torch_points3d.trainer][INFO] - EPOCH 1 / 100
+  0%|          | 0/1 [00:00<?, ?it/s]data:  MMData(
+    data = Data(coords=[58377, 3], grid_size=[1], id_scan=[1], mapping_index=[58377], origin_id=[58377], pos=[58377, 3], x=[58377, 9, 10], y=[58377])
+    image = ImageData(num_settings=1, num_views=100, num_points=58377, device=cpu)
+)
+data.data:  Data(coords=[58377, 3], grid_size=[1], id_scan=[1], mapping_index=[58377], origin_id=[58377], pos=[58377, 3], x=[58377, 9, 10], y=[58377])
+data:  MMData(
+    data = Data(coords=[46186, 3], grid_size=[1], id_scan=[1], mapping_index=[46186], origin_id=[46186], pos=[46186, 3], x=[46186, 9, 10], y=[46186])
+    image = ImageData(num_settings=1, num_views=100, num_points=46186, device=cpu)
+)
+data.data:  Data(coords=[46186, 3], grid_size=[1], id_scan=[1], mapping_index=[46186], origin_id=[46186], pos=[46186, 3], x=[46186, 9, 10], y=[46186])
+data:  MMData(
+    data = Data(coords=[48077, 3], grid_size=[1], id_scan=[1], mapping_index=[48077], origin_id=[48077], pos=[48077, 3], x=[48077, 9, 10], y=[48077])
+    image = ImageData(num_settings=1, num_views=99, num_points=48077, device=cpu)
+)
+data.data:  Data(coords=[48077, 3], grid_size=[1], id_scan=[1], mapping_index=[48077], origin_id=[48077], pos=[48077, 3], x=[48077, 9, 10], y=[48077])
+data:  MMData(
+    data = Data(coords=[58660, 3], grid_size=[1], id_scan=[1], mapping_index=[58660], origin_id=[58660], pos=[58660, 3], x=[58660, 9, 10], y=[58660])
+    image = ImageData(num_settings=1, num_views=100, num_points=58660, device=cpu)
+)
+data.data:  Data(coords=[58660, 3], grid_size=[1], id_scan=[1], mapping_index=[58660], origin_id=[58660], pos=[58660, 3], x=[58660, 9, 10], y=[58660])
+data:  MMData(
+    data = Data(coords=[43386, 3], grid_size=[1], id_scan=[1], mapping_index=[43386], origin_id=[43386], pos=[43386, 3], x=[43386, 9, 10], y=[43386])
+    image = ImageData(num_settings=1, num_views=99, num_points=43386, device=cpu)
+)
+data.data:  Data(coords=[43386, 3], grid_size=[1], id_scan=[1], mapping_index=[43386], origin_id=[43386], pos=[43386, 3], x=[43386, 9, 10], y=[43386])
+data:  MMData(
+    data = Data(coords=[47094, 3], grid_size=[1], id_scan=[1], mapping_index=[47094], origin_id=[47094], pos=[47094, 3], x=[47094, 9, 10], y=[47094])
+    image = ImageData(num_settings=1, num_views=100, num_points=47094, device=cpu)
+)
+data.data:  Data(coords=[47094, 3], grid_size=[1], id_scan=[1], mapping_index=[47094], origin_id=[47094], pos=[47094, 3], x=[47094, 9, 10], y=[47094])
+  0%|          | 0/1 [00:39<?, ?it/s]
+data after dataloader:  MMBatch(
+    data = Batch(batch=[149140], coords=[149140, 3], grid_size=[3], id_scan=[3], mapping_index=[149140], origin_id=[149140], pos=[149140, 3], ptr=[4], x=[149140, 9, 10], y=[149140])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=149140, device=cpu)
+)
+data.x.shape:  torch.Size([149140, 9, 10])
+data.x:  tensor([[[1.0000e+00, 2.3611e-01, 3.8237e-01,  ..., 5.0344e-02,
+          8.9142e-01, 2.0000e+01],
+         [0.0000e+00, 5.3707e-01, 1.7361e-01,  ..., 9.9917e-02,
+          7.9453e-01, 6.0000e+00],
+         [0.0000e+00, 3.1636e-01, 1.5075e-01,  ..., 5.0196e-02,
+          3.9213e-01, 6.0000e+00],
+         ...,
+         [0.0000e+00, 4.9159e-01, 1.2834e-01,  ..., 4.8296e-02,
+          6.2050e-01, 2.0000e+00],
+         [0.0000e+00, 2.1354e-01, 1.4687e-01,  ..., 1.1777e-01,
+          5.9634e-01, 3.0000e+00],
+         [0.0000e+00, 2.7875e-01, 7.2632e-02,  ..., 3.6293e-02,
+          1.0033e+00, 1.0000e+00]],
+
+        [[1.0000e+00, 2.2857e-01, 4.5967e-01,  ..., 5.4329e-02,
+          1.7752e-01, 6.0000e+00],
+         [1.0000e+00, 2.1661e-01, 4.8578e-01,  ..., 2.5996e-02,
+          1.8029e-01, 6.0000e+00],
+         [1.0000e+00, 2.9120e-01, 4.5489e-01,  ..., 3.9203e-02,
+          2.3984e-01, 2.0000e+01],
+         ...,
+         [0.0000e+00, 2.1734e-01, 1.5225e-01,  ..., 3.2733e-02,
+          9.2076e-01, 2.0000e+00],
+         [0.0000e+00, 3.1340e-01, 2.7563e-01,  ..., 5.1379e-02,
+          9.0913e-01, 6.0000e+00],
+         [0.0000e+00, 3.9269e-01, 7.9475e-02,  ..., 3.7526e-02,
+          1.0210e+00, 1.3000e+01]],
+
+        [[1.0000e+00, 3.2753e-01, 2.7481e-01,  ..., 6.3933e-02,
+          3.3050e-01, 2.0000e+00],
+         [0.0000e+00, 2.5084e-01, 7.6600e-03,  ..., 7.4569e-02,
+          6.8259e-01, 2.0000e+00],
+         [0.0000e+00, 3.3761e-01, 1.8989e-01,  ..., 5.5954e-02,
+          7.5449e-01, 3.0000e+00],
+         ...,
+         [0.0000e+00, 3.3125e-01, 9.0183e-02,  ..., 7.0497e-02,
+          9.7912e-01, 1.4000e+01],
+         [0.0000e+00, 3.6619e-01, 9.9676e-02,  ..., 5.5046e-02,
+          7.3042e-01, 1.0000e+00],
+         [0.0000e+00, 4.6713e-01, 2.3013e-01,  ..., 3.4697e-02,
+          9.5117e-01, 3.0000e+00]],
+
+        ...,
+
+        [[1.0000e+00, 3.3204e-01, 4.3528e-01,  ..., 2.9560e-01,
+          5.3628e-01, 1.0000e+00],
+         [1.0000e+00, 3.5362e-01, 4.4204e-01,  ..., 2.9240e-01,
+          5.0894e-01, 1.0000e+00],
+         [1.0000e+00, 3.5099e-01, 4.5310e-01,  ..., 3.0123e-01,
+          5.3709e-01, 1.0000e+00],
+         ...,
+         [0.0000e+00, 3.7046e-01, 2.6576e-01,  ..., 4.8818e-01,
+          1.2570e-01, 1.0000e+00],
+         [0.0000e+00, 3.8712e-01, 1.6198e-01,  ..., 5.8574e-01,
+          2.3067e-01, 2.0000e+00],
+         [0.0000e+00, 3.8732e-01, 1.7211e-01,  ..., 6.0784e-01,
+          3.4570e-01, 1.0000e+01]],
+
+        [[1.0000e+00, 3.6026e-01, 4.3923e-01,  ..., 2.5504e-01,
+          4.9941e-01, 1.0000e+00],
+         [1.0000e+00, 3.6449e-01, 4.2895e-01,  ..., 2.5629e-01,
+          5.5689e-01, 1.0000e+00],
+         [1.0000e+00, 3.4593e-01, 4.4735e-01,  ..., 2.8641e-01,
+          5.4569e-01, 1.0000e+00],
+         ...,
+         [0.0000e+00, 2.6791e-01, 1.4107e-01,  ..., 1.5043e-01,
+          9.3095e-01, 1.0000e+00],
+         [0.0000e+00, 6.0909e-01, 4.2729e-02,  ..., 1.9826e-01,
+          9.2784e-01, 1.0000e+00],
+         [0.0000e+00, 2.1750e-01, 7.4928e-02,  ..., 1.4803e-01,
+          9.9788e-01, 1.0000e+01]],
+
+        [[1.0000e+00, 3.2957e-01, 5.1401e-01,  ..., 2.7841e-01,
+          4.9405e-01, 1.0000e+00],
+         [1.0000e+00, 3.6939e-01, 4.9525e-01,  ..., 2.8143e-01,
+          5.2396e-01, 1.0000e+00],
+         [1.0000e+00, 3.4616e-01, 5.0697e-01,  ..., 2.6865e-01,
+          4.6617e-01, 1.0000e+00],
+         ...,
+         [0.0000e+00, 2.3968e-01, 3.7857e-02,  ..., 1.7922e-01,
+          8.9805e-01, 1.0000e+01],
+         [0.0000e+00, 3.2450e-01, 3.9756e-02,  ..., 3.3336e-01,
+          9.2323e-01, 7.0000e+00],
+         [0.0000e+00, 3.0815e-01, 2.0713e-01,  ..., 2.7233e-01,
+          4.4059e-01, 2.0000e+00]]])

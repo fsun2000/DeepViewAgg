@@ -1,0 +1,2386 @@
+[2022-10-21 15:29:11,481][torch_points3d.trainer][INFO] - DEVICE : cuda
+initialize train dataset
+initialize val dataset
+task:  segmentation.multimodal
+tested_model_name:  Res16UNet34-PointPyramid-early-ade20k-interpolate
+class_name:  APIModel
+model_module:  torch_points3d.models.segmentation.multimodal.sparseconv3d
+[2022-10-21 15:29:22,007][torch_points3d.applications.modelfactory][INFO] - The config will be used to build the model
+model:  APIModel(
+  (backbone): SparseConv3dUnet(
+    (inner_modules): ModuleList(
+      (0): Identity()
+    )
+    (down_modules): ModuleList(
+      (0): MultimodalBlockDown(
+        (block_1): Identity()
+        (block_2): Identity()
+        (image): UnimodalBranch(
+          drop_3d=None
+          drop_mod=None
+          keep_last_view=False
+          checkpointing=v
+          (conv): ADE20KResNet18Layer0(
+            (conv): Sequential(
+              (0): Sequential(
+                (0): Conv2d(3, 64, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+                (1): SynchronizedBatchNorm2d(64, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                (4): SynchronizedBatchNorm2d(64, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+                (6): Conv2d(64, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                (7): SynchronizedBatchNorm2d(128, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                (8): ReLU(inplace=True)
+                (9): MaxPool2d(kernel_size=3, stride=2, padding=1, dilation=1, ceil_mode=False)
+              )
+            )
+          )
+          (atomic_pool): BimodalCSRPool()
+          (view_pool): GroupBimodalCSRPool(
+            num_groups=4
+            use_mod=False
+            group_scaling=True
+            save_last=False
+            (E_map): DeepSetFeat(
+              pool=['max']
+              fusion=concatenation
+              use_num=True
+              (mlp_elt_1): Sequential(
+                (0): Sequential(
+                  (0): Linear(in_features=8, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+                (1): Sequential(
+                  (0): Linear(in_features=32, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+              )
+              (mlp_set): Sequential(
+                (0): Sequential(
+                  (0): Linear(in_features=33, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+                (1): Sequential(
+                  (0): Linear(in_features=32, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+              )
+              (mlp_elt_2): Sequential(
+                (0): Sequential(
+                  (0): Linear(in_features=64, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+                (1): Sequential(
+                  (0): Linear(in_features=32, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+              )
+            )
+            (E_mod): Sequential(
+              (0): Sequential(
+                (0): Linear(in_features=128, out_features=32, bias=False)
+                (1): FastBatchNorm1d(
+                  (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                )
+                (2): LeakyReLU(negative_slope=0.2, inplace=True)
+              )
+              (1): Sequential(
+                (0): Linear(in_features=32, out_features=32, bias=False)
+                (1): FastBatchNorm1d(
+                  (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                )
+                (2): LeakyReLU(negative_slope=0.2, inplace=True)
+              )
+            )
+            (E_score): Linear(in_features=32, out_features=4, bias=True)
+            (G): Gating(num_groups=4, weight=True, bias=True)
+          )
+          (fusion): BimodalFusion(mode=concatenation)
+        )
+      )
+      (1): MultimodalBlockDown(
+        (block_1): Identity()
+        (block_2): Identity()
+        (image): UnimodalBranch(
+          drop_3d=None
+          drop_mod=None
+          keep_last_view=False
+          checkpointing=v
+          (conv): ADE20KResNet18Layer1(
+            (conv): Sequential(
+              (0): Sequential(
+                (0): BasicBlock(
+                  (conv1): Conv2d(128, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn1): SynchronizedBatchNorm2d(64, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  (relu): ReLU(inplace=True)
+                  (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn2): SynchronizedBatchNorm2d(64, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  (downsample): Sequential(
+                    (0): Conv2d(128, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                    (1): SynchronizedBatchNorm2d(64, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  )
+                )
+                (1): BasicBlock(
+                  (conv1): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn1): SynchronizedBatchNorm2d(64, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  (relu): ReLU(inplace=True)
+                  (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn2): SynchronizedBatchNorm2d(64, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                )
+              )
+            )
+          )
+          (atomic_pool): BimodalCSRPool()
+          (view_pool): GroupBimodalCSRPool(
+            num_groups=4
+            use_mod=False
+            group_scaling=True
+            save_last=False
+            (E_map): DeepSetFeat(
+              pool=['max']
+              fusion=concatenation
+              use_num=True
+              (mlp_elt_1): Sequential(
+                (0): Sequential(
+                  (0): Linear(in_features=8, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+                (1): Sequential(
+                  (0): Linear(in_features=32, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+              )
+              (mlp_set): Sequential(
+                (0): Sequential(
+                  (0): Linear(in_features=33, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+                (1): Sequential(
+                  (0): Linear(in_features=32, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+              )
+              (mlp_elt_2): Sequential(
+                (0): Sequential(
+                  (0): Linear(in_features=64, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+                (1): Sequential(
+                  (0): Linear(in_features=32, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+              )
+            )
+            (E_mod): Sequential(
+              (0): Sequential(
+                (0): Linear(in_features=64, out_features=32, bias=False)
+                (1): FastBatchNorm1d(
+                  (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                )
+                (2): LeakyReLU(negative_slope=0.2, inplace=True)
+              )
+              (1): Sequential(
+                (0): Linear(in_features=32, out_features=32, bias=False)
+                (1): FastBatchNorm1d(
+                  (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                )
+                (2): LeakyReLU(negative_slope=0.2, inplace=True)
+              )
+            )
+            (E_score): Linear(in_features=32, out_features=4, bias=True)
+            (G): Gating(num_groups=4, weight=True, bias=True)
+          )
+          (fusion): BimodalFusion(mode=concatenation)
+        )
+      )
+      (2): MultimodalBlockDown(
+        (block_1): Identity()
+        (block_2): Identity()
+        (image): UnimodalBranch(
+          drop_3d=None
+          drop_mod=None
+          keep_last_view=False
+          checkpointing=v
+          (conv): ADE20KResNet18Layer2(
+            (conv): Sequential(
+              (0): Sequential(
+                (0): BasicBlock(
+                  (conv1): Conv2d(64, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+                  (bn1): SynchronizedBatchNorm2d(128, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  (relu): ReLU(inplace=True)
+                  (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn2): SynchronizedBatchNorm2d(128, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  (downsample): Sequential(
+                    (0): Conv2d(64, 128, kernel_size=(1, 1), stride=(2, 2), bias=False)
+                    (1): SynchronizedBatchNorm2d(128, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  )
+                )
+                (1): BasicBlock(
+                  (conv1): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn1): SynchronizedBatchNorm2d(128, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  (relu): ReLU(inplace=True)
+                  (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn2): SynchronizedBatchNorm2d(128, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                )
+              )
+            )
+          )
+          (atomic_pool): BimodalCSRPool()
+          (view_pool): GroupBimodalCSRPool(
+            num_groups=4
+            use_mod=False
+            group_scaling=True
+            save_last=False
+            (E_map): DeepSetFeat(
+              pool=['max']
+              fusion=concatenation
+              use_num=True
+              (mlp_elt_1): Sequential(
+                (0): Sequential(
+                  (0): Linear(in_features=8, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+                (1): Sequential(
+                  (0): Linear(in_features=32, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+              )
+              (mlp_set): Sequential(
+                (0): Sequential(
+                  (0): Linear(in_features=33, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+                (1): Sequential(
+                  (0): Linear(in_features=32, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+              )
+              (mlp_elt_2): Sequential(
+                (0): Sequential(
+                  (0): Linear(in_features=64, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+                (1): Sequential(
+                  (0): Linear(in_features=32, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+              )
+            )
+            (E_mod): Sequential(
+              (0): Sequential(
+                (0): Linear(in_features=128, out_features=64, bias=False)
+                (1): FastBatchNorm1d(
+                  (batch_norm): BatchNorm1d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                )
+                (2): LeakyReLU(negative_slope=0.2, inplace=True)
+              )
+              (1): Sequential(
+                (0): Linear(in_features=64, out_features=64, bias=False)
+                (1): FastBatchNorm1d(
+                  (batch_norm): BatchNorm1d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                )
+                (2): LeakyReLU(negative_slope=0.2, inplace=True)
+              )
+            )
+            (E_score): Linear(in_features=32, out_features=4, bias=True)
+            (G): Gating(num_groups=4, weight=True, bias=True)
+          )
+          (fusion): BimodalFusion(mode=concatenation)
+        )
+      )
+      (3): MultimodalBlockDown(
+        (block_1): Identity()
+        (block_2): Identity()
+        (image): UnimodalBranch(
+          drop_3d=None
+          drop_mod=None
+          keep_last_view=False
+          checkpointing=v
+          (conv): ADE20KResNet18Layer3(
+            (conv): Sequential(
+              (0): Sequential(
+                (0): BasicBlock(
+                  (conv1): Conv2d(128, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn1): SynchronizedBatchNorm2d(256, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  (relu): ReLU(inplace=True)
+                  (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(2, 2), dilation=(2, 2), bias=False)
+                  (bn2): SynchronizedBatchNorm2d(256, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  (downsample): Sequential(
+                    (0): Conv2d(128, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                    (1): SynchronizedBatchNorm2d(256, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  )
+                )
+                (1): BasicBlock(
+                  (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(2, 2), dilation=(2, 2), bias=False)
+                  (bn1): SynchronizedBatchNorm2d(256, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  (relu): ReLU(inplace=True)
+                  (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(2, 2), dilation=(2, 2), bias=False)
+                  (bn2): SynchronizedBatchNorm2d(256, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                )
+              )
+            )
+          )
+          (atomic_pool): BimodalCSRPool()
+          (view_pool): GroupBimodalCSRPool(
+            num_groups=4
+            use_mod=False
+            group_scaling=True
+            save_last=False
+            (E_map): DeepSetFeat(
+              pool=['max']
+              fusion=concatenation
+              use_num=True
+              (mlp_elt_1): Sequential(
+                (0): Sequential(
+                  (0): Linear(in_features=8, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+                (1): Sequential(
+                  (0): Linear(in_features=32, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+              )
+              (mlp_set): Sequential(
+                (0): Sequential(
+                  (0): Linear(in_features=33, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+                (1): Sequential(
+                  (0): Linear(in_features=32, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+              )
+              (mlp_elt_2): Sequential(
+                (0): Sequential(
+                  (0): Linear(in_features=64, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+                (1): Sequential(
+                  (0): Linear(in_features=32, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+              )
+            )
+            (E_mod): Sequential(
+              (0): Sequential(
+                (0): Linear(in_features=256, out_features=128, bias=False)
+                (1): FastBatchNorm1d(
+                  (batch_norm): BatchNorm1d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                )
+                (2): LeakyReLU(negative_slope=0.2, inplace=True)
+              )
+              (1): Sequential(
+                (0): Linear(in_features=128, out_features=128, bias=False)
+                (1): FastBatchNorm1d(
+                  (batch_norm): BatchNorm1d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                )
+                (2): LeakyReLU(negative_slope=0.2, inplace=True)
+              )
+            )
+            (E_score): Linear(in_features=32, out_features=4, bias=True)
+            (G): Gating(num_groups=4, weight=True, bias=True)
+          )
+          (fusion): BimodalFusion(mode=concatenation)
+        )
+      )
+      (4): MultimodalBlockDown(
+        (block_1): Identity()
+        (block_2): Identity()
+        (image): UnimodalBranch(
+          drop_3d=None
+          drop_mod=None
+          keep_last_view=False
+          checkpointing=v
+          (conv): ADE20KResNet18Layer4(
+            (conv): Sequential(
+              (0): Sequential(
+                (0): BasicBlock(
+                  (conv1): Conv2d(256, 512, kernel_size=(3, 3), stride=(1, 1), padding=(2, 2), dilation=(2, 2), bias=False)
+                  (bn1): SynchronizedBatchNorm2d(512, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  (relu): ReLU(inplace=True)
+                  (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(4, 4), dilation=(4, 4), bias=False)
+                  (bn2): SynchronizedBatchNorm2d(512, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  (downsample): Sequential(
+                    (0): Conv2d(256, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                    (1): SynchronizedBatchNorm2d(512, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  )
+                )
+                (1): BasicBlock(
+                  (conv1): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(4, 4), dilation=(4, 4), bias=False)
+                  (bn1): SynchronizedBatchNorm2d(512, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  (relu): ReLU(inplace=True)
+                  (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(4, 4), dilation=(4, 4), bias=False)
+                  (bn2): SynchronizedBatchNorm2d(512, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                )
+              )
+            )
+          )
+          (atomic_pool): BimodalCSRPool()
+          (view_pool): GroupBimodalCSRPool(
+            num_groups=4
+            use_mod=False
+            group_scaling=True
+            save_last=False
+            (E_map): DeepSetFeat(
+              pool=['max']
+              fusion=concatenation
+              use_num=True
+              (mlp_elt_1): Sequential(
+                (0): Sequential(
+                  (0): Linear(in_features=8, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+                (1): Sequential(
+                  (0): Linear(in_features=32, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+              )
+              (mlp_set): Sequential(
+                (0): Sequential(
+                  (0): Linear(in_features=33, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+                (1): Sequential(
+                  (0): Linear(in_features=32, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+              )
+              (mlp_elt_2): Sequential(
+                (0): Sequential(
+                  (0): Linear(in_features=64, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+                (1): Sequential(
+                  (0): Linear(in_features=32, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+              )
+            )
+            (E_mod): Sequential(
+              (0): Sequential(
+                (0): Linear(in_features=512, out_features=256, bias=False)
+                (1): FastBatchNorm1d(
+                  (batch_norm): BatchNorm1d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                )
+                (2): LeakyReLU(negative_slope=0.2, inplace=True)
+              )
+              (1): Sequential(
+                (0): Linear(in_features=256, out_features=256, bias=False)
+                (1): FastBatchNorm1d(
+                  (batch_norm): BatchNorm1d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                )
+                (2): LeakyReLU(negative_slope=0.2, inplace=True)
+              )
+            )
+            (E_score): Linear(in_features=32, out_features=4, bias=True)
+            (G): Gating(num_groups=4, weight=True, bias=True)
+          )
+          (fusion): BimodalFusion(mode=concatenation)
+        )
+      )
+      (5): MultimodalBlockDown(
+        (block_1): ResNetDown(
+          (conv_in): Seq(
+            (0): Conv3d(in_channels=513, out_channels=128, kernel_size=3, stride=1, dilation=1)
+            (1): BatchNorm(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): ReLU(inplace=True)
+          )
+        )
+        (block_2): Identity()
+        (image): IdentityBranch()
+      )
+      (6): MultimodalBlockDown(
+        (block_1): ResNetDown(
+          (conv_in): Seq(
+            (0): Conv3d(in_channels=128, out_channels=128, kernel_size=2, stride=2, dilation=1)
+            (1): BatchNorm(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): ReLU(inplace=True)
+          )
+          (blocks): Seq(
+            (0): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=128, out_channels=32, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=32, out_channels=32, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+              (downsample): Seq(
+                (0): Conv3d(in_channels=128, out_channels=32, kernel_size=1, stride=1, dilation=1)
+                (1): BatchNorm(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              )
+            )
+            (1): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=32, out_channels=32, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=32, out_channels=32, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+            )
+          )
+        )
+        (block_2): Identity()
+        (image): IdentityBranch()
+      )
+      (7): MultimodalBlockDown(
+        (block_1): ResNetDown(
+          (conv_in): Seq(
+            (0): Conv3d(in_channels=32, out_channels=32, kernel_size=2, stride=2, dilation=1)
+            (1): BatchNorm(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): ReLU(inplace=True)
+          )
+          (blocks): Seq(
+            (0): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=32, out_channels=64, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=64, out_channels=64, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+              (downsample): Seq(
+                (0): Conv3d(in_channels=32, out_channels=64, kernel_size=1, stride=1, dilation=1)
+                (1): BatchNorm(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              )
+            )
+            (1): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=64, out_channels=64, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=64, out_channels=64, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+            )
+            (2): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=64, out_channels=64, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=64, out_channels=64, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+            )
+          )
+        )
+        (block_2): Identity()
+        (image): IdentityBranch()
+      )
+      (8): MultimodalBlockDown(
+        (block_1): ResNetDown(
+          (conv_in): Seq(
+            (0): Conv3d(in_channels=64, out_channels=64, kernel_size=2, stride=2, dilation=1)
+            (1): BatchNorm(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): ReLU(inplace=True)
+          )
+          (blocks): Seq(
+            (0): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=64, out_channels=128, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+              (downsample): Seq(
+                (0): Conv3d(in_channels=64, out_channels=128, kernel_size=1, stride=1, dilation=1)
+                (1): BatchNorm(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              )
+            )
+            (1): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+            )
+            (2): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+            )
+            (3): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+            )
+          )
+        )
+        (block_2): Identity()
+        (image): IdentityBranch()
+      )
+      (9): MultimodalBlockDown(
+        (block_1): ResNetDown(
+          (conv_in): Seq(
+            (0): Conv3d(in_channels=128, out_channels=128, kernel_size=2, stride=2, dilation=1)
+            (1): BatchNorm(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): ReLU(inplace=True)
+          )
+          (blocks): Seq(
+            (0): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=128, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+              (downsample): Seq(
+                (0): Conv3d(in_channels=128, out_channels=256, kernel_size=1, stride=1, dilation=1)
+                (1): BatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              )
+            )
+            (1): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+            )
+            (2): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+            )
+            (3): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+            )
+            (4): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+            )
+            (5): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+            )
+          )
+        )
+        (block_2): Identity()
+        (image): IdentityBranch()
+      )
+    )
+    (up_modules): ModuleList(
+      (0): ResNetUp(
+        (conv_in): Seq(
+          (0): Conv3d(in_channels=256, out_channels=256, kernel_size=2, stride=2, dilation=1)
+          (1): BatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+        )
+        (blocks): Seq(
+          (0): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=384, out_channels=128, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+            (downsample): Seq(
+              (0): Conv3d(in_channels=384, out_channels=128, kernel_size=1, stride=1, dilation=1)
+              (1): BatchNorm(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            )
+          )
+        )
+      )
+      (1): ResNetUp(
+        (conv_in): Seq(
+          (0): Conv3d(in_channels=128, out_channels=128, kernel_size=2, stride=2, dilation=1)
+          (1): BatchNorm(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+        )
+        (blocks): Seq(
+          (0): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=192, out_channels=128, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+            (downsample): Seq(
+              (0): Conv3d(in_channels=192, out_channels=128, kernel_size=1, stride=1, dilation=1)
+              (1): BatchNorm(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            )
+          )
+        )
+      )
+      (2): ResNetUp(
+        (conv_in): Seq(
+          (0): Conv3d(in_channels=128, out_channels=128, kernel_size=2, stride=2, dilation=1)
+          (1): BatchNorm(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+        )
+        (blocks): Seq(
+          (0): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=160, out_channels=96, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=96, out_channels=96, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+            (downsample): Seq(
+              (0): Conv3d(in_channels=160, out_channels=96, kernel_size=1, stride=1, dilation=1)
+              (1): BatchNorm(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            )
+          )
+        )
+      )
+      (3): ResNetUp(
+        (conv_in): Seq(
+          (0): Conv3d(in_channels=96, out_channels=96, kernel_size=2, stride=2, dilation=1)
+          (1): BatchNorm(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+        )
+        (blocks): Seq(
+          (0): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=224, out_channels=96, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=96, out_channels=96, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+            (downsample): Seq(
+              (0): Conv3d(in_channels=224, out_channels=96, kernel_size=1, stride=1, dilation=1)
+              (1): BatchNorm(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            )
+          )
+        )
+      )
+      (4): ResNetUp(
+        (conv_in): Seq(
+          (0): Conv3d(in_channels=96, out_channels=96, kernel_size=3, stride=1, dilation=1)
+          (1): BatchNorm(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+        )
+        (blocks): Seq(
+          (0): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=96, out_channels=96, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=96, out_channels=96, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+          )
+        )
+      )
+    )
+  )
+  (head): Sequential(
+    (0): Linear(in_features=96, out_features=20, bias=True)
+  )
+)
+backbone.down_modules.4.image.conv
+backbone.down_modules.3.image.conv
+backbone.down_modules.2.image.conv
+backbone.down_modules.1.image.conv
+backbone.down_modules.0.image.conv
+backbone
+head
+[2022-10-21 15:29:23,395][torch_points3d.core.schedulers.bn_schedulers][INFO] - Setting batchnorm momentum at 0.02
+task:  segmentation.multimodal
+tested_model_name:  Res16UNet34-PointPyramid-early-ade20k-interpolate
+[2022-10-21 15:29:30,351][torch_points3d.trainer][WARNING] - The model will not be able to be used from pretrained weights without the corresponding dataset. Current properties are {'feature_dimension': 1, 'num_classes': 20}
+[2022-10-21 15:29:30,352][torch_points3d.trainer][INFO] - APIModel(
+  (backbone): SparseConv3dUnet(
+    (inner_modules): ModuleList(
+      (0): Identity()
+    )
+    (down_modules): ModuleList(
+      (0): MultimodalBlockDown(
+        (block_1): Identity()
+        (block_2): Identity()
+        (image): UnimodalBranch(
+          drop_3d=None
+          drop_mod=None
+          keep_last_view=False
+          checkpointing=v
+          (conv): ADE20KResNet18Layer0(
+            (conv): Sequential(
+              (0): Sequential(
+                (0): Conv2d(3, 64, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+                (1): SynchronizedBatchNorm2d(64, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                (4): SynchronizedBatchNorm2d(64, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+                (6): Conv2d(64, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                (7): SynchronizedBatchNorm2d(128, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                (8): ReLU(inplace=True)
+                (9): MaxPool2d(kernel_size=3, stride=2, padding=1, dilation=1, ceil_mode=False)
+              )
+            )
+          )
+          (atomic_pool): BimodalCSRPool()
+          (view_pool): GroupBimodalCSRPool(
+            num_groups=4
+            use_mod=False
+            group_scaling=True
+            save_last=False
+            (E_map): DeepSetFeat(
+              pool=['max']
+              fusion=concatenation
+              use_num=True
+              (mlp_elt_1): Sequential(
+                (0): Sequential(
+                  (0): Linear(in_features=8, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+                (1): Sequential(
+                  (0): Linear(in_features=32, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+              )
+              (mlp_set): Sequential(
+                (0): Sequential(
+                  (0): Linear(in_features=33, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+                (1): Sequential(
+                  (0): Linear(in_features=32, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+              )
+              (mlp_elt_2): Sequential(
+                (0): Sequential(
+                  (0): Linear(in_features=64, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+                (1): Sequential(
+                  (0): Linear(in_features=32, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+              )
+            )
+            (E_mod): Sequential(
+              (0): Sequential(
+                (0): Linear(in_features=128, out_features=32, bias=False)
+                (1): FastBatchNorm1d(
+                  (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                )
+                (2): LeakyReLU(negative_slope=0.2, inplace=True)
+              )
+              (1): Sequential(
+                (0): Linear(in_features=32, out_features=32, bias=False)
+                (1): FastBatchNorm1d(
+                  (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                )
+                (2): LeakyReLU(negative_slope=0.2, inplace=True)
+              )
+            )
+            (E_score): Linear(in_features=32, out_features=4, bias=True)
+            (G): Gating(num_groups=4, weight=True, bias=True)
+          )
+          (fusion): BimodalFusion(mode=concatenation)
+        )
+      )
+      (1): MultimodalBlockDown(
+        (block_1): Identity()
+        (block_2): Identity()
+        (image): UnimodalBranch(
+          drop_3d=None
+          drop_mod=None
+          keep_last_view=False
+          checkpointing=v
+          (conv): ADE20KResNet18Layer1(
+            (conv): Sequential(
+              (0): Sequential(
+                (0): BasicBlock(
+                  (conv1): Conv2d(128, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn1): SynchronizedBatchNorm2d(64, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  (relu): ReLU(inplace=True)
+                  (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn2): SynchronizedBatchNorm2d(64, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  (downsample): Sequential(
+                    (0): Conv2d(128, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                    (1): SynchronizedBatchNorm2d(64, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  )
+                )
+                (1): BasicBlock(
+                  (conv1): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn1): SynchronizedBatchNorm2d(64, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  (relu): ReLU(inplace=True)
+                  (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn2): SynchronizedBatchNorm2d(64, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                )
+              )
+            )
+          )
+          (atomic_pool): BimodalCSRPool()
+          (view_pool): GroupBimodalCSRPool(
+            num_groups=4
+            use_mod=False
+            group_scaling=True
+            save_last=False
+            (E_map): DeepSetFeat(
+              pool=['max']
+              fusion=concatenation
+              use_num=True
+              (mlp_elt_1): Sequential(
+                (0): Sequential(
+                  (0): Linear(in_features=8, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+                (1): Sequential(
+                  (0): Linear(in_features=32, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+              )
+              (mlp_set): Sequential(
+                (0): Sequential(
+                  (0): Linear(in_features=33, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+                (1): Sequential(
+                  (0): Linear(in_features=32, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+              )
+              (mlp_elt_2): Sequential(
+                (0): Sequential(
+                  (0): Linear(in_features=64, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+                (1): Sequential(
+                  (0): Linear(in_features=32, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+              )
+            )
+            (E_mod): Sequential(
+              (0): Sequential(
+                (0): Linear(in_features=64, out_features=32, bias=False)
+                (1): FastBatchNorm1d(
+                  (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                )
+                (2): LeakyReLU(negative_slope=0.2, inplace=True)
+              )
+              (1): Sequential(
+                (0): Linear(in_features=32, out_features=32, bias=False)
+                (1): FastBatchNorm1d(
+                  (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                )
+                (2): LeakyReLU(negative_slope=0.2, inplace=True)
+              )
+            )
+            (E_score): Linear(in_features=32, out_features=4, bias=True)
+            (G): Gating(num_groups=4, weight=True, bias=True)
+          )
+          (fusion): BimodalFusion(mode=concatenation)
+        )
+      )
+      (2): MultimodalBlockDown(
+        (block_1): Identity()
+        (block_2): Identity()
+        (image): UnimodalBranch(
+          drop_3d=None
+          drop_mod=None
+          keep_last_view=False
+          checkpointing=v
+          (conv): ADE20KResNet18Layer2(
+            (conv): Sequential(
+              (0): Sequential(
+                (0): BasicBlock(
+                  (conv1): Conv2d(64, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+                  (bn1): SynchronizedBatchNorm2d(128, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  (relu): ReLU(inplace=True)
+                  (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn2): SynchronizedBatchNorm2d(128, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  (downsample): Sequential(
+                    (0): Conv2d(64, 128, kernel_size=(1, 1), stride=(2, 2), bias=False)
+                    (1): SynchronizedBatchNorm2d(128, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  )
+                )
+                (1): BasicBlock(
+                  (conv1): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn1): SynchronizedBatchNorm2d(128, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  (relu): ReLU(inplace=True)
+                  (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn2): SynchronizedBatchNorm2d(128, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                )
+              )
+            )
+          )
+          (atomic_pool): BimodalCSRPool()
+          (view_pool): GroupBimodalCSRPool(
+            num_groups=4
+            use_mod=False
+            group_scaling=True
+            save_last=False
+            (E_map): DeepSetFeat(
+              pool=['max']
+              fusion=concatenation
+              use_num=True
+              (mlp_elt_1): Sequential(
+                (0): Sequential(
+                  (0): Linear(in_features=8, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+                (1): Sequential(
+                  (0): Linear(in_features=32, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+              )
+              (mlp_set): Sequential(
+                (0): Sequential(
+                  (0): Linear(in_features=33, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+                (1): Sequential(
+                  (0): Linear(in_features=32, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+              )
+              (mlp_elt_2): Sequential(
+                (0): Sequential(
+                  (0): Linear(in_features=64, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+                (1): Sequential(
+                  (0): Linear(in_features=32, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+              )
+            )
+            (E_mod): Sequential(
+              (0): Sequential(
+                (0): Linear(in_features=128, out_features=64, bias=False)
+                (1): FastBatchNorm1d(
+                  (batch_norm): BatchNorm1d(64, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                )
+                (2): LeakyReLU(negative_slope=0.2, inplace=True)
+              )
+              (1): Sequential(
+                (0): Linear(in_features=64, out_features=64, bias=False)
+                (1): FastBatchNorm1d(
+                  (batch_norm): BatchNorm1d(64, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                )
+                (2): LeakyReLU(negative_slope=0.2, inplace=True)
+              )
+            )
+            (E_score): Linear(in_features=32, out_features=4, bias=True)
+            (G): Gating(num_groups=4, weight=True, bias=True)
+          )
+          (fusion): BimodalFusion(mode=concatenation)
+        )
+      )
+      (3): MultimodalBlockDown(
+        (block_1): Identity()
+        (block_2): Identity()
+        (image): UnimodalBranch(
+          drop_3d=None
+          drop_mod=None
+          keep_last_view=False
+          checkpointing=v
+          (conv): ADE20KResNet18Layer3(
+            (conv): Sequential(
+              (0): Sequential(
+                (0): BasicBlock(
+                  (conv1): Conv2d(128, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn1): SynchronizedBatchNorm2d(256, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  (relu): ReLU(inplace=True)
+                  (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(2, 2), dilation=(2, 2), bias=False)
+                  (bn2): SynchronizedBatchNorm2d(256, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  (downsample): Sequential(
+                    (0): Conv2d(128, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                    (1): SynchronizedBatchNorm2d(256, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  )
+                )
+                (1): BasicBlock(
+                  (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(2, 2), dilation=(2, 2), bias=False)
+                  (bn1): SynchronizedBatchNorm2d(256, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  (relu): ReLU(inplace=True)
+                  (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(2, 2), dilation=(2, 2), bias=False)
+                  (bn2): SynchronizedBatchNorm2d(256, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                )
+              )
+            )
+          )
+          (atomic_pool): BimodalCSRPool()
+          (view_pool): GroupBimodalCSRPool(
+            num_groups=4
+            use_mod=False
+            group_scaling=True
+            save_last=False
+            (E_map): DeepSetFeat(
+              pool=['max']
+              fusion=concatenation
+              use_num=True
+              (mlp_elt_1): Sequential(
+                (0): Sequential(
+                  (0): Linear(in_features=8, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+                (1): Sequential(
+                  (0): Linear(in_features=32, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+              )
+              (mlp_set): Sequential(
+                (0): Sequential(
+                  (0): Linear(in_features=33, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+                (1): Sequential(
+                  (0): Linear(in_features=32, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+              )
+              (mlp_elt_2): Sequential(
+                (0): Sequential(
+                  (0): Linear(in_features=64, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+                (1): Sequential(
+                  (0): Linear(in_features=32, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+              )
+            )
+            (E_mod): Sequential(
+              (0): Sequential(
+                (0): Linear(in_features=256, out_features=128, bias=False)
+                (1): FastBatchNorm1d(
+                  (batch_norm): BatchNorm1d(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                )
+                (2): LeakyReLU(negative_slope=0.2, inplace=True)
+              )
+              (1): Sequential(
+                (0): Linear(in_features=128, out_features=128, bias=False)
+                (1): FastBatchNorm1d(
+                  (batch_norm): BatchNorm1d(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                )
+                (2): LeakyReLU(negative_slope=0.2, inplace=True)
+              )
+            )
+            (E_score): Linear(in_features=32, out_features=4, bias=True)
+            (G): Gating(num_groups=4, weight=True, bias=True)
+          )
+          (fusion): BimodalFusion(mode=concatenation)
+        )
+      )
+      (4): MultimodalBlockDown(
+        (block_1): Identity()
+        (block_2): Identity()
+        (image): UnimodalBranch(
+          drop_3d=None
+          drop_mod=None
+          keep_last_view=False
+          checkpointing=v
+          (conv): ADE20KResNet18Layer4(
+            (conv): Sequential(
+              (0): Sequential(
+                (0): BasicBlock(
+                  (conv1): Conv2d(256, 512, kernel_size=(3, 3), stride=(1, 1), padding=(2, 2), dilation=(2, 2), bias=False)
+                  (bn1): SynchronizedBatchNorm2d(512, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  (relu): ReLU(inplace=True)
+                  (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(4, 4), dilation=(4, 4), bias=False)
+                  (bn2): SynchronizedBatchNorm2d(512, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  (downsample): Sequential(
+                    (0): Conv2d(256, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                    (1): SynchronizedBatchNorm2d(512, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  )
+                )
+                (1): BasicBlock(
+                  (conv1): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(4, 4), dilation=(4, 4), bias=False)
+                  (bn1): SynchronizedBatchNorm2d(512, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  (relu): ReLU(inplace=True)
+                  (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(4, 4), dilation=(4, 4), bias=False)
+                  (bn2): SynchronizedBatchNorm2d(512, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                )
+              )
+            )
+          )
+          (atomic_pool): BimodalCSRPool()
+          (view_pool): GroupBimodalCSRPool(
+            num_groups=4
+            use_mod=False
+            group_scaling=True
+            save_last=False
+            (E_map): DeepSetFeat(
+              pool=['max']
+              fusion=concatenation
+              use_num=True
+              (mlp_elt_1): Sequential(
+                (0): Sequential(
+                  (0): Linear(in_features=8, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+                (1): Sequential(
+                  (0): Linear(in_features=32, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+              )
+              (mlp_set): Sequential(
+                (0): Sequential(
+                  (0): Linear(in_features=33, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+                (1): Sequential(
+                  (0): Linear(in_features=32, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+              )
+              (mlp_elt_2): Sequential(
+                (0): Sequential(
+                  (0): Linear(in_features=64, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+                (1): Sequential(
+                  (0): Linear(in_features=32, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+              )
+            )
+            (E_mod): Sequential(
+              (0): Sequential(
+                (0): Linear(in_features=512, out_features=256, bias=False)
+                (1): FastBatchNorm1d(
+                  (batch_norm): BatchNorm1d(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                )
+                (2): LeakyReLU(negative_slope=0.2, inplace=True)
+              )
+              (1): Sequential(
+                (0): Linear(in_features=256, out_features=256, bias=False)
+                (1): FastBatchNorm1d(
+                  (batch_norm): BatchNorm1d(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                )
+                (2): LeakyReLU(negative_slope=0.2, inplace=True)
+              )
+            )
+            (E_score): Linear(in_features=32, out_features=4, bias=True)
+            (G): Gating(num_groups=4, weight=True, bias=True)
+          )
+          (fusion): BimodalFusion(mode=concatenation)
+        )
+      )
+      (5): MultimodalBlockDown(
+        (block_1): ResNetDown(
+          (conv_in): Seq(
+            (0): Conv3d(in_channels=513, out_channels=128, kernel_size=3, stride=1, dilation=1)
+            (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+            (2): ReLU(inplace=True)
+          )
+        )
+        (block_2): Identity()
+        (image): IdentityBranch()
+      )
+      (6): MultimodalBlockDown(
+        (block_1): ResNetDown(
+          (conv_in): Seq(
+            (0): Conv3d(in_channels=128, out_channels=128, kernel_size=2, stride=2, dilation=1)
+            (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+            (2): ReLU(inplace=True)
+          )
+          (blocks): Seq(
+            (0): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=128, out_channels=32, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=32, out_channels=32, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+              (downsample): Seq(
+                (0): Conv3d(in_channels=128, out_channels=32, kernel_size=1, stride=1, dilation=1)
+                (1): BatchNorm(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              )
+            )
+            (1): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=32, out_channels=32, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=32, out_channels=32, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+            )
+          )
+        )
+        (block_2): Identity()
+        (image): IdentityBranch()
+      )
+      (7): MultimodalBlockDown(
+        (block_1): ResNetDown(
+          (conv_in): Seq(
+            (0): Conv3d(in_channels=32, out_channels=32, kernel_size=2, stride=2, dilation=1)
+            (1): BatchNorm(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+            (2): ReLU(inplace=True)
+          )
+          (blocks): Seq(
+            (0): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=32, out_channels=64, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(64, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=64, out_channels=64, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(64, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+              (downsample): Seq(
+                (0): Conv3d(in_channels=32, out_channels=64, kernel_size=1, stride=1, dilation=1)
+                (1): BatchNorm(64, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              )
+            )
+            (1): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=64, out_channels=64, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(64, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=64, out_channels=64, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(64, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+            )
+            (2): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=64, out_channels=64, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(64, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=64, out_channels=64, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(64, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+            )
+          )
+        )
+        (block_2): Identity()
+        (image): IdentityBranch()
+      )
+      (8): MultimodalBlockDown(
+        (block_1): ResNetDown(
+          (conv_in): Seq(
+            (0): Conv3d(in_channels=64, out_channels=64, kernel_size=2, stride=2, dilation=1)
+            (1): BatchNorm(64, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+            (2): ReLU(inplace=True)
+          )
+          (blocks): Seq(
+            (0): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=64, out_channels=128, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+              (downsample): Seq(
+                (0): Conv3d(in_channels=64, out_channels=128, kernel_size=1, stride=1, dilation=1)
+                (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              )
+            )
+            (1): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+            )
+            (2): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+            )
+            (3): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+            )
+          )
+        )
+        (block_2): Identity()
+        (image): IdentityBranch()
+      )
+      (9): MultimodalBlockDown(
+        (block_1): ResNetDown(
+          (conv_in): Seq(
+            (0): Conv3d(in_channels=128, out_channels=128, kernel_size=2, stride=2, dilation=1)
+            (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+            (2): ReLU(inplace=True)
+          )
+          (blocks): Seq(
+            (0): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=128, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+              (downsample): Seq(
+                (0): Conv3d(in_channels=128, out_channels=256, kernel_size=1, stride=1, dilation=1)
+                (1): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              )
+            )
+            (1): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+            )
+            (2): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+            )
+            (3): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+            )
+            (4): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+            )
+            (5): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+            )
+          )
+        )
+        (block_2): Identity()
+        (image): IdentityBranch()
+      )
+    )
+    (up_modules): ModuleList(
+      (0): ResNetUp(
+        (conv_in): Seq(
+          (0): Conv3d(in_channels=256, out_channels=256, kernel_size=2, stride=2, dilation=1)
+          (1): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+        )
+        (blocks): Seq(
+          (0): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=384, out_channels=128, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+            (downsample): Seq(
+              (0): Conv3d(in_channels=384, out_channels=128, kernel_size=1, stride=1, dilation=1)
+              (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+            )
+          )
+        )
+      )
+      (1): ResNetUp(
+        (conv_in): Seq(
+          (0): Conv3d(in_channels=128, out_channels=128, kernel_size=2, stride=2, dilation=1)
+          (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+        )
+        (blocks): Seq(
+          (0): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=192, out_channels=128, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+            (downsample): Seq(
+              (0): Conv3d(in_channels=192, out_channels=128, kernel_size=1, stride=1, dilation=1)
+              (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+            )
+          )
+        )
+      )
+      (2): ResNetUp(
+        (conv_in): Seq(
+          (0): Conv3d(in_channels=128, out_channels=128, kernel_size=2, stride=2, dilation=1)
+          (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+        )
+        (blocks): Seq(
+          (0): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=160, out_channels=96, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(96, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=96, out_channels=96, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(96, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+            (downsample): Seq(
+              (0): Conv3d(in_channels=160, out_channels=96, kernel_size=1, stride=1, dilation=1)
+              (1): BatchNorm(96, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+            )
+          )
+        )
+      )
+      (3): ResNetUp(
+        (conv_in): Seq(
+          (0): Conv3d(in_channels=96, out_channels=96, kernel_size=2, stride=2, dilation=1)
+          (1): BatchNorm(96, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+        )
+        (blocks): Seq(
+          (0): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=224, out_channels=96, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(96, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=96, out_channels=96, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(96, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+            (downsample): Seq(
+              (0): Conv3d(in_channels=224, out_channels=96, kernel_size=1, stride=1, dilation=1)
+              (1): BatchNorm(96, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+            )
+          )
+        )
+      )
+      (4): ResNetUp(
+        (conv_in): Seq(
+          (0): Conv3d(in_channels=96, out_channels=96, kernel_size=3, stride=1, dilation=1)
+          (1): BatchNorm(96, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+        )
+        (blocks): Seq(
+          (0): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=96, out_channels=96, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(96, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=96, out_channels=96, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(96, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+          )
+        )
+      )
+    )
+  )
+  (head): Sequential(
+    (0): Linear(in_features=96, out_features=20, bias=True)
+  )
+)
+[2022-10-21 15:29:30,360][torch_points3d.utils.colors][INFO] - [0;32mOptimizer: SGD (
+Parameter Group 0
+    dampening: 0.1
+    foreach: None
+    initial_lr: 0.1
+    lr: 0.1
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 0.0001
+
+Parameter Group 1
+    dampening: 0.1
+    foreach: None
+    initial_lr: 0.1
+    lr: 0.1
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 0.0001
+
+Parameter Group 2
+    dampening: 0.1
+    foreach: None
+    initial_lr: 0.001
+    lr: 0.001
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 0.0001
+
+Parameter Group 3
+    dampening: 0.1
+    foreach: None
+    initial_lr: 0.001
+    lr: 0.001
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 0.0001
+
+Parameter Group 4
+    dampening: 0.1
+    foreach: None
+    initial_lr: 0.001
+    lr: 0.001
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 0.0001
+
+Parameter Group 5
+    dampening: 0.1
+    foreach: None
+    initial_lr: 0.001
+    lr: 0.001
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 0.0001
+
+Parameter Group 6
+    dampening: 0.1
+    foreach: None
+    initial_lr: 0.001
+    lr: 0.001
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 0.0001
+)[0m
+[2022-10-21 15:29:30,360][torch_points3d.utils.colors][INFO] - [0;32mLearning Rate Scheduler: ExponentialLR({'gamma': 0.9885}, update_scheduler_on=on_epoch)[0m
+[2022-10-21 15:29:30,361][torch_points3d.utils.colors][INFO] - [0;32mBatchNorm Scheduler: BNMomentumScheduler(base_momentum: 0.02, update_scheduler_on=on_epoch)[0m
+[2022-10-21 15:29:30,361][torch_points3d.utils.colors][INFO] - [0;32mAccumulated gradients: None[0m
+[2022-10-21 15:29:30,362][torch_points3d.trainer][INFO] - Model size = 44322864
+[2022-10-21 15:29:30,363][torch_points3d.trainer][INFO] - Dataset: ScannetDatasetMM 
+[0;95mtrain_pre_batch_collate_transform [0m= None
+[0;95mval_pre_batch_collate_transform [0m= None
+[0;95mtest_pre_batch_collate_transform [0m= None
+[0;95mpre_transform [0m= Compose([
+    SaveOriginalPosId,
+    PCAComputePointwise(num_neighbors=50, r=None, use_full_pos=False, use_cuda=False, use_faiss=False, ncells=None, nprobes=10, chunk_size=1000000),
+    EigenFeatures(norm=True, linearity=True, planarity=True, scattering=True, temperature=None),
+    RemoveAttributes(attr_names=['eigenvalues', 'eigenvectors'], strict=False),
+])
+[0;95mtest_transform [0m= Compose([
+    GridSampling3D(grid_size=0.03, quantize_coords=True, mode=last),
+    XYZFeature(axis=['z']),
+    AddFeatsByKeys(pos_z=True, rgb=False, linearity=False, norm=False, planarity=False, scattering=False),
+])
+[0;95mtrain_transform [0m= Compose([
+    ElasticDistortion(apply_distorsion=True, granularity=[0.2, 0.8], magnitude=[0.4, 1.6]),
+    Random3AxisRotation(apply_rotation=True, rot_x=8, rot_y=8, rot_z=180),
+    Random symmetry of axes: x=True, y=True, z=False,
+    RandomScaleAnisotropic([0.9, 1.1]),
+    GridSampling3D(grid_size=0.03, quantize_coords=True, mode=last),
+    XYZFeature(axis=['z']),
+    AddFeatsByKeys(pos_z=True, rgb=False, linearity=False, norm=False, planarity=False, scattering=False),
+])
+[0;95mval_transform [0m= Compose([
+    GridSampling3D(grid_size=0.03, quantize_coords=True, mode=last),
+    XYZFeature(axis=['z']),
+    AddFeatsByKeys(pos_z=True, rgb=False, linearity=False, norm=False, planarity=False, scattering=False),
+])
+[0;95minference_transform [0m= Compose([
+    SaveOriginalPosId,
+    PCAComputePointwise(num_neighbors=50, r=None, use_full_pos=False, use_cuda=False, use_faiss=False, ncells=None, nprobes=10, chunk_size=1000000),
+    EigenFeatures(norm=True, linearity=True, planarity=True, scattering=True, temperature=None),
+    RemoveAttributes(attr_names=['eigenvalues', 'eigenvectors'], strict=False),
+    GridSampling3D(grid_size=0.03, quantize_coords=True, mode=last),
+    XYZFeature(axis=['z']),
+    AddFeatsByKeys(pos_z=True, rgb=False, linearity=False, norm=False, planarity=False, scattering=False),
+])
+[0;95mpre_transform_image [0m= ComposeMultiModal([
+    LoadImages(ref_size=[320, 240], crop_size=None, crop_offsets=None, downscale=None, show_progress=False),
+    NonStaticMask(ref_size=(320, 240), proj_upscale=1, n_sample=5),
+    MapImages(key=mapping_index, verbose=False, cylinder=False, ref_size=[320, 240], proj_upscale=1, method=SplattingVisibility, use_cuda=False, kwargs={'voxel': 0.03, 'r_max': 8, 'r_min': 0.05, 'exact': True, 'camera': 'scannet'}),
+    NeighborhoodBasedMappingFeatures(k_list=[50], voxel=0.01, compute_density=True, compute_occlusion=True, use_faiss=False, use_cuda=False, ncells=None, nprobes=10, verbose=True),
+])
+[0;95mtest_transform_image [0m= ComposeMultiModal([
+    SelectMappingFromPointId(key=mapping_index),
+    ToImageData(),
+    PickImagesFromMemoryCredit(credit=1920000, use_coverage=True, k_coverage=2),
+    ToFloatImage(),
+    Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+])
+[0;95mtrain_transform_image [0m= ComposeMultiModal([
+    SelectMappingFromPointId(key=mapping_index),
+    ToImageData(),
+    PickImagesFromMemoryCredit(credit=1920000, use_coverage=True, k_coverage=2),
+    JitterMappingFeatures(sigma=0.02, clip=0.03),
+    ColorJitter(brightness=[0.4, 1.6], contrast=[0.4, 1.6], saturation=[0.30000000000000004, 1.7], hue=None),
+    RandomHorizontalFlip(p=0.5),
+    ToFloatImage(),
+    Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+])
+[0;95mval_transform_image [0m= ComposeMultiModal([
+    SelectMappingFromPointId(key=mapping_index),
+    ToImageData(),
+    PickImagesFromMemoryCredit(credit=1920000, use_coverage=True, k_coverage=2),
+    ToFloatImage(),
+    Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+])
+[0;95minference_transform_image [0m= ComposeMultiModal([
+    LoadImages(ref_size=[320, 240], crop_size=None, crop_offsets=None, downscale=None, show_progress=False),
+    NonStaticMask(ref_size=(320, 240), proj_upscale=1, n_sample=5),
+    MapImages(key=mapping_index, verbose=False, cylinder=False, ref_size=[320, 240], proj_upscale=1, method=SplattingVisibility, use_cuda=False, kwargs={'voxel': 0.03, 'r_max': 8, 'r_min': 0.05, 'exact': True, 'camera': 'scannet'}),
+    NeighborhoodBasedMappingFeatures(k_list=[50], voxel=0.01, compute_density=True, compute_occlusion=True, use_faiss=False, use_cuda=False, ncells=None, nprobes=10, verbose=True),
+    SelectMappingFromPointId(key=mapping_index),
+    ToImageData(),
+    PickImagesFromMemoryCredit(credit=1920000, use_coverage=True, k_coverage=2),
+    ToFloatImage(),
+    Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+])
+Size of [0;95mtrain_dataset [0m= 3
+Size of [0;95mtest_dataset [0m= 0
+Size of [0;95mval_dataset [0m= 3
+[0;95mBatch size =[0m 3
+[2022-10-21 15:29:32,957][torch_points3d.datasets.base_dataset][INFO] - Available stage selection datasets: [0;95m ['val'] [0m
+[2022-10-21 15:29:32,957][torch_points3d.datasets.base_dataset][INFO] - The models will be selected using the metrics on following dataset: [0;95m val [0m
+[2022-10-21 15:29:35,153][torch_points3d.trainer][INFO] - EPOCH 1 / 100
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:18<?, ?it/s, [0;92mdata_loading=13.52, iteration=5.072, train_acc=3.011, train_loss_cross_entropy=3.001, train_loss_seg=3.001, train_macc=6.376, train_miou=0.547[0m)]100%|##########| 1/1 [00:18<00:00, 18.60s/it, [0;92mdata_loading=13.52, iteration=5.072, train_acc=3.011, train_loss_cross_entropy=3.001, train_loss_seg=3.001, train_macc=6.376, train_miou=0.547[0m)]100%|##########| 1/1 [00:18<00:00, 18.60s/it, [0;92mdata_loading=13.52, iteration=5.072, train_acc=3.011, train_loss_cross_entropy=3.001, train_loss_seg=3.001, train_macc=6.376, train_miou=0.547[0m)][2022-10-21 15:29:54,605][torch_points3d.trainer][INFO] - Learning rate = 0.098850
+[2022-10-21 15:29:54,607][torch_points3d.trainer][INFO] - EPOCH 2 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:15<?, ?it/s, [0;92mdata_loading=12.98, iteration=2.270, train_acc=41.60, train_loss_cross_entropy=2.370, train_loss_seg=2.370, train_macc=7.630, train_miou=3.260[0m)]100%|##########| 1/1 [00:15<00:00, 15.26s/it, [0;92mdata_loading=12.98, iteration=2.270, train_acc=41.60, train_loss_cross_entropy=2.370, train_loss_seg=2.370, train_macc=7.630, train_miou=3.260[0m)]100%|##########| 1/1 [00:15<00:00, 15.26s/it, [0;92mdata_loading=12.98, iteration=2.270, train_acc=41.60, train_loss_cross_entropy=2.370, train_loss_seg=2.370, train_macc=7.630, train_miou=3.260[0m)][2022-10-21 15:30:10,743][torch_points3d.trainer][INFO] - Learning rate = 0.097713
+[2022-10-21 15:30:10,745][torch_points3d.trainer][INFO] - EPOCH 3 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:15<?, ?it/s, [0;92mdata_loading=12.85, iteration=2.321, train_acc=45.45, train_loss_cross_entropy=1.877, train_loss_seg=1.877, train_macc=8.391, train_miou=4.460[0m)]100%|##########| 1/1 [00:15<00:00, 15.18s/it, [0;92mdata_loading=12.85, iteration=2.321, train_acc=45.45, train_loss_cross_entropy=1.877, train_loss_seg=1.877, train_macc=8.391, train_miou=4.460[0m)]100%|##########| 1/1 [00:15<00:00, 15.18s/it, [0;92mdata_loading=12.85, iteration=2.321, train_acc=45.45, train_loss_cross_entropy=1.877, train_loss_seg=1.877, train_macc=8.391, train_miou=4.460[0m)][2022-10-21 15:30:26,770][torch_points3d.trainer][INFO] - Learning rate = 0.096590
+[2022-10-21 15:30:26,772][torch_points3d.trainer][INFO] - EPOCH 4 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:15<?, ?it/s, [0;92mdata_loading=12.90, iteration=2.155, train_acc=56.18, train_loss_cross_entropy=1.754, train_loss_seg=1.754, train_macc=11.03, train_miou=6.487[0m)]100%|##########| 1/1 [00:15<00:00, 15.07s/it, [0;92mdata_loading=12.90, iteration=2.155, train_acc=56.18, train_loss_cross_entropy=1.754, train_loss_seg=1.754, train_macc=11.03, train_miou=6.487[0m)]100%|##########| 1/1 [00:15<00:00, 15.07s/it, [0;92mdata_loading=12.90, iteration=2.155, train_acc=56.18, train_loss_cross_entropy=1.754, train_loss_seg=1.754, train_macc=11.03, train_miou=6.487[0m)][2022-10-21 15:30:42,695][torch_points3d.trainer][INFO] - Learning rate = 0.095479
+[2022-10-21 15:30:42,697][torch_points3d.trainer][INFO] - EPOCH 5 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:15<?, ?it/s, [0;92mdata_loading=13.02, iteration=2.153, train_acc=56.78, train_loss_cross_entropy=1.703, train_loss_seg=1.703, train_macc=11.42, train_miou=7.125[0m)]100%|##########| 1/1 [00:15<00:00, 15.17s/it, [0;92mdata_loading=13.02, iteration=2.153, train_acc=56.78, train_loss_cross_entropy=1.703, train_loss_seg=1.703, train_macc=11.42, train_miou=7.125[0m)]100%|##########| 1/1 [00:15<00:00, 15.17s/it, [0;92mdata_loading=13.02, iteration=2.153, train_acc=56.78, train_loss_cross_entropy=1.703, train_loss_seg=1.703, train_macc=11.42, train_miou=7.125[0m)][2022-10-21 15:30:58,735][torch_points3d.trainer][INFO] - Learning rate = 0.094381
+[2022-10-21 15:30:58,736][torch_points3d.trainer][INFO] - EPOCH 6 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:15<?, ?it/s, [0;92mdata_loading=12.89, iteration=2.134, train_acc=54.29, train_loss_cross_entropy=1.607, train_loss_seg=1.607, train_macc=11.02, train_miou=6.871[0m)]100%|##########| 1/1 [00:15<00:00, 15.03s/it, [0;92mdata_loading=12.89, iteration=2.134, train_acc=54.29, train_loss_cross_entropy=1.607, train_loss_seg=1.607, train_macc=11.02, train_miou=6.871[0m)]100%|##########| 1/1 [00:15<00:00, 15.03s/it, [0;92mdata_loading=12.89, iteration=2.134, train_acc=54.29, train_loss_cross_entropy=1.607, train_loss_seg=1.607, train_macc=11.02, train_miou=6.871[0m)][2022-10-21 15:31:14,711][torch_points3d.trainer][INFO] - Learning rate = 0.093295
+[2022-10-21 15:31:14,712][torch_points3d.trainer][INFO] - EPOCH 7 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.77, iteration=2.171, train_acc=55.40, train_loss_cross_entropy=1.488, train_loss_seg=1.488, train_macc=11.17, train_miou=7.042[0m)]100%|##########| 1/1 [00:14<00:00, 14.95s/it, [0;92mdata_loading=12.77, iteration=2.171, train_acc=55.40, train_loss_cross_entropy=1.488, train_loss_seg=1.488, train_macc=11.17, train_miou=7.042[0m)]100%|##########| 1/1 [00:14<00:00, 14.95s/it, [0;92mdata_loading=12.77, iteration=2.171, train_acc=55.40, train_loss_cross_entropy=1.488, train_loss_seg=1.488, train_macc=11.17, train_miou=7.042[0m)][2022-10-21 15:31:30,611][torch_points3d.trainer][INFO] - Learning rate = 0.092222
+[2022-10-21 15:31:30,612][torch_points3d.trainer][INFO] - EPOCH 8 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:15<?, ?it/s, [0;92mdata_loading=12.85, iteration=2.236, train_acc=58.84, train_loss_cross_entropy=1.435, train_loss_seg=1.435, train_macc=11.77, train_miou=7.695[0m)]100%|##########| 1/1 [00:15<00:00, 15.09s/it, [0;92mdata_loading=12.85, iteration=2.236, train_acc=58.84, train_loss_cross_entropy=1.435, train_loss_seg=1.435, train_macc=11.77, train_miou=7.695[0m)]100%|##########| 1/1 [00:15<00:00, 15.09s/it, [0;92mdata_loading=12.85, iteration=2.236, train_acc=58.84, train_loss_cross_entropy=1.435, train_loss_seg=1.435, train_macc=11.77, train_miou=7.695[0m)][2022-10-21 15:31:46,544][torch_points3d.trainer][INFO] - Learning rate = 0.091162
+[2022-10-21 15:31:46,545][torch_points3d.trainer][INFO] - EPOCH 9 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:15<?, ?it/s, [0;92mdata_loading=12.88, iteration=2.158, train_acc=57.10, train_loss_cross_entropy=1.467, train_loss_seg=1.467, train_macc=14.96, train_miou=9.428[0m)]100%|##########| 1/1 [00:15<00:00, 15.05s/it, [0;92mdata_loading=12.88, iteration=2.158, train_acc=57.10, train_loss_cross_entropy=1.467, train_loss_seg=1.467, train_macc=14.96, train_miou=9.428[0m)]100%|##########| 1/1 [00:15<00:00, 15.05s/it, [0;92mdata_loading=12.88, iteration=2.158, train_acc=57.10, train_loss_cross_entropy=1.467, train_loss_seg=1.467, train_macc=14.96, train_miou=9.428[0m)][2022-10-21 15:32:02,459][torch_points3d.trainer][INFO] - Learning rate = 0.090114
+[2022-10-21 15:32:02,461][torch_points3d.trainer][INFO] - EPOCH 10 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.72, iteration=2.138, train_acc=56.60, train_loss_cross_entropy=1.447, train_loss_seg=1.447, train_macc=15.54, train_miou=9.734[0m)]100%|##########| 1/1 [00:14<00:00, 14.86s/it, [0;92mdata_loading=12.72, iteration=2.138, train_acc=56.60, train_loss_cross_entropy=1.447, train_loss_seg=1.447, train_macc=15.54, train_miou=9.734[0m)]100%|##########| 1/1 [00:14<00:00, 14.87s/it, [0;92mdata_loading=12.72, iteration=2.138, train_acc=56.60, train_loss_cross_entropy=1.447, train_loss_seg=1.447, train_macc=15.54, train_miou=9.734[0m)][2022-10-21 15:32:18,181][torch_points3d.trainer][INFO] - Learning rate = 0.089077
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:16<?, ?it/s, [0;93mval_acc=55.19, val_loss_cross_entropy=1.947, val_loss_seg=1.947, val_macc=17.37, val_miou=9.857[0m)]100%|##########| 1/1 [00:16<00:00, 16.42s/it, [0;93mval_acc=55.19, val_loss_cross_entropy=1.947, val_loss_seg=1.947, val_macc=17.37, val_miou=9.857[0m)]100%|##########| 1/1 [00:16<00:00, 16.42s/it, [0;93mval_acc=55.19, val_loss_cross_entropy=1.947, val_loss_seg=1.947, val_macc=17.37, val_miou=9.857[0m)][2022-10-21 15:32:35,893][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-10-21 15:32:35,894][torch_points3d.metrics.base_tracker][INFO] -     val_loss_seg = 1.9474716186523438
+[2022-10-21 15:32:35,894][torch_points3d.metrics.base_tracker][INFO] -     val_loss_cross_entropy = 1.9474716186523438
+[2022-10-21 15:32:35,895][torch_points3d.metrics.base_tracker][INFO] -     val_acc = 55.19987147588525
+[2022-10-21 15:32:35,895][torch_points3d.metrics.base_tracker][INFO] -     val_macc = 17.37388494579989
+[2022-10-21 15:32:35,895][torch_points3d.metrics.base_tracker][INFO] -     val_miou = 9.85705238415918
+[2022-10-21 15:32:35,895][torch_points3d.metrics.base_tracker][INFO] -     val_miou_per_class = {0: '38.38', 1: '69.25', 2: '0.80', 3: '0.00', 4: '0.00', 5: '0.00', 6: '0.00', 7: '0.00', 8: '0.00', 9: '0.00', 10: '0.00', 11: '0.00', 12: '0.00', 13: '0.00', 14: '0.00', 15: '0.00', 16: '0.00', 17: '0.00', 18: '0.00', 19: '0.00'}
+[2022-10-21 15:32:35,895][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-10-21 15:32:35,895][torch_points3d.trainer][INFO] - EPOCH 11 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:15<?, ?it/s, [0;92mdata_loading=12.82, iteration=2.189, train_acc=55.55, train_loss_cross_entropy=1.449, train_loss_seg=1.449, train_macc=15.64, train_miou=9.658[0m)]100%|##########| 1/1 [00:15<00:00, 15.02s/it, [0;92mdata_loading=12.82, iteration=2.189, train_acc=55.55, train_loss_cross_entropy=1.449, train_loss_seg=1.449, train_macc=15.64, train_miou=9.658[0m)]100%|##########| 1/1 [00:15<00:00, 15.02s/it, [0;92mdata_loading=12.82, iteration=2.189, train_acc=55.55, train_loss_cross_entropy=1.449, train_loss_seg=1.449, train_macc=15.64, train_miou=9.658[0m)][2022-10-21 15:32:52,180][torch_points3d.trainer][INFO] - Learning rate = 0.088053
+[2022-10-21 15:32:52,181][torch_points3d.trainer][INFO] - EPOCH 12 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.69, iteration=2.186, train_acc=58.09, train_loss_cross_entropy=1.387, train_loss_seg=1.387, train_macc=14.82, train_miou=9.670[0m)]100%|##########| 1/1 [00:14<00:00, 14.88s/it, [0;92mdata_loading=12.69, iteration=2.186, train_acc=58.09, train_loss_cross_entropy=1.387, train_loss_seg=1.387, train_macc=14.82, train_miou=9.670[0m)]100%|##########| 1/1 [00:14<00:00, 14.88s/it, [0;92mdata_loading=12.69, iteration=2.186, train_acc=58.09, train_loss_cross_entropy=1.387, train_loss_seg=1.387, train_macc=14.82, train_miou=9.670[0m)][2022-10-21 15:33:08,318][torch_points3d.trainer][INFO] - Learning rate = 0.087040
+[2022-10-21 15:33:08,319][torch_points3d.trainer][INFO] - EPOCH 13 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.80, iteration=2.181, train_acc=61.03, train_loss_cross_entropy=1.333, train_loss_seg=1.333, train_macc=13.80, train_miou=9.165[0m)]100%|##########| 1/1 [00:14<00:00, 14.99s/it, [0;92mdata_loading=12.80, iteration=2.181, train_acc=61.03, train_loss_cross_entropy=1.333, train_loss_seg=1.333, train_macc=13.80, train_miou=9.165[0m)]100%|##########| 1/1 [00:14<00:00, 14.99s/it, [0;92mdata_loading=12.80, iteration=2.181, train_acc=61.03, train_loss_cross_entropy=1.333, train_loss_seg=1.333, train_macc=13.80, train_miou=9.165[0m)][2022-10-21 15:33:24,960][torch_points3d.trainer][INFO] - Learning rate = 0.086039
+[2022-10-21 15:33:24,961][torch_points3d.trainer][INFO] - EPOCH 14 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.57, iteration=2.202, train_acc=61.41, train_loss_cross_entropy=1.320, train_loss_seg=1.320, train_macc=12.50, train_miou=7.925[0m)]100%|##########| 1/1 [00:14<00:00, 14.78s/it, [0;92mdata_loading=12.57, iteration=2.202, train_acc=61.41, train_loss_cross_entropy=1.320, train_loss_seg=1.320, train_macc=12.50, train_miou=7.925[0m)]100%|##########| 1/1 [00:14<00:00, 14.78s/it, [0;92mdata_loading=12.57, iteration=2.202, train_acc=61.41, train_loss_cross_entropy=1.320, train_loss_seg=1.320, train_macc=12.50, train_miou=7.925[0m)][2022-10-21 15:33:40,985][torch_points3d.trainer][INFO] - Learning rate = 0.085050
+[2022-10-21 15:33:40,987][torch_points3d.trainer][INFO] - EPOCH 15 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.74, iteration=2.129, train_acc=59.10, train_loss_cross_entropy=1.344, train_loss_seg=1.344, train_macc=12.20, train_miou=7.886[0m)]100%|##########| 1/1 [00:14<00:00, 14.88s/it, [0;92mdata_loading=12.74, iteration=2.129, train_acc=59.10, train_loss_cross_entropy=1.344, train_loss_seg=1.344, train_macc=12.20, train_miou=7.886[0m)]100%|##########| 1/1 [00:14<00:00, 14.88s/it, [0;92mdata_loading=12.74, iteration=2.129, train_acc=59.10, train_loss_cross_entropy=1.344, train_loss_seg=1.344, train_macc=12.20, train_miou=7.886[0m)][2022-10-21 15:33:57,797][torch_points3d.trainer][INFO] - Learning rate = 0.084072
+[2022-10-21 15:33:57,799][torch_points3d.trainer][INFO] - EPOCH 16 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.80, iteration=2.148, train_acc=59.90, train_loss_cross_entropy=1.325, train_loss_seg=1.325, train_macc=12.15, train_miou=7.906[0m)]100%|##########| 1/1 [00:14<00:00, 14.95s/it, [0;92mdata_loading=12.80, iteration=2.148, train_acc=59.90, train_loss_cross_entropy=1.325, train_loss_seg=1.325, train_macc=12.15, train_miou=7.906[0m)]100%|##########| 1/1 [00:14<00:00, 14.95s/it, [0;92mdata_loading=12.80, iteration=2.148, train_acc=59.90, train_loss_cross_entropy=1.325, train_loss_seg=1.325, train_macc=12.15, train_miou=7.906[0m)][2022-10-21 15:34:14,004][torch_points3d.trainer][INFO] - Learning rate = 0.083105
+[2022-10-21 15:34:14,006][torch_points3d.trainer][INFO] - EPOCH 17 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.77, iteration=2.201, train_acc=60.55, train_loss_cross_entropy=1.297, train_loss_seg=1.297, train_macc=12.15, train_miou=7.993[0m)]100%|##########| 1/1 [00:14<00:00, 14.98s/it, [0;92mdata_loading=12.77, iteration=2.201, train_acc=60.55, train_loss_cross_entropy=1.297, train_loss_seg=1.297, train_macc=12.15, train_miou=7.993[0m)]100%|##########| 1/1 [00:14<00:00, 14.98s/it, [0;92mdata_loading=12.77, iteration=2.201, train_acc=60.55, train_loss_cross_entropy=1.297, train_loss_seg=1.297, train_macc=12.15, train_miou=7.993[0m)][2022-10-21 15:34:30,223][torch_points3d.trainer][INFO] - Learning rate = 0.082149
+[2022-10-21 15:34:30,224][torch_points3d.trainer][INFO] - EPOCH 18 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:15<?, ?it/s, [0;92mdata_loading=12.87, iteration=2.225, train_acc=61.30, train_loss_cross_entropy=1.258, train_loss_seg=1.258, train_macc=12.28, train_miou=8.006[0m)]100%|##########| 1/1 [00:15<00:00, 15.10s/it, [0;92mdata_loading=12.87, iteration=2.225, train_acc=61.30, train_loss_cross_entropy=1.258, train_loss_seg=1.258, train_macc=12.28, train_miou=8.006[0m)]100%|##########| 1/1 [00:15<00:00, 15.10s/it, [0;92mdata_loading=12.87, iteration=2.225, train_acc=61.30, train_loss_cross_entropy=1.258, train_loss_seg=1.258, train_macc=12.28, train_miou=8.006[0m)][2022-10-21 15:34:46,564][torch_points3d.trainer][INFO] - Learning rate = 0.081205
+[2022-10-21 15:34:46,565][torch_points3d.trainer][INFO] - EPOCH 19 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.74, iteration=2.214, train_acc=61.29, train_loss_cross_entropy=1.230, train_loss_seg=1.230, train_macc=12.75, train_miou=8.642[0m)]100%|##########| 1/1 [00:14<00:00, 14.96s/it, [0;92mdata_loading=12.74, iteration=2.214, train_acc=61.29, train_loss_cross_entropy=1.230, train_loss_seg=1.230, train_macc=12.75, train_miou=8.642[0m)]100%|##########| 1/1 [00:14<00:00, 14.96s/it, [0;92mdata_loading=12.74, iteration=2.214, train_acc=61.29, train_loss_cross_entropy=1.230, train_loss_seg=1.230, train_macc=12.75, train_miou=8.642[0m)][2022-10-21 15:35:02,776][torch_points3d.trainer][INFO] - Learning rate = 0.080271
+[2022-10-21 15:35:02,778][torch_points3d.trainer][INFO] - EPOCH 20 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.70, iteration=2.158, train_acc=61.20, train_loss_cross_entropy=1.269, train_loss_seg=1.269, train_macc=13.01, train_miou=8.611[0m)]100%|##########| 1/1 [00:14<00:00, 14.86s/it, [0;92mdata_loading=12.70, iteration=2.158, train_acc=61.20, train_loss_cross_entropy=1.269, train_loss_seg=1.269, train_macc=13.01, train_miou=8.611[0m)]100%|##########| 1/1 [00:14<00:00, 14.86s/it, [0;92mdata_loading=12.70, iteration=2.158, train_acc=61.20, train_loss_cross_entropy=1.269, train_loss_seg=1.269, train_macc=13.01, train_miou=8.611[0m)][2022-10-21 15:35:18,873][torch_points3d.trainer][INFO] - Learning rate = 0.079348
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:16<?, ?it/s, [0;93mval_acc=57.00, val_loss_cross_entropy=1.612, val_loss_seg=1.612, val_macc=18.32, val_miou=11.19[0m)]100%|##########| 1/1 [00:16<00:00, 16.06s/it, [0;93mval_acc=57.00, val_loss_cross_entropy=1.612, val_loss_seg=1.612, val_macc=18.32, val_miou=11.19[0m)]100%|##########| 1/1 [00:16<00:00, 16.06s/it, [0;93mval_acc=57.00, val_loss_cross_entropy=1.612, val_loss_seg=1.612, val_macc=18.32, val_miou=11.19[0m)][2022-10-21 15:35:34,989][torch_points3d.utils.colors][INFO] - [0;94macc: 55.19987147588525 -> 57.0041203131438, macc: 17.37388494579989 -> 18.32381503606485, miou: 9.85705238415918 -> 11.196615226011032[0m
+[2022-10-21 15:35:36,186][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-10-21 15:35:36,187][torch_points3d.metrics.base_tracker][INFO] -     val_loss_seg = 1.6129330396652222
+[2022-10-21 15:35:36,187][torch_points3d.metrics.base_tracker][INFO] -     val_loss_cross_entropy = 1.6129330396652222
+[2022-10-21 15:35:36,187][torch_points3d.metrics.base_tracker][INFO] -     val_acc = 57.0041203131438
+[2022-10-21 15:35:36,187][torch_points3d.metrics.base_tracker][INFO] -     val_macc = 18.32381503606485
+[2022-10-21 15:35:36,187][torch_points3d.metrics.base_tracker][INFO] -     val_miou = 11.196615226011032
+[2022-10-21 15:35:36,187][torch_points3d.metrics.base_tracker][INFO] -     val_miou_per_class = {0: '37.11', 1: '82.01', 2: '0.24', 3: '0.00', 4: '0.00', 5: '0.00', 6: '3.80', 7: '0.00', 8: '0.00', 9: '0.00', 10: '0.00', 11: '0.00', 12: '0.00', 13: '0.00', 14: '0.00', 15: '0.00', 16: '0.00', 17: '0.00', 18: '0.00', 19: '0.00'}
+[2022-10-21 15:35:36,187][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-10-21 15:35:36,188][torch_points3d.trainer][INFO] - EPOCH 21 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:15<?, ?it/s, [0;92mdata_loading=12.83, iteration=2.222, train_acc=62.87, train_loss_cross_entropy=1.215, train_loss_seg=1.215, train_macc=13.46, train_miou=9.049[0m)]100%|##########| 1/1 [00:15<00:00, 15.05s/it, [0;92mdata_loading=12.83, iteration=2.222, train_acc=62.87, train_loss_cross_entropy=1.215, train_loss_seg=1.215, train_macc=13.46, train_miou=9.049[0m)]100%|##########| 1/1 [00:15<00:00, 15.05s/it, [0;92mdata_loading=12.83, iteration=2.222, train_acc=62.87, train_loss_cross_entropy=1.215, train_loss_seg=1.215, train_macc=13.46, train_miou=9.049[0m)][2022-10-21 15:35:52,474][torch_points3d.trainer][INFO] - Learning rate = 0.078435
+[2022-10-21 15:35:52,475][torch_points3d.trainer][INFO] - EPOCH 22 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.82, iteration=2.164, train_acc=62.41, train_loss_cross_entropy=1.227, train_loss_seg=1.227, train_macc=14.99, train_miou=10.15[0m)]100%|##########| 1/1 [00:14<00:00, 14.99s/it, [0;92mdata_loading=12.82, iteration=2.164, train_acc=62.41, train_loss_cross_entropy=1.227, train_loss_seg=1.227, train_macc=14.99, train_miou=10.15[0m)]100%|##########| 1/1 [00:14<00:00, 14.99s/it, [0;92mdata_loading=12.82, iteration=2.164, train_acc=62.41, train_loss_cross_entropy=1.227, train_loss_seg=1.227, train_macc=14.99, train_miou=10.15[0m)][2022-10-21 15:36:08,727][torch_points3d.trainer][INFO] - Learning rate = 0.077533
+[2022-10-21 15:36:08,728][torch_points3d.trainer][INFO] - EPOCH 23 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:15<?, ?it/s, [0;92mdata_loading=12.77, iteration=2.276, train_acc=63.42, train_loss_cross_entropy=1.177, train_loss_seg=1.177, train_macc=15.79, train_miou=10.93[0m)]100%|##########| 1/1 [00:15<00:00, 15.06s/it, [0;92mdata_loading=12.77, iteration=2.276, train_acc=63.42, train_loss_cross_entropy=1.177, train_loss_seg=1.177, train_macc=15.79, train_miou=10.93[0m)]100%|##########| 1/1 [00:15<00:00, 15.06s/it, [0;92mdata_loading=12.77, iteration=2.276, train_acc=63.42, train_loss_cross_entropy=1.177, train_loss_seg=1.177, train_macc=15.79, train_miou=10.93[0m)][2022-10-21 15:36:25,046][torch_points3d.trainer][INFO] - Learning rate = 0.076641
+[2022-10-21 15:36:25,047][torch_points3d.trainer][INFO] - EPOCH 24 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:15<?, ?it/s, [0;92mdata_loading=12.79, iteration=2.215, train_acc=62.91, train_loss_cross_entropy=1.165, train_loss_seg=1.165, train_macc=15.88, train_miou=10.94[0m)]100%|##########| 1/1 [00:15<00:00, 15.01s/it, [0;92mdata_loading=12.79, iteration=2.215, train_acc=62.91, train_loss_cross_entropy=1.165, train_loss_seg=1.165, train_macc=15.88, train_miou=10.94[0m)]100%|##########| 1/1 [00:15<00:00, 15.01s/it, [0;92mdata_loading=12.79, iteration=2.215, train_acc=62.91, train_loss_cross_entropy=1.165, train_loss_seg=1.165, train_macc=15.88, train_miou=10.94[0m)][2022-10-21 15:36:41,302][torch_points3d.trainer][INFO] - Learning rate = 0.075760
+[2022-10-21 15:36:41,304][torch_points3d.trainer][INFO] - EPOCH 25 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.70, iteration=2.230, train_acc=63.86, train_loss_cross_entropy=1.161, train_loss_seg=1.161, train_macc=16.62, train_miou=11.48[0m)]100%|##########| 1/1 [00:14<00:00, 14.94s/it, [0;92mdata_loading=12.70, iteration=2.230, train_acc=63.86, train_loss_cross_entropy=1.161, train_loss_seg=1.161, train_macc=16.62, train_miou=11.48[0m)]100%|##########| 1/1 [00:14<00:00, 14.94s/it, [0;92mdata_loading=12.70, iteration=2.230, train_acc=63.86, train_loss_cross_entropy=1.161, train_loss_seg=1.161, train_macc=16.62, train_miou=11.48[0m)][2022-10-21 15:36:57,487][torch_points3d.trainer][INFO] - Learning rate = 0.074889
+[2022-10-21 15:36:57,488][torch_points3d.trainer][INFO] - EPOCH 26 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.60, iteration=2.200, train_acc=63.77, train_loss_cross_entropy=1.135, train_loss_seg=1.135, train_macc=15.69, train_miou=11.05[0m)]100%|##########| 1/1 [00:14<00:00, 14.81s/it, [0;92mdata_loading=12.60, iteration=2.200, train_acc=63.77, train_loss_cross_entropy=1.135, train_loss_seg=1.135, train_macc=15.69, train_miou=11.05[0m)]100%|##########| 1/1 [00:14<00:00, 14.81s/it, [0;92mdata_loading=12.60, iteration=2.200, train_acc=63.77, train_loss_cross_entropy=1.135, train_loss_seg=1.135, train_macc=15.69, train_miou=11.05[0m)][2022-10-21 15:37:13,549][torch_points3d.trainer][INFO] - Learning rate = 0.074028
+[2022-10-21 15:37:13,551][torch_points3d.trainer][INFO] - EPOCH 27 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:15<?, ?it/s, [0;92mdata_loading=12.90, iteration=2.173, train_acc=62.41, train_loss_cross_entropy=1.156, train_loss_seg=1.156, train_macc=15.42, train_miou=10.77[0m)]100%|##########| 1/1 [00:15<00:00, 15.08s/it, [0;92mdata_loading=12.90, iteration=2.173, train_acc=62.41, train_loss_cross_entropy=1.156, train_loss_seg=1.156, train_macc=15.42, train_miou=10.77[0m)]100%|##########| 1/1 [00:15<00:00, 15.08s/it, [0;92mdata_loading=12.90, iteration=2.173, train_acc=62.41, train_loss_cross_entropy=1.156, train_loss_seg=1.156, train_macc=15.42, train_miou=10.77[0m)][2022-10-21 15:37:29,881][torch_points3d.trainer][INFO] - Learning rate = 0.073176
+[2022-10-21 15:37:29,883][torch_points3d.trainer][INFO] - EPOCH 28 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:15<?, ?it/s, [0;92mdata_loading=12.83, iteration=2.225, train_acc=63.72, train_loss_cross_entropy=1.139, train_loss_seg=1.139, train_macc=15.54, train_miou=10.72[0m)]100%|##########| 1/1 [00:15<00:00, 15.06s/it, [0;92mdata_loading=12.83, iteration=2.225, train_acc=63.72, train_loss_cross_entropy=1.139, train_loss_seg=1.139, train_macc=15.54, train_miou=10.72[0m)]100%|##########| 1/1 [00:15<00:00, 15.06s/it, [0;92mdata_loading=12.83, iteration=2.225, train_acc=63.72, train_loss_cross_entropy=1.139, train_loss_seg=1.139, train_macc=15.54, train_miou=10.72[0m)][2022-10-21 15:37:46,195][torch_points3d.trainer][INFO] - Learning rate = 0.072335
+[2022-10-21 15:37:46,197][torch_points3d.trainer][INFO] - EPOCH 29 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.62, iteration=2.180, train_acc=65.18, train_loss_cross_entropy=1.090, train_loss_seg=1.090, train_macc=15.94, train_miou=10.96[0m)]100%|##########| 1/1 [00:14<00:00, 14.81s/it, [0;92mdata_loading=12.62, iteration=2.180, train_acc=65.18, train_loss_cross_entropy=1.090, train_loss_seg=1.090, train_macc=15.94, train_miou=10.96[0m)]100%|##########| 1/1 [00:14<00:00, 14.81s/it, [0;92mdata_loading=12.62, iteration=2.180, train_acc=65.18, train_loss_cross_entropy=1.090, train_loss_seg=1.090, train_macc=15.94, train_miou=10.96[0m)][2022-10-21 15:38:02,492][torch_points3d.trainer][INFO] - Learning rate = 0.071503
+[2022-10-21 15:38:02,494][torch_points3d.trainer][INFO] - EPOCH 30 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:15<?, ?it/s, [0;92mdata_loading=12.81, iteration=2.267, train_acc=64.22, train_loss_cross_entropy=1.105, train_loss_seg=1.105, train_macc=15.50, train_miou=10.69[0m)]100%|##########| 1/1 [00:15<00:00, 15.09s/it, [0;92mdata_loading=12.81, iteration=2.267, train_acc=64.22, train_loss_cross_entropy=1.105, train_loss_seg=1.105, train_macc=15.50, train_miou=10.69[0m)]100%|##########| 1/1 [00:15<00:00, 15.09s/it, [0;92mdata_loading=12.81, iteration=2.267, train_acc=64.22, train_loss_cross_entropy=1.105, train_loss_seg=1.105, train_macc=15.50, train_miou=10.69[0m)][2022-10-21 15:38:18,803][torch_points3d.trainer][INFO] - Learning rate = 0.070681
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:16<?, ?it/s, [0;93mval_acc=62.21, val_loss_cross_entropy=1.458, val_loss_seg=1.458, val_macc=23.17, val_miou=15.43[0m)]100%|##########| 1/1 [00:16<00:00, 16.01s/it, [0;93mval_acc=62.21, val_loss_cross_entropy=1.458, val_loss_seg=1.458, val_macc=23.17, val_miou=15.43[0m)]100%|##########| 1/1 [00:16<00:00, 16.01s/it, [0;93mval_acc=62.21, val_loss_cross_entropy=1.458, val_loss_seg=1.458, val_macc=23.17, val_miou=15.43[0m)][2022-10-21 15:38:34,869][torch_points3d.utils.colors][INFO] - [0;94macc: 57.0041203131438 -> 62.211199367192904, macc: 18.32381503606485 -> 23.173093183811677, miou: 11.196615226011032 -> 15.43363247551855[0m
+[2022-10-21 15:38:36,133][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-10-21 15:38:36,134][torch_points3d.metrics.base_tracker][INFO] -     val_loss_seg = 1.458856463432312
+[2022-10-21 15:38:36,134][torch_points3d.metrics.base_tracker][INFO] -     val_loss_cross_entropy = 1.458856463432312
+[2022-10-21 15:38:36,134][torch_points3d.metrics.base_tracker][INFO] -     val_acc = 62.211199367192904
+[2022-10-21 15:38:36,134][torch_points3d.metrics.base_tracker][INFO] -     val_macc = 23.173093183811677
+[2022-10-21 15:38:36,134][torch_points3d.metrics.base_tracker][INFO] -     val_miou = 15.43363247551855
+[2022-10-21 15:38:36,134][torch_points3d.metrics.base_tracker][INFO] -     val_miou_per_class = {0: '43.54', 1: '92.65', 2: '0.48', 3: '0.00', 4: '0.00', 5: '0.00', 6: '33.11', 7: '0.00', 8: '0.00', 9: '0.00', 10: '0.00', 11: '0.00', 12: '0.00', 13: '0.00', 14: '0.00', 15: '0.00', 16: '0.00', 17: '0.00', 18: '0.00', 19: '0.00'}
+[2022-10-21 15:38:36,135][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-10-21 15:38:36,135][torch_points3d.trainer][INFO] - EPOCH 31 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.70, iteration=2.265, train_acc=66.37, train_loss_cross_entropy=1.044, train_loss_seg=1.044, train_macc=16.44, train_miou=11.50[0m)]100%|##########| 1/1 [00:14<00:00, 14.98s/it, [0;92mdata_loading=12.70, iteration=2.265, train_acc=66.37, train_loss_cross_entropy=1.044, train_loss_seg=1.044, train_macc=16.44, train_miou=11.50[0m)]100%|##########| 1/1 [00:14<00:00, 14.98s/it, [0;92mdata_loading=12.70, iteration=2.265, train_acc=66.37, train_loss_cross_entropy=1.044, train_loss_seg=1.044, train_macc=16.44, train_miou=11.50[0m)][2022-10-21 15:38:52,346][torch_points3d.trainer][INFO] - Learning rate = 0.069868
+[2022-10-21 15:38:52,348][torch_points3d.trainer][INFO] - EPOCH 32 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:15<?, ?it/s, [0;92mdata_loading=12.78, iteration=2.248, train_acc=65.95, train_loss_cross_entropy=1.079, train_loss_seg=1.079, train_macc=17.05, train_miou=12.06[0m)]100%|##########| 1/1 [00:15<00:00, 15.04s/it, [0;92mdata_loading=12.78, iteration=2.248, train_acc=65.95, train_loss_cross_entropy=1.079, train_loss_seg=1.079, train_macc=17.05, train_miou=12.06[0m)]100%|##########| 1/1 [00:15<00:00, 15.04s/it, [0;92mdata_loading=12.78, iteration=2.248, train_acc=65.95, train_loss_cross_entropy=1.079, train_loss_seg=1.079, train_macc=17.05, train_miou=12.06[0m)][2022-10-21 15:39:08,638][torch_points3d.trainer][INFO] - Learning rate = 0.069064
+[2022-10-21 15:39:08,639][torch_points3d.trainer][INFO] - EPOCH 33 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:15<?, ?it/s, [0;92mdata_loading=12.76, iteration=2.269, train_acc=66.97, train_loss_cross_entropy=1.043, train_loss_seg=1.043, train_macc=17.69, train_miou=12.57[0m)]100%|##########| 1/1 [00:15<00:00, 15.03s/it, [0;92mdata_loading=12.76, iteration=2.269, train_acc=66.97, train_loss_cross_entropy=1.043, train_loss_seg=1.043, train_macc=17.69, train_miou=12.57[0m)]100%|##########| 1/1 [00:15<00:00, 15.03s/it, [0;92mdata_loading=12.76, iteration=2.269, train_acc=66.97, train_loss_cross_entropy=1.043, train_loss_seg=1.043, train_macc=17.69, train_miou=12.57[0m)][2022-10-21 15:39:24,900][torch_points3d.trainer][INFO] - Learning rate = 0.068270
+[2022-10-21 15:39:24,902][torch_points3d.trainer][INFO] - EPOCH 34 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.70, iteration=2.233, train_acc=65.80, train_loss_cross_entropy=1.066, train_loss_seg=1.066, train_macc=18.81, train_miou=13.41[0m)]100%|##########| 1/1 [00:14<00:00, 14.94s/it, [0;92mdata_loading=12.70, iteration=2.233, train_acc=65.80, train_loss_cross_entropy=1.066, train_loss_seg=1.066, train_macc=18.81, train_miou=13.41[0m)]100%|##########| 1/1 [00:14<00:00, 14.94s/it, [0;92mdata_loading=12.70, iteration=2.233, train_acc=65.80, train_loss_cross_entropy=1.066, train_loss_seg=1.066, train_macc=18.81, train_miou=13.41[0m)][2022-10-21 15:39:41,096][torch_points3d.trainer][INFO] - Learning rate = 0.067485
+[2022-10-21 15:39:41,098][torch_points3d.trainer][INFO] - EPOCH 35 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.59, iteration=2.089, train_acc=64.60, train_loss_cross_entropy=1.087, train_loss_seg=1.087, train_macc=18.85, train_miou=13.50[0m)]100%|##########| 1/1 [00:14<00:00, 14.68s/it, [0;92mdata_loading=12.59, iteration=2.089, train_acc=64.60, train_loss_cross_entropy=1.087, train_loss_seg=1.087, train_macc=18.85, train_miou=13.50[0m)]100%|##########| 1/1 [00:14<00:00, 14.68s/it, [0;92mdata_loading=12.59, iteration=2.089, train_acc=64.60, train_loss_cross_entropy=1.087, train_loss_seg=1.087, train_macc=18.85, train_miou=13.50[0m)][2022-10-21 15:39:57,242][torch_points3d.trainer][INFO] - Learning rate = 0.066709
+[2022-10-21 15:39:57,243][torch_points3d.trainer][INFO] - EPOCH 36 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:15<?, ?it/s, [0;92mdata_loading=12.88, iteration=2.257, train_acc=67.79, train_loss_cross_entropy=1.011, train_loss_seg=1.011, train_macc=19.91, train_miou=14.20[0m)]100%|##########| 1/1 [00:15<00:00, 15.14s/it, [0;92mdata_loading=12.88, iteration=2.257, train_acc=67.79, train_loss_cross_entropy=1.011, train_loss_seg=1.011, train_macc=19.91, train_miou=14.20[0m)]100%|##########| 1/1 [00:15<00:00, 15.14s/it, [0;92mdata_loading=12.88, iteration=2.257, train_acc=67.79, train_loss_cross_entropy=1.011, train_loss_seg=1.011, train_macc=19.91, train_miou=14.20[0m)][2022-10-21 15:40:13,615][torch_points3d.trainer][INFO] - Learning rate = 0.065942
+[2022-10-21 15:40:13,617][torch_points3d.trainer][INFO] - EPOCH 37 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:15<?, ?it/s, [0;92mdata_loading=12.80, iteration=2.228, train_acc=67.47, train_loss_cross_entropy=1.025, train_loss_seg=1.025, train_macc=19.91, train_miou=14.23[0m)]100%|##########| 1/1 [00:15<00:00, 15.03s/it, [0;92mdata_loading=12.80, iteration=2.228, train_acc=67.47, train_loss_cross_entropy=1.025, train_loss_seg=1.025, train_macc=19.91, train_miou=14.23[0m)]100%|##########| 1/1 [00:15<00:00, 15.03s/it, [0;92mdata_loading=12.80, iteration=2.228, train_acc=67.47, train_loss_cross_entropy=1.025, train_loss_seg=1.025, train_macc=19.91, train_miou=14.23[0m)][2022-10-21 15:40:29,874][torch_points3d.trainer][INFO] - Learning rate = 0.065183
+[2022-10-21 15:40:29,875][torch_points3d.trainer][INFO] - EPOCH 38 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.74, iteration=2.241, train_acc=67.61, train_loss_cross_entropy=1.008, train_loss_seg=1.008, train_macc=22.05, train_miou=16.28[0m)]100%|##########| 1/1 [00:14<00:00, 14.99s/it, [0;92mdata_loading=12.74, iteration=2.241, train_acc=67.61, train_loss_cross_entropy=1.008, train_loss_seg=1.008, train_macc=22.05, train_miou=16.28[0m)]100%|##########| 1/1 [00:14<00:00, 14.99s/it, [0;92mdata_loading=12.74, iteration=2.241, train_acc=67.61, train_loss_cross_entropy=1.008, train_loss_seg=1.008, train_macc=22.05, train_miou=16.28[0m)][2022-10-21 15:40:46,081][torch_points3d.trainer][INFO] - Learning rate = 0.064434
+[2022-10-21 15:40:46,083][torch_points3d.trainer][INFO] - EPOCH 39 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:15<?, ?it/s, [0;92mdata_loading=12.88, iteration=2.368, train_acc=68.84, train_loss_cross_entropy=1.000, train_loss_seg=1.000, train_macc=21.64, train_miou=15.86[0m)]100%|##########| 1/1 [00:15<00:00, 15.26s/it, [0;92mdata_loading=12.88, iteration=2.368, train_acc=68.84, train_loss_cross_entropy=1.000, train_loss_seg=1.000, train_macc=21.64, train_miou=15.86[0m)]100%|##########| 1/1 [00:15<00:00, 15.26s/it, [0;92mdata_loading=12.88, iteration=2.368, train_acc=68.84, train_loss_cross_entropy=1.000, train_loss_seg=1.000, train_macc=21.64, train_miou=15.86[0m)][2022-10-21 15:41:02,576][torch_points3d.trainer][INFO] - Learning rate = 0.063693
+[2022-10-21 15:41:02,578][torch_points3d.trainer][INFO] - EPOCH 40 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.79, iteration=2.158, train_acc=67.67, train_loss_cross_entropy=1.042, train_loss_seg=1.042, train_macc=22.35, train_miou=16.26[0m)]100%|##########| 1/1 [00:14<00:00, 14.95s/it, [0;92mdata_loading=12.79, iteration=2.158, train_acc=67.67, train_loss_cross_entropy=1.042, train_loss_seg=1.042, train_macc=22.35, train_miou=16.26[0m)]100%|##########| 1/1 [00:14<00:00, 14.95s/it, [0;92mdata_loading=12.79, iteration=2.158, train_acc=67.67, train_loss_cross_entropy=1.042, train_loss_seg=1.042, train_macc=22.35, train_miou=16.26[0m)][2022-10-21 15:41:18,747][torch_points3d.trainer][INFO] - Learning rate = 0.062960
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:16<?, ?it/s, [0;93mval_acc=62.67, val_loss_cross_entropy=1.369, val_loss_seg=1.369, val_macc=26.29, val_miou=15.51[0m)]100%|##########| 1/1 [00:16<00:00, 16.04s/it, [0;93mval_acc=62.67, val_loss_cross_entropy=1.369, val_loss_seg=1.369, val_macc=26.29, val_miou=15.51[0m)]100%|##########| 1/1 [00:16<00:00, 16.04s/it, [0;93mval_acc=62.67, val_loss_cross_entropy=1.369, val_loss_seg=1.369, val_macc=26.29, val_miou=15.51[0m)][2022-10-21 15:41:34,845][torch_points3d.utils.colors][INFO] - [0;94macc: 62.211199367192904 -> 62.6798931768352, macc: 23.173093183811677 -> 26.29718798053474, miou: 15.43363247551855 -> 15.512052158885565[0m
+[2022-10-21 15:41:36,050][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-10-21 15:41:36,051][torch_points3d.metrics.base_tracker][INFO] -     val_loss_seg = 1.3693441152572632
+[2022-10-21 15:41:36,051][torch_points3d.metrics.base_tracker][INFO] -     val_loss_cross_entropy = 1.3693441152572632
+[2022-10-21 15:41:36,051][torch_points3d.metrics.base_tracker][INFO] -     val_acc = 62.6798931768352
+[2022-10-21 15:41:36,051][torch_points3d.metrics.base_tracker][INFO] -     val_macc = 26.29718798053474
+[2022-10-21 15:41:36,051][torch_points3d.metrics.base_tracker][INFO] -     val_miou = 15.512052158885565
+[2022-10-21 15:41:36,052][torch_points3d.metrics.base_tracker][INFO] -     val_miou_per_class = {0: '54.81', 1: '92.45', 2: '1.71', 3: '0.00', 4: '2.39', 5: '0.00', 6: '31.91', 7: '17.48', 8: '0.91', 9: '0.00', 10: '0.00', 11: '0.00', 12: '0.00', 13: '0.00', 14: '0.00', 15: '0.00', 16: '0.00', 17: '0.00', 18: '0.00', 19: '0.00'}
+[2022-10-21 15:41:36,052][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-10-21 15:41:36,052][torch_points3d.trainer][INFO] - EPOCH 41 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:15<?, ?it/s, [0;92mdata_loading=12.87, iteration=2.189, train_acc=66.61, train_loss_cross_entropy=1.024, train_loss_seg=1.024, train_macc=21.31, train_miou=15.82[0m)]100%|##########| 1/1 [00:15<00:00, 15.07s/it, [0;92mdata_loading=12.87, iteration=2.189, train_acc=66.61, train_loss_cross_entropy=1.024, train_loss_seg=1.024, train_macc=21.31, train_miou=15.82[0m)]100%|##########| 1/1 [00:15<00:00, 15.07s/it, [0;92mdata_loading=12.87, iteration=2.189, train_acc=66.61, train_loss_cross_entropy=1.024, train_loss_seg=1.024, train_macc=21.31, train_miou=15.82[0m)][2022-10-21 15:41:52,385][torch_points3d.trainer][INFO] - Learning rate = 0.062236
+[2022-10-21 15:41:52,387][torch_points3d.trainer][INFO] - EPOCH 42 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:15<?, ?it/s, [0;92mdata_loading=12.82, iteration=2.274, train_acc=66.47, train_loss_cross_entropy=1.048, train_loss_seg=1.048, train_macc=19.24, train_miou=13.98[0m)]100%|##########| 1/1 [00:15<00:00, 15.10s/it, [0;92mdata_loading=12.82, iteration=2.274, train_acc=66.47, train_loss_cross_entropy=1.048, train_loss_seg=1.048, train_macc=19.24, train_miou=13.98[0m)]100%|##########| 1/1 [00:15<00:00, 15.10s/it, [0;92mdata_loading=12.82, iteration=2.274, train_acc=66.47, train_loss_cross_entropy=1.048, train_loss_seg=1.048, train_macc=19.24, train_miou=13.98[0m)][2022-10-21 15:42:08,746][torch_points3d.trainer][INFO] - Learning rate = 0.061521
+[2022-10-21 15:42:08,747][torch_points3d.trainer][INFO] - EPOCH 43 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.75, iteration=2.169, train_acc=69.04, train_loss_cross_entropy=0.952, train_loss_seg=0.952, train_macc=21.94, train_miou=16.35[0m)]100%|##########| 1/1 [00:14<00:00, 14.92s/it, [0;92mdata_loading=12.75, iteration=2.169, train_acc=69.04, train_loss_cross_entropy=0.952, train_loss_seg=0.952, train_macc=21.94, train_miou=16.35[0m)]100%|##########| 1/1 [00:14<00:00, 14.92s/it, [0;92mdata_loading=12.75, iteration=2.169, train_acc=69.04, train_loss_cross_entropy=0.952, train_loss_seg=0.952, train_macc=21.94, train_miou=16.35[0m)][2022-10-21 15:42:25,185][torch_points3d.trainer][INFO] - Learning rate = 0.060813
+[2022-10-21 15:42:25,187][torch_points3d.trainer][INFO] - EPOCH 44 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.52, iteration=2.241, train_acc=67.31, train_loss_cross_entropy=0.975, train_loss_seg=0.975, train_macc=21.61, train_miou=16.08[0m)]100%|##########| 1/1 [00:14<00:00, 14.77s/it, [0;92mdata_loading=12.52, iteration=2.241, train_acc=67.31, train_loss_cross_entropy=0.975, train_loss_seg=0.975, train_macc=21.61, train_miou=16.08[0m)]100%|##########| 1/1 [00:14<00:00, 14.77s/it, [0;92mdata_loading=12.52, iteration=2.241, train_acc=67.31, train_loss_cross_entropy=0.975, train_loss_seg=0.975, train_macc=21.61, train_miou=16.08[0m)][2022-10-21 15:42:41,216][torch_points3d.trainer][INFO] - Learning rate = 0.060114
+[2022-10-21 15:42:41,217][torch_points3d.trainer][INFO] - EPOCH 45 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:15<?, ?it/s, [0;92mdata_loading=12.93, iteration=2.178, train_acc=67.50, train_loss_cross_entropy=1.013, train_loss_seg=1.013, train_macc=21.79, train_miou=16.24[0m)]100%|##########| 1/1 [00:15<00:00, 15.11s/it, [0;92mdata_loading=12.93, iteration=2.178, train_acc=67.50, train_loss_cross_entropy=1.013, train_loss_seg=1.013, train_macc=21.79, train_miou=16.24[0m)]100%|##########| 1/1 [00:15<00:00, 15.11s/it, [0;92mdata_loading=12.93, iteration=2.178, train_acc=67.50, train_loss_cross_entropy=1.013, train_loss_seg=1.013, train_macc=21.79, train_miou=16.24[0m)][2022-10-21 15:42:57,706][torch_points3d.trainer][INFO] - Learning rate = 0.059422
+[2022-10-21 15:42:57,708][torch_points3d.trainer][INFO] - EPOCH 46 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.74, iteration=2.201, train_acc=69.81, train_loss_cross_entropy=0.928, train_loss_seg=0.928, train_macc=22.95, train_miou=16.68[0m)]100%|##########| 1/1 [00:14<00:00, 14.95s/it, [0;92mdata_loading=12.74, iteration=2.201, train_acc=69.81, train_loss_cross_entropy=0.928, train_loss_seg=0.928, train_macc=22.95, train_miou=16.68[0m)]100%|##########| 1/1 [00:14<00:00, 14.95s/it, [0;92mdata_loading=12.74, iteration=2.201, train_acc=69.81, train_loss_cross_entropy=0.928, train_loss_seg=0.928, train_macc=22.95, train_miou=16.68[0m)][2022-10-21 15:43:13,883][torch_points3d.trainer][INFO] - Learning rate = 0.058739
+[2022-10-21 15:43:13,885][torch_points3d.trainer][INFO] - EPOCH 47 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.77, iteration=2.192, train_acc=68.06, train_loss_cross_entropy=0.958, train_loss_seg=0.958, train_macc=23.52, train_miou=17.08[0m)]100%|##########| 1/1 [00:14<00:00, 14.97s/it, [0;92mdata_loading=12.77, iteration=2.192, train_acc=68.06, train_loss_cross_entropy=0.958, train_loss_seg=0.958, train_macc=23.52, train_miou=17.08[0m)]100%|##########| 1/1 [00:14<00:00, 14.97s/it, [0;92mdata_loading=12.77, iteration=2.192, train_acc=68.06, train_loss_cross_entropy=0.958, train_loss_seg=0.958, train_macc=23.52, train_miou=17.08[0m)][2022-10-21 15:43:30,092][torch_points3d.trainer][INFO] - Learning rate = 0.058064
+[2022-10-21 15:43:30,094][torch_points3d.trainer][INFO] - EPOCH 48 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:15<?, ?it/s, [0;92mdata_loading=12.85, iteration=2.274, train_acc=70.53, train_loss_cross_entropy=0.921, train_loss_seg=0.921, train_macc=24.72, train_miou=18.30[0m)]100%|##########| 1/1 [00:15<00:00, 15.13s/it, [0;92mdata_loading=12.85, iteration=2.274, train_acc=70.53, train_loss_cross_entropy=0.921, train_loss_seg=0.921, train_macc=24.72, train_miou=18.30[0m)]100%|##########| 1/1 [00:15<00:00, 15.13s/it, [0;92mdata_loading=12.85, iteration=2.274, train_acc=70.53, train_loss_cross_entropy=0.921, train_loss_seg=0.921, train_macc=24.72, train_miou=18.30[0m)][2022-10-21 15:43:46,466][torch_points3d.trainer][INFO] - Learning rate = 0.057396
+[2022-10-21 15:43:46,468][torch_points3d.trainer][INFO] - EPOCH 49 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.66, iteration=2.136, train_acc=68.47, train_loss_cross_entropy=0.941, train_loss_seg=0.941, train_macc=24.11, train_miou=17.56[0m)]100%|##########| 1/1 [00:14<00:00, 14.81s/it, [0;92mdata_loading=12.66, iteration=2.136, train_acc=68.47, train_loss_cross_entropy=0.941, train_loss_seg=0.941, train_macc=24.11, train_miou=17.56[0m)]100%|##########| 1/1 [00:14<00:00, 14.81s/it, [0;92mdata_loading=12.66, iteration=2.136, train_acc=68.47, train_loss_cross_entropy=0.941, train_loss_seg=0.941, train_macc=24.11, train_miou=17.56[0m)][2022-10-21 15:44:02,561][torch_points3d.trainer][INFO] - Learning rate = 0.056736
+[2022-10-21 15:44:02,562][torch_points3d.trainer][INFO] - EPOCH 50 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.65, iteration=2.272, train_acc=72.15, train_loss_cross_entropy=0.862, train_loss_seg=0.862, train_macc=27.34, train_miou=20.04[0m)]100%|##########| 1/1 [00:14<00:00, 14.92s/it, [0;92mdata_loading=12.65, iteration=2.272, train_acc=72.15, train_loss_cross_entropy=0.862, train_loss_seg=0.862, train_macc=27.34, train_miou=20.04[0m)]100%|##########| 1/1 [00:14<00:00, 14.92s/it, [0;92mdata_loading=12.65, iteration=2.272, train_acc=72.15, train_loss_cross_entropy=0.862, train_loss_seg=0.862, train_macc=27.34, train_miou=20.04[0m)][2022-10-21 15:44:18,737][torch_points3d.trainer][INFO] - Learning rate = 0.056083
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:15<?, ?it/s, [0;93mval_acc=62.21, val_loss_cross_entropy=1.315, val_loss_seg=1.315, val_macc=30.57, val_miou=17.00[0m)]100%|##########| 1/1 [00:15<00:00, 15.97s/it, [0;93mval_acc=62.21, val_loss_cross_entropy=1.315, val_loss_seg=1.315, val_macc=30.57, val_miou=17.00[0m)]100%|##########| 1/1 [00:15<00:00, 15.97s/it, [0;93mval_acc=62.21, val_loss_cross_entropy=1.315, val_loss_seg=1.315, val_macc=30.57, val_miou=17.00[0m)][2022-10-21 15:44:34,760][torch_points3d.utils.colors][INFO] - [0;94mmacc: 26.29718798053474 -> 30.573351194906156, miou: 15.512052158885565 -> 17.00626524756905[0m
+[2022-10-21 15:44:36,343][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-10-21 15:44:36,344][torch_points3d.metrics.base_tracker][INFO] -     val_loss_seg = 1.3149513006210327
+[2022-10-21 15:44:36,344][torch_points3d.metrics.base_tracker][INFO] -     val_loss_cross_entropy = 1.3149513006210327
+[2022-10-21 15:44:36,344][torch_points3d.metrics.base_tracker][INFO] -     val_acc = 62.217782629291705
+[2022-10-21 15:44:36,344][torch_points3d.metrics.base_tracker][INFO] -     val_macc = 30.573351194906156
+[2022-10-21 15:44:36,344][torch_points3d.metrics.base_tracker][INFO] -     val_miou = 17.00626524756905
+[2022-10-21 15:44:36,344][torch_points3d.metrics.base_tracker][INFO] -     val_miou_per_class = {0: '61.53', 1: '92.13', 2: '12.91', 3: '0.00', 4: '4.24', 5: '0.00', 6: '30.61', 7: '10.48', 8: '9.19', 9: '0.00', 10: '0.00', 11: '0.00', 12: '0.00', 13: '0.00', 14: '0.00', 15: '0.00', 16: '0.00', 17: '0.00', 18: '0.00', 19: '0.00'}
+[2022-10-21 15:44:36,345][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-10-21 15:44:36,345][torch_points3d.trainer][INFO] - EPOCH 51 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:15<?, ?it/s, [0;92mdata_loading=12.88, iteration=2.229, train_acc=69.66, train_loss_cross_entropy=0.945, train_loss_seg=0.945, train_macc=25.47, train_miou=18.71[0m)]100%|##########| 1/1 [00:15<00:00, 15.11s/it, [0;92mdata_loading=12.88, iteration=2.229, train_acc=69.66, train_loss_cross_entropy=0.945, train_loss_seg=0.945, train_macc=25.47, train_miou=18.71[0m)]100%|##########| 1/1 [00:15<00:00, 15.11s/it, [0;92mdata_loading=12.88, iteration=2.229, train_acc=69.66, train_loss_cross_entropy=0.945, train_loss_seg=0.945, train_macc=25.47, train_miou=18.71[0m)][2022-10-21 15:44:53,098][torch_points3d.trainer][INFO] - Learning rate = 0.055438
+[2022-10-21 15:44:53,100][torch_points3d.trainer][INFO] - EPOCH 52 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:15<?, ?it/s, [0;92mdata_loading=12.80, iteration=2.207, train_acc=70.76, train_loss_cross_entropy=0.894, train_loss_seg=0.894, train_macc=24.07, train_miou=18.01[0m)]100%|##########| 1/1 [00:15<00:00, 15.01s/it, [0;92mdata_loading=12.80, iteration=2.207, train_acc=70.76, train_loss_cross_entropy=0.894, train_loss_seg=0.894, train_macc=24.07, train_miou=18.01[0m)]100%|##########| 1/1 [00:15<00:00, 15.01s/it, [0;92mdata_loading=12.80, iteration=2.207, train_acc=70.76, train_loss_cross_entropy=0.894, train_loss_seg=0.894, train_macc=24.07, train_miou=18.01[0m)][2022-10-21 15:45:09,802][torch_points3d.trainer][INFO] - Learning rate = 0.054801
+[2022-10-21 15:45:09,804][torch_points3d.trainer][INFO] - EPOCH 53 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.65, iteration=2.235, train_acc=71.54, train_loss_cross_entropy=0.885, train_loss_seg=0.885, train_macc=25.26, train_miou=18.89[0m)]100%|##########| 1/1 [00:14<00:00, 14.89s/it, [0;92mdata_loading=12.65, iteration=2.235, train_acc=71.54, train_loss_cross_entropy=0.885, train_loss_seg=0.885, train_macc=25.26, train_miou=18.89[0m)]100%|##########| 1/1 [00:14<00:00, 14.89s/it, [0;92mdata_loading=12.65, iteration=2.235, train_acc=71.54, train_loss_cross_entropy=0.885, train_loss_seg=0.885, train_macc=25.26, train_miou=18.89[0m)][2022-10-21 15:45:26,373][torch_points3d.trainer][INFO] - Learning rate = 0.054171
+[2022-10-21 15:45:26,375][torch_points3d.trainer][INFO] - EPOCH 54 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.69, iteration=2.254, train_acc=71.41, train_loss_cross_entropy=0.886, train_loss_seg=0.886, train_macc=26.42, train_miou=19.59[0m)]100%|##########| 1/1 [00:14<00:00, 14.95s/it, [0;92mdata_loading=12.69, iteration=2.254, train_acc=71.41, train_loss_cross_entropy=0.886, train_loss_seg=0.886, train_macc=26.42, train_miou=19.59[0m)]100%|##########| 1/1 [00:14<00:00, 14.95s/it, [0;92mdata_loading=12.69, iteration=2.254, train_acc=71.41, train_loss_cross_entropy=0.886, train_loss_seg=0.886, train_macc=26.42, train_miou=19.59[0m)][2022-10-21 15:45:42,971][torch_points3d.trainer][INFO] - Learning rate = 0.053548
+[2022-10-21 15:45:42,973][torch_points3d.trainer][INFO] - EPOCH 55 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:15<?, ?it/s, [0;92mdata_loading=12.85, iteration=2.242, train_acc=73.19, train_loss_cross_entropy=0.852, train_loss_seg=0.852, train_macc=27.70, train_miou=20.62[0m)]100%|##########| 1/1 [00:15<00:00, 15.09s/it, [0;92mdata_loading=12.85, iteration=2.242, train_acc=73.19, train_loss_cross_entropy=0.852, train_loss_seg=0.852, train_macc=27.70, train_miou=20.62[0m)]100%|##########| 1/1 [00:15<00:00, 15.09s/it, [0;92mdata_loading=12.85, iteration=2.242, train_acc=73.19, train_loss_cross_entropy=0.852, train_loss_seg=0.852, train_macc=27.70, train_miou=20.62[0m)][2022-10-21 15:45:59,731][torch_points3d.trainer][INFO] - Learning rate = 0.052932
+[2022-10-21 15:45:59,732][torch_points3d.trainer][INFO] - EPOCH 56 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.65, iteration=2.194, train_acc=70.99, train_loss_cross_entropy=0.873, train_loss_seg=0.873, train_macc=26.00, train_miou=19.37[0m)]100%|##########| 1/1 [00:14<00:00, 14.85s/it, [0;92mdata_loading=12.65, iteration=2.194, train_acc=70.99, train_loss_cross_entropy=0.873, train_loss_seg=0.873, train_macc=26.00, train_miou=19.37[0m)]100%|##########| 1/1 [00:14<00:00, 14.85s/it, [0;92mdata_loading=12.65, iteration=2.194, train_acc=70.99, train_loss_cross_entropy=0.873, train_loss_seg=0.873, train_macc=26.00, train_miou=19.37[0m)][2022-10-21 15:46:16,209][torch_points3d.trainer][INFO] - Learning rate = 0.052323
+[2022-10-21 15:46:16,210][torch_points3d.trainer][INFO] - EPOCH 57 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:15<?, ?it/s, [0;92mdata_loading=12.97, iteration=2.293, train_acc=71.69, train_loss_cross_entropy=0.873, train_loss_seg=0.873, train_macc=27.05, train_miou=19.87[0m)]100%|##########| 1/1 [00:15<00:00, 15.27s/it, [0;92mdata_loading=12.97, iteration=2.293, train_acc=71.69, train_loss_cross_entropy=0.873, train_loss_seg=0.873, train_macc=27.05, train_miou=19.87[0m)]100%|##########| 1/1 [00:15<00:00, 15.27s/it, [0;92mdata_loading=12.97, iteration=2.293, train_acc=71.69, train_loss_cross_entropy=0.873, train_loss_seg=0.873, train_macc=27.05, train_miou=19.87[0m)][2022-10-21 15:46:33,313][torch_points3d.trainer][INFO] - Learning rate = 0.051721
+[2022-10-21 15:46:33,314][torch_points3d.trainer][INFO] - EPOCH 58 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.70, iteration=2.119, train_acc=71.87, train_loss_cross_entropy=0.847, train_loss_seg=0.847, train_macc=27.64, train_miou=20.20[0m)]100%|##########| 1/1 [00:14<00:00, 14.83s/it, [0;92mdata_loading=12.70, iteration=2.119, train_acc=71.87, train_loss_cross_entropy=0.847, train_loss_seg=0.847, train_macc=27.64, train_miou=20.20[0m)]100%|##########| 1/1 [00:14<00:00, 14.83s/it, [0;92mdata_loading=12.70, iteration=2.119, train_acc=71.87, train_loss_cross_entropy=0.847, train_loss_seg=0.847, train_macc=27.64, train_miou=20.20[0m)][2022-10-21 15:46:49,772][torch_points3d.trainer][INFO] - Learning rate = 0.051127
+[2022-10-21 15:46:49,773][torch_points3d.trainer][INFO] - EPOCH 59 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.61, iteration=2.311, train_acc=72.28, train_loss_cross_entropy=0.866, train_loss_seg=0.866, train_macc=29.05, train_miou=21.18[0m)]100%|##########| 1/1 [00:14<00:00, 14.93s/it, [0;92mdata_loading=12.61, iteration=2.311, train_acc=72.28, train_loss_cross_entropy=0.866, train_loss_seg=0.866, train_macc=29.05, train_miou=21.18[0m)]100%|##########| 1/1 [00:14<00:00, 14.93s/it, [0;92mdata_loading=12.61, iteration=2.311, train_acc=72.28, train_loss_cross_entropy=0.866, train_loss_seg=0.866, train_macc=29.05, train_miou=21.18[0m)][2022-10-21 15:47:06,305][torch_points3d.trainer][INFO] - Learning rate = 0.050539
+[2022-10-21 15:47:06,308][torch_points3d.trainer][INFO] - EPOCH 60 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:15<?, ?it/s, [0;92mdata_loading=12.82, iteration=2.235, train_acc=72.34, train_loss_cross_entropy=0.855, train_loss_seg=0.855, train_macc=27.86, train_miou=20.41[0m)]100%|##########| 1/1 [00:15<00:00, 15.06s/it, [0;92mdata_loading=12.82, iteration=2.235, train_acc=72.34, train_loss_cross_entropy=0.855, train_loss_seg=0.855, train_macc=27.86, train_miou=20.41[0m)]100%|##########| 1/1 [00:15<00:00, 15.06s/it, [0;92mdata_loading=12.82, iteration=2.235, train_acc=72.34, train_loss_cross_entropy=0.855, train_loss_seg=0.855, train_macc=27.86, train_miou=20.41[0m)][2022-10-21 15:47:23,009][torch_points3d.trainer][INFO] - Learning rate = 0.049957
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:15<?, ?it/s, [0;93mval_acc=60.99, val_loss_cross_entropy=1.313, val_loss_seg=1.313, val_macc=31.87, val_miou=17.95[0m)]100%|##########| 1/1 [00:15<00:00, 15.97s/it, [0;93mval_acc=60.99, val_loss_cross_entropy=1.313, val_loss_seg=1.313, val_macc=31.87, val_miou=17.95[0m)]100%|##########| 1/1 [00:15<00:00, 15.97s/it, [0;93mval_acc=60.99, val_loss_cross_entropy=1.313, val_loss_seg=1.313, val_macc=31.87, val_miou=17.95[0m)][2022-10-21 15:47:39,031][torch_points3d.utils.colors][INFO] - [0;94mmacc: 30.573351194906156 -> 31.878471633465537, miou: 17.00626524756905 -> 17.958584951649094[0m
+[2022-10-21 15:47:40,645][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-10-21 15:47:40,646][torch_points3d.metrics.base_tracker][INFO] -     val_loss_seg = 1.3139458894729614
+[2022-10-21 15:47:40,646][torch_points3d.metrics.base_tracker][INFO] -     val_loss_cross_entropy = 1.3139458894729614
+[2022-10-21 15:47:40,646][torch_points3d.metrics.base_tracker][INFO] -     val_acc = 60.996630111478225
+[2022-10-21 15:47:40,646][torch_points3d.metrics.base_tracker][INFO] -     val_macc = 31.878471633465537
+[2022-10-21 15:47:40,646][torch_points3d.metrics.base_tracker][INFO] -     val_miou = 17.958584951649094
+[2022-10-21 15:47:40,646][torch_points3d.metrics.base_tracker][INFO] -     val_miou_per_class = {0: '55.84', 1: '90.56', 2: '19.09', 3: '0.00', 4: '5.31', 5: '0.00', 6: '28.86', 7: '21.37', 8: '12.43', 9: '0.00', 10: '0.00', 11: '0.00', 12: '0.00', 13: '0.00', 14: '0.00', 15: '0.00', 16: '0.00', 17: '0.00', 18: '0.00', 19: '0.00'}
+[2022-10-21 15:47:40,647][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-10-21 15:47:40,647][torch_points3d.trainer][INFO] - EPOCH 61 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.73, iteration=2.212, train_acc=71.63, train_loss_cross_entropy=0.855, train_loss_seg=0.855, train_macc=27.48, train_miou=20.35[0m)]100%|##########| 1/1 [00:14<00:00, 14.95s/it, [0;92mdata_loading=12.73, iteration=2.212, train_acc=71.63, train_loss_cross_entropy=0.855, train_loss_seg=0.855, train_macc=27.48, train_miou=20.35[0m)]100%|##########| 1/1 [00:14<00:00, 14.95s/it, [0;92mdata_loading=12.73, iteration=2.212, train_acc=71.63, train_loss_cross_entropy=0.855, train_loss_seg=0.855, train_macc=27.48, train_miou=20.35[0m)][2022-10-21 15:47:57,236][torch_points3d.trainer][INFO] - Learning rate = 0.049383
+[2022-10-21 15:47:57,237][torch_points3d.trainer][INFO] - EPOCH 62 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.80, iteration=2.190, train_acc=72.93, train_loss_cross_entropy=0.820, train_loss_seg=0.820, train_macc=30.49, train_miou=22.28[0m)]100%|##########| 1/1 [00:14<00:00, 15.00s/it, [0;92mdata_loading=12.80, iteration=2.190, train_acc=72.93, train_loss_cross_entropy=0.820, train_loss_seg=0.820, train_macc=30.49, train_miou=22.28[0m)]100%|##########| 1/1 [00:14<00:00, 15.00s/it, [0;92mdata_loading=12.80, iteration=2.190, train_acc=72.93, train_loss_cross_entropy=0.820, train_loss_seg=0.820, train_macc=30.49, train_miou=22.28[0m)][2022-10-21 15:48:13,866][torch_points3d.trainer][INFO] - Learning rate = 0.048815
+[2022-10-21 15:48:13,868][torch_points3d.trainer][INFO] - EPOCH 63 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.76, iteration=2.142, train_acc=71.58, train_loss_cross_entropy=0.840, train_loss_seg=0.840, train_macc=29.25, train_miou=21.45[0m)]100%|##########| 1/1 [00:14<00:00, 14.90s/it, [0;92mdata_loading=12.76, iteration=2.142, train_acc=71.58, train_loss_cross_entropy=0.840, train_loss_seg=0.840, train_macc=29.25, train_miou=21.45[0m)]100%|##########| 1/1 [00:14<00:00, 14.90s/it, [0;92mdata_loading=12.76, iteration=2.142, train_acc=71.58, train_loss_cross_entropy=0.840, train_loss_seg=0.840, train_macc=29.25, train_miou=21.45[0m)][2022-10-21 15:48:30,449][torch_points3d.trainer][INFO] - Learning rate = 0.048254
+[2022-10-21 15:48:30,451][torch_points3d.trainer][INFO] - EPOCH 64 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.70, iteration=2.198, train_acc=73.57, train_loss_cross_entropy=0.798, train_loss_seg=0.798, train_macc=29.98, train_miou=21.96[0m)]100%|##########| 1/1 [00:14<00:00, 14.91s/it, [0;92mdata_loading=12.70, iteration=2.198, train_acc=73.57, train_loss_cross_entropy=0.798, train_loss_seg=0.798, train_macc=29.98, train_miou=21.96[0m)]100%|##########| 1/1 [00:14<00:00, 14.91s/it, [0;92mdata_loading=12.70, iteration=2.198, train_acc=73.57, train_loss_cross_entropy=0.798, train_loss_seg=0.798, train_macc=29.98, train_miou=21.96[0m)][2022-10-21 15:48:47,006][torch_points3d.trainer][INFO] - Learning rate = 0.047699
+[2022-10-21 15:48:47,008][torch_points3d.trainer][INFO] - EPOCH 65 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.78, iteration=2.178, train_acc=73.61, train_loss_cross_entropy=0.814, train_loss_seg=0.814, train_macc=30.69, train_miou=22.76[0m)]100%|##########| 1/1 [00:14<00:00, 14.97s/it, [0;92mdata_loading=12.78, iteration=2.178, train_acc=73.61, train_loss_cross_entropy=0.814, train_loss_seg=0.814, train_macc=30.69, train_miou=22.76[0m)]100%|##########| 1/1 [00:14<00:00, 14.97s/it, [0;92mdata_loading=12.78, iteration=2.178, train_acc=73.61, train_loss_cross_entropy=0.814, train_loss_seg=0.814, train_macc=30.69, train_miou=22.76[0m)][2022-10-21 15:49:03,623][torch_points3d.trainer][INFO] - Learning rate = 0.047150
+[2022-10-21 15:49:03,624][torch_points3d.trainer][INFO] - EPOCH 66 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:15<?, ?it/s, [0;92mdata_loading=12.77, iteration=2.290, train_acc=74.40, train_loss_cross_entropy=0.784, train_loss_seg=0.784, train_macc=31.83, train_miou=23.55[0m)]100%|##########| 1/1 [00:15<00:00, 15.06s/it, [0;92mdata_loading=12.77, iteration=2.290, train_acc=74.40, train_loss_cross_entropy=0.784, train_loss_seg=0.784, train_macc=31.83, train_miou=23.55[0m)]100%|##########| 1/1 [00:15<00:00, 15.06s/it, [0;92mdata_loading=12.77, iteration=2.290, train_acc=74.40, train_loss_cross_entropy=0.784, train_loss_seg=0.784, train_macc=31.83, train_miou=23.55[0m)][2022-10-21 15:49:20,689][torch_points3d.trainer][INFO] - Learning rate = 0.046608
+[2022-10-21 15:49:20,690][torch_points3d.trainer][INFO] - EPOCH 67 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.78, iteration=2.198, train_acc=73.42, train_loss_cross_entropy=0.787, train_loss_seg=0.787, train_macc=30.23, train_miou=22.80[0m)]100%|##########| 1/1 [00:14<00:00, 14.98s/it, [0;92mdata_loading=12.78, iteration=2.198, train_acc=73.42, train_loss_cross_entropy=0.787, train_loss_seg=0.787, train_macc=30.23, train_miou=22.80[0m)]100%|##########| 1/1 [00:14<00:00, 14.98s/it, [0;92mdata_loading=12.78, iteration=2.198, train_acc=73.42, train_loss_cross_entropy=0.787, train_loss_seg=0.787, train_macc=30.23, train_miou=22.80[0m)][2022-10-21 15:49:37,335][torch_points3d.trainer][INFO] - Learning rate = 0.046072
+[2022-10-21 15:49:37,337][torch_points3d.trainer][INFO] - EPOCH 68 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:15<?, ?it/s, [0;92mdata_loading=12.88, iteration=2.233, train_acc=75.92, train_loss_cross_entropy=0.753, train_loss_seg=0.753, train_macc=32.91, train_miou=24.58[0m)]100%|##########| 1/1 [00:15<00:00, 15.12s/it, [0;92mdata_loading=12.88, iteration=2.233, train_acc=75.92, train_loss_cross_entropy=0.753, train_loss_seg=0.753, train_macc=32.91, train_miou=24.58[0m)]100%|##########| 1/1 [00:15<00:00, 15.12s/it, [0;92mdata_loading=12.88, iteration=2.233, train_acc=75.92, train_loss_cross_entropy=0.753, train_loss_seg=0.753, train_macc=32.91, train_miou=24.58[0m)][2022-10-21 15:49:54,109][torch_points3d.trainer][INFO] - Learning rate = 0.045542
+[2022-10-21 15:49:54,111][torch_points3d.trainer][INFO] - EPOCH 69 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:15<?, ?it/s, [0;92mdata_loading=12.91, iteration=2.260, train_acc=75.58, train_loss_cross_entropy=0.744, train_loss_seg=0.744, train_macc=32.38, train_miou=24.48[0m)]100%|##########| 1/1 [00:15<00:00, 15.18s/it, [0;92mdata_loading=12.91, iteration=2.260, train_acc=75.58, train_loss_cross_entropy=0.744, train_loss_seg=0.744, train_macc=32.38, train_miou=24.48[0m)]100%|##########| 1/1 [00:15<00:00, 15.18s/it, [0;92mdata_loading=12.91, iteration=2.260, train_acc=75.58, train_loss_cross_entropy=0.744, train_loss_seg=0.744, train_macc=32.38, train_miou=24.48[0m)][2022-10-21 15:50:10,931][torch_points3d.trainer][INFO] - Learning rate = 0.045018
+[2022-10-21 15:50:10,932][torch_points3d.trainer][INFO] - EPOCH 70 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:15<?, ?it/s, [0;92mdata_loading=12.90, iteration=2.194, train_acc=73.70, train_loss_cross_entropy=0.846, train_loss_seg=0.846, train_macc=32.67, train_miou=24.92[0m)]100%|##########| 1/1 [00:15<00:00, 15.10s/it, [0;92mdata_loading=12.90, iteration=2.194, train_acc=73.70, train_loss_cross_entropy=0.846, train_loss_seg=0.846, train_macc=32.67, train_miou=24.92[0m)]100%|##########| 1/1 [00:15<00:00, 15.10s/it, [0;92mdata_loading=12.90, iteration=2.194, train_acc=73.70, train_loss_cross_entropy=0.846, train_loss_seg=0.846, train_macc=32.67, train_miou=24.92[0m)][2022-10-21 15:50:27,689][torch_points3d.trainer][INFO] - Learning rate = 0.044501
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:15<?, ?it/s, [0;93mval_acc=61.09, val_loss_cross_entropy=1.327, val_loss_seg=1.327, val_macc=32.53, val_miou=17.80[0m)]100%|##########| 1/1 [00:15<00:00, 15.99s/it, [0;93mval_acc=61.09, val_loss_cross_entropy=1.327, val_loss_seg=1.327, val_macc=32.53, val_miou=17.80[0m)]100%|##########| 1/1 [00:15<00:00, 15.99s/it, [0;93mval_acc=61.09, val_loss_cross_entropy=1.327, val_loss_seg=1.327, val_macc=32.53, val_miou=17.80[0m)][2022-10-21 15:50:43,734][torch_points3d.utils.colors][INFO] - [0;94mmacc: 31.878471633465537 -> 32.53148452196864[0m
+[2022-10-21 15:50:45,753][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-10-21 15:50:45,754][torch_points3d.metrics.base_tracker][INFO] -     val_loss_seg = 1.3278021812438965
+[2022-10-21 15:50:45,754][torch_points3d.metrics.base_tracker][INFO] -     val_loss_cross_entropy = 1.3278021812438965
+[2022-10-21 15:50:45,754][torch_points3d.metrics.base_tracker][INFO] -     val_acc = 61.096003296250515
+[2022-10-21 15:50:45,755][torch_points3d.metrics.base_tracker][INFO] -     val_macc = 32.53148452196864
+[2022-10-21 15:50:45,755][torch_points3d.metrics.base_tracker][INFO] -     val_miou = 17.804680784998578
+[2022-10-21 15:50:45,755][torch_points3d.metrics.base_tracker][INFO] -     val_miou_per_class = {0: '49.61', 1: '91.68', 2: '28.09', 3: '0.00', 4: '13.73', 5: '0.00', 6: '30.81', 7: '22.73', 8: '12.60', 9: '0.00', 10: '0.00', 11: '0.00', 12: '0.00', 13: '0.00', 14: '0.00', 15: '0.00', 16: '0.00', 17: '0.00', 18: '0.00', 19: '0.00'}
+[2022-10-21 15:50:45,755][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-10-21 15:50:45,755][torch_points3d.trainer][INFO] - EPOCH 71 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:15<?, ?it/s, [0;92mdata_loading=12.88, iteration=2.218, train_acc=74.84, train_loss_cross_entropy=0.771, train_loss_seg=0.771, train_macc=32.68, train_miou=24.58[0m)]100%|##########| 1/1 [00:15<00:00, 15.11s/it, [0;92mdata_loading=12.88, iteration=2.218, train_acc=74.84, train_loss_cross_entropy=0.771, train_loss_seg=0.771, train_macc=32.68, train_miou=24.58[0m)]100%|##########| 1/1 [00:15<00:00, 15.11s/it, [0;92mdata_loading=12.88, iteration=2.218, train_acc=74.84, train_loss_cross_entropy=0.771, train_loss_seg=0.771, train_macc=32.68, train_miou=24.58[0m)][2022-10-21 15:51:02,918][torch_points3d.trainer][INFO] - Learning rate = 0.043989
+[2022-10-21 15:51:02,920][torch_points3d.trainer][INFO] - EPOCH 72 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.69, iteration=2.254, train_acc=77.31, train_loss_cross_entropy=0.721, train_loss_seg=0.721, train_macc=34.33, train_miou=26.23[0m)]100%|##########| 1/1 [00:14<00:00, 14.95s/it, [0;92mdata_loading=12.69, iteration=2.254, train_acc=77.31, train_loss_cross_entropy=0.721, train_loss_seg=0.721, train_macc=34.33, train_miou=26.23[0m)]100%|##########| 1/1 [00:14<00:00, 14.95s/it, [0;92mdata_loading=12.69, iteration=2.254, train_acc=77.31, train_loss_cross_entropy=0.721, train_loss_seg=0.721, train_macc=34.33, train_miou=26.23[0m)][2022-10-21 15:51:20,079][torch_points3d.trainer][INFO] - Learning rate = 0.043483
+[2022-10-21 15:51:20,080][torch_points3d.trainer][INFO] - EPOCH 73 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:15<?, ?it/s, [0;92mdata_loading=12.84, iteration=2.217, train_acc=76.24, train_loss_cross_entropy=0.728, train_loss_seg=0.728, train_macc=34.52, train_miou=26.22[0m)]100%|##########| 1/1 [00:15<00:00, 15.06s/it, [0;92mdata_loading=12.84, iteration=2.217, train_acc=76.24, train_loss_cross_entropy=0.728, train_loss_seg=0.728, train_macc=34.52, train_miou=26.22[0m)]100%|##########| 1/1 [00:15<00:00, 15.06s/it, [0;92mdata_loading=12.84, iteration=2.217, train_acc=76.24, train_loss_cross_entropy=0.728, train_loss_seg=0.728, train_macc=34.52, train_miou=26.22[0m)][2022-10-21 15:51:37,223][torch_points3d.trainer][INFO] - Learning rate = 0.042983
+[2022-10-21 15:51:37,225][torch_points3d.trainer][INFO] - EPOCH 74 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:15<?, ?it/s, [0;92mdata_loading=12.89, iteration=2.205, train_acc=76.95, train_loss_cross_entropy=0.729, train_loss_seg=0.729, train_macc=37.00, train_miou=28.15[0m)]100%|##########| 1/1 [00:15<00:00, 15.10s/it, [0;92mdata_loading=12.89, iteration=2.205, train_acc=76.95, train_loss_cross_entropy=0.729, train_loss_seg=0.729, train_macc=37.00, train_miou=28.15[0m)]100%|##########| 1/1 [00:15<00:00, 15.10s/it, [0;92mdata_loading=12.89, iteration=2.205, train_acc=76.95, train_loss_cross_entropy=0.729, train_loss_seg=0.729, train_macc=37.00, train_miou=28.15[0m)][2022-10-21 15:51:54,817][torch_points3d.trainer][INFO] - Learning rate = 0.042489
+[2022-10-21 15:51:54,819][torch_points3d.trainer][INFO] - EPOCH 75 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.51, iteration=2.170, train_acc=77.45, train_loss_cross_entropy=0.701, train_loss_seg=0.701, train_macc=36.41, train_miou=28.19[0m)]100%|##########| 1/1 [00:14<00:00, 14.68s/it, [0;92mdata_loading=12.51, iteration=2.170, train_acc=77.45, train_loss_cross_entropy=0.701, train_loss_seg=0.701, train_macc=36.41, train_miou=28.19[0m)]100%|##########| 1/1 [00:14<00:00, 14.68s/it, [0;92mdata_loading=12.51, iteration=2.170, train_acc=77.45, train_loss_cross_entropy=0.701, train_loss_seg=0.701, train_macc=36.41, train_miou=28.19[0m)][2022-10-21 15:52:11,571][torch_points3d.trainer][INFO] - Learning rate = 0.042000
+[2022-10-21 15:52:11,573][torch_points3d.trainer][INFO] - EPOCH 76 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.76, iteration=2.204, train_acc=77.47, train_loss_cross_entropy=0.704, train_loss_seg=0.704, train_macc=36.17, train_miou=27.75[0m)]100%|##########| 1/1 [00:14<00:00, 14.96s/it, [0;92mdata_loading=12.76, iteration=2.204, train_acc=77.47, train_loss_cross_entropy=0.704, train_loss_seg=0.704, train_macc=36.17, train_miou=27.75[0m)]100%|##########| 1/1 [00:14<00:00, 14.97s/it, [0;92mdata_loading=12.76, iteration=2.204, train_acc=77.47, train_loss_cross_entropy=0.704, train_loss_seg=0.704, train_macc=36.17, train_miou=27.75[0m)][2022-10-21 15:52:28,584][torch_points3d.trainer][INFO] - Learning rate = 0.041517
+[2022-10-21 15:52:28,585][torch_points3d.trainer][INFO] - EPOCH 77 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:15<?, ?it/s, [0;92mdata_loading=12.89, iteration=2.255, train_acc=78.11, train_loss_cross_entropy=0.703, train_loss_seg=0.703, train_macc=37.07, train_miou=28.52[0m)]100%|##########| 1/1 [00:15<00:00, 15.15s/it, [0;92mdata_loading=12.89, iteration=2.255, train_acc=78.11, train_loss_cross_entropy=0.703, train_loss_seg=0.703, train_macc=37.07, train_miou=28.52[0m)]100%|##########| 1/1 [00:15<00:00, 15.15s/it, [0;92mdata_loading=12.89, iteration=2.255, train_acc=78.11, train_loss_cross_entropy=0.703, train_loss_seg=0.703, train_macc=37.07, train_miou=28.52[0m)][2022-10-21 15:52:46,499][torch_points3d.trainer][INFO] - Learning rate = 0.041040
+[2022-10-21 15:52:46,500][torch_points3d.trainer][INFO] - EPOCH 78 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.76, iteration=2.223, train_acc=77.59, train_loss_cross_entropy=0.711, train_loss_seg=0.711, train_macc=36.16, train_miou=28.33[0m)]100%|##########| 1/1 [00:14<00:00, 14.99s/it, [0;92mdata_loading=12.76, iteration=2.223, train_acc=77.59, train_loss_cross_entropy=0.711, train_loss_seg=0.711, train_macc=36.16, train_miou=28.33[0m)]100%|##########| 1/1 [00:14<00:00, 14.99s/it, [0;92mdata_loading=12.76, iteration=2.223, train_acc=77.59, train_loss_cross_entropy=0.711, train_loss_seg=0.711, train_macc=36.16, train_miou=28.33[0m)][2022-10-21 15:53:03,534][torch_points3d.trainer][INFO] - Learning rate = 0.040568
+[2022-10-21 15:53:03,536][torch_points3d.trainer][INFO] - EPOCH 79 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.71, iteration=2.246, train_acc=77.48, train_loss_cross_entropy=0.710, train_loss_seg=0.710, train_macc=36.56, train_miou=27.99[0m)]100%|##########| 1/1 [00:14<00:00, 14.96s/it, [0;92mdata_loading=12.71, iteration=2.246, train_acc=77.48, train_loss_cross_entropy=0.710, train_loss_seg=0.710, train_macc=36.56, train_miou=27.99[0m)]100%|##########| 1/1 [00:14<00:00, 14.96s/it, [0;92mdata_loading=12.71, iteration=2.246, train_acc=77.48, train_loss_cross_entropy=0.710, train_loss_seg=0.710, train_macc=36.56, train_miou=27.99[0m)][2022-10-21 15:53:20,824][torch_points3d.trainer][INFO] - Learning rate = 0.040101
+[2022-10-21 15:53:20,825][torch_points3d.trainer][INFO] - EPOCH 80 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:15<?, ?it/s, [0;92mdata_loading=12.84, iteration=2.263, train_acc=77.37, train_loss_cross_entropy=0.700, train_loss_seg=0.700, train_macc=37.06, train_miou=28.90[0m)]100%|##########| 1/1 [00:15<00:00, 15.11s/it, [0;92mdata_loading=12.84, iteration=2.263, train_acc=77.37, train_loss_cross_entropy=0.700, train_loss_seg=0.700, train_macc=37.06, train_miou=28.90[0m)]100%|##########| 1/1 [00:15<00:00, 15.11s/it, [0;92mdata_loading=12.84, iteration=2.263, train_acc=77.37, train_loss_cross_entropy=0.700, train_loss_seg=0.700, train_macc=37.06, train_miou=28.90[0m)][2022-10-21 15:53:37,969][torch_points3d.trainer][INFO] - Learning rate = 0.039640
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:15<?, ?it/s, [0;93mval_acc=60.71, val_loss_cross_entropy=1.332, val_loss_seg=1.332, val_macc=30.34, val_miou=17.24[0m)]100%|##########| 1/1 [00:15<00:00, 15.81s/it, [0;93mval_acc=60.71, val_loss_cross_entropy=1.332, val_loss_seg=1.332, val_macc=30.34, val_miou=17.24[0m)]100%|##########| 1/1 [00:15<00:00, 15.81s/it, [0;93mval_acc=60.71, val_loss_cross_entropy=1.332, val_loss_seg=1.332, val_macc=30.34, val_miou=17.24[0m)][2022-10-21 15:53:55,841][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-10-21 15:53:55,842][torch_points3d.metrics.base_tracker][INFO] -     val_loss_seg = 1.3326821327209473
+[2022-10-21 15:53:55,842][torch_points3d.metrics.base_tracker][INFO] -     val_loss_cross_entropy = 1.3326821327209473
+[2022-10-21 15:53:55,842][torch_points3d.metrics.base_tracker][INFO] -     val_acc = 60.71681663864992
+[2022-10-21 15:53:55,843][torch_points3d.metrics.base_tracker][INFO] -     val_macc = 30.340824578945906
+[2022-10-21 15:53:55,843][torch_points3d.metrics.base_tracker][INFO] -     val_miou = 17.248055425566292
+[2022-10-21 15:53:55,843][torch_points3d.metrics.base_tracker][INFO] -     val_miou_per_class = {0: '49.48', 1: '90.81', 2: '27.26', 3: '0.00', 4: '18.80', 5: '0.00', 6: '34.43', 7: '10.90', 8: '9.79', 9: '0.00', 10: '0.00', 11: '0.00', 12: '0.00', 13: '0.00', 14: '0.00', 15: '0.00', 16: '0.00', 17: '0.00', 18: '0.00', 19: '0.00'}
+[2022-10-21 15:53:55,843][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-10-21 15:53:55,843][torch_points3d.trainer][INFO] - EPOCH 81 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:15<?, ?it/s, [0;92mdata_loading=12.93, iteration=2.350, train_acc=77.51, train_loss_cross_entropy=0.696, train_loss_seg=0.696, train_macc=36.75, train_miou=28.39[0m)]100%|##########| 1/1 [00:15<00:00, 15.29s/it, [0;92mdata_loading=12.93, iteration=2.350, train_acc=77.51, train_loss_cross_entropy=0.696, train_loss_seg=0.696, train_macc=36.75, train_miou=28.39[0m)]100%|##########| 1/1 [00:15<00:00, 15.29s/it, [0;92mdata_loading=12.93, iteration=2.350, train_acc=77.51, train_loss_cross_entropy=0.696, train_loss_seg=0.696, train_macc=36.75, train_miou=28.39[0m)][2022-10-21 15:54:13,418][torch_points3d.trainer][INFO] - Learning rate = 0.039184
+[2022-10-21 15:54:13,420][torch_points3d.trainer][INFO] - EPOCH 82 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.70, iteration=2.161, train_acc=77.58, train_loss_cross_entropy=0.706, train_loss_seg=0.706, train_macc=38.17, train_miou=29.50[0m)]100%|##########| 1/1 [00:14<00:00, 14.86s/it, [0;92mdata_loading=12.70, iteration=2.161, train_acc=77.58, train_loss_cross_entropy=0.706, train_loss_seg=0.706, train_macc=38.17, train_miou=29.50[0m)]100%|##########| 1/1 [00:14<00:00, 14.86s/it, [0;92mdata_loading=12.70, iteration=2.161, train_acc=77.58, train_loss_cross_entropy=0.706, train_loss_seg=0.706, train_macc=38.17, train_miou=29.50[0m)][2022-10-21 15:54:30,314][torch_points3d.trainer][INFO] - Learning rate = 0.038734
+[2022-10-21 15:54:30,316][torch_points3d.trainer][INFO] - EPOCH 83 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.77, iteration=2.177, train_acc=78.62, train_loss_cross_entropy=0.682, train_loss_seg=0.682, train_macc=39.22, train_miou=29.99[0m)]100%|##########| 1/1 [00:14<00:00, 14.95s/it, [0;92mdata_loading=12.77, iteration=2.177, train_acc=78.62, train_loss_cross_entropy=0.682, train_loss_seg=0.682, train_macc=39.22, train_miou=29.99[0m)]100%|##########| 1/1 [00:14<00:00, 14.95s/it, [0;92mdata_loading=12.77, iteration=2.177, train_acc=78.62, train_loss_cross_entropy=0.682, train_loss_seg=0.682, train_macc=39.22, train_miou=29.99[0m)][2022-10-21 15:54:47,635][torch_points3d.trainer][INFO] - Learning rate = 0.038288
+[2022-10-21 15:54:47,637][torch_points3d.trainer][INFO] - EPOCH 84 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.77, iteration=2.173, train_acc=78.87, train_loss_cross_entropy=0.657, train_loss_seg=0.657, train_macc=38.74, train_miou=29.87[0m)]100%|##########| 1/1 [00:14<00:00, 14.95s/it, [0;92mdata_loading=12.77, iteration=2.173, train_acc=78.87, train_loss_cross_entropy=0.657, train_loss_seg=0.657, train_macc=38.74, train_miou=29.87[0m)]100%|##########| 1/1 [00:14<00:00, 14.95s/it, [0;92mdata_loading=12.77, iteration=2.173, train_acc=78.87, train_loss_cross_entropy=0.657, train_loss_seg=0.657, train_macc=38.74, train_miou=29.87[0m)][2022-10-21 15:55:04,637][torch_points3d.trainer][INFO] - Learning rate = 0.037848
+[2022-10-21 15:55:04,639][torch_points3d.trainer][INFO] - EPOCH 85 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.81, iteration=2.142, train_acc=78.54, train_loss_cross_entropy=0.682, train_loss_seg=0.682, train_macc=39.06, train_miou=30.28[0m)]100%|##########| 1/1 [00:14<00:00, 14.96s/it, [0;92mdata_loading=12.81, iteration=2.142, train_acc=78.54, train_loss_cross_entropy=0.682, train_loss_seg=0.682, train_macc=39.06, train_miou=30.28[0m)]100%|##########| 1/1 [00:14<00:00, 14.96s/it, [0;92mdata_loading=12.81, iteration=2.142, train_acc=78.54, train_loss_cross_entropy=0.682, train_loss_seg=0.682, train_macc=39.06, train_miou=30.28[0m)][2022-10-21 15:55:21,649][torch_points3d.trainer][INFO] - Learning rate = 0.037413
+[2022-10-21 15:55:21,652][torch_points3d.trainer][INFO] - EPOCH 86 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:15<?, ?it/s, [0;92mdata_loading=12.87, iteration=2.264, train_acc=78.81, train_loss_cross_entropy=0.688, train_loss_seg=0.688, train_macc=38.61, train_miou=30.17[0m)]100%|##########| 1/1 [00:15<00:00, 15.14s/it, [0;92mdata_loading=12.87, iteration=2.264, train_acc=78.81, train_loss_cross_entropy=0.688, train_loss_seg=0.688, train_macc=38.61, train_miou=30.17[0m)]100%|##########| 1/1 [00:15<00:00, 15.14s/it, [0;92mdata_loading=12.87, iteration=2.264, train_acc=78.81, train_loss_cross_entropy=0.688, train_loss_seg=0.688, train_macc=38.61, train_miou=30.17[0m)][2022-10-21 15:55:38,820][torch_points3d.trainer][INFO] - Learning rate = 0.036982
+[2022-10-21 15:55:38,822][torch_points3d.trainer][INFO] - EPOCH 87 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:15<?, ?it/s, [0;92mdata_loading=12.75, iteration=2.317, train_acc=78.71, train_loss_cross_entropy=0.670, train_loss_seg=0.670, train_macc=38.87, train_miou=30.10[0m)]100%|##########| 1/1 [00:15<00:00, 15.07s/it, [0;92mdata_loading=12.75, iteration=2.317, train_acc=78.71, train_loss_cross_entropy=0.670, train_loss_seg=0.670, train_macc=38.87, train_miou=30.10[0m)]100%|##########| 1/1 [00:15<00:00, 15.07s/it, [0;92mdata_loading=12.75, iteration=2.317, train_acc=78.71, train_loss_cross_entropy=0.670, train_loss_seg=0.670, train_macc=38.87, train_miou=30.10[0m)][2022-10-21 15:55:55,947][torch_points3d.trainer][INFO] - Learning rate = 0.036557
+[2022-10-21 15:55:55,949][torch_points3d.trainer][INFO] - EPOCH 88 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.75, iteration=2.188, train_acc=79.17, train_loss_cross_entropy=0.657, train_loss_seg=0.657, train_macc=40.07, train_miou=30.94[0m)]100%|##########| 1/1 [00:14<00:00, 14.95s/it, [0;92mdata_loading=12.75, iteration=2.188, train_acc=79.17, train_loss_cross_entropy=0.657, train_loss_seg=0.657, train_macc=40.07, train_miou=30.94[0m)]100%|##########| 1/1 [00:14<00:00, 14.95s/it, [0;92mdata_loading=12.75, iteration=2.188, train_acc=79.17, train_loss_cross_entropy=0.657, train_loss_seg=0.657, train_macc=40.07, train_miou=30.94[0m)][2022-10-21 15:56:12,944][torch_points3d.trainer][INFO] - Learning rate = 0.036137
+[2022-10-21 15:56:12,945][torch_points3d.trainer][INFO] - EPOCH 89 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.67, iteration=2.196, train_acc=80.64, train_loss_cross_entropy=0.631, train_loss_seg=0.631, train_macc=40.66, train_miou=31.82[0m)]100%|##########| 1/1 [00:14<00:00, 14.87s/it, [0;92mdata_loading=12.67, iteration=2.196, train_acc=80.64, train_loss_cross_entropy=0.631, train_loss_seg=0.631, train_macc=40.66, train_miou=31.82[0m)]100%|##########| 1/1 [00:14<00:00, 14.87s/it, [0;92mdata_loading=12.67, iteration=2.196, train_acc=80.64, train_loss_cross_entropy=0.631, train_loss_seg=0.631, train_macc=40.66, train_miou=31.82[0m)][2022-10-21 15:56:30,125][torch_points3d.trainer][INFO] - Learning rate = 0.035721
+[2022-10-21 15:56:30,127][torch_points3d.trainer][INFO] - EPOCH 90 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.76, iteration=2.221, train_acc=78.86, train_loss_cross_entropy=0.657, train_loss_seg=0.657, train_macc=39.73, train_miou=30.84[0m)]100%|##########| 1/1 [00:14<00:00, 14.98s/it, [0;92mdata_loading=12.76, iteration=2.221, train_acc=78.86, train_loss_cross_entropy=0.657, train_loss_seg=0.657, train_macc=39.73, train_miou=30.84[0m)]100%|##########| 1/1 [00:14<00:00, 14.98s/it, [0;92mdata_loading=12.76, iteration=2.221, train_acc=78.86, train_loss_cross_entropy=0.657, train_loss_seg=0.657, train_macc=39.73, train_miou=30.84[0m)][2022-10-21 15:56:47,176][torch_points3d.trainer][INFO] - Learning rate = 0.035310
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:16<?, ?it/s, [0;93mval_acc=61.86, val_loss_cross_entropy=1.290, val_loss_seg=1.290, val_macc=30.47, val_miou=18.26[0m)]100%|##########| 1/1 [00:16<00:00, 16.04s/it, [0;93mval_acc=61.86, val_loss_cross_entropy=1.290, val_loss_seg=1.290, val_macc=30.47, val_miou=18.26[0m)]100%|##########| 1/1 [00:16<00:00, 16.04s/it, [0;93mval_acc=61.86, val_loss_cross_entropy=1.290, val_loss_seg=1.290, val_macc=30.47, val_miou=18.26[0m)][2022-10-21 15:57:03,272][torch_points3d.utils.colors][INFO] - [0;94mmiou: 17.958584951649094 -> 18.267410188787156[0m
+[2022-10-21 15:57:05,459][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-10-21 15:57:05,459][torch_points3d.metrics.base_tracker][INFO] -     val_loss_seg = 1.2902250289916992
+[2022-10-21 15:57:05,460][torch_points3d.metrics.base_tracker][INFO] -     val_loss_cross_entropy = 1.2902250289916992
+[2022-10-21 15:57:05,460][torch_points3d.metrics.base_tracker][INFO] -     val_acc = 61.86978338428073
+[2022-10-21 15:57:05,460][torch_points3d.metrics.base_tracker][INFO] -     val_macc = 30.47972459679979
+[2022-10-21 15:57:05,460][torch_points3d.metrics.base_tracker][INFO] -     val_miou = 18.267410188787156
+[2022-10-21 15:57:05,460][torch_points3d.metrics.base_tracker][INFO] -     val_miou_per_class = {0: '49.18', 1: '90.24', 2: '29.10', 3: '0.00', 4: '29.87', 5: '0.00', 6: '39.40', 7: '6.05', 8: '11.87', 9: '0.00', 10: '0.00', 11: '0.00', 12: '0.00', 13: '0.00', 14: '0.00', 15: '0.00', 16: '0.00', 17: '0.00', 18: '0.00', 19: '0.02'}
+[2022-10-21 15:57:05,460][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-10-21 15:57:05,460][torch_points3d.trainer][INFO] - EPOCH 91 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:15<?, ?it/s, [0;92mdata_loading=12.83, iteration=2.228, train_acc=77.27, train_loss_cross_entropy=0.695, train_loss_seg=0.695, train_macc=37.17, train_miou=29.05[0m)]100%|##########| 1/1 [00:15<00:00, 15.06s/it, [0;92mdata_loading=12.83, iteration=2.228, train_acc=77.27, train_loss_cross_entropy=0.695, train_loss_seg=0.695, train_macc=37.17, train_miou=29.05[0m)]100%|##########| 1/1 [00:15<00:00, 15.07s/it, [0;92mdata_loading=12.83, iteration=2.228, train_acc=77.27, train_loss_cross_entropy=0.695, train_loss_seg=0.695, train_macc=37.17, train_miou=29.05[0m)][2022-10-21 15:57:22,578][torch_points3d.trainer][INFO] - Learning rate = 0.034904
+[2022-10-21 15:57:22,579][torch_points3d.trainer][INFO] - EPOCH 92 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:15<?, ?it/s, [0;92mdata_loading=12.95, iteration=2.3  , train_acc=80.13, train_loss_cross_entropy=0.641, train_loss_seg=0.641, train_macc=40.18, train_miou=31.41[0m)]100%|##########| 1/1 [00:15<00:00, 15.26s/it, [0;92mdata_loading=12.95, iteration=2.3  , train_acc=80.13, train_loss_cross_entropy=0.641, train_loss_seg=0.641, train_macc=40.18, train_miou=31.41[0m)]100%|##########| 1/1 [00:15<00:00, 15.26s/it, [0;92mdata_loading=12.95, iteration=2.3  , train_acc=80.13, train_loss_cross_entropy=0.641, train_loss_seg=0.641, train_macc=40.18, train_miou=31.41[0m)][2022-10-21 15:57:39,882][torch_points3d.trainer][INFO] - Learning rate = 0.034503
+[2022-10-21 15:57:39,884][torch_points3d.trainer][INFO] - EPOCH 93 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.84, iteration=2.134, train_acc=78.72, train_loss_cross_entropy=0.661, train_loss_seg=0.661, train_macc=39.69, train_miou=31.33[0m)]100%|##########| 1/1 [00:14<00:00, 14.98s/it, [0;92mdata_loading=12.84, iteration=2.134, train_acc=78.72, train_loss_cross_entropy=0.661, train_loss_seg=0.661, train_macc=39.69, train_miou=31.33[0m)]100%|##########| 1/1 [00:14<00:00, 14.98s/it, [0;92mdata_loading=12.84, iteration=2.134, train_acc=78.72, train_loss_cross_entropy=0.661, train_loss_seg=0.661, train_macc=39.69, train_miou=31.33[0m)][2022-10-21 15:57:56,893][torch_points3d.trainer][INFO] - Learning rate = 0.034106
+[2022-10-21 15:57:56,895][torch_points3d.trainer][INFO] - EPOCH 94 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:15<?, ?it/s, [0;92mdata_loading=12.88, iteration=2.221, train_acc=79.38, train_loss_cross_entropy=0.654, train_loss_seg=0.654, train_macc=39.92, train_miou=31.50[0m)]100%|##########| 1/1 [00:15<00:00, 15.11s/it, [0;92mdata_loading=12.88, iteration=2.221, train_acc=79.38, train_loss_cross_entropy=0.654, train_loss_seg=0.654, train_macc=39.92, train_miou=31.50[0m)]100%|##########| 1/1 [00:15<00:00, 15.11s/it, [0;92mdata_loading=12.88, iteration=2.221, train_acc=79.38, train_loss_cross_entropy=0.654, train_loss_seg=0.654, train_macc=39.92, train_miou=31.50[0m)][2022-10-21 15:58:14,051][torch_points3d.trainer][INFO] - Learning rate = 0.033714
+[2022-10-21 15:58:14,053][torch_points3d.trainer][INFO] - EPOCH 95 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.81, iteration=2.172, train_acc=79.72, train_loss_cross_entropy=0.621, train_loss_seg=0.621, train_macc=40.93, train_miou=32.51[0m)]100%|##########| 1/1 [00:14<00:00, 14.98s/it, [0;92mdata_loading=12.81, iteration=2.172, train_acc=79.72, train_loss_cross_entropy=0.621, train_loss_seg=0.621, train_macc=40.93, train_miou=32.51[0m)]100%|##########| 1/1 [00:14<00:00, 14.98s/it, [0;92mdata_loading=12.81, iteration=2.172, train_acc=79.72, train_loss_cross_entropy=0.621, train_loss_seg=0.621, train_macc=40.93, train_miou=32.51[0m)][2022-10-21 15:58:31,065][torch_points3d.trainer][INFO] - Learning rate = 0.033326
+[2022-10-21 15:58:31,067][torch_points3d.trainer][INFO] - EPOCH 96 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:15<?, ?it/s, [0;92mdata_loading=12.93, iteration=2.213, train_acc=78.64, train_loss_cross_entropy=0.650, train_loss_seg=0.650, train_macc=39.77, train_miou=31.42[0m)]100%|##########| 1/1 [00:15<00:00, 15.15s/it, [0;92mdata_loading=12.93, iteration=2.213, train_acc=78.64, train_loss_cross_entropy=0.650, train_loss_seg=0.650, train_macc=39.77, train_miou=31.42[0m)]100%|##########| 1/1 [00:15<00:00, 15.15s/it, [0;92mdata_loading=12.93, iteration=2.213, train_acc=78.64, train_loss_cross_entropy=0.650, train_loss_seg=0.650, train_macc=39.77, train_miou=31.42[0m)][2022-10-21 15:58:48,488][torch_points3d.trainer][INFO] - Learning rate = 0.032943
+[2022-10-21 15:58:48,490][torch_points3d.trainer][INFO] - EPOCH 97 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:15<?, ?it/s, [0;92mdata_loading=12.87, iteration=2.246, train_acc=79.57, train_loss_cross_entropy=0.635, train_loss_seg=0.635, train_macc=39.64, train_miou=31.44[0m)]100%|##########| 1/1 [00:15<00:00, 15.13s/it, [0;92mdata_loading=12.87, iteration=2.246, train_acc=79.57, train_loss_cross_entropy=0.635, train_loss_seg=0.635, train_macc=39.64, train_miou=31.44[0m)]100%|##########| 1/1 [00:15<00:00, 15.13s/it, [0;92mdata_loading=12.87, iteration=2.246, train_acc=79.57, train_loss_cross_entropy=0.635, train_loss_seg=0.635, train_macc=39.64, train_miou=31.44[0m)][2022-10-21 15:59:05,650][torch_points3d.trainer][INFO] - Learning rate = 0.032564
+[2022-10-21 15:59:05,651][torch_points3d.trainer][INFO] - EPOCH 98 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.71, iteration=2.198, train_acc=80.29, train_loss_cross_entropy=0.610, train_loss_seg=0.610, train_macc=41.34, train_miou=32.85[0m)]100%|##########| 1/1 [00:14<00:00, 14.91s/it, [0;92mdata_loading=12.71, iteration=2.198, train_acc=80.29, train_loss_cross_entropy=0.610, train_loss_seg=0.610, train_macc=41.34, train_miou=32.85[0m)]100%|##########| 1/1 [00:14<00:00, 14.91s/it, [0;92mdata_loading=12.71, iteration=2.198, train_acc=80.29, train_loss_cross_entropy=0.610, train_loss_seg=0.610, train_macc=41.34, train_miou=32.85[0m)][2022-10-21 15:59:22,615][torch_points3d.trainer][INFO] - Learning rate = 0.032189
+[2022-10-21 15:59:22,616][torch_points3d.trainer][INFO] - EPOCH 99 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:15<?, ?it/s, [0;92mdata_loading=12.86, iteration=2.284, train_acc=79.56, train_loss_cross_entropy=0.621, train_loss_seg=0.621, train_macc=39.71, train_miou=31.62[0m)]100%|##########| 1/1 [00:15<00:00, 15.15s/it, [0;92mdata_loading=12.86, iteration=2.284, train_acc=79.56, train_loss_cross_entropy=0.621, train_loss_seg=0.621, train_macc=39.71, train_miou=31.62[0m)]100%|##########| 1/1 [00:15<00:00, 15.15s/it, [0;92mdata_loading=12.86, iteration=2.284, train_acc=79.56, train_loss_cross_entropy=0.621, train_loss_seg=0.621, train_macc=39.71, train_miou=31.62[0m)][2022-10-21 15:59:39,798][torch_points3d.trainer][INFO] - Learning rate = 0.031819
+

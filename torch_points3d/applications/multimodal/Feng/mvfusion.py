@@ -141,19 +141,24 @@ class MVFusionEncoder(MVFusionBackboneBasedModel, ABC):
             mm_data_dict = self.down_modules[i](mm_data_dict)
         """
     
-        # Gather 9 (valid and invalid) viewing conditions for each point
-        # Invalid viewing conditions serve as padding
+#         # Gather 9 (valid and invalid) viewing conditions for each point
+#         # Invalid viewing conditions serve as padding
         
-        s = time.time()
-        viewing_feats, m2f_feats = self.get_view_dependent_features(data)
-        print(time.time() - s, flush=True)
-                
-        # Mask2Former predictions per view as feature
-        # Adjust previously used label mapping [0, 21] with 0 being invalid, to [-1, 20].
-        # As M2F model does not produce 0 preds, updated labels are within [0, 19]
-        m2f_feats = m2f_feats - 1   
+#         s = time.time()
+#         viewing_feats, m2f_feats = self.get_view_dependent_features(data)
+#         print(time.time() - s, flush=True)
+
+#         # Mask2Former predictions per view as feature
+#         # Adjust previously used label mapping [0, 21] with 0 being invalid, to [-1, 20].
+#         # As M2F model does not produce 0 preds, updated labels are within [0, 19]
+#         m2f_feats = m2f_feats - 1   
+        
+    
+        print("data.x.shape in mvfusion:", data.x.shape, flush=True)
+        viewing_feats = data.x[:-1]
+        m2f_feats = data.x[-1:]
         m2f_feats = torch.nn.functional.one_hot(m2f_feats.squeeze().long(), self.n_classes)
-        
+    
         ### Multi-view fusion of M2F and viewing conditions using Transformer
         # TODO: remove assumption that pixel validity is the 1st feature
         invalid_pixel_mask = viewing_feats[:, :, 0] == 0.

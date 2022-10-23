@@ -6,7 +6,7 @@
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=5
 #SBATCH --time=05:00:00
-#SBATCH --mem=64000M
+#SBATCH --mem=128000M
 #SBATCH --output=job_logs/mvfusion/train_mvfusion_partial.out
 
 cd $HOME/DeepViewAgg
@@ -16,5 +16,6 @@ module purge
 module load 2021
 module load CUDA/11.3.1
 
+#export C_INCLUDE_PATH="/home/fsun/DeepViewAgg/sparsehash:$CPLUS_INCLUDE_PATH"
 export HYDRA_FULL_ERROR=1
 ./scripts/train_scannet_mvfusion.sh

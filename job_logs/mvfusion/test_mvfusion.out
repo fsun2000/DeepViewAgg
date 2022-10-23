@@ -1,0 +1,12 @@
+[2022-10-21 12:52:19,296][torch_points3d.trainer][INFO] - DEVICE : cuda
+initialize train dataset
+initialize val dataset
+task:  segmentation.multimodal
+tested_model_name:  MVFusion
+None
+None
+MMData(
+    data = Data(coords=[58865, 3], grid_size=[1], id_scan=[1], mapping_index=[58865], origin_id=[58865], pos=[58865, 3], y=[58865])
+    image = ImageData(num_settings=1, num_views=100, num_points=58865, m2f_pred_mask=torch.Size([100, 1, 240, 320]), device=cpu)
+)
+Data(coords=[58865, 3], grid_size=[1], id_scan=[1], mapping_index=[58865], origin_id=[58865], pos=[58865, 3], y=[58865])

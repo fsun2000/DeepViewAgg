@@ -1,0 +1,962 @@
+[2022-10-21 15:27:33,651][torch_points3d.trainer][INFO] - DEVICE : cuda
+initialize train dataset
+initialize val dataset
+task:  segmentation.multimodal
+tested_model_name:  RGB_ResNet18PPM_g4-nomod_DeepSetFeat
+class_name:  No3DFeatureFusion
+model_module:  torch_points3d.models.segmentation.multimodal.no3d
+model:  No3DFeatureFusion(
+  (backbone): No3DEncoder(
+    (down_modules): ModuleList(
+      (0): MultimodalBlockDown(
+        (block_1): Identity()
+        (block_2): Identity()
+        (image): UnimodalBranch(
+          drop_3d=None
+          drop_mod=Dropout(p=0.1, inplace=True)
+          keep_last_view=False
+          checkpointing=
+          (conv): ADE20KResNet18PPM(
+            (encoder): ResnetDilated(
+              (conv1): Conv2d(3, 64, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+              (bn1): SynchronizedBatchNorm2d(64, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+              (relu1): ReLU(inplace=True)
+              (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+              (bn2): SynchronizedBatchNorm2d(64, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+              (relu2): ReLU(inplace=True)
+              (conv3): Conv2d(64, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+              (bn3): SynchronizedBatchNorm2d(128, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+              (relu3): ReLU(inplace=True)
+              (maxpool): MaxPool2d(kernel_size=3, stride=2, padding=1, dilation=1, ceil_mode=False)
+              (layer1): Sequential(
+                (0): BasicBlock(
+                  (conv1): Conv2d(128, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn1): SynchronizedBatchNorm2d(64, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  (relu): ReLU(inplace=True)
+                  (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn2): SynchronizedBatchNorm2d(64, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  (downsample): Sequential(
+                    (0): Conv2d(128, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                    (1): SynchronizedBatchNorm2d(64, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  )
+                )
+                (1): BasicBlock(
+                  (conv1): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn1): SynchronizedBatchNorm2d(64, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  (relu): ReLU(inplace=True)
+                  (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn2): SynchronizedBatchNorm2d(64, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                )
+              )
+              (layer2): Sequential(
+                (0): BasicBlock(
+                  (conv1): Conv2d(64, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+                  (bn1): SynchronizedBatchNorm2d(128, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  (relu): ReLU(inplace=True)
+                  (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn2): SynchronizedBatchNorm2d(128, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  (downsample): Sequential(
+                    (0): Conv2d(64, 128, kernel_size=(1, 1), stride=(2, 2), bias=False)
+                    (1): SynchronizedBatchNorm2d(128, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  )
+                )
+                (1): BasicBlock(
+                  (conv1): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn1): SynchronizedBatchNorm2d(128, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  (relu): ReLU(inplace=True)
+                  (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn2): SynchronizedBatchNorm2d(128, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                )
+              )
+              (layer3): Sequential(
+                (0): BasicBlock(
+                  (conv1): Conv2d(128, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn1): SynchronizedBatchNorm2d(256, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  (relu): ReLU(inplace=True)
+                  (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(2, 2), dilation=(2, 2), bias=False)
+                  (bn2): SynchronizedBatchNorm2d(256, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  (downsample): Sequential(
+                    (0): Conv2d(128, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                    (1): SynchronizedBatchNorm2d(256, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  )
+                )
+                (1): BasicBlock(
+                  (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(2, 2), dilation=(2, 2), bias=False)
+                  (bn1): SynchronizedBatchNorm2d(256, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  (relu): ReLU(inplace=True)
+                  (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(2, 2), dilation=(2, 2), bias=False)
+                  (bn2): SynchronizedBatchNorm2d(256, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                )
+              )
+              (layer4): Sequential(
+                (0): BasicBlock(
+                  (conv1): Conv2d(256, 512, kernel_size=(3, 3), stride=(1, 1), padding=(2, 2), dilation=(2, 2), bias=False)
+                  (bn1): SynchronizedBatchNorm2d(512, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  (relu): ReLU(inplace=True)
+                  (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(4, 4), dilation=(4, 4), bias=False)
+                  (bn2): SynchronizedBatchNorm2d(512, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  (downsample): Sequential(
+                    (0): Conv2d(256, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                    (1): SynchronizedBatchNorm2d(512, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  )
+                )
+                (1): BasicBlock(
+                  (conv1): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(4, 4), dilation=(4, 4), bias=False)
+                  (bn1): SynchronizedBatchNorm2d(512, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  (relu): ReLU(inplace=True)
+                  (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(4, 4), dilation=(4, 4), bias=False)
+                  (bn2): SynchronizedBatchNorm2d(512, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                )
+              )
+            )
+            (decoder): PPMFeatMap(
+              (ppm): ModuleList(
+                (0): Sequential(
+                  (0): AdaptiveAvgPool2d(output_size=1)
+                  (1): Conv2d(512, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (2): PrudentSynchronizedBatchNorm2d(512, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  (3): ReLU(inplace=True)
+                )
+                (1): Sequential(
+                  (0): AdaptiveAvgPool2d(output_size=2)
+                  (1): Conv2d(512, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (2): PrudentSynchronizedBatchNorm2d(512, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  (3): ReLU(inplace=True)
+                )
+                (2): Sequential(
+                  (0): AdaptiveAvgPool2d(output_size=3)
+                  (1): Conv2d(512, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (2): PrudentSynchronizedBatchNorm2d(512, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  (3): ReLU(inplace=True)
+                )
+                (3): Sequential(
+                  (0): AdaptiveAvgPool2d(output_size=6)
+                  (1): Conv2d(512, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (2): PrudentSynchronizedBatchNorm2d(512, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  (3): ReLU(inplace=True)
+                )
+              )
+              (conv_last): Sequential(
+                (0): Conv2d(2560, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                (1): SynchronizedBatchNorm2d(512, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+              )
+            )
+          )
+          (atomic_pool): BimodalCSRPool()
+          (view_pool): GroupBimodalCSRPool(
+            num_groups=4
+            use_mod=False
+            group_scaling=True
+            save_last=False
+            (E_map): DeepSetFeat(
+              pool=['max']
+              fusion=concatenation
+              use_num=True
+              (mlp_elt_1): Sequential(
+                (0): Sequential(
+                  (0): Linear(in_features=8, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+                (1): Sequential(
+                  (0): Linear(in_features=32, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+              )
+              (mlp_set): Sequential(
+                (0): Sequential(
+                  (0): Linear(in_features=33, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+                (1): Sequential(
+                  (0): Linear(in_features=32, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+              )
+              (mlp_elt_2): Sequential(
+                (0): Sequential(
+                  (0): Linear(in_features=64, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+                (1): Sequential(
+                  (0): Linear(in_features=32, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+              )
+            )
+            (E_mod): Sequential(
+              (0): Sequential(
+                (0): Linear(in_features=512, out_features=512, bias=False)
+                (1): FastBatchNorm1d(
+                  (batch_norm): BatchNorm1d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                )
+                (2): LeakyReLU(negative_slope=0.2, inplace=True)
+              )
+              (1): Sequential(
+                (0): Linear(in_features=512, out_features=512, bias=False)
+                (1): FastBatchNorm1d(
+                  (batch_norm): BatchNorm1d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                )
+                (2): LeakyReLU(negative_slope=0.2, inplace=True)
+              )
+            )
+            (E_score): Linear(in_features=32, out_features=4, bias=True)
+            (G): Gating(num_groups=4, weight=True, bias=True)
+          )
+          (fusion): BimodalFusion(mode=residual)
+          (drop_mod): Dropout(p=0.1, inplace=True)
+        )
+      )
+    )
+  )
+  (head): Sequential(
+    (0): Linear(in_features=512, out_features=20, bias=True)
+  )
+)
+backbone.down_modules.0.image.conv
+backbone
+head
+[2022-10-21 15:27:38,840][torch_points3d.core.schedulers.bn_schedulers][INFO] - Setting batchnorm momentum at 0.02
+task:  segmentation.multimodal
+tested_model_name:  RGB_ResNet18PPM_g4-nomod_DeepSetFeat
+[2022-10-21 15:27:39,870][torch_points3d.trainer][WARNING] - The model will not be able to be used from pretrained weights without the corresponding dataset. Current properties are {'feature_dimension': 1, 'num_classes': 20}
+[2022-10-21 15:27:39,870][torch_points3d.trainer][INFO] - No3DFeatureFusion(
+  (backbone): No3DEncoder(
+    (down_modules): ModuleList(
+      (0): MultimodalBlockDown(
+        (block_1): Identity()
+        (block_2): Identity()
+        (image): UnimodalBranch(
+          drop_3d=None
+          drop_mod=Dropout(p=0.1, inplace=True)
+          keep_last_view=False
+          checkpointing=
+          (conv): ADE20KResNet18PPM(
+            (encoder): ResnetDilated(
+              (conv1): Conv2d(3, 64, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+              (bn1): SynchronizedBatchNorm2d(64, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+              (relu1): ReLU(inplace=True)
+              (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+              (bn2): SynchronizedBatchNorm2d(64, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+              (relu2): ReLU(inplace=True)
+              (conv3): Conv2d(64, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+              (bn3): SynchronizedBatchNorm2d(128, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+              (relu3): ReLU(inplace=True)
+              (maxpool): MaxPool2d(kernel_size=3, stride=2, padding=1, dilation=1, ceil_mode=False)
+              (layer1): Sequential(
+                (0): BasicBlock(
+                  (conv1): Conv2d(128, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn1): SynchronizedBatchNorm2d(64, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  (relu): ReLU(inplace=True)
+                  (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn2): SynchronizedBatchNorm2d(64, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  (downsample): Sequential(
+                    (0): Conv2d(128, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                    (1): SynchronizedBatchNorm2d(64, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  )
+                )
+                (1): BasicBlock(
+                  (conv1): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn1): SynchronizedBatchNorm2d(64, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  (relu): ReLU(inplace=True)
+                  (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn2): SynchronizedBatchNorm2d(64, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                )
+              )
+              (layer2): Sequential(
+                (0): BasicBlock(
+                  (conv1): Conv2d(64, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+                  (bn1): SynchronizedBatchNorm2d(128, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  (relu): ReLU(inplace=True)
+                  (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn2): SynchronizedBatchNorm2d(128, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  (downsample): Sequential(
+                    (0): Conv2d(64, 128, kernel_size=(1, 1), stride=(2, 2), bias=False)
+                    (1): SynchronizedBatchNorm2d(128, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  )
+                )
+                (1): BasicBlock(
+                  (conv1): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn1): SynchronizedBatchNorm2d(128, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  (relu): ReLU(inplace=True)
+                  (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn2): SynchronizedBatchNorm2d(128, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                )
+              )
+              (layer3): Sequential(
+                (0): BasicBlock(
+                  (conv1): Conv2d(128, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                  (bn1): SynchronizedBatchNorm2d(256, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  (relu): ReLU(inplace=True)
+                  (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(2, 2), dilation=(2, 2), bias=False)
+                  (bn2): SynchronizedBatchNorm2d(256, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  (downsample): Sequential(
+                    (0): Conv2d(128, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                    (1): SynchronizedBatchNorm2d(256, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  )
+                )
+                (1): BasicBlock(
+                  (conv1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(2, 2), dilation=(2, 2), bias=False)
+                  (bn1): SynchronizedBatchNorm2d(256, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  (relu): ReLU(inplace=True)
+                  (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(2, 2), dilation=(2, 2), bias=False)
+                  (bn2): SynchronizedBatchNorm2d(256, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                )
+              )
+              (layer4): Sequential(
+                (0): BasicBlock(
+                  (conv1): Conv2d(256, 512, kernel_size=(3, 3), stride=(1, 1), padding=(2, 2), dilation=(2, 2), bias=False)
+                  (bn1): SynchronizedBatchNorm2d(512, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  (relu): ReLU(inplace=True)
+                  (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(4, 4), dilation=(4, 4), bias=False)
+                  (bn2): SynchronizedBatchNorm2d(512, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  (downsample): Sequential(
+                    (0): Conv2d(256, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                    (1): SynchronizedBatchNorm2d(512, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  )
+                )
+                (1): BasicBlock(
+                  (conv1): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(4, 4), dilation=(4, 4), bias=False)
+                  (bn1): SynchronizedBatchNorm2d(512, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  (relu): ReLU(inplace=True)
+                  (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(4, 4), dilation=(4, 4), bias=False)
+                  (bn2): SynchronizedBatchNorm2d(512, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                )
+              )
+            )
+            (decoder): PPMFeatMap(
+              (ppm): ModuleList(
+                (0): Sequential(
+                  (0): AdaptiveAvgPool2d(output_size=1)
+                  (1): Conv2d(512, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (2): PrudentSynchronizedBatchNorm2d(512, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  (3): ReLU(inplace=True)
+                )
+                (1): Sequential(
+                  (0): AdaptiveAvgPool2d(output_size=2)
+                  (1): Conv2d(512, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (2): PrudentSynchronizedBatchNorm2d(512, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  (3): ReLU(inplace=True)
+                )
+                (2): Sequential(
+                  (0): AdaptiveAvgPool2d(output_size=3)
+                  (1): Conv2d(512, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (2): PrudentSynchronizedBatchNorm2d(512, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  (3): ReLU(inplace=True)
+                )
+                (3): Sequential(
+                  (0): AdaptiveAvgPool2d(output_size=6)
+                  (1): Conv2d(512, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                  (2): PrudentSynchronizedBatchNorm2d(512, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                  (3): ReLU(inplace=True)
+                )
+              )
+              (conv_last): Sequential(
+                (0): Conv2d(2560, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                (1): SynchronizedBatchNorm2d(512, eps=1e-05, momentum=0.001, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+              )
+            )
+          )
+          (atomic_pool): BimodalCSRPool()
+          (view_pool): GroupBimodalCSRPool(
+            num_groups=4
+            use_mod=False
+            group_scaling=True
+            save_last=False
+            (E_map): DeepSetFeat(
+              pool=['max']
+              fusion=concatenation
+              use_num=True
+              (mlp_elt_1): Sequential(
+                (0): Sequential(
+                  (0): Linear(in_features=8, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+                (1): Sequential(
+                  (0): Linear(in_features=32, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+              )
+              (mlp_set): Sequential(
+                (0): Sequential(
+                  (0): Linear(in_features=33, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+                (1): Sequential(
+                  (0): Linear(in_features=32, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+              )
+              (mlp_elt_2): Sequential(
+                (0): Sequential(
+                  (0): Linear(in_features=64, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+                (1): Sequential(
+                  (0): Linear(in_features=32, out_features=32, bias=False)
+                  (1): FastBatchNorm1d(
+                    (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                  )
+                  (2): LeakyReLU(negative_slope=0.2, inplace=True)
+                )
+              )
+            )
+            (E_mod): Sequential(
+              (0): Sequential(
+                (0): Linear(in_features=512, out_features=512, bias=False)
+                (1): FastBatchNorm1d(
+                  (batch_norm): BatchNorm1d(512, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                )
+                (2): LeakyReLU(negative_slope=0.2, inplace=True)
+              )
+              (1): Sequential(
+                (0): Linear(in_features=512, out_features=512, bias=False)
+                (1): FastBatchNorm1d(
+                  (batch_norm): BatchNorm1d(512, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                )
+                (2): LeakyReLU(negative_slope=0.2, inplace=True)
+              )
+            )
+            (E_score): Linear(in_features=32, out_features=4, bias=True)
+            (G): Gating(num_groups=4, weight=True, bias=True)
+          )
+          (fusion): BimodalFusion(mode=residual)
+          (drop_mod): Dropout(p=0.1, inplace=True)
+        )
+      )
+    )
+  )
+  (head): Sequential(
+    (0): Linear(in_features=512, out_features=20, bias=True)
+  )
+)
+[2022-10-21 15:27:39,873][torch_points3d.utils.colors][INFO] - [0;32mOptimizer: SGD (
+Parameter Group 0
+    dampening: 0.1
+    foreach: None
+    initial_lr: 0.1
+    lr: 0.1
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 0.0001
+
+Parameter Group 1
+    dampening: 0.1
+    foreach: None
+    initial_lr: 0.1
+    lr: 0.1
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 0.0001
+
+Parameter Group 2
+    dampening: 0.1
+    foreach: None
+    initial_lr: 0.001
+    lr: 0.001
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 0.0001
+)[0m
+[2022-10-21 15:27:39,873][torch_points3d.utils.colors][INFO] - [0;32mLearning Rate Scheduler: ExponentialLR({'gamma': 0.9885}, update_scheduler_on=on_epoch)[0m
+[2022-10-21 15:27:39,873][torch_points3d.utils.colors][INFO] - [0;32mBatchNorm Scheduler: BNMomentumScheduler(base_momentum: 0.02, update_scheduler_on=on_epoch)[0m
+[2022-10-21 15:27:39,873][torch_points3d.utils.colors][INFO] - [0;32mAccumulated gradients: None[0m
+[2022-10-21 15:27:39,873][torch_points3d.trainer][INFO] - Model size = 24718720
+[2022-10-21 15:27:39,874][torch_points3d.trainer][INFO] - Dataset: ScannetDatasetMM 
+[0;95mtrain_pre_batch_collate_transform [0m= None
+[0;95mval_pre_batch_collate_transform [0m= None
+[0;95mtest_pre_batch_collate_transform [0m= None
+[0;95mpre_transform [0m= Compose([
+    SaveOriginalPosId,
+    PCAComputePointwise(num_neighbors=50, r=None, use_full_pos=False, use_cuda=False, use_faiss=False, ncells=None, nprobes=10, chunk_size=1000000),
+    EigenFeatures(norm=True, linearity=True, planarity=True, scattering=True, temperature=None),
+    RemoveAttributes(attr_names=['eigenvalues', 'eigenvectors'], strict=False),
+])
+[0;95mtest_transform [0m= Compose([
+    GridSampling3D(grid_size=0.03, quantize_coords=True, mode=last),
+    XYZFeature(axis=['z']),
+    AddFeatsByKeys(pos_z=True, rgb=False, linearity=False, norm=False, planarity=False, scattering=False),
+])
+[0;95mtrain_transform [0m= Compose([
+    ElasticDistortion(apply_distorsion=True, granularity=[0.2, 0.8], magnitude=[0.4, 1.6]),
+    Random3AxisRotation(apply_rotation=True, rot_x=8, rot_y=8, rot_z=180),
+    Random symmetry of axes: x=True, y=True, z=False,
+    RandomScaleAnisotropic([0.9, 1.1]),
+    GridSampling3D(grid_size=0.03, quantize_coords=True, mode=last),
+    XYZFeature(axis=['z']),
+    AddFeatsByKeys(pos_z=True, rgb=False, linearity=False, norm=False, planarity=False, scattering=False),
+])
+[0;95mval_transform [0m= Compose([
+    GridSampling3D(grid_size=0.03, quantize_coords=True, mode=last),
+    XYZFeature(axis=['z']),
+    AddFeatsByKeys(pos_z=True, rgb=False, linearity=False, norm=False, planarity=False, scattering=False),
+])
+[0;95minference_transform [0m= Compose([
+    SaveOriginalPosId,
+    PCAComputePointwise(num_neighbors=50, r=None, use_full_pos=False, use_cuda=False, use_faiss=False, ncells=None, nprobes=10, chunk_size=1000000),
+    EigenFeatures(norm=True, linearity=True, planarity=True, scattering=True, temperature=None),
+    RemoveAttributes(attr_names=['eigenvalues', 'eigenvectors'], strict=False),
+    GridSampling3D(grid_size=0.03, quantize_coords=True, mode=last),
+    XYZFeature(axis=['z']),
+    AddFeatsByKeys(pos_z=True, rgb=False, linearity=False, norm=False, planarity=False, scattering=False),
+])
+[0;95mpre_transform_image [0m= ComposeMultiModal([
+    LoadImages(ref_size=[320, 240], crop_size=None, crop_offsets=None, downscale=None, show_progress=False),
+    NonStaticMask(ref_size=(320, 240), proj_upscale=1, n_sample=5),
+    MapImages(key=mapping_index, verbose=False, cylinder=False, ref_size=[320, 240], proj_upscale=1, method=SplattingVisibility, use_cuda=False, kwargs={'voxel': 0.03, 'r_max': 8, 'r_min': 0.05, 'exact': True, 'camera': 'scannet'}),
+    NeighborhoodBasedMappingFeatures(k_list=[50], voxel=0.01, compute_density=True, compute_occlusion=True, use_faiss=False, use_cuda=False, ncells=None, nprobes=10, verbose=True),
+])
+[0;95mtest_transform_image [0m= ComposeMultiModal([
+    SelectMappingFromPointId(key=mapping_index),
+    ToImageData(),
+    PickImagesFromMemoryCredit(credit=1920000, use_coverage=True, k_coverage=2),
+    ToFloatImage(),
+    Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+])
+[0;95mtrain_transform_image [0m= ComposeMultiModal([
+    SelectMappingFromPointId(key=mapping_index),
+    ToImageData(),
+    PickImagesFromMemoryCredit(credit=1920000, use_coverage=True, k_coverage=2),
+    JitterMappingFeatures(sigma=0.02, clip=0.03),
+    ColorJitter(brightness=[0.4, 1.6], contrast=[0.4, 1.6], saturation=[0.30000000000000004, 1.7], hue=None),
+    RandomHorizontalFlip(p=0.5),
+    ToFloatImage(),
+    Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+])
+[0;95mval_transform_image [0m= ComposeMultiModal([
+    SelectMappingFromPointId(key=mapping_index),
+    ToImageData(),
+    PickImagesFromMemoryCredit(credit=1920000, use_coverage=True, k_coverage=2),
+    ToFloatImage(),
+    Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+])
+[0;95minference_transform_image [0m= ComposeMultiModal([
+    LoadImages(ref_size=[320, 240], crop_size=None, crop_offsets=None, downscale=None, show_progress=False),
+    NonStaticMask(ref_size=(320, 240), proj_upscale=1, n_sample=5),
+    MapImages(key=mapping_index, verbose=False, cylinder=False, ref_size=[320, 240], proj_upscale=1, method=SplattingVisibility, use_cuda=False, kwargs={'voxel': 0.03, 'r_max': 8, 'r_min': 0.05, 'exact': True, 'camera': 'scannet'}),
+    NeighborhoodBasedMappingFeatures(k_list=[50], voxel=0.01, compute_density=True, compute_occlusion=True, use_faiss=False, use_cuda=False, ncells=None, nprobes=10, verbose=True),
+    SelectMappingFromPointId(key=mapping_index),
+    ToImageData(),
+    PickImagesFromMemoryCredit(credit=1920000, use_coverage=True, k_coverage=2),
+    ToFloatImage(),
+    Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+])
+Size of [0;95mtrain_dataset [0m= 3
+Size of [0;95mtest_dataset [0m= 0
+Size of [0;95mval_dataset [0m= 3
+[0;95mBatch size =[0m 3
+[2022-10-21 15:27:42,453][torch_points3d.datasets.base_dataset][INFO] - Available stage selection datasets: [0;95m ['val'] [0m
+[2022-10-21 15:27:42,453][torch_points3d.datasets.base_dataset][INFO] - The models will be selected using the metrics on following dataset: [0;95m val [0m
+[2022-10-21 15:27:44,554][torch_points3d.trainer][INFO] - EPOCH 1 / 100
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:20<?, ?it/s, [0;92mdata_loading=13.19, iteration=7.167, train_acc=2.429, train_loss_seg=3.003, train_macc=5.446, train_miou=0.796[0m)]100%|##########| 1/1 [00:20<00:00, 20.36s/it, [0;92mdata_loading=13.19, iteration=7.167, train_acc=2.429, train_loss_seg=3.003, train_macc=5.446, train_miou=0.796[0m)]100%|##########| 1/1 [00:20<00:00, 20.36s/it, [0;92mdata_loading=13.19, iteration=7.167, train_acc=2.429, train_loss_seg=3.003, train_macc=5.446, train_miou=0.796[0m)][2022-10-21 15:28:05,442][torch_points3d.trainer][INFO] - Learning rate = 0.098850
+[2022-10-21 15:28:05,443][torch_points3d.trainer][INFO] - EPOCH 2 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.66, iteration=1.671, train_acc=25.42, train_loss_seg=4.725, train_macc=6.396, train_miou=1.704[0m)]100%|##########| 1/1 [00:14<00:00, 14.34s/it, [0;92mdata_loading=12.66, iteration=1.671, train_acc=25.42, train_loss_seg=4.725, train_macc=6.396, train_miou=1.704[0m)]100%|##########| 1/1 [00:14<00:00, 14.34s/it, [0;92mdata_loading=12.66, iteration=1.671, train_acc=25.42, train_loss_seg=4.725, train_macc=6.396, train_miou=1.704[0m)][2022-10-21 15:28:20,315][torch_points3d.trainer][INFO] - Learning rate = 0.097713
+[2022-10-21 15:28:20,317][torch_points3d.trainer][INFO] - EPOCH 3 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.61, iteration=1.522, train_acc=14.05, train_loss_seg=3.588, train_macc=6.955, train_miou=1.403[0m)]100%|##########| 1/1 [00:14<00:00, 14.13s/it, [0;92mdata_loading=12.61, iteration=1.522, train_acc=14.05, train_loss_seg=3.588, train_macc=6.955, train_miou=1.403[0m)]100%|##########| 1/1 [00:14<00:00, 14.13s/it, [0;92mdata_loading=12.61, iteration=1.522, train_acc=14.05, train_loss_seg=3.588, train_macc=6.955, train_miou=1.403[0m)][2022-10-21 15:28:34,966][torch_points3d.trainer][INFO] - Learning rate = 0.096590
+[2022-10-21 15:28:34,967][torch_points3d.trainer][INFO] - EPOCH 4 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.92, iteration=1.875, train_acc=51.57, train_loss_seg=3.554, train_macc=9.975, train_miou=5.227[0m)]100%|##########| 1/1 [00:14<00:00, 14.80s/it, [0;92mdata_loading=12.92, iteration=1.875, train_acc=51.57, train_loss_seg=3.554, train_macc=9.975, train_miou=5.227[0m)]100%|##########| 1/1 [00:14<00:00, 14.80s/it, [0;92mdata_loading=12.92, iteration=1.875, train_acc=51.57, train_loss_seg=3.554, train_macc=9.975, train_miou=5.227[0m)][2022-10-21 15:28:50,275][torch_points3d.trainer][INFO] - Learning rate = 0.095479
+[2022-10-21 15:28:50,276][torch_points3d.trainer][INFO] - EPOCH 5 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.74, iteration=1.558, train_acc=39.46, train_loss_seg=5.69 , train_macc=6.314, train_miou=2.475[0m)]100%|##########| 1/1 [00:14<00:00, 14.30s/it, [0;92mdata_loading=12.74, iteration=1.558, train_acc=39.46, train_loss_seg=5.69 , train_macc=6.314, train_miou=2.475[0m)]100%|##########| 1/1 [00:14<00:00, 14.30s/it, [0;92mdata_loading=12.74, iteration=1.558, train_acc=39.46, train_loss_seg=5.69 , train_macc=6.314, train_miou=2.475[0m)][2022-10-21 15:29:05,101][torch_points3d.trainer][INFO] - Learning rate = 0.094381
+[2022-10-21 15:29:05,102][torch_points3d.trainer][INFO] - EPOCH 6 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.91, iteration=1.962, train_acc=37.90, train_loss_seg=5.769, train_macc=8.298, train_miou=3.701[0m)]100%|##########| 1/1 [00:14<00:00, 14.88s/it, [0;92mdata_loading=12.91, iteration=1.962, train_acc=37.90, train_loss_seg=5.769, train_macc=8.298, train_miou=3.701[0m)]100%|##########| 1/1 [00:14<00:00, 14.88s/it, [0;92mdata_loading=12.91, iteration=1.962, train_acc=37.90, train_loss_seg=5.769, train_macc=8.298, train_miou=3.701[0m)][2022-10-21 15:29:20,496][torch_points3d.trainer][INFO] - Learning rate = 0.093295
+[2022-10-21 15:29:20,497][torch_points3d.trainer][INFO] - EPOCH 7 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.62, iteration=1.551, train_acc=35.69, train_loss_seg=4.658, train_macc=10.45, train_miou=4.336[0m)]100%|##########| 1/1 [00:14<00:00, 14.17s/it, [0;92mdata_loading=12.62, iteration=1.551, train_acc=35.69, train_loss_seg=4.658, train_macc=10.45, train_miou=4.336[0m)]100%|##########| 1/1 [00:14<00:00, 14.17s/it, [0;92mdata_loading=12.62, iteration=1.551, train_acc=35.69, train_loss_seg=4.658, train_macc=10.45, train_miou=4.336[0m)][2022-10-21 15:29:35,174][torch_points3d.trainer][INFO] - Learning rate = 0.092222
+[2022-10-21 15:29:35,175][torch_points3d.trainer][INFO] - EPOCH 8 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.64, iteration=1.619, train_acc=54.97, train_loss_seg=5.265, train_macc=11.05, train_miou=7.319[0m)]100%|##########| 1/1 [00:14<00:00, 14.26s/it, [0;92mdata_loading=12.64, iteration=1.619, train_acc=54.97, train_loss_seg=5.265, train_macc=11.05, train_miou=7.319[0m)]100%|##########| 1/1 [00:14<00:00, 14.26s/it, [0;92mdata_loading=12.64, iteration=1.619, train_acc=54.97, train_loss_seg=5.265, train_macc=11.05, train_miou=7.319[0m)][2022-10-21 15:29:49,968][torch_points3d.trainer][INFO] - Learning rate = 0.091162
+[2022-10-21 15:29:49,969][torch_points3d.trainer][INFO] - EPOCH 9 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.72, iteration=1.884, train_acc=32.18, train_loss_seg=7.699, train_macc=11.41, train_miou=5.425[0m)]100%|##########| 1/1 [00:14<00:00, 14.61s/it, [0;92mdata_loading=12.72, iteration=1.884, train_acc=32.18, train_loss_seg=7.699, train_macc=11.41, train_miou=5.425[0m)]100%|##########| 1/1 [00:14<00:00, 14.61s/it, [0;92mdata_loading=12.72, iteration=1.884, train_acc=32.18, train_loss_seg=7.699, train_macc=11.41, train_miou=5.425[0m)][2022-10-21 15:30:05,091][torch_points3d.trainer][INFO] - Learning rate = 0.090114
+[2022-10-21 15:30:05,092][torch_points3d.trainer][INFO] - EPOCH 10 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.71, iteration=1.901, train_acc=65.73, train_loss_seg=5.515, train_macc=12.03, train_miou=7.464[0m)]100%|##########| 1/1 [00:14<00:00, 14.61s/it, [0;92mdata_loading=12.71, iteration=1.901, train_acc=65.73, train_loss_seg=5.515, train_macc=12.03, train_miou=7.464[0m)]100%|##########| 1/1 [00:14<00:00, 14.61s/it, [0;92mdata_loading=12.71, iteration=1.901, train_acc=65.73, train_loss_seg=5.515, train_macc=12.03, train_miou=7.464[0m)][2022-10-21 15:30:20,233][torch_points3d.trainer][INFO] - Learning rate = 0.089077
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:16<?, ?it/s, [0;93mval_acc=52.76, val_loss_seg=4.979, val_macc=16.87, val_miou=9.368[0m)]100%|##########| 1/1 [00:16<00:00, 16.27s/it, [0;93mval_acc=52.76, val_loss_seg=4.979, val_macc=16.87, val_miou=9.368[0m)]100%|##########| 1/1 [00:16<00:00, 16.27s/it, [0;93mval_acc=52.76, val_loss_seg=4.979, val_macc=16.87, val_miou=9.368[0m)][2022-10-21 15:30:37,295][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-10-21 15:30:37,296][torch_points3d.metrics.base_tracker][INFO] -     val_loss_seg = 4.9790849685668945
+[2022-10-21 15:30:37,296][torch_points3d.metrics.base_tracker][INFO] -     val_acc = 52.76660954389665
+[2022-10-21 15:30:37,296][torch_points3d.metrics.base_tracker][INFO] -     val_macc = 16.877311381944494
+[2022-10-21 15:30:37,296][torch_points3d.metrics.base_tracker][INFO] -     val_miou = 9.368453105825097
+[2022-10-21 15:30:37,296][torch_points3d.metrics.base_tracker][INFO] -     val_miou_per_class = {0: '34.24', 1: '87.55', 2: '0.00', 3: '0.00', 4: '0.00', 5: '0.00', 6: '0.00', 7: '0.00', 8: '0.00', 9: '0.00', 10: '0.00', 11: '0.00', 12: '0.00', 13: '0.00', 14: '0.00', 15: '0.00', 16: '0.00', 17: '0.00', 18: '0.00', 19: '0.00'}
+[2022-10-21 15:30:37,296][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-10-21 15:30:37,297][torch_points3d.trainer][INFO] - EPOCH 11 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.75, iteration=1.575, train_acc=63.49, train_loss_seg=4.251, train_macc=14.64, train_miou=8.611[0m)]100%|##########| 1/1 [00:14<00:00, 14.33s/it, [0;92mdata_loading=12.75, iteration=1.575, train_acc=63.49, train_loss_seg=4.251, train_macc=14.64, train_miou=8.611[0m)]100%|##########| 1/1 [00:14<00:00, 14.33s/it, [0;92mdata_loading=12.75, iteration=1.575, train_acc=63.49, train_loss_seg=4.251, train_macc=14.64, train_miou=8.611[0m)][2022-10-21 15:30:52,384][torch_points3d.trainer][INFO] - Learning rate = 0.088053
+[2022-10-21 15:30:52,385][torch_points3d.trainer][INFO] - EPOCH 12 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.80, iteration=1.604, train_acc=44.16, train_loss_seg=5.304, train_macc=13.08, train_miou=6.720[0m)]100%|##########| 1/1 [00:14<00:00, 14.41s/it, [0;92mdata_loading=12.80, iteration=1.604, train_acc=44.16, train_loss_seg=5.304, train_macc=13.08, train_miou=6.720[0m)]100%|##########| 1/1 [00:14<00:00, 14.41s/it, [0;92mdata_loading=12.80, iteration=1.604, train_acc=44.16, train_loss_seg=5.304, train_macc=13.08, train_miou=6.720[0m)][2022-10-21 15:31:07,541][torch_points3d.trainer][INFO] - Learning rate = 0.087040
+[2022-10-21 15:31:07,542][torch_points3d.trainer][INFO] - EPOCH 13 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:13<?, ?it/s, [0;92mdata_loading=12.29, iteration=1.559, train_acc=45.84, train_loss_seg=4.283, train_macc=13.72, train_miou=8.017[0m)]100%|##########| 1/1 [00:13<00:00, 13.85s/it, [0;92mdata_loading=12.29, iteration=1.559, train_acc=45.84, train_loss_seg=4.283, train_macc=13.72, train_miou=8.017[0m)]100%|##########| 1/1 [00:13<00:00, 13.85s/it, [0;92mdata_loading=12.29, iteration=1.559, train_acc=45.84, train_loss_seg=4.283, train_macc=13.72, train_miou=8.017[0m)][2022-10-21 15:31:22,128][torch_points3d.trainer][INFO] - Learning rate = 0.086039
+[2022-10-21 15:31:22,130][torch_points3d.trainer][INFO] - EPOCH 14 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.75, iteration=1.553, train_acc=60.37, train_loss_seg=4.254, train_macc=15.50, train_miou=9.908[0m)]100%|##########| 1/1 [00:14<00:00, 14.31s/it, [0;92mdata_loading=12.75, iteration=1.553, train_acc=60.37, train_loss_seg=4.254, train_macc=15.50, train_miou=9.908[0m)]100%|##########| 1/1 [00:14<00:00, 14.31s/it, [0;92mdata_loading=12.75, iteration=1.553, train_acc=60.37, train_loss_seg=4.254, train_macc=15.50, train_miou=9.908[0m)][2022-10-21 15:31:37,176][torch_points3d.trainer][INFO] - Learning rate = 0.085050
+[2022-10-21 15:31:37,178][torch_points3d.trainer][INFO] - EPOCH 15 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.82, iteration=1.563, train_acc=62.94, train_loss_seg=6.933, train_macc=11.80, train_miou=8.226[0m)]100%|##########| 1/1 [00:14<00:00, 14.39s/it, [0;92mdata_loading=12.82, iteration=1.563, train_acc=62.94, train_loss_seg=6.933, train_macc=11.80, train_miou=8.226[0m)]100%|##########| 1/1 [00:14<00:00, 14.39s/it, [0;92mdata_loading=12.82, iteration=1.563, train_acc=62.94, train_loss_seg=6.933, train_macc=11.80, train_miou=8.226[0m)][2022-10-21 15:31:52,315][torch_points3d.trainer][INFO] - Learning rate = 0.084072
+[2022-10-21 15:31:52,316][torch_points3d.trainer][INFO] - EPOCH 16 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.89, iteration=1.618, train_acc=62.13, train_loss_seg=7.398, train_macc=12.10, train_miou=8.335[0m)]100%|##########| 1/1 [00:14<00:00, 14.51s/it, [0;92mdata_loading=12.89, iteration=1.618, train_acc=62.13, train_loss_seg=7.398, train_macc=12.10, train_miou=8.335[0m)]100%|##########| 1/1 [00:14<00:00, 14.51s/it, [0;92mdata_loading=12.89, iteration=1.618, train_acc=62.13, train_loss_seg=7.398, train_macc=12.10, train_miou=8.335[0m)][2022-10-21 15:32:07,565][torch_points3d.trainer][INFO] - Learning rate = 0.083105
+[2022-10-21 15:32:07,567][torch_points3d.trainer][INFO] - EPOCH 17 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.72, iteration=1.567, train_acc=54.25, train_loss_seg=7.587, train_macc=13.91, train_miou=8.306[0m)]100%|##########| 1/1 [00:14<00:00, 14.29s/it, [0;92mdata_loading=12.72, iteration=1.567, train_acc=54.25, train_loss_seg=7.587, train_macc=13.91, train_miou=8.306[0m)]100%|##########| 1/1 [00:14<00:00, 14.29s/it, [0;92mdata_loading=12.72, iteration=1.567, train_acc=54.25, train_loss_seg=7.587, train_macc=13.91, train_miou=8.306[0m)][2022-10-21 15:32:22,603][torch_points3d.trainer][INFO] - Learning rate = 0.082149
+[2022-10-21 15:32:22,604][torch_points3d.trainer][INFO] - EPOCH 18 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.64, iteration=1.526, train_acc=63.36, train_loss_seg=4.696, train_macc=16.27, train_miou=10.94[0m)]100%|##########| 1/1 [00:14<00:00, 14.18s/it, [0;92mdata_loading=12.64, iteration=1.526, train_acc=63.36, train_loss_seg=4.696, train_macc=16.27, train_miou=10.94[0m)]100%|##########| 1/1 [00:14<00:00, 14.18s/it, [0;92mdata_loading=12.64, iteration=1.526, train_acc=63.36, train_loss_seg=4.696, train_macc=16.27, train_miou=10.94[0m)][2022-10-21 15:32:37,518][torch_points3d.trainer][INFO] - Learning rate = 0.081205
+[2022-10-21 15:32:37,519][torch_points3d.trainer][INFO] - EPOCH 19 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.81, iteration=1.593, train_acc=60.27, train_loss_seg=5.624, train_macc=16.31, train_miou=10.92[0m)]100%|##########| 1/1 [00:14<00:00, 14.41s/it, [0;92mdata_loading=12.81, iteration=1.593, train_acc=60.27, train_loss_seg=5.624, train_macc=16.31, train_miou=10.92[0m)]100%|##########| 1/1 [00:14<00:00, 14.41s/it, [0;92mdata_loading=12.81, iteration=1.593, train_acc=60.27, train_loss_seg=5.624, train_macc=16.31, train_miou=10.92[0m)][2022-10-21 15:32:52,680][torch_points3d.trainer][INFO] - Learning rate = 0.080271
+[2022-10-21 15:32:52,681][torch_points3d.trainer][INFO] - EPOCH 20 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.71, iteration=1.644, train_acc=61.79, train_loss_seg=5.370, train_macc=15.23, train_miou=10.25[0m)]100%|##########| 1/1 [00:14<00:00, 14.36s/it, [0;92mdata_loading=12.71, iteration=1.644, train_acc=61.79, train_loss_seg=5.370, train_macc=15.23, train_miou=10.25[0m)]100%|##########| 1/1 [00:14<00:00, 14.36s/it, [0;92mdata_loading=12.71, iteration=1.644, train_acc=61.79, train_loss_seg=5.370, train_macc=15.23, train_miou=10.25[0m)][2022-10-21 15:33:07,997][torch_points3d.trainer][INFO] - Learning rate = 0.079348
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:15<?, ?it/s, [0;93mval_acc=55.68, val_loss_seg=5.473, val_macc=21.06, val_miou=11.88[0m)]100%|##########| 1/1 [00:15<00:00, 15.56s/it, [0;93mval_acc=55.68, val_loss_seg=5.473, val_macc=21.06, val_miou=11.88[0m)]100%|##########| 1/1 [00:15<00:00, 15.56s/it, [0;93mval_acc=55.68, val_loss_seg=5.473, val_macc=21.06, val_miou=11.88[0m)][2022-10-21 15:33:23,580][torch_points3d.utils.colors][INFO] - [0;94macc: 52.76660954389665 -> 55.68482001195112, macc: 16.877311381944494 -> 21.067374244349416, miou: 9.368453105825097 -> 11.881190662797387[0m
+[2022-10-21 15:33:24,316][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-10-21 15:33:24,316][torch_points3d.metrics.base_tracker][INFO] -     val_loss_seg = 5.473769664764404
+[2022-10-21 15:33:24,316][torch_points3d.metrics.base_tracker][INFO] -     val_acc = 55.68482001195112
+[2022-10-21 15:33:24,316][torch_points3d.metrics.base_tracker][INFO] -     val_macc = 21.067374244349416
+[2022-10-21 15:33:24,316][torch_points3d.metrics.base_tracker][INFO] -     val_miou = 11.881190662797387
+[2022-10-21 15:33:24,316][torch_points3d.metrics.base_tracker][INFO] -     val_miou_per_class = {0: '51.34', 1: '81.79', 2: '7.49', 3: '0.00', 4: '0.00', 5: '0.00', 6: '0.01', 7: '1.95', 8: '0.00', 9: '0.00', 10: '0.00', 11: '0.00', 12: '0.00', 13: '0.00', 14: '0.00', 15: '0.00', 16: '0.00', 17: '0.00', 18: '0.00', 19: '0.00'}
+[2022-10-21 15:33:24,317][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-10-21 15:33:24,317][torch_points3d.trainer][INFO] - EPOCH 21 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.77, iteration=1.535, train_acc=69.12, train_loss_seg=4.318, train_macc=16.97, train_miou=11.76[0m)]100%|##########| 1/1 [00:14<00:00, 14.31s/it, [0;92mdata_loading=12.77, iteration=1.535, train_acc=69.12, train_loss_seg=4.318, train_macc=16.97, train_miou=11.76[0m)]100%|##########| 1/1 [00:14<00:00, 14.31s/it, [0;92mdata_loading=12.77, iteration=1.535, train_acc=69.12, train_loss_seg=4.318, train_macc=16.97, train_miou=11.76[0m)][2022-10-21 15:33:39,381][torch_points3d.trainer][INFO] - Learning rate = 0.078435
+[2022-10-21 15:33:39,383][torch_points3d.trainer][INFO] - EPOCH 22 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.87, iteration=1.574, train_acc=66.52, train_loss_seg=4.201, train_macc=16.97, train_miou=11.59[0m)]100%|##########| 1/1 [00:14<00:00, 14.45s/it, [0;92mdata_loading=12.87, iteration=1.574, train_acc=66.52, train_loss_seg=4.201, train_macc=16.97, train_miou=11.59[0m)]100%|##########| 1/1 [00:14<00:00, 14.45s/it, [0;92mdata_loading=12.87, iteration=1.574, train_acc=66.52, train_loss_seg=4.201, train_macc=16.97, train_miou=11.59[0m)][2022-10-21 15:33:54,566][torch_points3d.trainer][INFO] - Learning rate = 0.077533
+[2022-10-21 15:33:54,567][torch_points3d.trainer][INFO] - EPOCH 23 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:13<?, ?it/s, [0;92mdata_loading=12.36, iteration=1.558, train_acc=69.40, train_loss_seg=3.817, train_macc=18.69, train_miou=12.44[0m)]100%|##########| 1/1 [00:13<00:00, 13.93s/it, [0;92mdata_loading=12.36, iteration=1.558, train_acc=69.40, train_loss_seg=3.817, train_macc=18.69, train_miou=12.44[0m)]100%|##########| 1/1 [00:13<00:00, 13.93s/it, [0;92mdata_loading=12.36, iteration=1.558, train_acc=69.40, train_loss_seg=3.817, train_macc=18.69, train_miou=12.44[0m)][2022-10-21 15:34:09,240][torch_points3d.trainer][INFO] - Learning rate = 0.076641
+[2022-10-21 15:34:09,241][torch_points3d.trainer][INFO] - EPOCH 24 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=13.16, iteration=1.710, train_acc=62.12, train_loss_seg=3.917, train_macc=16.98, train_miou=11.00[0m)]100%|##########| 1/1 [00:14<00:00, 14.88s/it, [0;92mdata_loading=13.16, iteration=1.710, train_acc=62.12, train_loss_seg=3.917, train_macc=16.98, train_miou=11.00[0m)]100%|##########| 1/1 [00:14<00:00, 14.88s/it, [0;92mdata_loading=13.16, iteration=1.710, train_acc=62.12, train_loss_seg=3.917, train_macc=16.98, train_miou=11.00[0m)][2022-10-21 15:34:24,852][torch_points3d.trainer][INFO] - Learning rate = 0.075760
+[2022-10-21 15:34:24,853][torch_points3d.trainer][INFO] - EPOCH 25 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.87, iteration=1.533, train_acc=63.17, train_loss_seg=3.232, train_macc=19.42, train_miou=12.92[0m)]100%|##########| 1/1 [00:14<00:00, 14.41s/it, [0;92mdata_loading=12.87, iteration=1.533, train_acc=63.17, train_loss_seg=3.232, train_macc=19.42, train_miou=12.92[0m)]100%|##########| 1/1 [00:14<00:00, 14.41s/it, [0;92mdata_loading=12.87, iteration=1.533, train_acc=63.17, train_loss_seg=3.232, train_macc=19.42, train_miou=12.92[0m)][2022-10-21 15:34:40,030][torch_points3d.trainer][INFO] - Learning rate = 0.074889
+[2022-10-21 15:34:40,031][torch_points3d.trainer][INFO] - EPOCH 26 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.72, iteration=1.582, train_acc=61.80, train_loss_seg=3.694, train_macc=14.41, train_miou=11.67[0m)]100%|##########| 1/1 [00:14<00:00, 14.31s/it, [0;92mdata_loading=12.72, iteration=1.582, train_acc=61.80, train_loss_seg=3.694, train_macc=14.41, train_miou=11.67[0m)]100%|##########| 1/1 [00:14<00:00, 14.31s/it, [0;92mdata_loading=12.72, iteration=1.582, train_acc=61.80, train_loss_seg=3.694, train_macc=14.41, train_miou=11.67[0m)][2022-10-21 15:34:55,099][torch_points3d.trainer][INFO] - Learning rate = 0.074028
+[2022-10-21 15:34:55,100][torch_points3d.trainer][INFO] - EPOCH 27 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.65, iteration=1.588, train_acc=70.04, train_loss_seg=2.011, train_macc=19.13, train_miou=13.70[0m)]100%|##########| 1/1 [00:14<00:00, 14.24s/it, [0;92mdata_loading=12.65, iteration=1.588, train_acc=70.04, train_loss_seg=2.011, train_macc=19.13, train_miou=13.70[0m)]100%|##########| 1/1 [00:14<00:00, 14.24s/it, [0;92mdata_loading=12.65, iteration=1.588, train_acc=70.04, train_loss_seg=2.011, train_macc=19.13, train_miou=13.70[0m)][2022-10-21 15:35:10,070][torch_points3d.trainer][INFO] - Learning rate = 0.073176
+[2022-10-21 15:35:10,071][torch_points3d.trainer][INFO] - EPOCH 28 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.68, iteration=1.578, train_acc=64.96, train_loss_seg=3.196, train_macc=19.14, train_miou=13.09[0m)]100%|##########| 1/1 [00:14<00:00, 14.27s/it, [0;92mdata_loading=12.68, iteration=1.578, train_acc=64.96, train_loss_seg=3.196, train_macc=19.14, train_miou=13.09[0m)]100%|##########| 1/1 [00:14<00:00, 14.27s/it, [0;92mdata_loading=12.68, iteration=1.578, train_acc=64.96, train_loss_seg=3.196, train_macc=19.14, train_miou=13.09[0m)][2022-10-21 15:35:25,086][torch_points3d.trainer][INFO] - Learning rate = 0.072335
+[2022-10-21 15:35:25,087][torch_points3d.trainer][INFO] - EPOCH 29 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.85, iteration=1.582, train_acc=64.40, train_loss_seg=3.140, train_macc=16.50, train_miou=11.77[0m)]100%|##########| 1/1 [00:14<00:00, 14.43s/it, [0;92mdata_loading=12.85, iteration=1.582, train_acc=64.40, train_loss_seg=3.140, train_macc=16.50, train_miou=11.77[0m)]100%|##########| 1/1 [00:14<00:00, 14.43s/it, [0;92mdata_loading=12.85, iteration=1.582, train_acc=64.40, train_loss_seg=3.140, train_macc=16.50, train_miou=11.77[0m)][2022-10-21 15:35:40,244][torch_points3d.trainer][INFO] - Learning rate = 0.071503
+[2022-10-21 15:35:40,245][torch_points3d.trainer][INFO] - EPOCH 30 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.70, iteration=1.870, train_acc=69.77, train_loss_seg=2.507, train_macc=19.59, train_miou=14.09[0m)]100%|##########| 1/1 [00:14<00:00, 14.58s/it, [0;92mdata_loading=12.70, iteration=1.870, train_acc=69.77, train_loss_seg=2.507, train_macc=19.59, train_miou=14.09[0m)]100%|##########| 1/1 [00:14<00:00, 14.58s/it, [0;92mdata_loading=12.70, iteration=1.870, train_acc=69.77, train_loss_seg=2.507, train_macc=19.59, train_miou=14.09[0m)][2022-10-21 15:35:55,558][torch_points3d.trainer][INFO] - Learning rate = 0.070681
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:15<?, ?it/s, [0;93mval_acc=56.47, val_loss_seg=5.698, val_macc=25.52, val_miou=12.70[0m)]100%|##########| 1/1 [00:15<00:00, 15.64s/it, [0;93mval_acc=56.47, val_loss_seg=5.698, val_macc=25.52, val_miou=12.70[0m)]100%|##########| 1/1 [00:15<00:00, 15.64s/it, [0;93mval_acc=56.47, val_loss_seg=5.698, val_macc=25.52, val_miou=12.70[0m)][2022-10-21 15:36:11,214][torch_points3d.utils.colors][INFO] - [0;94macc: 55.68482001195112 -> 56.47412205342464, macc: 21.067374244349416 -> 25.521157856546488, miou: 11.881190662797387 -> 12.700161362467197[0m
+[2022-10-21 15:36:11,948][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-10-21 15:36:11,948][torch_points3d.metrics.base_tracker][INFO] -     val_loss_seg = 5.6981353759765625
+[2022-10-21 15:36:11,949][torch_points3d.metrics.base_tracker][INFO] -     val_acc = 56.47412205342464
+[2022-10-21 15:36:11,949][torch_points3d.metrics.base_tracker][INFO] -     val_macc = 25.521157856546488
+[2022-10-21 15:36:11,949][torch_points3d.metrics.base_tracker][INFO] -     val_miou = 12.700161362467197
+[2022-10-21 15:36:11,949][torch_points3d.metrics.base_tracker][INFO] -     val_miou_per_class = {0: '47.26', 1: '76.44', 2: '28.34', 3: '0.00', 4: '0.00', 5: '0.00', 6: '6.83', 7: '18.93', 8: '0.00', 9: '0.00', 10: '0.00', 11: '0.00', 12: '0.00', 13: '0.00', 14: '0.01', 15: '0.00', 16: '0.00', 17: '0.00', 18: '0.00', 19: '0.00'}
+[2022-10-21 15:36:11,949][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-10-21 15:36:11,949][torch_points3d.trainer][INFO] - EPOCH 31 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.73, iteration=1.593, train_acc=71.73, train_loss_seg=2.559, train_macc=24.86, train_miou=16.93[0m)]100%|##########| 1/1 [00:14<00:00, 14.33s/it, [0;92mdata_loading=12.73, iteration=1.593, train_acc=71.73, train_loss_seg=2.559, train_macc=24.86, train_miou=16.93[0m)]100%|##########| 1/1 [00:14<00:00, 14.33s/it, [0;92mdata_loading=12.73, iteration=1.593, train_acc=71.73, train_loss_seg=2.559, train_macc=24.86, train_miou=16.93[0m)][2022-10-21 15:36:27,040][torch_points3d.trainer][INFO] - Learning rate = 0.069868
+[2022-10-21 15:36:27,041][torch_points3d.trainer][INFO] - EPOCH 32 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.76, iteration=1.548, train_acc=65.99, train_loss_seg=1.93 , train_macc=22.78, train_miou=14.35[0m)]100%|##########| 1/1 [00:14<00:00, 14.31s/it, [0;92mdata_loading=12.76, iteration=1.548, train_acc=65.99, train_loss_seg=1.93 , train_macc=22.78, train_miou=14.35[0m)]100%|##########| 1/1 [00:14<00:00, 14.31s/it, [0;92mdata_loading=12.76, iteration=1.548, train_acc=65.99, train_loss_seg=1.93 , train_macc=22.78, train_miou=14.35[0m)][2022-10-21 15:36:42,085][torch_points3d.trainer][INFO] - Learning rate = 0.069064
+[2022-10-21 15:36:42,086][torch_points3d.trainer][INFO] - EPOCH 33 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.67, iteration=1.619, train_acc=64.74, train_loss_seg=2.934, train_macc=22.54, train_miou=13.50[0m)]100%|##########| 1/1 [00:14<00:00, 14.30s/it, [0;92mdata_loading=12.67, iteration=1.619, train_acc=64.74, train_loss_seg=2.934, train_macc=22.54, train_miou=13.50[0m)]100%|##########| 1/1 [00:14<00:00, 14.30s/it, [0;92mdata_loading=12.67, iteration=1.619, train_acc=64.74, train_loss_seg=2.934, train_macc=22.54, train_miou=13.50[0m)][2022-10-21 15:36:57,123][torch_points3d.trainer][INFO] - Learning rate = 0.068270
+[2022-10-21 15:36:57,125][torch_points3d.trainer][INFO] - EPOCH 34 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.64, iteration=1.587, train_acc=69.17, train_loss_seg=2.536, train_macc=23.84, train_miou=17.44[0m)]100%|##########| 1/1 [00:14<00:00, 14.23s/it, [0;92mdata_loading=12.64, iteration=1.587, train_acc=69.17, train_loss_seg=2.536, train_macc=23.84, train_miou=17.44[0m)]100%|##########| 1/1 [00:14<00:00, 14.23s/it, [0;92mdata_loading=12.64, iteration=1.587, train_acc=69.17, train_loss_seg=2.536, train_macc=23.84, train_miou=17.44[0m)][2022-10-21 15:37:12,118][torch_points3d.trainer][INFO] - Learning rate = 0.067485
+[2022-10-21 15:37:12,119][torch_points3d.trainer][INFO] - EPOCH 35 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.95, iteration=1.630, train_acc=72.97, train_loss_seg=2.402, train_macc=24.70, train_miou=17.94[0m)]100%|##########| 1/1 [00:14<00:00, 14.60s/it, [0;92mdata_loading=12.95, iteration=1.630, train_acc=72.97, train_loss_seg=2.402, train_macc=24.70, train_miou=17.94[0m)]100%|##########| 1/1 [00:14<00:00, 14.60s/it, [0;92mdata_loading=12.95, iteration=1.630, train_acc=72.97, train_loss_seg=2.402, train_macc=24.70, train_miou=17.94[0m)][2022-10-21 15:37:27,459][torch_points3d.trainer][INFO] - Learning rate = 0.066709
+[2022-10-21 15:37:27,460][torch_points3d.trainer][INFO] - EPOCH 36 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.79, iteration=1.614, train_acc=75.12, train_loss_seg=2.617, train_macc=23.94, train_miou=19.05[0m)]100%|##########| 1/1 [00:14<00:00, 14.41s/it, [0;92mdata_loading=12.79, iteration=1.614, train_acc=75.12, train_loss_seg=2.617, train_macc=23.94, train_miou=19.05[0m)]100%|##########| 1/1 [00:14<00:00, 14.41s/it, [0;92mdata_loading=12.79, iteration=1.614, train_acc=75.12, train_loss_seg=2.617, train_macc=23.94, train_miou=19.05[0m)][2022-10-21 15:37:42,621][torch_points3d.trainer][INFO] - Learning rate = 0.065942
+[2022-10-21 15:37:42,623][torch_points3d.trainer][INFO] - EPOCH 37 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.66, iteration=1.578, train_acc=74.54, train_loss_seg=1.879, train_macc=28.16, train_miou=20.30[0m)]100%|##########| 1/1 [00:14<00:00, 14.24s/it, [0;92mdata_loading=12.66, iteration=1.578, train_acc=74.54, train_loss_seg=1.879, train_macc=28.16, train_miou=20.30[0m)]100%|##########| 1/1 [00:14<00:00, 14.24s/it, [0;92mdata_loading=12.66, iteration=1.578, train_acc=74.54, train_loss_seg=1.879, train_macc=28.16, train_miou=20.30[0m)][2022-10-21 15:37:57,611][torch_points3d.trainer][INFO] - Learning rate = 0.065183
+[2022-10-21 15:37:57,612][torch_points3d.trainer][INFO] - EPOCH 38 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.83, iteration=1.919, train_acc=71.43, train_loss_seg=2.724, train_macc=28.10, train_miou=18.78[0m)]100%|##########| 1/1 [00:14<00:00, 14.76s/it, [0;92mdata_loading=12.83, iteration=1.919, train_acc=71.43, train_loss_seg=2.724, train_macc=28.10, train_miou=18.78[0m)]100%|##########| 1/1 [00:14<00:00, 14.76s/it, [0;92mdata_loading=12.83, iteration=1.919, train_acc=71.43, train_loss_seg=2.724, train_macc=28.10, train_miou=18.78[0m)][2022-10-21 15:38:13,120][torch_points3d.trainer][INFO] - Learning rate = 0.064434
+[2022-10-21 15:38:13,122][torch_points3d.trainer][INFO] - EPOCH 39 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.58, iteration=1.582, train_acc=77.06, train_loss_seg=1.597, train_macc=35.65, train_miou=25.28[0m)]100%|##########| 1/1 [00:14<00:00, 14.17s/it, [0;92mdata_loading=12.58, iteration=1.582, train_acc=77.06, train_loss_seg=1.597, train_macc=35.65, train_miou=25.28[0m)]100%|##########| 1/1 [00:14<00:00, 14.17s/it, [0;92mdata_loading=12.58, iteration=1.582, train_acc=77.06, train_loss_seg=1.597, train_macc=35.65, train_miou=25.28[0m)][2022-10-21 15:38:28,028][torch_points3d.trainer][INFO] - Learning rate = 0.063693
+[2022-10-21 15:38:28,029][torch_points3d.trainer][INFO] - EPOCH 40 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.76, iteration=1.571, train_acc=74.05, train_loss_seg=1.928, train_macc=29.33, train_miou=18.65[0m)]100%|##########| 1/1 [00:14<00:00, 14.34s/it, [0;92mdata_loading=12.76, iteration=1.571, train_acc=74.05, train_loss_seg=1.928, train_macc=29.33, train_miou=18.65[0m)]100%|##########| 1/1 [00:14<00:00, 14.34s/it, [0;92mdata_loading=12.76, iteration=1.571, train_acc=74.05, train_loss_seg=1.928, train_macc=29.33, train_miou=18.65[0m)][2022-10-21 15:38:43,103][torch_points3d.trainer][INFO] - Learning rate = 0.062960
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:15<?, ?it/s, [0;93mval_acc=60.70, val_loss_seg=5.074, val_macc=26.09, val_miou=14.44[0m)]100%|##########| 1/1 [00:15<00:00, 15.46s/it, [0;93mval_acc=60.70, val_loss_seg=5.074, val_macc=26.09, val_miou=14.44[0m)]100%|##########| 1/1 [00:15<00:00, 15.46s/it, [0;93mval_acc=60.70, val_loss_seg=5.074, val_macc=26.09, val_miou=14.44[0m)][2022-10-21 15:38:58,586][torch_points3d.utils.colors][INFO] - [0;94macc: 56.47412205342464 -> 60.70686927285912, macc: 25.521157856546488 -> 26.091485149104525, miou: 12.700161362467197 -> 14.440731029011777[0m
+[2022-10-21 15:38:59,310][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-10-21 15:38:59,310][torch_points3d.metrics.base_tracker][INFO] -     val_loss_seg = 5.074458122253418
+[2022-10-21 15:38:59,310][torch_points3d.metrics.base_tracker][INFO] -     val_acc = 60.70686927285912
+[2022-10-21 15:38:59,310][torch_points3d.metrics.base_tracker][INFO] -     val_macc = 26.091485149104525
+[2022-10-21 15:38:59,311][torch_points3d.metrics.base_tracker][INFO] -     val_miou = 14.440731029011777
+[2022-10-21 15:38:59,311][torch_points3d.metrics.base_tracker][INFO] -     val_miou_per_class = {0: '55.87', 1: '80.51', 2: '20.66', 3: '0.00', 4: '0.00', 5: '0.00', 6: '32.90', 7: '12.24', 8: '0.00', 9: '0.00', 10: '0.00', 11: '0.00', 12: '0.00', 13: '0.00', 14: '0.00', 15: '0.00', 16: '0.00', 17: '0.00', 18: '0.00', 19: '0.00'}
+[2022-10-21 15:38:59,311][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-10-21 15:38:59,311][torch_points3d.trainer][INFO] - EPOCH 41 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.82, iteration=1.631, train_acc=77.69, train_loss_seg=1.750, train_macc=30.99, train_miou=20.63[0m)]100%|##########| 1/1 [00:14<00:00, 14.46s/it, [0;92mdata_loading=12.82, iteration=1.631, train_acc=77.69, train_loss_seg=1.750, train_macc=30.99, train_miou=20.63[0m)]100%|##########| 1/1 [00:14<00:00, 14.46s/it, [0;92mdata_loading=12.82, iteration=1.631, train_acc=77.69, train_loss_seg=1.750, train_macc=30.99, train_miou=20.63[0m)][2022-10-21 15:39:14,528][torch_points3d.trainer][INFO] - Learning rate = 0.062236
+[2022-10-21 15:39:14,529][torch_points3d.trainer][INFO] - EPOCH 42 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.75, iteration=1.543, train_acc=79.67, train_loss_seg=1.592, train_macc=34.43, train_miou=24.09[0m)]100%|##########| 1/1 [00:14<00:00, 14.30s/it, [0;92mdata_loading=12.75, iteration=1.543, train_acc=79.67, train_loss_seg=1.592, train_macc=34.43, train_miou=24.09[0m)]100%|##########| 1/1 [00:14<00:00, 14.30s/it, [0;92mdata_loading=12.75, iteration=1.543, train_acc=79.67, train_loss_seg=1.592, train_macc=34.43, train_miou=24.09[0m)][2022-10-21 15:39:29,586][torch_points3d.trainer][INFO] - Learning rate = 0.061521
+[2022-10-21 15:39:29,587][torch_points3d.trainer][INFO] - EPOCH 43 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.67, iteration=1.565, train_acc=81.48, train_loss_seg=1.158, train_macc=37.81, train_miou=26.19[0m)]100%|##########| 1/1 [00:14<00:00, 14.24s/it, [0;92mdata_loading=12.67, iteration=1.565, train_acc=81.48, train_loss_seg=1.158, train_macc=37.81, train_miou=26.19[0m)]100%|##########| 1/1 [00:14<00:00, 14.24s/it, [0;92mdata_loading=12.67, iteration=1.565, train_acc=81.48, train_loss_seg=1.158, train_macc=37.81, train_miou=26.19[0m)][2022-10-21 15:39:44,575][torch_points3d.trainer][INFO] - Learning rate = 0.060813
+[2022-10-21 15:39:44,577][torch_points3d.trainer][INFO] - EPOCH 44 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.50, iteration=1.579, train_acc=80.36, train_loss_seg=1.105, train_macc=36.32, train_miou=25.10[0m)]100%|##########| 1/1 [00:14<00:00, 14.08s/it, [0;92mdata_loading=12.50, iteration=1.579, train_acc=80.36, train_loss_seg=1.105, train_macc=36.32, train_miou=25.10[0m)]100%|##########| 1/1 [00:14<00:00, 14.08s/it, [0;92mdata_loading=12.50, iteration=1.579, train_acc=80.36, train_loss_seg=1.105, train_macc=36.32, train_miou=25.10[0m)][2022-10-21 15:39:59,400][torch_points3d.trainer][INFO] - Learning rate = 0.060114
+[2022-10-21 15:39:59,402][torch_points3d.trainer][INFO] - EPOCH 45 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.86, iteration=1.618, train_acc=77.78, train_loss_seg=1.224, train_macc=37.06, train_miou=25.46[0m)]100%|##########| 1/1 [00:14<00:00, 14.48s/it, [0;92mdata_loading=12.86, iteration=1.618, train_acc=77.78, train_loss_seg=1.224, train_macc=37.06, train_miou=25.46[0m)]100%|##########| 1/1 [00:14<00:00, 14.48s/it, [0;92mdata_loading=12.86, iteration=1.618, train_acc=77.78, train_loss_seg=1.224, train_macc=37.06, train_miou=25.46[0m)][2022-10-21 15:40:14,615][torch_points3d.trainer][INFO] - Learning rate = 0.059422
+[2022-10-21 15:40:14,616][torch_points3d.trainer][INFO] - EPOCH 46 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.82, iteration=1.853, train_acc=83.26, train_loss_seg=0.794, train_macc=46.06, train_miou=30.12[0m)]100%|##########| 1/1 [00:14<00:00, 14.68s/it, [0;92mdata_loading=12.82, iteration=1.853, train_acc=83.26, train_loss_seg=0.794, train_macc=46.06, train_miou=30.12[0m)]100%|##########| 1/1 [00:14<00:00, 14.68s/it, [0;92mdata_loading=12.82, iteration=1.853, train_acc=83.26, train_loss_seg=0.794, train_macc=46.06, train_miou=30.12[0m)][2022-10-21 15:40:30,042][torch_points3d.trainer][INFO] - Learning rate = 0.058739
+[2022-10-21 15:40:30,043][torch_points3d.trainer][INFO] - EPOCH 47 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.60, iteration=1.572, train_acc=79.11, train_loss_seg=1.034, train_macc=37.90, train_miou=24.99[0m)]100%|##########| 1/1 [00:14<00:00, 14.17s/it, [0;92mdata_loading=12.60, iteration=1.572, train_acc=79.11, train_loss_seg=1.034, train_macc=37.90, train_miou=24.99[0m)]100%|##########| 1/1 [00:14<00:00, 14.17s/it, [0;92mdata_loading=12.60, iteration=1.572, train_acc=79.11, train_loss_seg=1.034, train_macc=37.90, train_miou=24.99[0m)][2022-10-21 15:40:44,978][torch_points3d.trainer][INFO] - Learning rate = 0.058064
+[2022-10-21 15:40:44,979][torch_points3d.trainer][INFO] - EPOCH 48 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.89, iteration=1.570, train_acc=80.88, train_loss_seg=0.762, train_macc=39.40, train_miou=26.31[0m)]100%|##########| 1/1 [00:14<00:00, 14.47s/it, [0;92mdata_loading=12.89, iteration=1.570, train_acc=80.88, train_loss_seg=0.762, train_macc=39.40, train_miou=26.31[0m)]100%|##########| 1/1 [00:14<00:00, 14.47s/it, [0;92mdata_loading=12.89, iteration=1.570, train_acc=80.88, train_loss_seg=0.762, train_macc=39.40, train_miou=26.31[0m)][2022-10-21 15:41:00,204][torch_points3d.trainer][INFO] - Learning rate = 0.057396
+[2022-10-21 15:41:00,205][torch_points3d.trainer][INFO] - EPOCH 49 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.72, iteration=1.598, train_acc=71.92, train_loss_seg=1.312, train_macc=34.86, train_miou=24.86[0m)]100%|##########| 1/1 [00:14<00:00, 14.33s/it, [0;92mdata_loading=12.72, iteration=1.598, train_acc=71.92, train_loss_seg=1.312, train_macc=34.86, train_miou=24.86[0m)]100%|##########| 1/1 [00:14<00:00, 14.33s/it, [0;92mdata_loading=12.72, iteration=1.598, train_acc=71.92, train_loss_seg=1.312, train_macc=34.86, train_miou=24.86[0m)][2022-10-21 15:41:15,280][torch_points3d.trainer][INFO] - Learning rate = 0.056736
+[2022-10-21 15:41:15,282][torch_points3d.trainer][INFO] - EPOCH 50 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.65, iteration=1.622, train_acc=79.83, train_loss_seg=0.893, train_macc=35.68, train_miou=26.27[0m)]100%|##########| 1/1 [00:14<00:00, 14.28s/it, [0;92mdata_loading=12.65, iteration=1.622, train_acc=79.83, train_loss_seg=0.893, train_macc=35.68, train_miou=26.27[0m)]100%|##########| 1/1 [00:14<00:00, 14.28s/it, [0;92mdata_loading=12.65, iteration=1.622, train_acc=79.83, train_loss_seg=0.893, train_macc=35.68, train_miou=26.27[0m)][2022-10-21 15:41:30,300][torch_points3d.trainer][INFO] - Learning rate = 0.056083
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:15<?, ?it/s, [0;93mval_acc=62.92, val_loss_seg=2.322, val_macc=31.19, val_miou=15.25[0m)]100%|##########| 1/1 [00:15<00:00, 15.44s/it, [0;93mval_acc=62.92, val_loss_seg=2.322, val_macc=31.19, val_miou=15.25[0m)]100%|##########| 1/1 [00:15<00:00, 15.44s/it, [0;93mval_acc=62.92, val_loss_seg=2.322, val_macc=31.19, val_miou=15.25[0m)][2022-10-21 15:41:45,764][torch_points3d.utils.colors][INFO] - [0;94macc: 60.70686927285912 -> 62.9204502381384, macc: 26.091485149104525 -> 31.193727390315196, miou: 14.440731029011777 -> 15.254021353398617[0m
+[2022-10-21 15:41:46,489][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-10-21 15:41:46,490][torch_points3d.metrics.base_tracker][INFO] -     val_loss_seg = 2.32232666015625
+[2022-10-21 15:41:46,490][torch_points3d.metrics.base_tracker][INFO] -     val_acc = 62.9204502381384
+[2022-10-21 15:41:46,490][torch_points3d.metrics.base_tracker][INFO] -     val_macc = 31.193727390315196
+[2022-10-21 15:41:46,490][torch_points3d.metrics.base_tracker][INFO] -     val_miou = 15.254021353398617
+[2022-10-21 15:41:46,490][torch_points3d.metrics.base_tracker][INFO] -     val_miou_per_class = {0: '57.34', 1: '80.06', 2: '27.31', 3: '0.00', 4: '0.00', 5: '0.00', 6: '45.47', 7: '15.74', 8: '0.00', 9: '0.00', 10: '0.00', 11: '0.00', 12: '0.00', 13: '0.00', 14: '2.89', 15: '0.00', 16: '0.00', 17: '0.00', 18: '0.00', 19: '0.00'}
+[2022-10-21 15:41:46,490][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-10-21 15:41:46,490][torch_points3d.trainer][INFO] - EPOCH 51 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.88, iteration=1.907, train_acc=83.07, train_loss_seg=0.727, train_macc=39.17, train_miou=28.11[0m)]100%|##########| 1/1 [00:14<00:00, 14.79s/it, [0;92mdata_loading=12.88, iteration=1.907, train_acc=83.07, train_loss_seg=0.727, train_macc=39.17, train_miou=28.11[0m)]100%|##########| 1/1 [00:14<00:00, 14.79s/it, [0;92mdata_loading=12.88, iteration=1.907, train_acc=83.07, train_loss_seg=0.727, train_macc=39.17, train_miou=28.11[0m)][2022-10-21 15:42:02,047][torch_points3d.trainer][INFO] - Learning rate = 0.055438
+[2022-10-21 15:42:02,049][torch_points3d.trainer][INFO] - EPOCH 52 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.60, iteration=1.617, train_acc=79.74, train_loss_seg=0.872, train_macc=35.91, train_miou=25.31[0m)]100%|##########| 1/1 [00:14<00:00, 14.22s/it, [0;92mdata_loading=12.60, iteration=1.617, train_acc=79.74, train_loss_seg=0.872, train_macc=35.91, train_miou=25.31[0m)]100%|##########| 1/1 [00:14<00:00, 14.22s/it, [0;92mdata_loading=12.60, iteration=1.617, train_acc=79.74, train_loss_seg=0.872, train_macc=35.91, train_miou=25.31[0m)][2022-10-21 15:42:17,014][torch_points3d.trainer][INFO] - Learning rate = 0.054801
+[2022-10-21 15:42:17,015][torch_points3d.trainer][INFO] - EPOCH 53 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.74, iteration=1.541, train_acc=83.62, train_loss_seg=0.679, train_macc=40.53, train_miou=28.91[0m)]100%|##########| 1/1 [00:14<00:00, 14.29s/it, [0;92mdata_loading=12.74, iteration=1.541, train_acc=83.62, train_loss_seg=0.679, train_macc=40.53, train_miou=28.91[0m)]100%|##########| 1/1 [00:14<00:00, 14.29s/it, [0;92mdata_loading=12.74, iteration=1.541, train_acc=83.62, train_loss_seg=0.679, train_macc=40.53, train_miou=28.91[0m)][2022-10-21 15:42:32,039][torch_points3d.trainer][INFO] - Learning rate = 0.054171
+[2022-10-21 15:42:32,040][torch_points3d.trainer][INFO] - EPOCH 54 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.72, iteration=1.578, train_acc=83.02, train_loss_seg=0.870, train_macc=42.05, train_miou=30.75[0m)]100%|##########| 1/1 [00:14<00:00, 14.31s/it, [0;92mdata_loading=12.72, iteration=1.578, train_acc=83.02, train_loss_seg=0.870, train_macc=42.05, train_miou=30.75[0m)]100%|##########| 1/1 [00:14<00:00, 14.31s/it, [0;92mdata_loading=12.72, iteration=1.578, train_acc=83.02, train_loss_seg=0.870, train_macc=42.05, train_miou=30.75[0m)][2022-10-21 15:42:47,090][torch_points3d.trainer][INFO] - Learning rate = 0.053548
+[2022-10-21 15:42:47,091][torch_points3d.trainer][INFO] - EPOCH 55 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.61, iteration=1.558, train_acc=80.25, train_loss_seg=0.941, train_macc=39.09, train_miou=26.74[0m)]100%|##########| 1/1 [00:14<00:00, 14.18s/it, [0;92mdata_loading=12.61, iteration=1.558, train_acc=80.25, train_loss_seg=0.941, train_macc=39.09, train_miou=26.74[0m)]100%|##########| 1/1 [00:14<00:00, 14.18s/it, [0;92mdata_loading=12.61, iteration=1.558, train_acc=80.25, train_loss_seg=0.941, train_macc=39.09, train_miou=26.74[0m)][2022-10-21 15:43:02,042][torch_points3d.trainer][INFO] - Learning rate = 0.052932
+[2022-10-21 15:43:02,044][torch_points3d.trainer][INFO] - EPOCH 56 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.69, iteration=1.587, train_acc=82.36, train_loss_seg=0.836, train_macc=44.70, train_miou=30.35[0m)]100%|##########| 1/1 [00:14<00:00, 14.28s/it, [0;92mdata_loading=12.69, iteration=1.587, train_acc=82.36, train_loss_seg=0.836, train_macc=44.70, train_miou=30.35[0m)]100%|##########| 1/1 [00:14<00:00, 14.28s/it, [0;92mdata_loading=12.69, iteration=1.587, train_acc=82.36, train_loss_seg=0.836, train_macc=44.70, train_miou=30.35[0m)][2022-10-21 15:43:17,065][torch_points3d.trainer][INFO] - Learning rate = 0.052323
+[2022-10-21 15:43:17,067][torch_points3d.trainer][INFO] - EPOCH 57 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.87, iteration=1.555, train_acc=83.59, train_loss_seg=0.818, train_macc=46.22, train_miou=32.66[0m)]100%|##########| 1/1 [00:14<00:00, 14.43s/it, [0;92mdata_loading=12.87, iteration=1.555, train_acc=83.59, train_loss_seg=0.818, train_macc=46.22, train_miou=32.66[0m)]100%|##########| 1/1 [00:14<00:00, 14.43s/it, [0;92mdata_loading=12.87, iteration=1.555, train_acc=83.59, train_loss_seg=0.818, train_macc=46.22, train_miou=32.66[0m)][2022-10-21 15:43:32,242][torch_points3d.trainer][INFO] - Learning rate = 0.051721
+[2022-10-21 15:43:32,243][torch_points3d.trainer][INFO] - EPOCH 58 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.55, iteration=1.914, train_acc=84.98, train_loss_seg=0.786, train_macc=49.66, train_miou=35.50[0m)]100%|##########| 1/1 [00:14<00:00, 14.47s/it, [0;92mdata_loading=12.55, iteration=1.914, train_acc=84.98, train_loss_seg=0.786, train_macc=49.66, train_miou=35.50[0m)]100%|##########| 1/1 [00:14<00:00, 14.47s/it, [0;92mdata_loading=12.55, iteration=1.914, train_acc=84.98, train_loss_seg=0.786, train_macc=49.66, train_miou=35.50[0m)][2022-10-21 15:43:47,450][torch_points3d.trainer][INFO] - Learning rate = 0.051127
+[2022-10-21 15:43:47,451][torch_points3d.trainer][INFO] - EPOCH 59 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.83, iteration=1.529, train_acc=85.26, train_loss_seg=0.689, train_macc=47.87, train_miou=34.28[0m)]100%|##########| 1/1 [00:14<00:00, 14.37s/it, [0;92mdata_loading=12.83, iteration=1.529, train_acc=85.26, train_loss_seg=0.689, train_macc=47.87, train_miou=34.28[0m)]100%|##########| 1/1 [00:14<00:00, 14.37s/it, [0;92mdata_loading=12.83, iteration=1.529, train_acc=85.26, train_loss_seg=0.689, train_macc=47.87, train_miou=34.28[0m)][2022-10-21 15:44:02,561][torch_points3d.trainer][INFO] - Learning rate = 0.050539
+[2022-10-21 15:44:02,562][torch_points3d.trainer][INFO] - EPOCH 60 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.82, iteration=1.606, train_acc=84.08, train_loss_seg=0.769, train_macc=49.85, train_miou=33.73[0m)]100%|##########| 1/1 [00:14<00:00, 14.44s/it, [0;92mdata_loading=12.82, iteration=1.606, train_acc=84.08, train_loss_seg=0.769, train_macc=49.85, train_miou=33.73[0m)]100%|##########| 1/1 [00:14<00:00, 14.44s/it, [0;92mdata_loading=12.82, iteration=1.606, train_acc=84.08, train_loss_seg=0.769, train_macc=49.85, train_miou=33.73[0m)][2022-10-21 15:44:17,746][torch_points3d.trainer][INFO] - Learning rate = 0.049957
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:15<?, ?it/s, [0;93mval_acc=63.51, val_loss_seg=1.885, val_macc=34.19, val_miou=17.20[0m)]100%|##########| 1/1 [00:15<00:00, 15.56s/it, [0;93mval_acc=63.51, val_loss_seg=1.885, val_macc=34.19, val_miou=17.20[0m)]100%|##########| 1/1 [00:15<00:00, 15.56s/it, [0;93mval_acc=63.51, val_loss_seg=1.885, val_macc=34.19, val_miou=17.20[0m)][2022-10-21 15:44:33,326][torch_points3d.utils.colors][INFO] - [0;94macc: 62.9204502381384 -> 63.513964478026395, macc: 31.193727390315196 -> 34.19172458248859, miou: 15.254021353398617 -> 17.2006293208418[0m
+[2022-10-21 15:44:34,041][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-10-21 15:44:34,041][torch_points3d.metrics.base_tracker][INFO] -     val_loss_seg = 1.8856022357940674
+[2022-10-21 15:44:34,041][torch_points3d.metrics.base_tracker][INFO] -     val_acc = 63.513964478026395
+[2022-10-21 15:44:34,041][torch_points3d.metrics.base_tracker][INFO] -     val_macc = 34.19172458248859
+[2022-10-21 15:44:34,041][torch_points3d.metrics.base_tracker][INFO] -     val_miou = 17.2006293208418
+[2022-10-21 15:44:34,042][torch_points3d.metrics.base_tracker][INFO] -     val_miou_per_class = {0: '57.07', 1: '78.51', 2: '30.80', 3: '0.00', 4: '11.09', 5: '0.00', 6: '45.35', 7: '29.05', 8: '0.00', 9: '0.00', 10: '0.00', 11: '0.00', 12: '0.00', 13: '0.00', 14: '6.14', 15: '0.00', 16: '0.00', 17: '0.00', 18: '0.00', 19: '0.00'}
+[2022-10-21 15:44:34,042][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-10-21 15:44:34,042][torch_points3d.trainer][INFO] - EPOCH 61 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.83, iteration=1.604, train_acc=84.26, train_loss_seg=0.677, train_macc=48.05, train_miou=34.54[0m)]100%|##########| 1/1 [00:14<00:00, 14.44s/it, [0;92mdata_loading=12.83, iteration=1.604, train_acc=84.26, train_loss_seg=0.677, train_macc=48.05, train_miou=34.54[0m)]100%|##########| 1/1 [00:14<00:00, 14.44s/it, [0;92mdata_loading=12.83, iteration=1.604, train_acc=84.26, train_loss_seg=0.677, train_macc=48.05, train_miou=34.54[0m)][2022-10-21 15:44:49,215][torch_points3d.trainer][INFO] - Learning rate = 0.049383
+[2022-10-21 15:44:49,216][torch_points3d.trainer][INFO] - EPOCH 62 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.85, iteration=1.565, train_acc=86.05, train_loss_seg=0.552, train_macc=51.32, train_miou=37.91[0m)]100%|##########| 1/1 [00:14<00:00, 14.42s/it, [0;92mdata_loading=12.85, iteration=1.565, train_acc=86.05, train_loss_seg=0.552, train_macc=51.32, train_miou=37.91[0m)]100%|##########| 1/1 [00:14<00:00, 14.42s/it, [0;92mdata_loading=12.85, iteration=1.565, train_acc=86.05, train_loss_seg=0.552, train_macc=51.32, train_miou=37.91[0m)][2022-10-21 15:45:04,387][torch_points3d.trainer][INFO] - Learning rate = 0.048815
+[2022-10-21 15:45:04,388][torch_points3d.trainer][INFO] - EPOCH 63 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.82, iteration=1.592, train_acc=84.50, train_loss_seg=0.577, train_macc=47.83, train_miou=33.71[0m)]100%|##########| 1/1 [00:14<00:00, 14.42s/it, [0;92mdata_loading=12.82, iteration=1.592, train_acc=84.50, train_loss_seg=0.577, train_macc=47.83, train_miou=33.71[0m)]100%|##########| 1/1 [00:14<00:00, 14.42s/it, [0;92mdata_loading=12.82, iteration=1.592, train_acc=84.50, train_loss_seg=0.577, train_macc=47.83, train_miou=33.71[0m)][2022-10-21 15:45:19,737][torch_points3d.trainer][INFO] - Learning rate = 0.048254
+[2022-10-21 15:45:19,739][torch_points3d.trainer][INFO] - EPOCH 64 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.85, iteration=1.580, train_acc=83.57, train_loss_seg=0.585, train_macc=47.84, train_miou=33.40[0m)]100%|##########| 1/1 [00:14<00:00, 14.43s/it, [0;92mdata_loading=12.85, iteration=1.580, train_acc=83.57, train_loss_seg=0.585, train_macc=47.84, train_miou=33.40[0m)]100%|##########| 1/1 [00:14<00:00, 14.43s/it, [0;92mdata_loading=12.85, iteration=1.580, train_acc=83.57, train_loss_seg=0.585, train_macc=47.84, train_miou=33.40[0m)][2022-10-21 15:45:34,917][torch_points3d.trainer][INFO] - Learning rate = 0.047699
+[2022-10-21 15:45:34,918][torch_points3d.trainer][INFO] - EPOCH 65 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.79, iteration=1.606, train_acc=82.89, train_loss_seg=0.646, train_macc=42.76, train_miou=31.26[0m)]100%|##########| 1/1 [00:14<00:00, 14.40s/it, [0;92mdata_loading=12.79, iteration=1.606, train_acc=82.89, train_loss_seg=0.646, train_macc=42.76, train_miou=31.26[0m)]100%|##########| 1/1 [00:14<00:00, 14.40s/it, [0;92mdata_loading=12.79, iteration=1.606, train_acc=82.89, train_loss_seg=0.646, train_macc=42.76, train_miou=31.26[0m)][2022-10-21 15:45:50,071][torch_points3d.trainer][INFO] - Learning rate = 0.047150
+[2022-10-21 15:45:50,073][torch_points3d.trainer][INFO] - EPOCH 66 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.86, iteration=1.582, train_acc=86.65, train_loss_seg=0.521, train_macc=48.32, train_miou=37.27[0m)]100%|##########| 1/1 [00:14<00:00, 14.45s/it, [0;92mdata_loading=12.86, iteration=1.582, train_acc=86.65, train_loss_seg=0.521, train_macc=48.32, train_miou=37.27[0m)]100%|##########| 1/1 [00:14<00:00, 14.45s/it, [0;92mdata_loading=12.86, iteration=1.582, train_acc=86.65, train_loss_seg=0.521, train_macc=48.32, train_miou=37.27[0m)][2022-10-21 15:46:05,257][torch_points3d.trainer][INFO] - Learning rate = 0.046608
+[2022-10-21 15:46:05,258][torch_points3d.trainer][INFO] - EPOCH 67 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.76, iteration=1.519, train_acc=87.28, train_loss_seg=0.510, train_macc=49.99, train_miou=38.60[0m)]100%|##########| 1/1 [00:14<00:00, 14.29s/it, [0;92mdata_loading=12.76, iteration=1.519, train_acc=87.28, train_loss_seg=0.510, train_macc=49.99, train_miou=38.60[0m)]100%|##########| 1/1 [00:14<00:00, 14.29s/it, [0;92mdata_loading=12.76, iteration=1.519, train_acc=87.28, train_loss_seg=0.510, train_macc=49.99, train_miou=38.60[0m)][2022-10-21 15:46:20,285][torch_points3d.trainer][INFO] - Learning rate = 0.046072
+[2022-10-21 15:46:20,286][torch_points3d.trainer][INFO] - EPOCH 68 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.76, iteration=1.584, train_acc=87.56, train_loss_seg=0.427, train_macc=52.19, train_miou=41.03[0m)]100%|##########| 1/1 [00:14<00:00, 14.35s/it, [0;92mdata_loading=12.76, iteration=1.584, train_acc=87.56, train_loss_seg=0.427, train_macc=52.19, train_miou=41.03[0m)]100%|##########| 1/1 [00:14<00:00, 14.35s/it, [0;92mdata_loading=12.76, iteration=1.584, train_acc=87.56, train_loss_seg=0.427, train_macc=52.19, train_miou=41.03[0m)][2022-10-21 15:46:35,370][torch_points3d.trainer][INFO] - Learning rate = 0.045542
+[2022-10-21 15:46:35,371][torch_points3d.trainer][INFO] - EPOCH 69 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.64, iteration=1.611, train_acc=86.75, train_loss_seg=0.430, train_macc=52.23, train_miou=36.92[0m)]100%|##########| 1/1 [00:14<00:00, 14.26s/it, [0;92mdata_loading=12.64, iteration=1.611, train_acc=86.75, train_loss_seg=0.430, train_macc=52.23, train_miou=36.92[0m)]100%|##########| 1/1 [00:14<00:00, 14.26s/it, [0;92mdata_loading=12.64, iteration=1.611, train_acc=86.75, train_loss_seg=0.430, train_macc=52.23, train_miou=36.92[0m)][2022-10-21 15:46:50,362][torch_points3d.trainer][INFO] - Learning rate = 0.045018
+[2022-10-21 15:46:50,363][torch_points3d.trainer][INFO] - EPOCH 70 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.75, iteration=1.837, train_acc=85.81, train_loss_seg=0.504, train_macc=52.78, train_miou=37.58[0m)]100%|##########| 1/1 [00:14<00:00, 14.59s/it, [0;92mdata_loading=12.75, iteration=1.837, train_acc=85.81, train_loss_seg=0.504, train_macc=52.78, train_miou=37.58[0m)]100%|##########| 1/1 [00:14<00:00, 14.59s/it, [0;92mdata_loading=12.75, iteration=1.837, train_acc=85.81, train_loss_seg=0.504, train_macc=52.78, train_miou=37.58[0m)][2022-10-21 15:47:05,693][torch_points3d.trainer][INFO] - Learning rate = 0.044501
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:15<?, ?it/s, [0;93mval_acc=63.07, val_loss_seg=1.712, val_macc=33.31, val_miou=16.83[0m)]100%|##########| 1/1 [00:15<00:00, 15.51s/it, [0;93mval_acc=63.07, val_loss_seg=1.712, val_macc=33.31, val_miou=16.83[0m)]100%|##########| 1/1 [00:15<00:00, 15.51s/it, [0;93mval_acc=63.07, val_loss_seg=1.712, val_macc=33.31, val_miou=16.83[0m)][2022-10-21 15:47:21,935][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-10-21 15:47:21,936][torch_points3d.metrics.base_tracker][INFO] -     val_loss_seg = 1.7128349542617798
+[2022-10-21 15:47:21,937][torch_points3d.metrics.base_tracker][INFO] -     val_acc = 63.07194792889658
+[2022-10-21 15:47:21,937][torch_points3d.metrics.base_tracker][INFO] -     val_macc = 33.313887086009125
+[2022-10-21 15:47:21,937][torch_points3d.metrics.base_tracker][INFO] -     val_miou = 16.835423378752562
+[2022-10-21 15:47:21,937][torch_points3d.metrics.base_tracker][INFO] -     val_miou_per_class = {0: '53.98', 1: '75.36', 2: '37.15', 3: '0.00', 4: '0.54', 5: '0.00', 6: '46.89', 7: '27.74', 8: '5.31', 9: '0.00', 10: '0.00', 11: '0.00', 12: '0.00', 13: '0.00', 14: '2.92', 15: '0.00', 16: '0.00', 17: '0.00', 18: '0.00', 19: '2.63'}
+[2022-10-21 15:47:21,937][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-10-21 15:47:21,937][torch_points3d.trainer][INFO] - EPOCH 71 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.51, iteration=1.565, train_acc=88.63, train_loss_seg=0.398, train_macc=54.05, train_miou=43.32[0m)]100%|##########| 1/1 [00:14<00:00, 14.08s/it, [0;92mdata_loading=12.51, iteration=1.565, train_acc=88.63, train_loss_seg=0.398, train_macc=54.05, train_miou=43.32[0m)]100%|##########| 1/1 [00:14<00:00, 14.08s/it, [0;92mdata_loading=12.51, iteration=1.565, train_acc=88.63, train_loss_seg=0.398, train_macc=54.05, train_miou=43.32[0m)][2022-10-21 15:47:36,778][torch_points3d.trainer][INFO] - Learning rate = 0.043989
+[2022-10-21 15:47:36,780][torch_points3d.trainer][INFO] - EPOCH 72 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.67, iteration=1.634, train_acc=88.65, train_loss_seg=0.410, train_macc=53.96, train_miou=41.64[0m)]100%|##########| 1/1 [00:14<00:00, 14.31s/it, [0;92mdata_loading=12.67, iteration=1.634, train_acc=88.65, train_loss_seg=0.410, train_macc=53.96, train_miou=41.64[0m)]100%|##########| 1/1 [00:14<00:00, 14.31s/it, [0;92mdata_loading=12.67, iteration=1.634, train_acc=88.65, train_loss_seg=0.410, train_macc=53.96, train_miou=41.64[0m)][2022-10-21 15:47:51,825][torch_points3d.trainer][INFO] - Learning rate = 0.043483
+[2022-10-21 15:47:51,826][torch_points3d.trainer][INFO] - EPOCH 73 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=13.04, iteration=1.585, train_acc=87.69, train_loss_seg=0.444, train_macc=51.86, train_miou=40.05[0m)]100%|##########| 1/1 [00:14<00:00, 14.63s/it, [0;92mdata_loading=13.04, iteration=1.585, train_acc=87.69, train_loss_seg=0.444, train_macc=51.86, train_miou=40.05[0m)]100%|##########| 1/1 [00:14<00:00, 14.63s/it, [0;92mdata_loading=13.04, iteration=1.585, train_acc=87.69, train_loss_seg=0.444, train_macc=51.86, train_miou=40.05[0m)][2022-10-21 15:48:07,219][torch_points3d.trainer][INFO] - Learning rate = 0.042983
+[2022-10-21 15:48:07,220][torch_points3d.trainer][INFO] - EPOCH 74 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=13.14, iteration=1.656, train_acc=88.63, train_loss_seg=0.407, train_macc=56.19, train_miou=41.22[0m)]100%|##########| 1/1 [00:14<00:00, 14.81s/it, [0;92mdata_loading=13.14, iteration=1.656, train_acc=88.63, train_loss_seg=0.407, train_macc=56.19, train_miou=41.22[0m)]100%|##########| 1/1 [00:14<00:00, 14.81s/it, [0;92mdata_loading=13.14, iteration=1.656, train_acc=88.63, train_loss_seg=0.407, train_macc=56.19, train_miou=41.22[0m)][2022-10-21 15:48:22,774][torch_points3d.trainer][INFO] - Learning rate = 0.042489
+[2022-10-21 15:48:22,775][torch_points3d.trainer][INFO] - EPOCH 75 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=13.21, iteration=1.685, train_acc=88.58, train_loss_seg=0.400, train_macc=56.32, train_miou=43.26[0m)]100%|##########| 1/1 [00:14<00:00, 14.90s/it, [0;92mdata_loading=13.21, iteration=1.685, train_acc=88.58, train_loss_seg=0.400, train_macc=56.32, train_miou=43.26[0m)]100%|##########| 1/1 [00:14<00:00, 14.90s/it, [0;92mdata_loading=13.21, iteration=1.685, train_acc=88.58, train_loss_seg=0.400, train_macc=56.32, train_miou=43.26[0m)][2022-10-21 15:48:38,438][torch_points3d.trainer][INFO] - Learning rate = 0.042000
+[2022-10-21 15:48:38,440][torch_points3d.trainer][INFO] - EPOCH 76 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=13.06, iteration=1.620, train_acc=89.55, train_loss_seg=0.393, train_macc=54.85, train_miou=41.27[0m)]100%|##########| 1/1 [00:14<00:00, 14.68s/it, [0;92mdata_loading=13.06, iteration=1.620, train_acc=89.55, train_loss_seg=0.393, train_macc=54.85, train_miou=41.27[0m)]100%|##########| 1/1 [00:14<00:00, 14.68s/it, [0;92mdata_loading=13.06, iteration=1.620, train_acc=89.55, train_loss_seg=0.393, train_macc=54.85, train_miou=41.27[0m)][2022-10-21 15:48:53,863][torch_points3d.trainer][INFO] - Learning rate = 0.041517
+[2022-10-21 15:48:53,864][torch_points3d.trainer][INFO] - EPOCH 77 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.49, iteration=1.568, train_acc=89.69, train_loss_seg=0.378, train_macc=59.96, train_miou=44.13[0m)]100%|##########| 1/1 [00:14<00:00, 14.07s/it, [0;92mdata_loading=12.49, iteration=1.568, train_acc=89.69, train_loss_seg=0.378, train_macc=59.96, train_miou=44.13[0m)]100%|##########| 1/1 [00:14<00:00, 14.07s/it, [0;92mdata_loading=12.49, iteration=1.568, train_acc=89.69, train_loss_seg=0.378, train_macc=59.96, train_miou=44.13[0m)][2022-10-21 15:49:08,686][torch_points3d.trainer][INFO] - Learning rate = 0.041040
+[2022-10-21 15:49:08,687][torch_points3d.trainer][INFO] - EPOCH 78 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.77, iteration=1.585, train_acc=88.83, train_loss_seg=0.425, train_macc=61.63, train_miou=48.94[0m)]100%|##########| 1/1 [00:14<00:00, 14.36s/it, [0;92mdata_loading=12.77, iteration=1.585, train_acc=88.83, train_loss_seg=0.425, train_macc=61.63, train_miou=48.94[0m)]100%|##########| 1/1 [00:14<00:00, 14.37s/it, [0;92mdata_loading=12.77, iteration=1.585, train_acc=88.83, train_loss_seg=0.425, train_macc=61.63, train_miou=48.94[0m)][2022-10-21 15:49:23,816][torch_points3d.trainer][INFO] - Learning rate = 0.040568
+[2022-10-21 15:49:23,818][torch_points3d.trainer][INFO] - EPOCH 79 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.64, iteration=1.599, train_acc=88.35, train_loss_seg=0.382, train_macc=61.29, train_miou=51.07[0m)]100%|##########| 1/1 [00:14<00:00, 14.25s/it, [0;92mdata_loading=12.64, iteration=1.599, train_acc=88.35, train_loss_seg=0.382, train_macc=61.29, train_miou=51.07[0m)]100%|##########| 1/1 [00:14<00:00, 14.25s/it, [0;92mdata_loading=12.64, iteration=1.599, train_acc=88.35, train_loss_seg=0.382, train_macc=61.29, train_miou=51.07[0m)][2022-10-21 15:49:38,809][torch_points3d.trainer][INFO] - Learning rate = 0.040101
+[2022-10-21 15:49:38,810][torch_points3d.trainer][INFO] - EPOCH 80 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.80, iteration=1.586, train_acc=87.57, train_loss_seg=0.424, train_macc=59.39, train_miou=43.54[0m)]100%|##########| 1/1 [00:14<00:00, 14.40s/it, [0;92mdata_loading=12.80, iteration=1.586, train_acc=87.57, train_loss_seg=0.424, train_macc=59.39, train_miou=43.54[0m)]100%|##########| 1/1 [00:14<00:00, 14.40s/it, [0;92mdata_loading=12.80, iteration=1.586, train_acc=87.57, train_loss_seg=0.424, train_macc=59.39, train_miou=43.54[0m)][2022-10-21 15:49:53,957][torch_points3d.trainer][INFO] - Learning rate = 0.039640
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:15<?, ?it/s, [0;93mval_acc=65.59, val_loss_seg=1.585, val_macc=31.16, val_miou=16.67[0m)]100%|##########| 1/1 [00:15<00:00, 15.54s/it, [0;93mval_acc=65.59, val_loss_seg=1.585, val_macc=31.16, val_miou=16.67[0m)]100%|##########| 1/1 [00:15<00:00, 15.54s/it, [0;93mval_acc=65.59, val_loss_seg=1.585, val_macc=31.16, val_miou=16.67[0m)][2022-10-21 15:50:09,518][torch_points3d.utils.colors][INFO] - [0;94macc: 63.513964478026395 -> 65.59242994735239[0m
+[2022-10-21 15:50:10,465][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-10-21 15:50:10,466][torch_points3d.metrics.base_tracker][INFO] -     val_loss_seg = 1.585060477256775
+[2022-10-21 15:50:10,466][torch_points3d.metrics.base_tracker][INFO] -     val_acc = 65.59242994735239
+[2022-10-21 15:50:10,466][torch_points3d.metrics.base_tracker][INFO] -     val_macc = 31.160993202783605
+[2022-10-21 15:50:10,467][torch_points3d.metrics.base_tracker][INFO] -     val_miou = 16.677486166191745
+[2022-10-21 15:50:10,467][torch_points3d.metrics.base_tracker][INFO] -     val_miou_per_class = {0: '51.05', 1: '76.57', 2: '27.32', 3: '0.00', 4: '16.39', 5: '0.00', 6: '43.71', 7: '24.33', 8: '10.77', 9: '0.00', 10: '0.00', 11: '0.00', 12: '0.00', 13: '0.00', 14: '0.03', 15: '0.00', 16: '0.00', 17: '0.00', 18: '0.00', 19: '0.00'}
+[2022-10-21 15:50:10,467][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-10-21 15:50:10,467][torch_points3d.trainer][INFO] - EPOCH 81 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.77, iteration=1.61 , train_acc=89.47, train_loss_seg=0.367, train_macc=56.07, train_miou=40.63[0m)]100%|##########| 1/1 [00:14<00:00, 14.39s/it, [0;92mdata_loading=12.77, iteration=1.61 , train_acc=89.47, train_loss_seg=0.367, train_macc=56.07, train_miou=40.63[0m)]100%|##########| 1/1 [00:14<00:00, 14.39s/it, [0;92mdata_loading=12.77, iteration=1.61 , train_acc=89.47, train_loss_seg=0.367, train_macc=56.07, train_miou=40.63[0m)][2022-10-21 15:50:25,831][torch_points3d.trainer][INFO] - Learning rate = 0.039184
+[2022-10-21 15:50:25,833][torch_points3d.trainer][INFO] - EPOCH 82 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.67, iteration=1.578, train_acc=88.24, train_loss_seg=0.423, train_macc=54.78, train_miou=45.33[0m)]100%|##########| 1/1 [00:14<00:00, 14.25s/it, [0;92mdata_loading=12.67, iteration=1.578, train_acc=88.24, train_loss_seg=0.423, train_macc=54.78, train_miou=45.33[0m)]100%|##########| 1/1 [00:14<00:00, 14.25s/it, [0;92mdata_loading=12.67, iteration=1.578, train_acc=88.24, train_loss_seg=0.423, train_macc=54.78, train_miou=45.33[0m)][2022-10-21 15:50:41,067][torch_points3d.trainer][INFO] - Learning rate = 0.038734
+[2022-10-21 15:50:41,068][torch_points3d.trainer][INFO] - EPOCH 83 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.84, iteration=1.603, train_acc=89.22, train_loss_seg=0.366, train_macc=54.92, train_miou=47.98[0m)]100%|##########| 1/1 [00:14<00:00, 14.45s/it, [0;92mdata_loading=12.84, iteration=1.603, train_acc=89.22, train_loss_seg=0.366, train_macc=54.92, train_miou=47.98[0m)]100%|##########| 1/1 [00:14<00:00, 14.45s/it, [0;92mdata_loading=12.84, iteration=1.603, train_acc=89.22, train_loss_seg=0.366, train_macc=54.92, train_miou=47.98[0m)][2022-10-21 15:50:56,557][torch_points3d.trainer][INFO] - Learning rate = 0.038288
+[2022-10-21 15:50:56,558][torch_points3d.trainer][INFO] - EPOCH 84 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.88, iteration=1.610, train_acc=90.19, train_loss_seg=0.342, train_macc=57.54, train_miou=41.89[0m)]100%|##########| 1/1 [00:14<00:00, 14.49s/it, [0;92mdata_loading=12.88, iteration=1.610, train_acc=90.19, train_loss_seg=0.342, train_macc=57.54, train_miou=41.89[0m)]100%|##########| 1/1 [00:14<00:00, 14.49s/it, [0;92mdata_loading=12.88, iteration=1.610, train_acc=90.19, train_loss_seg=0.342, train_macc=57.54, train_miou=41.89[0m)][2022-10-21 15:51:12,038][torch_points3d.trainer][INFO] - Learning rate = 0.037848
+[2022-10-21 15:51:12,040][torch_points3d.trainer][INFO] - EPOCH 85 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.87, iteration=1.644, train_acc=90.27, train_loss_seg=0.362, train_macc=57.72, train_miou=50.48[0m)]100%|##########| 1/1 [00:14<00:00, 14.52s/it, [0;92mdata_loading=12.87, iteration=1.644, train_acc=90.27, train_loss_seg=0.362, train_macc=57.72, train_miou=50.48[0m)]100%|##########| 1/1 [00:14<00:00, 14.52s/it, [0;92mdata_loading=12.87, iteration=1.644, train_acc=90.27, train_loss_seg=0.362, train_macc=57.72, train_miou=50.48[0m)][2022-10-21 15:51:27,539][torch_points3d.trainer][INFO] - Learning rate = 0.037413
+[2022-10-21 15:51:27,541][torch_points3d.trainer][INFO] - EPOCH 86 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.77, iteration=1.596, train_acc=89.49, train_loss_seg=0.381, train_macc=59.49, train_miou=40.37[0m)]100%|##########| 1/1 [00:14<00:00, 14.37s/it, [0;92mdata_loading=12.77, iteration=1.596, train_acc=89.49, train_loss_seg=0.381, train_macc=59.49, train_miou=40.37[0m)]100%|##########| 1/1 [00:14<00:00, 14.37s/it, [0;92mdata_loading=12.77, iteration=1.596, train_acc=89.49, train_loss_seg=0.381, train_macc=59.49, train_miou=40.37[0m)][2022-10-21 15:51:42,890][torch_points3d.trainer][INFO] - Learning rate = 0.036982
+[2022-10-21 15:51:42,891][torch_points3d.trainer][INFO] - EPOCH 87 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.93, iteration=1.615, train_acc=88.88, train_loss_seg=0.392, train_macc=54.01, train_miou=43.28[0m)]100%|##########| 1/1 [00:14<00:00, 14.55s/it, [0;92mdata_loading=12.93, iteration=1.615, train_acc=88.88, train_loss_seg=0.392, train_macc=54.01, train_miou=43.28[0m)]100%|##########| 1/1 [00:14<00:00, 14.55s/it, [0;92mdata_loading=12.93, iteration=1.615, train_acc=88.88, train_loss_seg=0.392, train_macc=54.01, train_miou=43.28[0m)][2022-10-21 15:51:58,416][torch_points3d.trainer][INFO] - Learning rate = 0.036557
+[2022-10-21 15:51:58,417][torch_points3d.trainer][INFO] - EPOCH 88 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=13.04, iteration=1.584, train_acc=90.69, train_loss_seg=0.308, train_macc=58.81, train_miou=47.14[0m)]100%|##########| 1/1 [00:14<00:00, 14.62s/it, [0;92mdata_loading=13.04, iteration=1.584, train_acc=90.69, train_loss_seg=0.308, train_macc=58.81, train_miou=47.14[0m)]100%|##########| 1/1 [00:14<00:00, 14.62s/it, [0;92mdata_loading=13.04, iteration=1.584, train_acc=90.69, train_loss_seg=0.308, train_macc=58.81, train_miou=47.14[0m)][2022-10-21 15:52:14,017][torch_points3d.trainer][INFO] - Learning rate = 0.036137
+[2022-10-21 15:52:14,019][torch_points3d.trainer][INFO] - EPOCH 89 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=13.00, iteration=1.561, train_acc=89.94, train_loss_seg=0.341, train_macc=61.80, train_miou=44.95[0m)]100%|##########| 1/1 [00:14<00:00, 14.57s/it, [0;92mdata_loading=13.00, iteration=1.561, train_acc=89.94, train_loss_seg=0.341, train_macc=61.80, train_miou=44.95[0m)]100%|##########| 1/1 [00:14<00:00, 14.57s/it, [0;92mdata_loading=13.00, iteration=1.561, train_acc=89.94, train_loss_seg=0.341, train_macc=61.80, train_miou=44.95[0m)][2022-10-21 15:52:29,563][torch_points3d.trainer][INFO] - Learning rate = 0.035721
+[2022-10-21 15:52:29,564][torch_points3d.trainer][INFO] - EPOCH 90 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.79, iteration=1.575, train_acc=90.98, train_loss_seg=0.308, train_macc=62.21, train_miou=54.87[0m)]100%|##########| 1/1 [00:14<00:00, 14.37s/it, [0;92mdata_loading=12.79, iteration=1.575, train_acc=90.98, train_loss_seg=0.308, train_macc=62.21, train_miou=54.87[0m)]100%|##########| 1/1 [00:14<00:00, 14.37s/it, [0;92mdata_loading=12.79, iteration=1.575, train_acc=90.98, train_loss_seg=0.308, train_macc=62.21, train_miou=54.87[0m)][2022-10-21 15:52:44,899][torch_points3d.trainer][INFO] - Learning rate = 0.035310
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:15<?, ?it/s, [0;93mval_acc=65.35, val_loss_seg=1.537, val_macc=34.03, val_miou=17.52[0m)]100%|##########| 1/1 [00:15<00:00, 15.51s/it, [0;93mval_acc=65.35, val_loss_seg=1.537, val_macc=34.03, val_miou=17.52[0m)]100%|##########| 1/1 [00:15<00:00, 15.51s/it, [0;93mval_acc=65.35, val_loss_seg=1.537, val_macc=34.03, val_miou=17.52[0m)][2022-10-21 15:53:00,429][torch_points3d.utils.colors][INFO] - [0;94mmiou: 17.2006293208418 -> 17.52409803281641[0m
+[2022-10-21 15:53:01,645][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-10-21 15:53:01,645][torch_points3d.metrics.base_tracker][INFO] -     val_loss_seg = 1.537854552268982
+[2022-10-21 15:53:01,645][torch_points3d.metrics.base_tracker][INFO] -     val_acc = 65.35206973831652
+[2022-10-21 15:53:01,645][torch_points3d.metrics.base_tracker][INFO] -     val_macc = 34.03655175548223
+[2022-10-21 15:53:01,646][torch_points3d.metrics.base_tracker][INFO] -     val_miou = 17.52409803281641
+[2022-10-21 15:53:01,646][torch_points3d.metrics.base_tracker][INFO] -     val_miou_per_class = {0: '46.96', 1: '79.98', 2: '34.33', 3: '0.00', 4: '18.26', 5: '0.00', 6: '48.45', 7: '4.59', 8: '20.08', 9: '0.00', 10: '0.00', 11: '0.00', 12: '0.00', 13: '0.00', 14: '10.19', 15: '0.00', 16: '0.00', 17: '0.00', 18: '0.00', 19: '0.02'}
+[2022-10-21 15:53:01,646][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-10-21 15:53:01,646][torch_points3d.trainer][INFO] - EPOCH 91 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.84, iteration=1.583, train_acc=90.04, train_loss_seg=0.339, train_macc=64.04, train_miou=43.67[0m)]100%|##########| 1/1 [00:14<00:00, 14.43s/it, [0;92mdata_loading=12.84, iteration=1.583, train_acc=90.04, train_loss_seg=0.339, train_macc=64.04, train_miou=43.67[0m)]100%|##########| 1/1 [00:14<00:00, 14.43s/it, [0;92mdata_loading=12.84, iteration=1.583, train_acc=90.04, train_loss_seg=0.339, train_macc=64.04, train_miou=43.67[0m)][2022-10-21 15:53:17,292][torch_points3d.trainer][INFO] - Learning rate = 0.034904
+[2022-10-21 15:53:17,293][torch_points3d.trainer][INFO] - EPOCH 92 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.99, iteration=1.629, train_acc=89.77, train_loss_seg=0.347, train_macc=62.39, train_miou=53.77[0m)]100%|##########| 1/1 [00:14<00:00, 14.62s/it, [0;92mdata_loading=12.99, iteration=1.629, train_acc=89.77, train_loss_seg=0.347, train_macc=62.39, train_miou=53.77[0m)]100%|##########| 1/1 [00:14<00:00, 14.62s/it, [0;92mdata_loading=12.99, iteration=1.629, train_acc=89.77, train_loss_seg=0.347, train_macc=62.39, train_miou=53.77[0m)][2022-10-21 15:53:33,113][torch_points3d.trainer][INFO] - Learning rate = 0.034503
+[2022-10-21 15:53:33,114][torch_points3d.trainer][INFO] - EPOCH 93 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=13.02, iteration=1.577, train_acc=89.75, train_loss_seg=0.360, train_macc=61.39, train_miou=42.64[0m)]100%|##########| 1/1 [00:14<00:00, 14.60s/it, [0;92mdata_loading=13.02, iteration=1.577, train_acc=89.75, train_loss_seg=0.360, train_macc=61.39, train_miou=42.64[0m)]100%|##########| 1/1 [00:14<00:00, 14.60s/it, [0;92mdata_loading=13.02, iteration=1.577, train_acc=89.75, train_loss_seg=0.360, train_macc=61.39, train_miou=42.64[0m)][2022-10-21 15:53:48,917][torch_points3d.trainer][INFO] - Learning rate = 0.034106
+[2022-10-21 15:53:48,918][torch_points3d.trainer][INFO] - EPOCH 94 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.89, iteration=1.569, train_acc=89.58, train_loss_seg=0.373, train_macc=59.36, train_miou=41.31[0m)]100%|##########| 1/1 [00:14<00:00, 14.46s/it, [0;92mdata_loading=12.89, iteration=1.569, train_acc=89.58, train_loss_seg=0.373, train_macc=59.36, train_miou=41.31[0m)]100%|##########| 1/1 [00:14<00:00, 14.46s/it, [0;92mdata_loading=12.89, iteration=1.569, train_acc=89.58, train_loss_seg=0.373, train_macc=59.36, train_miou=41.31[0m)][2022-10-21 15:54:04,611][torch_points3d.trainer][INFO] - Learning rate = 0.033714
+[2022-10-21 15:54:04,613][torch_points3d.trainer][INFO] - EPOCH 95 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.80, iteration=1.590, train_acc=90.58, train_loss_seg=0.323, train_macc=60.36, train_miou=45.71[0m)]100%|##########| 1/1 [00:14<00:00, 14.39s/it, [0;92mdata_loading=12.80, iteration=1.590, train_acc=90.58, train_loss_seg=0.323, train_macc=60.36, train_miou=45.71[0m)]100%|##########| 1/1 [00:14<00:00, 14.39s/it, [0;92mdata_loading=12.80, iteration=1.590, train_acc=90.58, train_loss_seg=0.323, train_macc=60.36, train_miou=45.71[0m)][2022-10-21 15:54:20,233][torch_points3d.trainer][INFO] - Learning rate = 0.033326
+[2022-10-21 15:54:20,234][torch_points3d.trainer][INFO] - EPOCH 96 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.82, iteration=1.874, train_acc=89.77, train_loss_seg=0.342, train_macc=61.12, train_miou=43.11[0m)]100%|##########| 1/1 [00:14<00:00, 14.70s/it, [0;92mdata_loading=12.82, iteration=1.874, train_acc=89.77, train_loss_seg=0.342, train_macc=61.12, train_miou=43.11[0m)]100%|##########| 1/1 [00:14<00:00, 14.70s/it, [0;92mdata_loading=12.82, iteration=1.874, train_acc=89.77, train_loss_seg=0.342, train_macc=61.12, train_miou=43.11[0m)][2022-10-21 15:54:36,180][torch_points3d.trainer][INFO] - Learning rate = 0.032943
+[2022-10-21 15:54:36,181][torch_points3d.trainer][INFO] - EPOCH 97 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.54, iteration=1.567, train_acc=89.82, train_loss_seg=0.347, train_macc=56.94, train_miou=49.60[0m)]100%|##########| 1/1 [00:14<00:00, 14.11s/it, [0;92mdata_loading=12.54, iteration=1.567, train_acc=89.82, train_loss_seg=0.347, train_macc=56.94, train_miou=49.60[0m)]100%|##########| 1/1 [00:14<00:00, 14.11s/it, [0;92mdata_loading=12.54, iteration=1.567, train_acc=89.82, train_loss_seg=0.347, train_macc=56.94, train_miou=49.60[0m)][2022-10-21 15:54:51,650][torch_points3d.trainer][INFO] - Learning rate = 0.032564
+[2022-10-21 15:54:51,651][torch_points3d.trainer][INFO] - EPOCH 98 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.63, iteration=1.576, train_acc=90.41, train_loss_seg=0.331, train_macc=63.37, train_miou=46.95[0m)]100%|##########| 1/1 [00:14<00:00, 14.21s/it, [0;92mdata_loading=12.63, iteration=1.576, train_acc=90.41, train_loss_seg=0.331, train_macc=63.37, train_miou=46.95[0m)]100%|##########| 1/1 [00:14<00:00, 14.21s/it, [0;92mdata_loading=12.63, iteration=1.576, train_acc=90.41, train_loss_seg=0.331, train_macc=63.37, train_miou=46.95[0m)][2022-10-21 15:55:07,070][torch_points3d.trainer][INFO] - Learning rate = 0.032189
+[2022-10-21 15:55:07,072][torch_points3d.trainer][INFO] - EPOCH 99 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]  0%|          | 0/1 [00:14<?, ?it/s, [0;92mdata_loading=12.92, iteration=1.593, train_acc=90.55, train_loss_seg=0.312, train_macc=63.39, train_miou=51.53[0m)]100%|##########| 1/1 [00:14<00:00, 14.52s/it, [0;92mdata_loading=12.92, iteration=1.593, train_acc=90.55, train_loss_seg=0.312, train_macc=63.39, train_miou=51.53[0m)]100%|##########| 1/1 [00:14<00:00, 14.52s/it, [0;92mdata_loading=12.92, iteration=1.593, train_acc=90.55, train_loss_seg=0.312, train_macc=63.39, train_miou=51.53[0m)][2022-10-21 15:55:22,794][torch_points3d.trainer][INFO] - Learning rate = 0.031819
+

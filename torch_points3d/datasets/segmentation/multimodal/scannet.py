@@ -119,6 +119,9 @@ class ScannetMM(Scannet):
         self.m2f_preds_dirname = m2f_preds_dirname
         self.load_m2f_masks = load_m2f_masks
         super(ScannetMM, self).__init__(*args, **kwargs)
+    
+        print("temporarily hard code N-views in get_view_dependent_features()")
+
 
     def process(self):
         if self.is_test:
@@ -331,13 +334,17 @@ class ScannetMM(Scannet):
             # take subset of only seen points without re-indexing the same point
             data = data[dense_idx_list[0].unique()]
             
+            
+            # Save mapping features and M2F features in x
+            data.data.x = torch.cat(self.get_view_dependent_features(data), dim=-1)
+                        
             return data
         
         return MMData(data, image=images)
 
     def get_view_dependent_features(self, mm_data):
-        n_views = self.n_views
-
+        n_views = 9
+        
         image_data = mm_data.modalities['image']
         csr_idx = image_data.view_cat_csr_indexing
 
@@ -388,7 +395,7 @@ class ScannetMM(Scannet):
         combined_tensor = combined_tensor[combined_idx]
         combined_m2f_tensor = combined_m2f_tensor[combined_idx]
         
-        return combined_tensor.reshape(mm_data.num_points, n_views, -1), combined_m2f_tensor.reshape(mm_data.num_points, n_views)
+        return combined_tensor.reshape(mm_data.num_points, n_views, -1), combined_m2f_tensor.reshape(mm_data.num_points, n_views, 1)
     
     @staticmethod
     def uncollate(data_collated, slices_dict, scan_id_to_name, skip_keys=[]):
