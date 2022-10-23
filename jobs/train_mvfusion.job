@@ -7,7 +7,7 @@
 #SBATCH --cpus-per-task=5
 #SBATCH --time=05:00:00
 #SBATCH --mem=128000M
-#SBATCH --output=job_logs/mvfusion/train_mvfusion_partial.out
+#SBATCH --output=job_logs/mvfusion/temp.out
 
 cd $HOME/DeepViewAgg
 

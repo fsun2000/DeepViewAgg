@@ -109,8 +109,8 @@ multimodal:  # Each modality must be inserted in a dedicated 'multimodal' sectio
         proj_upscale: 1
         r_max: 8
         r_min: 0.05
-        train_pixel_credit: 100  # Choose based on GPU capacity, model ko/pixel cost and 3D batch_size
-        test_pixel_credit: 100
+        train_pixel_credit: 25  # Choose based on GPU capacity, model ko/pixel cost and 3D batch_size
+        test_pixel_credit: 25
         k_coverage: 2
 
     pre_transform:

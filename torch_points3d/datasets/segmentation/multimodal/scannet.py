@@ -111,11 +111,12 @@ class ScannetMM(Scannet):
 
     def __init__(
             self, *args, img_ref_size=(320, 240), pre_transform_image=None,
-            transform_image=None, neucon_metas_dir='', m2f_preds_dirname='', load_m2f_masks=False, **kwargs):
+            transform_image=None, neucon_metas_dir='', neucon_frame_skip=1, m2f_preds_dirname='', load_m2f_masks=False, **kwargs):
         self.pre_transform_image = pre_transform_image
         self.transform_image = transform_image
         self.img_ref_size = img_ref_size
         self.neucon_metas_dir = neucon_metas_dir
+        self.neucon_frame_skip = neucon_frame_skip
         self.m2f_preds_dirname = m2f_preds_dirname
         self.load_m2f_masks = load_m2f_masks
         super(ScannetMM, self).__init__(*args, **kwargs)
@@ -471,6 +472,7 @@ class ScannetDatasetMM(BaseDatasetMM, ABC):
         frame_intrinsics: int = dataset_opt.get('frame_intrinsics', True)
         frame_skip: int = dataset_opt.get('frame_skip', 50)
         neucon_metas_dir: str = dataset_opt.get('neucon_metas_dir', '')
+        neucon_frame_skip: int = dataset_opt.get('neucon_frame_skip', 1)
         m2f_preds_dirname: str = dataset_opt.get('m2f_preds_dirname', '')
         load_m2f_masks: bool = dataset_opt.get('load_m2f_masks', False)
 
@@ -496,6 +498,7 @@ class ScannetDatasetMM(BaseDatasetMM, ABC):
             frame_intrinsics=frame_intrinsics,
             frame_skip=frame_skip,
             neucon_metas_dir=neucon_metas_dir,
+            neucon_frame_skip=neucon_frame_skip,
             m2f_preds_dirname=m2f_preds_dirname,
             load_m2f_masks=load_m2f_masks
         )
@@ -521,6 +524,7 @@ class ScannetDatasetMM(BaseDatasetMM, ABC):
             frame_intrinsics=frame_intrinsics,
             frame_skip=frame_skip,
             neucon_metas_dir=neucon_metas_dir,
+            neucon_frame_skip=neucon_frame_skip,
             m2f_preds_dirname=m2f_preds_dirname,
             load_m2f_masks=load_m2f_masks
         )
@@ -545,6 +549,7 @@ class ScannetDatasetMM(BaseDatasetMM, ABC):
 #             frame_pose=frame_pose,
 #             frame_intrinsics=frame_intrinsics,
 #             frame_skip=frame_skip,
+#             neucon_frame_skip=neucon_frame_skip,
 #             neucon_metas_dir=neucon_metas_dir,
 #             m2f_preds_dirname=m2f_preds_dirname
 #         )
