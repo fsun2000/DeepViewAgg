@@ -109,7 +109,7 @@ class MVFusion(BaseModel, ABC):
         logits = self.head(features) if self._HAS_HEAD else features
         self.output = F.log_softmax(logits, dim=-1)
 
-        if not self.training:
+        if not self.training and not torch.all(seen_mask):    # Skip if all points were seen
             if torch.any(seen_mask):
                 # If the module is in eval mode, propagate the output of the
                 # nearest seen point to unseen points

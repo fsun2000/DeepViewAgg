@@ -1,12 +1,12 @@
-[2022-10-23 21:15:40,925][torch_points3d.trainer][INFO] - DEVICE : cuda
+[2022-10-23 21:39:48,269][torch_points3d.trainer][INFO] - DEVICE : cuda
 initialize train dataset
 temporarily hard code N-views in get_view_dependent_features()
 initialize val dataset
 temporarily hard code N-views in get_view_dependent_features()
 task:  segmentation.multimodal
 tested_model_name:  MVFusion
-Data(coords=[74664, 3], grid_size=[1], id_scan=[1], mapping_index=[74664], origin_id=[74664], pos=[74664, 3], x=[74664, 9, 10], x_seen_mask=[74664], y=[74664])
-tensor(59982)
+Data(coords=[58668, 3], grid_size=[1], id_scan=[1], mapping_index=[58668], origin_id=[58668], pos=[58668, 3], x=[58668, 9, 10], x_seen_mask=[58668], y=[58668])
+tensor(58668)
 class_name:  MVFusion_model
 model_module:  torch_points3d.models.segmentation.multimodal.Feng.mvfusion
 opt:   {'class': 'Feng.mvfusion.MVFusion_model', 'down_conv': {'image': {'down_conv': {'module_name': 'ADE20KResNet18PPM', 'frozen': False}, 'atomic_pooling': {'module_name': 'BimodalCSRPool', 'mode': 'max'}, 'view_pooling': {'module_name': 'GroupBimodalCSRPool', 'in_map': 8, 'in_mod': 512, 'num_groups': 4, 'use_mod': False, 'gating': True, 'group_scaling': True, 'map_encoder': 'DeepSetFeat', 'use_num': True, 'pool': 'max', 'fusion': 'concatenation'}, 'fusion': {'module_name': 'BimodalFusion', 'mode': 'residual'}, 'drop_mod': 0.0, 'branching_index': 0}}, 'transformer': {'n_views': 9, 'in_map': 9, 'in_m2f': 20, 'embed_dim': 36, 'hidden_dim': 144, 'num_heads': 2, 'num_layers': 4, 'use_batch_norm': False, 'feat_downproj_dim': None, 'dropout': 0.0, 'mlp_dropout': 0.0, 'use_attn_mask': True, 'use_csr_mask': True, 'n_classes': 20}}
@@ -97,11 +97,11 @@ model:  MVFusion_model(
     )
   )
 )
-[2022-10-23 21:15:52,552][torch_points3d.core.schedulers.bn_schedulers][INFO] - Setting batchnorm momentum at 0.02
+[2022-10-23 21:39:58,270][torch_points3d.core.schedulers.bn_schedulers][INFO] - Setting batchnorm momentum at 0.02
 task:  segmentation.multimodal
 tested_model_name:  MVFusion
-[2022-10-23 21:15:52,729][torch_points3d.trainer][WARNING] - The model will not be able to be used from pretrained weights without the corresponding dataset. Current properties are {'feature_dimension': 9, 'num_classes': 20}
-[2022-10-23 21:15:52,729][torch_points3d.trainer][INFO] - MVFusion_model(
+[2022-10-23 21:39:58,429][torch_points3d.trainer][WARNING] - The model will not be able to be used from pretrained weights without the corresponding dataset. Current properties are {'feature_dimension': 9, 'num_classes': 20}
+[2022-10-23 21:39:58,429][torch_points3d.trainer][INFO] - MVFusion_model(
   (backbone): MVFusionEncoder(
     (down_modules): ModuleList(
       (0): MultimodalBlockDown(
@@ -188,7 +188,7 @@ tested_model_name:  MVFusion
     )
   )
 )
-[2022-10-23 21:15:52,730][torch_points3d.utils.colors][INFO] - [0;32mOptimizer: SGD (
+[2022-10-23 21:39:58,430][torch_points3d.utils.colors][INFO] - [0;32mOptimizer: SGD (
 Parameter Group 0
     dampening: 0.1
     foreach: None
@@ -199,11 +199,11 @@ Parameter Group 0
     nesterov: False
     weight_decay: 0.0001
 )[0m
-[2022-10-23 21:15:52,730][torch_points3d.utils.colors][INFO] - [0;32mLearning Rate Scheduler: ExponentialLR({'gamma': 0.9885}, update_scheduler_on=on_epoch)[0m
-[2022-10-23 21:15:52,730][torch_points3d.utils.colors][INFO] - [0;32mBatchNorm Scheduler: BNMomentumScheduler(base_momentum: 0.02, update_scheduler_on=on_epoch)[0m
-[2022-10-23 21:15:52,730][torch_points3d.utils.colors][INFO] - [0;32mAccumulated gradients: None[0m
-[2022-10-23 21:15:52,730][torch_points3d.trainer][INFO] - Model size = 69848
-[2022-10-23 21:15:52,731][torch_points3d.trainer][INFO] - Dataset: ScannetDatasetMM 
+[2022-10-23 21:39:58,430][torch_points3d.utils.colors][INFO] - [0;32mLearning Rate Scheduler: ExponentialLR({'gamma': 0.9885}, update_scheduler_on=on_epoch)[0m
+[2022-10-23 21:39:58,430][torch_points3d.utils.colors][INFO] - [0;32mBatchNorm Scheduler: BNMomentumScheduler(base_momentum: 0.02, update_scheduler_on=on_epoch)[0m
+[2022-10-23 21:39:58,430][torch_points3d.utils.colors][INFO] - [0;32mAccumulated gradients: None[0m
+[2022-10-23 21:39:58,430][torch_points3d.trainer][INFO] - Model size = 69848
+[2022-10-23 21:39:58,431][torch_points3d.trainer][INFO] - Dataset: ScannetDatasetMM 
 [0;95mtrain_pre_batch_collate_transform [0m= None
 [0;95mval_pre_batch_collate_transform [0m= None
 [0;95mtest_pre_batch_collate_transform [0m= None
@@ -286,320 +286,542 @@ Size of [0;95mtrain_dataset [0m= 3
 Size of [0;95mtest_dataset [0m= 0
 Size of [0;95mval_dataset [0m= 3
 [0;95mBatch size =[0m 3
-Data(coords=[75762, 3], grid_size=[1], id_scan=[1], mapping_index=[75762], origin_id=[75762], pos=[75762, 3], x=[75762, 9, 10], x_seen_mask=[75762], y=[75762])
-tensor(59978)
-[2022-10-23 21:16:02,943][torch_points3d.datasets.base_dataset][INFO] - Available stage selection datasets: [0;95m ['val'] [0m
-[2022-10-23 21:16:02,944][torch_points3d.datasets.base_dataset][INFO] - The models will be selected using the metrics on following dataset: [0;95m val [0m
-[2022-10-23 21:16:05,150][torch_points3d.trainer][INFO] - EPOCH 1 / 100
+Data(coords=[59414, 3], grid_size=[1], id_scan=[1], mapping_index=[59414], origin_id=[59414], pos=[59414, 3], x=[59414, 9, 10], x_seen_mask=[59414], y=[59414])
+tensor(59414)
+[2022-10-23 21:40:07,135][torch_points3d.datasets.base_dataset][INFO] - Available stage selection datasets: [0;95m ['val'] [0m
+[2022-10-23 21:40:07,136][torch_points3d.datasets.base_dataset][INFO] - The models will be selected using the metrics on following dataset: [0;95m val [0m
+[2022-10-23 21:40:09,248][torch_points3d.trainer][INFO] - EPOCH 1 / 100
   0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
-    data = Batch(batch=[183832], coords=[183832, 3], grid_size=[3], id_scan=[3], mapping_index=[183832], origin_id=[183832], pos=[183832, 3], ptr=[4], x=[183832, 9, 10], x_seen_mask=[183832], y=[183832])
-    image = ImageBatch(num_settings=1, num_views=299, num_points=183832, device=cpu)
+    data = Batch(batch=[156449], coords=[156449, 3], grid_size=[3], id_scan=[3], mapping_index=[156449], origin_id=[156449], pos=[156449, 3], ptr=[4], x=[156449, 9, 10], x_seen_mask=[156449], y=[156449])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=156449, device=cpu)
 )
-x_seen_mask torch.Size([183832])
-viewing_feats;  torch.Size([146910, 9, 9])
-THE TWO SEEN MASKS ARE EQUAL:  tensor([True, True, True,  ..., True, True, True])
-data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=183832, device=cpu), pos=[183832, 3], seen=[183832], x=[183832, 20])
-seen_mask:  torch.Size([183832])
-  0%|          | 0/1 [00:46<?, ?it/s, [0;92mdata_loading=45.29, iteration=1.535, train_acc=5.202, train_loss_seg=2.949, train_macc=8.110, train_miou=0.980[0m)]100%|##########| 1/1 [00:46<00:00, 46.83s/it, [0;92mdata_loading=45.29, iteration=1.535, train_acc=5.202, train_loss_seg=2.949, train_macc=8.110, train_miou=0.980[0m)]100%|##########| 1/1 [00:46<00:00, 46.83s/it, [0;92mdata_loading=45.29, iteration=1.535, train_acc=5.202, train_loss_seg=2.949, train_macc=8.110, train_miou=0.980[0m)][2022-10-23 21:16:51,999][torch_points3d.trainer][INFO] - Learning rate = 0.098850
-[2022-10-23 21:16:52,000][torch_points3d.trainer][INFO] - EPOCH 2 / 100
+x_seen_mask torch.Size([156449])
+viewing_feats;  torch.Size([156449, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=156449, device=cpu), pos=[156449, 3], seen=[156449], x=[156449, 20])
+seen_mask:  torch.Size([156449])
+  0%|          | 0/1 [00:41<?, ?it/s, [0;92mdata_loading=39.82, iteration=1.519, train_acc=1.664, train_loss_seg=2.886, train_macc=4.461, train_miou=0.145[0m)]100%|##########| 1/1 [00:41<00:00, 41.34s/it, [0;92mdata_loading=39.82, iteration=1.519, train_acc=1.664, train_loss_seg=2.886, train_macc=4.461, train_miou=0.145[0m)]100%|##########| 1/1 [00:41<00:00, 41.34s/it, [0;92mdata_loading=39.82, iteration=1.519, train_acc=1.664, train_loss_seg=2.886, train_macc=4.461, train_miou=0.145[0m)][2022-10-23 21:40:50,607][torch_points3d.trainer][INFO] - Learning rate = 0.098850
+[2022-10-23 21:40:50,608][torch_points3d.trainer][INFO] - EPOCH 2 / 100
 
   0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
-    data = Batch(batch=[193075], coords=[193075, 3], grid_size=[3], id_scan=[3], mapping_index=[193075], origin_id=[193075], pos=[193075, 3], ptr=[4], x=[193075, 9, 10], x_seen_mask=[193075], y=[193075])
-    image = ImageBatch(num_settings=1, num_views=299, num_points=193075, device=cpu)
+    data = Batch(batch=[151058], coords=[151058, 3], grid_size=[3], id_scan=[3], mapping_index=[151058], origin_id=[151058], pos=[151058, 3], ptr=[4], x=[151058, 9, 10], x_seen_mask=[151058], y=[151058])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=151058, device=cpu)
 )
-x_seen_mask torch.Size([193075])
-viewing_feats;  torch.Size([153957, 9, 9])
-THE TWO SEEN MASKS ARE EQUAL:  tensor([True, True, True,  ..., True, True, True])
-data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=193075, device=cpu), pos=[193075, 3], seen=[193075], x=[193075, 20])
-seen_mask:  torch.Size([193075])
-  0%|          | 0/1 [00:44<?, ?it/s, [0;92mdata_loading=44.16, iteration=0.755, train_acc=38.82, train_loss_seg=2.176, train_macc=6.25 , train_miou=2.426[0m)]100%|##########| 1/1 [00:44<00:00, 44.92s/it, [0;92mdata_loading=44.16, iteration=0.755, train_acc=38.82, train_loss_seg=2.176, train_macc=6.25 , train_miou=2.426[0m)]100%|##########| 1/1 [00:44<00:00, 44.92s/it, [0;92mdata_loading=44.16, iteration=0.755, train_acc=38.82, train_loss_seg=2.176, train_macc=6.25 , train_miou=2.426[0m)][2022-10-23 21:17:36,942][torch_points3d.trainer][INFO] - Learning rate = 0.097713
-[2022-10-23 21:17:36,942][torch_points3d.trainer][INFO] - EPOCH 3 / 100
+x_seen_mask torch.Size([151058])
+viewing_feats;  torch.Size([151058, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=151058, device=cpu), pos=[151058, 3], seen=[151058], x=[151058, 20])
+seen_mask:  torch.Size([151058])
+  0%|          | 0/1 [00:39<?, ?it/s, [0;92mdata_loading=38.91, iteration=0.729, train_acc=39.66, train_loss_seg=2.185, train_macc=6.25 , train_miou=2.478[0m)]100%|##########| 1/1 [00:39<00:00, 39.64s/it, [0;92mdata_loading=38.91, iteration=0.729, train_acc=39.66, train_loss_seg=2.185, train_macc=6.25 , train_miou=2.478[0m)]100%|##########| 1/1 [00:39<00:00, 39.64s/it, [0;92mdata_loading=38.91, iteration=0.729, train_acc=39.66, train_loss_seg=2.185, train_macc=6.25 , train_miou=2.478[0m)][2022-10-23 21:41:30,267][torch_points3d.trainer][INFO] - Learning rate = 0.097713
+[2022-10-23 21:41:30,267][torch_points3d.trainer][INFO] - EPOCH 3 / 100
 
   0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
-    data = Batch(batch=[194520], coords=[194520, 3], grid_size=[3], id_scan=[3], mapping_index=[194520], origin_id=[194520], pos=[194520, 3], ptr=[4], x=[194520, 9, 10], x_seen_mask=[194520], y=[194520])
-    image = ImageBatch(num_settings=1, num_views=299, num_points=194520, device=cpu)
+    data = Batch(batch=[158306], coords=[158306, 3], grid_size=[3], id_scan=[3], mapping_index=[158306], origin_id=[158306], pos=[158306, 3], ptr=[4], x=[158306, 9, 10], x_seen_mask=[158306], y=[158306])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=158306, device=cpu)
 )
-x_seen_mask torch.Size([194520])
-viewing_feats;  torch.Size([154901, 9, 9])
-THE TWO SEEN MASKS ARE EQUAL:  tensor([True, True, True,  ..., True, True, True])
-data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=194520, device=cpu), pos=[194520, 3], seen=[194520], x=[194520, 20])
-seen_mask:  torch.Size([194520])
-  0%|          | 0/1 [00:45<?, ?it/s, [0;92mdata_loading=44.84, iteration=0.759, train_acc=40.30, train_loss_seg=2.052, train_macc=6.25 , train_miou=2.519[0m)]100%|##########| 1/1 [00:45<00:00, 45.60s/it, [0;92mdata_loading=44.84, iteration=0.759, train_acc=40.30, train_loss_seg=2.052, train_macc=6.25 , train_miou=2.519[0m)]100%|##########| 1/1 [00:45<00:00, 45.60s/it, [0;92mdata_loading=44.84, iteration=0.759, train_acc=40.30, train_loss_seg=2.052, train_macc=6.25 , train_miou=2.519[0m)][2022-10-23 21:18:22,564][torch_points3d.trainer][INFO] - Learning rate = 0.096590
-[2022-10-23 21:18:22,564][torch_points3d.trainer][INFO] - EPOCH 4 / 100
+x_seen_mask torch.Size([158306])
+viewing_feats;  torch.Size([158306, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=158306, device=cpu), pos=[158306, 3], seen=[158306], x=[158306, 20])
+seen_mask:  torch.Size([158306])
+  0%|          | 0/1 [00:40<?, ?it/s, [0;92mdata_loading=39.64, iteration=0.774, train_acc=42.07, train_loss_seg=1.958, train_macc=6.25 , train_miou=2.629[0m)]100%|##########| 1/1 [00:40<00:00, 40.42s/it, [0;92mdata_loading=39.64, iteration=0.774, train_acc=42.07, train_loss_seg=1.958, train_macc=6.25 , train_miou=2.629[0m)]100%|##########| 1/1 [00:40<00:00, 40.42s/it, [0;92mdata_loading=39.64, iteration=0.774, train_acc=42.07, train_loss_seg=1.958, train_macc=6.25 , train_miou=2.629[0m)][2022-10-23 21:42:10,703][torch_points3d.trainer][INFO] - Learning rate = 0.096590
+[2022-10-23 21:42:10,704][torch_points3d.trainer][INFO] - EPOCH 4 / 100
 
   0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
-    data = Batch(batch=[192558], coords=[192558, 3], grid_size=[3], id_scan=[3], mapping_index=[192558], origin_id=[192558], pos=[192558, 3], ptr=[4], x=[192558, 9, 10], x_seen_mask=[192558], y=[192558])
-    image = ImageBatch(num_settings=1, num_views=299, num_points=192558, device=cpu)
+    data = Batch(batch=[147417], coords=[147417, 3], grid_size=[3], id_scan=[3], mapping_index=[147417], origin_id=[147417], pos=[147417, 3], ptr=[4], x=[147417, 9, 10], x_seen_mask=[147417], y=[147417])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=147417, device=cpu)
 )
-x_seen_mask torch.Size([192558])
-viewing_feats;  torch.Size([149472, 9, 9])
-THE TWO SEEN MASKS ARE EQUAL:  tensor([True, True, True,  ..., True, True, True])
-data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=192558, device=cpu), pos=[192558, 3], seen=[192558], x=[192558, 20])
-seen_mask:  torch.Size([192558])
-  0%|          | 0/1 [00:45<?, ?it/s, [0;92mdata_loading=44.31, iteration=0.740, train_acc=54.58, train_loss_seg=2.083, train_macc=10.74, train_miou=6.733[0m)]100%|##########| 1/1 [00:45<00:00, 45.06s/it, [0;92mdata_loading=44.31, iteration=0.740, train_acc=54.58, train_loss_seg=2.083, train_macc=10.74, train_miou=6.733[0m)]100%|##########| 1/1 [00:45<00:00, 45.06s/it, [0;92mdata_loading=44.31, iteration=0.740, train_acc=54.58, train_loss_seg=2.083, train_macc=10.74, train_miou=6.733[0m)][2022-10-23 21:19:07,641][torch_points3d.trainer][INFO] - Learning rate = 0.095479
-[2022-10-23 21:19:07,642][torch_points3d.trainer][INFO] - EPOCH 5 / 100
+x_seen_mask torch.Size([147417])
+viewing_feats;  torch.Size([147417, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=147417, device=cpu), pos=[147417, 3], seen=[147417], x=[147417, 20])
+seen_mask:  torch.Size([147417])
+  0%|          | 0/1 [00:39<?, ?it/s, [0;92mdata_loading=38.55, iteration=0.712, train_acc=29.91, train_loss_seg=1.929, train_macc=6.929, train_miou=2.359[0m)]100%|##########| 1/1 [00:39<00:00, 39.27s/it, [0;92mdata_loading=38.55, iteration=0.712, train_acc=29.91, train_loss_seg=1.929, train_macc=6.929, train_miou=2.359[0m)]100%|##########| 1/1 [00:39<00:00, 39.27s/it, [0;92mdata_loading=38.55, iteration=0.712, train_acc=29.91, train_loss_seg=1.929, train_macc=6.929, train_miou=2.359[0m)][2022-10-23 21:42:49,995][torch_points3d.trainer][INFO] - Learning rate = 0.095479
+[2022-10-23 21:42:49,995][torch_points3d.trainer][INFO] - EPOCH 5 / 100
 
   0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
-    data = Batch(batch=[196092], coords=[196092, 3], grid_size=[3], id_scan=[3], mapping_index=[196092], origin_id=[196092], pos=[196092, 3], ptr=[4], x=[196092, 9, 10], x_seen_mask=[196092], y=[196092])
-    image = ImageBatch(num_settings=1, num_views=299, num_points=196092, device=cpu)
+    data = Batch(batch=[152685], coords=[152685, 3], grid_size=[3], id_scan=[3], mapping_index=[152685], origin_id=[152685], pos=[152685, 3], ptr=[4], x=[152685, 9, 10], x_seen_mask=[152685], y=[152685])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=152685, device=cpu)
 )
-x_seen_mask torch.Size([196092])
-viewing_feats;  torch.Size([155249, 9, 9])
-THE TWO SEEN MASKS ARE EQUAL:  tensor([True, True, True,  ..., True, True, True])
-data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=196092, device=cpu), pos=[196092, 3], seen=[196092], x=[196092, 20])
-seen_mask:  torch.Size([196092])
-  0%|          | 0/1 [00:45<?, ?it/s, [0;92mdata_loading=44.72, iteration=0.758, train_acc=57.53, train_loss_seg=1.899, train_macc=11.20, train_miou=7.027[0m)]100%|##########| 1/1 [00:45<00:00, 45.48s/it, [0;92mdata_loading=44.72, iteration=0.758, train_acc=57.53, train_loss_seg=1.899, train_macc=11.20, train_miou=7.027[0m)]100%|##########| 1/1 [00:45<00:00, 45.48s/it, [0;92mdata_loading=44.72, iteration=0.758, train_acc=57.53, train_loss_seg=1.899, train_macc=11.20, train_miou=7.027[0m)][2022-10-23 21:19:53,143][torch_points3d.trainer][INFO] - Learning rate = 0.094381
-[2022-10-23 21:19:53,143][torch_points3d.trainer][INFO] - EPOCH 6 / 100
+x_seen_mask torch.Size([152685])
+viewing_feats;  torch.Size([152685, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=152685, device=cpu), pos=[152685, 3], seen=[152685], x=[152685, 20])
+seen_mask:  torch.Size([152685])
+  0%|          | 0/1 [00:39<?, ?it/s, [0;92mdata_loading=39.01, iteration=0.733, train_acc=61.69, train_loss_seg=1.698, train_macc=11.83, train_miou=7.443[0m)]100%|##########| 1/1 [00:39<00:00, 39.75s/it, [0;92mdata_loading=39.01, iteration=0.733, train_acc=61.69, train_loss_seg=1.698, train_macc=11.83, train_miou=7.443[0m)]100%|##########| 1/1 [00:39<00:00, 39.75s/it, [0;92mdata_loading=39.01, iteration=0.733, train_acc=61.69, train_loss_seg=1.698, train_macc=11.83, train_miou=7.443[0m)][2022-10-23 21:43:29,759][torch_points3d.trainer][INFO] - Learning rate = 0.094381
+[2022-10-23 21:43:29,759][torch_points3d.trainer][INFO] - EPOCH 6 / 100
 
   0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
-    data = Batch(batch=[197355], coords=[197355, 3], grid_size=[3], id_scan=[3], mapping_index=[197355], origin_id=[197355], pos=[197355, 3], ptr=[4], x=[197355, 9, 10], x_seen_mask=[197355], y=[197355])
-    image = ImageBatch(num_settings=1, num_views=299, num_points=197355, device=cpu)
+    data = Batch(batch=[149562], coords=[149562, 3], grid_size=[3], id_scan=[3], mapping_index=[149562], origin_id=[149562], pos=[149562, 3], ptr=[4], x=[149562, 9, 10], x_seen_mask=[149562], y=[149562])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=149562, device=cpu)
 )
-x_seen_mask torch.Size([197355])
-viewing_feats;  torch.Size([155491, 9, 9])
-THE TWO SEEN MASKS ARE EQUAL:  tensor([True, True, True,  ..., True, True, True])
-data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=197355, device=cpu), pos=[197355, 3], seen=[197355], x=[197355, 20])
-seen_mask:  torch.Size([197355])
-  0%|          | 0/1 [00:45<?, ?it/s, [0;92mdata_loading=44.66, iteration=0.764, train_acc=39.80, train_loss_seg=1.940, train_macc=6.25 , train_miou=2.487[0m)]100%|##########| 1/1 [00:45<00:00, 45.43s/it, [0;92mdata_loading=44.66, iteration=0.764, train_acc=39.80, train_loss_seg=1.940, train_macc=6.25 , train_miou=2.487[0m)]100%|##########| 1/1 [00:45<00:00, 45.43s/it, [0;92mdata_loading=44.66, iteration=0.764, train_acc=39.80, train_loss_seg=1.940, train_macc=6.25 , train_miou=2.487[0m)][2022-10-23 21:20:38,592][torch_points3d.trainer][INFO] - Learning rate = 0.093295
-[2022-10-23 21:20:38,593][torch_points3d.trainer][INFO] - EPOCH 7 / 100
+x_seen_mask torch.Size([149562])
+viewing_feats;  torch.Size([149562, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=149562, device=cpu), pos=[149562, 3], seen=[149562], x=[149562, 20])
+seen_mask:  torch.Size([149562])
+  0%|          | 0/1 [00:39<?, ?it/s, [0;92mdata_loading=38.83, iteration=0.762, train_acc=45.58, train_loss_seg=1.660, train_macc=7.869, train_miou=4.191[0m)]100%|##########| 1/1 [00:39<00:00, 39.60s/it, [0;92mdata_loading=38.83, iteration=0.762, train_acc=45.58, train_loss_seg=1.660, train_macc=7.869, train_miou=4.191[0m)]100%|##########| 1/1 [00:39<00:00, 39.60s/it, [0;92mdata_loading=38.83, iteration=0.762, train_acc=45.58, train_loss_seg=1.660, train_macc=7.869, train_miou=4.191[0m)][2022-10-23 21:44:09,376][torch_points3d.trainer][INFO] - Learning rate = 0.093295
+[2022-10-23 21:44:09,376][torch_points3d.trainer][INFO] - EPOCH 7 / 100
 
   0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
-    data = Batch(batch=[192865], coords=[192865, 3], grid_size=[3], id_scan=[3], mapping_index=[192865], origin_id=[192865], pos=[192865, 3], ptr=[4], x=[192865, 9, 10], x_seen_mask=[192865], y=[192865])
-    image = ImageBatch(num_settings=1, num_views=299, num_points=192865, device=cpu)
+    data = Batch(batch=[153699], coords=[153699, 3], grid_size=[3], id_scan=[3], mapping_index=[153699], origin_id=[153699], pos=[153699, 3], ptr=[4], x=[153699, 9, 10], x_seen_mask=[153699], y=[153699])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=153699, device=cpu)
 )
-x_seen_mask torch.Size([192865])
-viewing_feats;  torch.Size([152495, 9, 9])
-THE TWO SEEN MASKS ARE EQUAL:  tensor([True, True, True,  ..., True, True, True])
-data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=192865, device=cpu), pos=[192865, 3], seen=[192865], x=[192865, 20])
-seen_mask:  torch.Size([192865])
-  0%|          | 0/1 [00:45<?, ?it/s, [0;92mdata_loading=44.28, iteration=0.754, train_acc=39.81, train_loss_seg=1.856, train_macc=6.25 , train_miou=2.488[0m)]100%|##########| 1/1 [00:45<00:00, 45.04s/it, [0;92mdata_loading=44.28, iteration=0.754, train_acc=39.81, train_loss_seg=1.856, train_macc=6.25 , train_miou=2.488[0m)]100%|##########| 1/1 [00:45<00:00, 45.04s/it, [0;92mdata_loading=44.28, iteration=0.754, train_acc=39.81, train_loss_seg=1.856, train_macc=6.25 , train_miou=2.488[0m)][2022-10-23 21:21:23,648][torch_points3d.trainer][INFO] - Learning rate = 0.092222
-[2022-10-23 21:21:23,648][torch_points3d.trainer][INFO] - EPOCH 8 / 100
+x_seen_mask torch.Size([153699])
+viewing_feats;  torch.Size([153699, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=153699, device=cpu), pos=[153699, 3], seen=[153699], x=[153699, 20])
+seen_mask:  torch.Size([153699])
+  0%|          | 0/1 [00:39<?, ?it/s, [0;92mdata_loading=39.09, iteration=0.751, train_acc=63.60, train_loss_seg=1.602, train_macc=16.11, train_miou=10.57[0m)]100%|##########| 1/1 [00:39<00:00, 39.84s/it, [0;92mdata_loading=39.09, iteration=0.751, train_acc=63.60, train_loss_seg=1.602, train_macc=16.11, train_miou=10.57[0m)]100%|##########| 1/1 [00:39<00:00, 39.84s/it, [0;92mdata_loading=39.09, iteration=0.751, train_acc=63.60, train_loss_seg=1.602, train_macc=16.11, train_miou=10.57[0m)][2022-10-23 21:44:49,238][torch_points3d.trainer][INFO] - Learning rate = 0.092222
+[2022-10-23 21:44:49,238][torch_points3d.trainer][INFO] - EPOCH 8 / 100
 
   0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
-    data = Batch(batch=[190962], coords=[190962, 3], grid_size=[3], id_scan=[3], mapping_index=[190962], origin_id=[190962], pos=[190962, 3], ptr=[4], x=[190962, 9, 10], x_seen_mask=[190962], y=[190962])
-    image = ImageBatch(num_settings=1, num_views=299, num_points=190962, device=cpu)
+    data = Batch(batch=[149690], coords=[149690, 3], grid_size=[3], id_scan=[3], mapping_index=[149690], origin_id=[149690], pos=[149690, 3], ptr=[4], x=[149690, 9, 10], x_seen_mask=[149690], y=[149690])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=149690, device=cpu)
 )
-x_seen_mask torch.Size([190962])
-viewing_feats;  torch.Size([151288, 9, 9])
-THE TWO SEEN MASKS ARE EQUAL:  tensor([True, True, True,  ..., True, True, True])
-data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=190962, device=cpu), pos=[190962, 3], seen=[190962], x=[190962, 20])
-seen_mask:  torch.Size([190962])
-  0%|          | 0/1 [00:42<?, ?it/s, [0;92mdata_loading=41.94, iteration=0.740, train_acc=60.56, train_loss_seg=1.564, train_macc=11.49, train_miou=7.148[0m)]100%|##########| 1/1 [00:42<00:00, 42.68s/it, [0;92mdata_loading=41.94, iteration=0.740, train_acc=60.56, train_loss_seg=1.564, train_macc=11.49, train_miou=7.148[0m)]100%|##########| 1/1 [00:42<00:00, 42.68s/it, [0;92mdata_loading=41.94, iteration=0.740, train_acc=60.56, train_loss_seg=1.564, train_macc=11.49, train_miou=7.148[0m)][2022-10-23 21:22:06,346][torch_points3d.trainer][INFO] - Learning rate = 0.091162
-[2022-10-23 21:22:06,346][torch_points3d.trainer][INFO] - EPOCH 9 / 100
+x_seen_mask torch.Size([149690])
+viewing_feats;  torch.Size([149690, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=149690, device=cpu), pos=[149690, 3], seen=[149690], x=[149690, 20])
+seen_mask:  torch.Size([149690])
+  0%|          | 0/1 [00:39<?, ?it/s, [0;92mdata_loading=38.85, iteration=0.725, train_acc=56.56, train_loss_seg=1.801, train_macc=10.48, train_miou=6.282[0m)]100%|##########| 1/1 [00:39<00:00, 39.58s/it, [0;92mdata_loading=38.85, iteration=0.725, train_acc=56.56, train_loss_seg=1.801, train_macc=10.48, train_miou=6.282[0m)]100%|##########| 1/1 [00:39<00:00, 39.58s/it, [0;92mdata_loading=38.85, iteration=0.725, train_acc=56.56, train_loss_seg=1.801, train_macc=10.48, train_miou=6.282[0m)][2022-10-23 21:45:28,839][torch_points3d.trainer][INFO] - Learning rate = 0.091162
+[2022-10-23 21:45:28,839][torch_points3d.trainer][INFO] - EPOCH 9 / 100
 
   0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
-    data = Batch(batch=[185735], coords=[185735, 3], grid_size=[3], id_scan=[3], mapping_index=[185735], origin_id=[185735], pos=[185735, 3], ptr=[4], x=[185735, 9, 10], x_seen_mask=[185735], y=[185735])
-    image = ImageBatch(num_settings=1, num_views=299, num_points=185735, device=cpu)
+    data = Batch(batch=[158818], coords=[158818, 3], grid_size=[3], id_scan=[3], mapping_index=[158818], origin_id=[158818], pos=[158818, 3], ptr=[4], x=[158818, 9, 10], x_seen_mask=[158818], y=[158818])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=158818, device=cpu)
 )
-x_seen_mask torch.Size([185735])
-viewing_feats;  torch.Size([148396, 9, 9])
-THE TWO SEEN MASKS ARE EQUAL:  tensor([True, True, True,  ..., True, True, True])
-data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=185735, device=cpu), pos=[185735, 3], seen=[185735], x=[185735, 20])
-seen_mask:  torch.Size([185735])
-  0%|          | 0/1 [00:41<?, ?it/s, [0;92mdata_loading=40.40, iteration=0.714, train_acc=50.97, train_loss_seg=1.718, train_macc=10.25, train_miou=5.989[0m)]100%|##########| 1/1 [00:41<00:00, 41.12s/it, [0;92mdata_loading=40.40, iteration=0.714, train_acc=50.97, train_loss_seg=1.718, train_macc=10.25, train_miou=5.989[0m)]100%|##########| 1/1 [00:41<00:00, 41.12s/it, [0;92mdata_loading=40.40, iteration=0.714, train_acc=50.97, train_loss_seg=1.718, train_macc=10.25, train_miou=5.989[0m)][2022-10-23 21:22:47,479][torch_points3d.trainer][INFO] - Learning rate = 0.090114
-[2022-10-23 21:22:47,480][torch_points3d.trainer][INFO] - EPOCH 10 / 100
+x_seen_mask torch.Size([158818])
+viewing_feats;  torch.Size([158818, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=158818, device=cpu), pos=[158818, 3], seen=[158818], x=[158818, 20])
+seen_mask:  torch.Size([158818])
+  0%|          | 0/1 [00:40<?, ?it/s, [0;92mdata_loading=39.32, iteration=0.761, train_acc=44.42, train_loss_seg=2.278, train_macc=9.206, train_miou=4.927[0m)]100%|##########| 1/1 [00:40<00:00, 40.09s/it, [0;92mdata_loading=39.32, iteration=0.761, train_acc=44.42, train_loss_seg=2.278, train_macc=9.206, train_miou=4.927[0m)]100%|##########| 1/1 [00:40<00:00, 40.09s/it, [0;92mdata_loading=39.32, iteration=0.761, train_acc=44.42, train_loss_seg=2.278, train_macc=9.206, train_miou=4.927[0m)][2022-10-23 21:46:08,947][torch_points3d.trainer][INFO] - Learning rate = 0.090114
+[2022-10-23 21:46:08,947][torch_points3d.trainer][INFO] - EPOCH 10 / 100
 
   0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
-    data = Batch(batch=[192089], coords=[192089, 3], grid_size=[3], id_scan=[3], mapping_index=[192089], origin_id=[192089], pos=[192089, 3], ptr=[4], x=[192089, 9, 10], x_seen_mask=[192089], y=[192089])
-    image = ImageBatch(num_settings=1, num_views=299, num_points=192089, device=cpu)
+    data = Batch(batch=[149643], coords=[149643, 3], grid_size=[3], id_scan=[3], mapping_index=[149643], origin_id=[149643], pos=[149643, 3], ptr=[4], x=[149643, 9, 10], x_seen_mask=[149643], y=[149643])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=149643, device=cpu)
 )
-x_seen_mask torch.Size([192089])
-viewing_feats;  torch.Size([150531, 9, 9])
-THE TWO SEEN MASKS ARE EQUAL:  tensor([True, True, True,  ..., True, True, True])
-data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=192089, device=cpu), pos=[192089, 3], seen=[192089], x=[192089, 20])
-seen_mask:  torch.Size([192089])
-  0%|          | 0/1 [00:40<?, ?it/s, [0;92mdata_loading=39.96, iteration=0.735, train_acc=58.43, train_loss_seg=2.131, train_macc=10.79, train_miou=6.702[0m)]100%|##########| 1/1 [00:40<00:00, 40.70s/it, [0;92mdata_loading=39.96, iteration=0.735, train_acc=58.43, train_loss_seg=2.131, train_macc=10.79, train_miou=6.702[0m)]100%|##########| 1/1 [00:40<00:00, 40.70s/it, [0;92mdata_loading=39.96, iteration=0.735, train_acc=58.43, train_loss_seg=2.131, train_macc=10.79, train_miou=6.702[0m)][2022-10-23 21:23:28,200][torch_points3d.trainer][INFO] - Learning rate = 0.089077
+x_seen_mask torch.Size([149643])
+viewing_feats;  torch.Size([149643, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=149643, device=cpu), pos=[149643, 3], seen=[149643], x=[149643, 20])
+seen_mask:  torch.Size([149643])
+  0%|          | 0/1 [00:39<?, ?it/s, [0;92mdata_loading=39.20, iteration=0.719, train_acc=61.83, train_loss_seg=1.391, train_macc=11.87, train_miou=7.793[0m)]100%|##########| 1/1 [00:39<00:00, 39.93s/it, [0;92mdata_loading=39.20, iteration=0.719, train_acc=61.83, train_loss_seg=1.391, train_macc=11.87, train_miou=7.793[0m)]100%|##########| 1/1 [00:39<00:00, 39.93s/it, [0;92mdata_loading=39.20, iteration=0.719, train_acc=61.83, train_loss_seg=1.391, train_macc=11.87, train_miou=7.793[0m)][2022-10-23 21:46:48,893][torch_points3d.trainer][INFO] - Learning rate = 0.089077
+[2022-10-23 21:46:48,893][torch_points3d.trainer][INFO] - EPOCH 11 / 100
 
   0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
-    data = Batch(batch=[278603], coords=[278603, 3], grid_size=[3], id_scan=[3], mapping_index=[278603], origin_id=[278603], pos=[278603, 3], ptr=[4], x=[278603, 9, 10], x_seen_mask=[278603], y=[278603])
-    image = ImageBatch(num_settings=1, num_views=300, num_points=278603, device=cpu)
+    data = Batch(batch=[150757], coords=[150757, 3], grid_size=[3], id_scan=[3], mapping_index=[150757], origin_id=[150757], pos=[150757, 3], ptr=[4], x=[150757, 9, 10], x_seen_mask=[150757], y=[150757])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=150757, device=cpu)
 )
-x_seen_mask torch.Size([278603])
-viewing_feats;  torch.Size([207083, 9, 9])
-THE TWO SEEN MASKS ARE EQUAL:  tensor([True, True, True,  ..., True, True, True])
-data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=300, num_points=278603, device=cpu), pos=[278603, 3], seen=[278603], x=[278603, 20])
-seen_mask:  torch.Size([278603])
-  0%|          | 0/1 [00:50<?, ?it/s, [0;93mval_acc=20.85, val_loss_seg=3.215, val_macc=9.090, val_miou=1.896[0m)]100%|##########| 1/1 [00:50<00:00, 50.82s/it, [0;93mval_acc=20.85, val_loss_seg=3.215, val_macc=9.090, val_miou=1.896[0m)]100%|##########| 1/1 [00:50<00:00, 50.82s/it, [0;93mval_acc=20.85, val_loss_seg=3.215, val_macc=9.090, val_miou=1.896[0m)][2022-10-23 21:24:19,051][torch_points3d.metrics.base_tracker][INFO] - ==================================================
-[2022-10-23 21:24:19,051][torch_points3d.metrics.base_tracker][INFO] -     val_loss_seg = 3.2158164978027344
-[2022-10-23 21:24:19,051][torch_points3d.metrics.base_tracker][INFO] -     val_acc = 20.858104572739894
-[2022-10-23 21:24:19,051][torch_points3d.metrics.base_tracker][INFO] -     val_macc = 9.090909090909092
-[2022-10-23 21:24:19,051][torch_points3d.metrics.base_tracker][INFO] -     val_miou = 1.8961923247944572
-[2022-10-23 21:24:19,051][torch_points3d.metrics.base_tracker][INFO] -     val_miou_per_class = {0: '20.86', 1: '0.00', 2: '0.00', 3: '0.00', 4: '0.00', 5: '0.00', 6: '0.00', 7: '0.00', 8: '0.00', 9: '0.00', 10: '0.00', 11: '0.00', 12: '0.00', 13: '0.00', 14: '0.00', 15: '0.00', 16: '0.00', 17: '0.00', 18: '0.00', 19: '0.00'}
-[2022-10-23 21:24:19,051][torch_points3d.metrics.base_tracker][INFO] - ==================================================
-[2022-10-23 21:24:19,051][torch_points3d.trainer][INFO] - EPOCH 11 / 100
+x_seen_mask torch.Size([150757])
+viewing_feats;  torch.Size([150757, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=150757, device=cpu), pos=[150757, 3], seen=[150757], x=[150757, 20])
+seen_mask:  torch.Size([150757])
+  0%|          | 0/1 [00:39<?, ?it/s, [0;92mdata_loading=38.71, iteration=0.733, train_acc=52.51, train_loss_seg=2.014, train_macc=10.70, train_miou=6.569[0m)]100%|##########| 1/1 [00:39<00:00, 39.45s/it, [0;92mdata_loading=38.71, iteration=0.733, train_acc=52.51, train_loss_seg=2.014, train_macc=10.70, train_miou=6.569[0m)]100%|##########| 1/1 [00:39<00:00, 39.45s/it, [0;92mdata_loading=38.71, iteration=0.733, train_acc=52.51, train_loss_seg=2.014, train_macc=10.70, train_miou=6.569[0m)][2022-10-23 21:47:28,359][torch_points3d.trainer][INFO] - Learning rate = 0.088053
+[2022-10-23 21:47:28,360][torch_points3d.trainer][INFO] - EPOCH 12 / 100
 
   0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
-    data = Batch(batch=[187190], coords=[187190, 3], grid_size=[3], id_scan=[3], mapping_index=[187190], origin_id=[187190], pos=[187190, 3], ptr=[4], x=[187190, 9, 10], x_seen_mask=[187190], y=[187190])
-    image = ImageBatch(num_settings=1, num_views=299, num_points=187190, device=cpu)
+    data = Batch(batch=[156940], coords=[156940, 3], grid_size=[3], id_scan=[3], mapping_index=[156940], origin_id=[156940], pos=[156940, 3], ptr=[4], x=[156940, 9, 10], x_seen_mask=[156940], y=[156940])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=156940, device=cpu)
 )
-x_seen_mask torch.Size([187190])
-viewing_feats;  torch.Size([146906, 9, 9])
-THE TWO SEEN MASKS ARE EQUAL:  tensor([True, True, True,  ..., True, True, True])
-data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=187190, device=cpu), pos=[187190, 3], seen=[187190], x=[187190, 20])
-seen_mask:  torch.Size([187190])
-  0%|          | 0/1 [00:40<?, ?it/s, [0;92mdata_loading=40.11, iteration=0.714, train_acc=25.96, train_loss_seg=3.049, train_macc=6.25 , train_miou=1.622[0m)]100%|##########| 1/1 [00:40<00:00, 40.83s/it, [0;92mdata_loading=40.11, iteration=0.714, train_acc=25.96, train_loss_seg=3.049, train_macc=6.25 , train_miou=1.622[0m)]100%|##########| 1/1 [00:40<00:00, 40.83s/it, [0;92mdata_loading=40.11, iteration=0.714, train_acc=25.96, train_loss_seg=3.049, train_macc=6.25 , train_miou=1.622[0m)][2022-10-23 21:24:59,900][torch_points3d.trainer][INFO] - Learning rate = 0.088053
-[2022-10-23 21:24:59,900][torch_points3d.trainer][INFO] - EPOCH 12 / 100
+x_seen_mask torch.Size([156940])
+viewing_feats;  torch.Size([156940, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=156940, device=cpu), pos=[156940, 3], seen=[156940], x=[156940, 20])
+seen_mask:  torch.Size([156940])
+  0%|          | 0/1 [00:40<?, ?it/s, [0;92mdata_loading=39.70, iteration=0.763, train_acc=50.58, train_loss_seg=1.753, train_macc=14.30, train_miou=8.024[0m)]100%|##########| 1/1 [00:40<00:00, 40.47s/it, [0;92mdata_loading=39.70, iteration=0.763, train_acc=50.58, train_loss_seg=1.753, train_macc=14.30, train_miou=8.024[0m)]100%|##########| 1/1 [00:40<00:00, 40.47s/it, [0;92mdata_loading=39.70, iteration=0.763, train_acc=50.58, train_loss_seg=1.753, train_macc=14.30, train_miou=8.024[0m)][2022-10-23 21:48:08,843][torch_points3d.trainer][INFO] - Learning rate = 0.087040
+[2022-10-23 21:48:08,844][torch_points3d.trainer][INFO] - EPOCH 13 / 100
 
   0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
-    data = Batch(batch=[196018], coords=[196018, 3], grid_size=[3], id_scan=[3], mapping_index=[196018], origin_id=[196018], pos=[196018, 3], ptr=[4], x=[196018, 9, 10], x_seen_mask=[196018], y=[196018])
-    image = ImageBatch(num_settings=1, num_views=299, num_points=196018, device=cpu)
+    data = Batch(batch=[155645], coords=[155645, 3], grid_size=[3], id_scan=[3], mapping_index=[155645], origin_id=[155645], pos=[155645, 3], ptr=[4], x=[155645, 9, 10], x_seen_mask=[155645], y=[155645])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=155645, device=cpu)
 )
-x_seen_mask torch.Size([196018])
-viewing_feats;  torch.Size([154952, 9, 9])
-THE TWO SEEN MASKS ARE EQUAL:  tensor([True, True, True,  ..., True, True, True])
-data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=196018, device=cpu), pos=[196018, 3], seen=[196018], x=[196018, 20])
-seen_mask:  torch.Size([196018])
-  0%|          | 0/1 [00:41<?, ?it/s, [0;92mdata_loading=40.73, iteration=0.761, train_acc=33.02, train_loss_seg=1.911, train_macc=7.410, train_miou=2.894[0m)]100%|##########| 1/1 [00:41<00:00, 41.49s/it, [0;92mdata_loading=40.73, iteration=0.761, train_acc=33.02, train_loss_seg=1.911, train_macc=7.410, train_miou=2.894[0m)]100%|##########| 1/1 [00:41<00:00, 41.49s/it, [0;92mdata_loading=40.73, iteration=0.761, train_acc=33.02, train_loss_seg=1.911, train_macc=7.410, train_miou=2.894[0m)][2022-10-23 21:25:41,415][torch_points3d.trainer][INFO] - Learning rate = 0.087040
-[2022-10-23 21:25:41,415][torch_points3d.trainer][INFO] - EPOCH 13 / 100
+x_seen_mask torch.Size([155645])
+viewing_feats;  torch.Size([155645, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=155645, device=cpu), pos=[155645, 3], seen=[155645], x=[155645, 20])
+seen_mask:  torch.Size([155645])
+  0%|          | 0/1 [00:39<?, ?it/s, [0;92mdata_loading=39.21, iteration=0.74 , train_acc=60.28, train_loss_seg=1.696, train_macc=14.00, train_miou=9.350[0m)]100%|##########| 1/1 [00:39<00:00, 39.96s/it, [0;92mdata_loading=39.21, iteration=0.74 , train_acc=60.28, train_loss_seg=1.696, train_macc=14.00, train_miou=9.350[0m)]100%|##########| 1/1 [00:39<00:00, 39.96s/it, [0;92mdata_loading=39.21, iteration=0.74 , train_acc=60.28, train_loss_seg=1.696, train_macc=14.00, train_miou=9.350[0m)][2022-10-23 21:48:48,817][torch_points3d.trainer][INFO] - Learning rate = 0.086039
+[2022-10-23 21:48:48,817][torch_points3d.trainer][INFO] - EPOCH 14 / 100
 
   0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
-    data = Batch(batch=[195809], coords=[195809, 3], grid_size=[3], id_scan=[3], mapping_index=[195809], origin_id=[195809], pos=[195809, 3], ptr=[4], x=[195809, 9, 10], x_seen_mask=[195809], y=[195809])
-    image = ImageBatch(num_settings=1, num_views=299, num_points=195809, device=cpu)
+    data = Batch(batch=[147151], coords=[147151, 3], grid_size=[3], id_scan=[3], mapping_index=[147151], origin_id=[147151], pos=[147151, 3], ptr=[4], x=[147151, 9, 10], x_seen_mask=[147151], y=[147151])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=147151, device=cpu)
 )
-x_seen_mask torch.Size([195809])
-viewing_feats;  torch.Size([152570, 9, 9])
-THE TWO SEEN MASKS ARE EQUAL:  tensor([True, True, True,  ..., True, True, True])
-data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=195809, device=cpu), pos=[195809, 3], seen=[195809], x=[195809, 20])
-seen_mask:  torch.Size([195809])
-  0%|          | 0/1 [00:41<?, ?it/s, [0;92mdata_loading=40.96, iteration=0.729, train_acc=40.48, train_loss_seg=2.728, train_macc=6.25 , train_miou=2.530[0m)]100%|##########| 1/1 [00:41<00:00, 41.69s/it, [0;92mdata_loading=40.96, iteration=0.729, train_acc=40.48, train_loss_seg=2.728, train_macc=6.25 , train_miou=2.530[0m)]100%|##########| 1/1 [00:41<00:00, 41.69s/it, [0;92mdata_loading=40.96, iteration=0.729, train_acc=40.48, train_loss_seg=2.728, train_macc=6.25 , train_miou=2.530[0m)][2022-10-23 21:26:23,132][torch_points3d.trainer][INFO] - Learning rate = 0.086039
-[2022-10-23 21:26:23,132][torch_points3d.trainer][INFO] - EPOCH 14 / 100
+x_seen_mask torch.Size([147151])
+viewing_feats;  torch.Size([147151, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=147151, device=cpu), pos=[147151, 3], seen=[147151], x=[147151, 20])
+seen_mask:  torch.Size([147151])
+  0%|          | 0/1 [00:40<?, ?it/s, [0;92mdata_loading=39.33, iteration=0.703, train_acc=60.37, train_loss_seg=1.536, train_macc=11.80, train_miou=7.723[0m)]100%|##########| 1/1 [00:40<00:00, 40.04s/it, [0;92mdata_loading=39.33, iteration=0.703, train_acc=60.37, train_loss_seg=1.536, train_macc=11.80, train_miou=7.723[0m)]100%|##########| 1/1 [00:40<00:00, 40.04s/it, [0;92mdata_loading=39.33, iteration=0.703, train_acc=60.37, train_loss_seg=1.536, train_macc=11.80, train_miou=7.723[0m)][2022-10-23 21:49:28,876][torch_points3d.trainer][INFO] - Learning rate = 0.085050
+[2022-10-23 21:49:28,876][torch_points3d.trainer][INFO] - EPOCH 15 / 100
 
   0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
-    data = Batch(batch=[191473], coords=[191473, 3], grid_size=[3], id_scan=[3], mapping_index=[191473], origin_id=[191473], pos=[191473, 3], ptr=[4], x=[191473, 9, 10], x_seen_mask=[191473], y=[191473])
-    image = ImageBatch(num_settings=1, num_views=299, num_points=191473, device=cpu)
+    data = Batch(batch=[154403], coords=[154403, 3], grid_size=[3], id_scan=[3], mapping_index=[154403], origin_id=[154403], pos=[154403, 3], ptr=[4], x=[154403, 9, 10], x_seen_mask=[154403], y=[154403])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=154403, device=cpu)
 )
-x_seen_mask torch.Size([191473])
-viewing_feats;  torch.Size([151748, 9, 9])
-THE TWO SEEN MASKS ARE EQUAL:  tensor([True, True, True,  ..., True, True, True])
-data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=191473, device=cpu), pos=[191473, 3], seen=[191473], x=[191473, 20])
-seen_mask:  torch.Size([191473])
-  0%|          | 0/1 [00:40<?, ?it/s, [0;92mdata_loading=39.93, iteration=0.736, train_acc=39.35, train_loss_seg=2.086, train_macc=6.25 , train_miou=2.459[0m)]100%|##########| 1/1 [00:40<00:00, 40.68s/it, [0;92mdata_loading=39.93, iteration=0.736, train_acc=39.35, train_loss_seg=2.086, train_macc=6.25 , train_miou=2.459[0m)]100%|##########| 1/1 [00:40<00:00, 40.68s/it, [0;92mdata_loading=39.93, iteration=0.736, train_acc=39.35, train_loss_seg=2.086, train_macc=6.25 , train_miou=2.459[0m)][2022-10-23 21:27:03,831][torch_points3d.trainer][INFO] - Learning rate = 0.085050
-[2022-10-23 21:27:03,831][torch_points3d.trainer][INFO] - EPOCH 15 / 100
+x_seen_mask torch.Size([154403])
+viewing_feats;  torch.Size([154403, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=154403, device=cpu), pos=[154403, 3], seen=[154403], x=[154403, 20])
+seen_mask:  torch.Size([154403])
+  0%|          | 0/1 [00:40<?, ?it/s, [0;92mdata_loading=39.78, iteration=0.747, train_acc=56.97, train_loss_seg=1.545, train_macc=10.93, train_miou=6.736[0m)]100%|##########| 1/1 [00:40<00:00, 40.53s/it, [0;92mdata_loading=39.78, iteration=0.747, train_acc=56.97, train_loss_seg=1.545, train_macc=10.93, train_miou=6.736[0m)]100%|##########| 1/1 [00:40<00:00, 40.53s/it, [0;92mdata_loading=39.78, iteration=0.747, train_acc=56.97, train_loss_seg=1.545, train_macc=10.93, train_miou=6.736[0m)][2022-10-23 21:50:09,428][torch_points3d.trainer][INFO] - Learning rate = 0.084072
+[2022-10-23 21:50:09,428][torch_points3d.trainer][INFO] - EPOCH 16 / 100
 
   0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
-    data = Batch(batch=[191035], coords=[191035, 3], grid_size=[3], id_scan=[3], mapping_index=[191035], origin_id=[191035], pos=[191035, 3], ptr=[4], x=[191035, 9, 10], x_seen_mask=[191035], y=[191035])
-    image = ImageBatch(num_settings=1, num_views=299, num_points=191035, device=cpu)
+    data = Batch(batch=[152635], coords=[152635, 3], grid_size=[3], id_scan=[3], mapping_index=[152635], origin_id=[152635], pos=[152635, 3], ptr=[4], x=[152635, 9, 10], x_seen_mask=[152635], y=[152635])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=152635, device=cpu)
 )
-x_seen_mask torch.Size([191035])
-viewing_feats;  torch.Size([149785, 9, 9])
-THE TWO SEEN MASKS ARE EQUAL:  tensor([True, True, True,  ..., True, True, True])
-data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=191035, device=cpu), pos=[191035, 3], seen=[191035], x=[191035, 20])
-seen_mask:  torch.Size([191035])
-  0%|          | 0/1 [00:41<?, ?it/s, [0;92mdata_loading=40.43, iteration=0.732, train_acc=25.57, train_loss_seg=2.086, train_macc=6.25 , train_miou=1.598[0m)]100%|##########| 1/1 [00:41<00:00, 41.16s/it, [0;92mdata_loading=40.43, iteration=0.732, train_acc=25.57, train_loss_seg=2.086, train_macc=6.25 , train_miou=1.598[0m)]100%|##########| 1/1 [00:41<00:00, 41.16s/it, [0;92mdata_loading=40.43, iteration=0.732, train_acc=25.57, train_loss_seg=2.086, train_macc=6.25 , train_miou=1.598[0m)][2022-10-23 21:27:45,021][torch_points3d.trainer][INFO] - Learning rate = 0.084072
-[2022-10-23 21:27:45,021][torch_points3d.trainer][INFO] - EPOCH 16 / 100
+x_seen_mask torch.Size([152635])
+viewing_feats;  torch.Size([152635, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=152635, device=cpu), pos=[152635, 3], seen=[152635], x=[152635, 20])
+seen_mask:  torch.Size([152635])
+  0%|          | 0/1 [00:39<?, ?it/s, [0;92mdata_loading=39.21, iteration=0.734, train_acc=63.20, train_loss_seg=1.485, train_macc=13.85, train_miou=9.231[0m)]100%|##########| 1/1 [00:39<00:00, 39.95s/it, [0;92mdata_loading=39.21, iteration=0.734, train_acc=63.20, train_loss_seg=1.485, train_macc=13.85, train_miou=9.231[0m)]100%|##########| 1/1 [00:39<00:00, 39.95s/it, [0;92mdata_loading=39.21, iteration=0.734, train_acc=63.20, train_loss_seg=1.485, train_macc=13.85, train_miou=9.231[0m)][2022-10-23 21:50:49,398][torch_points3d.trainer][INFO] - Learning rate = 0.083105
+[2022-10-23 21:50:49,398][torch_points3d.trainer][INFO] - EPOCH 17 / 100
 
   0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
-    data = Batch(batch=[205874], coords=[205874, 3], grid_size=[3], id_scan=[3], mapping_index=[205874], origin_id=[205874], pos=[205874, 3], ptr=[4], x=[205874, 9, 10], x_seen_mask=[205874], y=[205874])
-    image = ImageBatch(num_settings=1, num_views=299, num_points=205874, device=cpu)
+    data = Batch(batch=[151128], coords=[151128, 3], grid_size=[3], id_scan=[3], mapping_index=[151128], origin_id=[151128], pos=[151128, 3], ptr=[4], x=[151128, 9, 10], x_seen_mask=[151128], y=[151128])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=151128, device=cpu)
 )
-x_seen_mask torch.Size([205874])
-viewing_feats;  torch.Size([163704, 9, 9])
-THE TWO SEEN MASKS ARE EQUAL:  tensor([True, True, True,  ..., True, True, True])
-data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=205874, device=cpu), pos=[205874, 3], seen=[205874], x=[205874, 20])
-seen_mask:  torch.Size([205874])
-  0%|          | 0/1 [00:42<?, ?it/s, [0;92mdata_loading=41.31, iteration=0.797, train_acc=26.30, train_loss_seg=2.377, train_macc=6.25 , train_miou=1.644[0m)]100%|##########| 1/1 [00:42<00:00, 42.12s/it, [0;92mdata_loading=41.31, iteration=0.797, train_acc=26.30, train_loss_seg=2.377, train_macc=6.25 , train_miou=1.644[0m)]100%|##########| 1/1 [00:42<00:00, 42.12s/it, [0;92mdata_loading=41.31, iteration=0.797, train_acc=26.30, train_loss_seg=2.377, train_macc=6.25 , train_miou=1.644[0m)][2022-10-23 21:28:27,159][torch_points3d.trainer][INFO] - Learning rate = 0.083105
-[2022-10-23 21:28:27,160][torch_points3d.trainer][INFO] - EPOCH 17 / 100
+x_seen_mask torch.Size([151128])
+viewing_feats;  torch.Size([151128, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=151128, device=cpu), pos=[151128, 3], seen=[151128], x=[151128, 20])
+seen_mask:  torch.Size([151128])
+  0%|          | 0/1 [00:40<?, ?it/s, [0;92mdata_loading=39.47, iteration=0.737, train_acc=65.81, train_loss_seg=1.422, train_macc=18.92, train_miou=12.50[0m)]100%|##########| 1/1 [00:40<00:00, 40.22s/it, [0;92mdata_loading=39.47, iteration=0.737, train_acc=65.81, train_loss_seg=1.422, train_macc=18.92, train_miou=12.50[0m)]100%|##########| 1/1 [00:40<00:00, 40.22s/it, [0;92mdata_loading=39.47, iteration=0.737, train_acc=65.81, train_loss_seg=1.422, train_macc=18.92, train_miou=12.50[0m)][2022-10-23 21:51:29,633][torch_points3d.trainer][INFO] - Learning rate = 0.082149
+[2022-10-23 21:51:29,633][torch_points3d.trainer][INFO] - EPOCH 18 / 100
 
   0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
-    data = Batch(batch=[205359], coords=[205359, 3], grid_size=[3], id_scan=[3], mapping_index=[205359], origin_id=[205359], pos=[205359, 3], ptr=[4], x=[205359, 9, 10], x_seen_mask=[205359], y=[205359])
-    image = ImageBatch(num_settings=1, num_views=299, num_points=205359, device=cpu)
+    data = Batch(batch=[155509], coords=[155509, 3], grid_size=[3], id_scan=[3], mapping_index=[155509], origin_id=[155509], pos=[155509, 3], ptr=[4], x=[155509, 9, 10], x_seen_mask=[155509], y=[155509])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=155509, device=cpu)
 )
-x_seen_mask torch.Size([205359])
-viewing_feats;  torch.Size([160849, 9, 9])
-THE TWO SEEN MASKS ARE EQUAL:  tensor([True, True, True,  ..., True, True, True])
-data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=205359, device=cpu), pos=[205359, 3], seen=[205359], x=[205359, 20])
-seen_mask:  torch.Size([205359])
-  0%|          | 0/1 [00:42<?, ?it/s, [0;92mdata_loading=41.56, iteration=0.769, train_acc=24.73, train_loss_seg=2.365, train_macc=6.25 , train_miou=1.545[0m)]100%|##########| 1/1 [00:42<00:00, 42.33s/it, [0;92mdata_loading=41.56, iteration=0.769, train_acc=24.73, train_loss_seg=2.365, train_macc=6.25 , train_miou=1.545[0m)]100%|##########| 1/1 [00:42<00:00, 42.33s/it, [0;92mdata_loading=41.56, iteration=0.769, train_acc=24.73, train_loss_seg=2.365, train_macc=6.25 , train_miou=1.545[0m)][2022-10-23 21:29:09,512][torch_points3d.trainer][INFO] - Learning rate = 0.082149
-[2022-10-23 21:29:09,513][torch_points3d.trainer][INFO] - EPOCH 18 / 100
+x_seen_mask torch.Size([155509])
+viewing_feats;  torch.Size([155509, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=155509, device=cpu), pos=[155509, 3], seen=[155509], x=[155509, 20])
+seen_mask:  torch.Size([155509])
+  0%|          | 0/1 [00:40<?, ?it/s, [0;92mdata_loading=39.73, iteration=0.756, train_acc=65.60, train_loss_seg=1.281, train_macc=16.67, train_miou=11.49[0m)]100%|##########| 1/1 [00:40<00:00, 40.49s/it, [0;92mdata_loading=39.73, iteration=0.756, train_acc=65.60, train_loss_seg=1.281, train_macc=16.67, train_miou=11.49[0m)]100%|##########| 1/1 [00:40<00:00, 40.49s/it, [0;92mdata_loading=39.73, iteration=0.756, train_acc=65.60, train_loss_seg=1.281, train_macc=16.67, train_miou=11.49[0m)][2022-10-23 21:52:10,142][torch_points3d.trainer][INFO] - Learning rate = 0.081205
+[2022-10-23 21:52:10,143][torch_points3d.trainer][INFO] - EPOCH 19 / 100
 
   0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
-    data = Batch(batch=[189941], coords=[189941, 3], grid_size=[3], id_scan=[3], mapping_index=[189941], origin_id=[189941], pos=[189941, 3], ptr=[4], x=[189941, 9, 10], x_seen_mask=[189941], y=[189941])
-    image = ImageBatch(num_settings=1, num_views=299, num_points=189941, device=cpu)
+    data = Batch(batch=[151136], coords=[151136, 3], grid_size=[3], id_scan=[3], mapping_index=[151136], origin_id=[151136], pos=[151136, 3], ptr=[4], x=[151136, 9, 10], x_seen_mask=[151136], y=[151136])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=151136, device=cpu)
 )
-x_seen_mask torch.Size([189941])
-viewing_feats;  torch.Size([149112, 9, 9])
-THE TWO SEEN MASKS ARE EQUAL:  tensor([True, True, True,  ..., True, True, True])
-data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=189941, device=cpu), pos=[189941, 3], seen=[189941], x=[189941, 20])
-seen_mask:  torch.Size([189941])
-  0%|          | 0/1 [00:40<?, ?it/s, [0;92mdata_loading=40.10, iteration=0.717, train_acc=25.53, train_loss_seg=2.143, train_macc=6.25 , train_miou=1.596[0m)]100%|##########| 1/1 [00:40<00:00, 40.82s/it, [0;92mdata_loading=40.10, iteration=0.717, train_acc=25.53, train_loss_seg=2.143, train_macc=6.25 , train_miou=1.596[0m)]100%|##########| 1/1 [00:40<00:00, 40.82s/it, [0;92mdata_loading=40.10, iteration=0.717, train_acc=25.53, train_loss_seg=2.143, train_macc=6.25 , train_miou=1.596[0m)][2022-10-23 21:29:50,358][torch_points3d.trainer][INFO] - Learning rate = 0.081205
-[2022-10-23 21:29:50,358][torch_points3d.trainer][INFO] - EPOCH 19 / 100
+x_seen_mask torch.Size([151136])
+viewing_feats;  torch.Size([151136, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=151136, device=cpu), pos=[151136, 3], seen=[151136], x=[151136, 20])
+seen_mask:  torch.Size([151136])
+  0%|          | 0/1 [00:40<?, ?it/s, [0;92mdata_loading=39.34, iteration=0.739, train_acc=67.48, train_loss_seg=1.016, train_macc=15.92, train_miou=11.46[0m)]100%|##########| 1/1 [00:40<00:00, 40.08s/it, [0;92mdata_loading=39.34, iteration=0.739, train_acc=67.48, train_loss_seg=1.016, train_macc=15.92, train_miou=11.46[0m)]100%|##########| 1/1 [00:40<00:00, 40.08s/it, [0;92mdata_loading=39.34, iteration=0.739, train_acc=67.48, train_loss_seg=1.016, train_macc=15.92, train_miou=11.46[0m)][2022-10-23 21:52:50,244][torch_points3d.trainer][INFO] - Learning rate = 0.080271
+[2022-10-23 21:52:50,245][torch_points3d.trainer][INFO] - EPOCH 20 / 100
 
   0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
-    data = Batch(batch=[191780], coords=[191780, 3], grid_size=[3], id_scan=[3], mapping_index=[191780], origin_id=[191780], pos=[191780, 3], ptr=[4], x=[191780, 9, 10], x_seen_mask=[191780], y=[191780])
-    image = ImageBatch(num_settings=1, num_views=299, num_points=191780, device=cpu)
+    data = Batch(batch=[157328], coords=[157328, 3], grid_size=[3], id_scan=[3], mapping_index=[157328], origin_id=[157328], pos=[157328, 3], ptr=[4], x=[157328, 9, 10], x_seen_mask=[157328], y=[157328])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=157328, device=cpu)
 )
-x_seen_mask torch.Size([191780])
-viewing_feats;  torch.Size([151406, 9, 9])
-THE TWO SEEN MASKS ARE EQUAL:  tensor([True, True, True,  ..., True, True, True])
-data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=191780, device=cpu), pos=[191780, 3], seen=[191780], x=[191780, 20])
-seen_mask:  torch.Size([191780])
-  0%|          | 0/1 [00:41<?, ?it/s, [0;92mdata_loading=40.31, iteration=0.725, train_acc=25.82, train_loss_seg=1.951, train_macc=6.25 , train_miou=1.614[0m)]100%|##########| 1/1 [00:41<00:00, 41.04s/it, [0;92mdata_loading=40.31, iteration=0.725, train_acc=25.82, train_loss_seg=1.951, train_macc=6.25 , train_miou=1.614[0m)]100%|##########| 1/1 [00:41<00:00, 41.04s/it, [0;92mdata_loading=40.31, iteration=0.725, train_acc=25.82, train_loss_seg=1.951, train_macc=6.25 , train_miou=1.614[0m)][2022-10-23 21:30:31,421][torch_points3d.trainer][INFO] - Learning rate = 0.080271
-[2022-10-23 21:30:31,422][torch_points3d.trainer][INFO] - EPOCH 20 / 100
+x_seen_mask torch.Size([157328])
+viewing_feats;  torch.Size([157328, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=157328, device=cpu), pos=[157328, 3], seen=[157328], x=[157328, 20])
+seen_mask:  torch.Size([157328])
+  0%|          | 0/1 [00:40<?, ?it/s, [0;92mdata_loading=39.46, iteration=0.774, train_acc=64.31, train_loss_seg=1.244, train_macc=15.32, train_miou=10.28[0m)]100%|##########| 1/1 [00:40<00:00, 40.24s/it, [0;92mdata_loading=39.46, iteration=0.774, train_acc=64.31, train_loss_seg=1.244, train_macc=15.32, train_miou=10.28[0m)]100%|##########| 1/1 [00:40<00:00, 40.24s/it, [0;92mdata_loading=39.46, iteration=0.774, train_acc=64.31, train_loss_seg=1.244, train_macc=15.32, train_miou=10.28[0m)][2022-10-23 21:53:30,506][torch_points3d.trainer][INFO] - Learning rate = 0.079348
+[2022-10-23 21:53:30,506][torch_points3d.trainer][INFO] - EPOCH 21 / 100
 
   0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
-    data = Batch(batch=[204738], coords=[204738, 3], grid_size=[3], id_scan=[3], mapping_index=[204738], origin_id=[204738], pos=[204738, 3], ptr=[4], x=[204738, 9, 10], x_seen_mask=[204738], y=[204738])
-    image = ImageBatch(num_settings=1, num_views=299, num_points=204738, device=cpu)
+    data = Batch(batch=[155644], coords=[155644, 3], grid_size=[3], id_scan=[3], mapping_index=[155644], origin_id=[155644], pos=[155644, 3], ptr=[4], x=[155644, 9, 10], x_seen_mask=[155644], y=[155644])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=155644, device=cpu)
 )
-x_seen_mask torch.Size([204738])
-viewing_feats;  torch.Size([161164, 9, 9])
-THE TWO SEEN MASKS ARE EQUAL:  tensor([True, True, True,  ..., True, True, True])
-data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=204738, device=cpu), pos=[204738, 3], seen=[204738], x=[204738, 20])
-seen_mask:  torch.Size([204738])
-  0%|          | 0/1 [00:41<?, ?it/s, [0;92mdata_loading=41.07, iteration=0.777, train_acc=45.24, train_loss_seg=1.864, train_macc=9.244, train_miou=4.958[0m)]100%|##########| 1/1 [00:41<00:00, 41.85s/it, [0;92mdata_loading=41.07, iteration=0.777, train_acc=45.24, train_loss_seg=1.864, train_macc=9.244, train_miou=4.958[0m)]100%|##########| 1/1 [00:41<00:00, 41.86s/it, [0;92mdata_loading=41.07, iteration=0.777, train_acc=45.24, train_loss_seg=1.864, train_macc=9.244, train_miou=4.958[0m)][2022-10-23 21:31:13,299][torch_points3d.trainer][INFO] - Learning rate = 0.079348
+x_seen_mask torch.Size([155644])
+viewing_feats;  torch.Size([155644, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=155644, device=cpu), pos=[155644, 3], seen=[155644], x=[155644, 20])
+seen_mask:  torch.Size([155644])
+  0%|          | 0/1 [00:40<?, ?it/s, [0;92mdata_loading=39.64, iteration=0.745, train_acc=69.90, train_loss_seg=1.087, train_macc=23.24, train_miou=16.45[0m)]100%|##########| 1/1 [00:40<00:00, 40.39s/it, [0;92mdata_loading=39.64, iteration=0.745, train_acc=69.90, train_loss_seg=1.087, train_macc=23.24, train_miou=16.45[0m)]100%|##########| 1/1 [00:40<00:00, 40.39s/it, [0;92mdata_loading=39.64, iteration=0.745, train_acc=69.90, train_loss_seg=1.087, train_macc=23.24, train_miou=16.45[0m)][2022-10-23 21:54:10,916][torch_points3d.trainer][INFO] - Learning rate = 0.078435
+[2022-10-23 21:54:10,917][torch_points3d.trainer][INFO] - EPOCH 22 / 100
 
   0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
-    data = Batch(batch=[278603], coords=[278603, 3], grid_size=[3], id_scan=[3], mapping_index=[278603], origin_id=[278603], pos=[278603, 3], ptr=[4], x=[278603, 9, 10], x_seen_mask=[278603], y=[278603])
-    image = ImageBatch(num_settings=1, num_views=300, num_points=278603, device=cpu)
+    data = Batch(batch=[157485], coords=[157485, 3], grid_size=[3], id_scan=[3], mapping_index=[157485], origin_id=[157485], pos=[157485, 3], ptr=[4], x=[157485, 9, 10], x_seen_mask=[157485], y=[157485])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=157485, device=cpu)
 )
-x_seen_mask torch.Size([278603])
-viewing_feats;  torch.Size([206170, 9, 9])
-THE TWO SEEN MASKS ARE EQUAL:  tensor([True, True, True,  ..., True, True, True])
-data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=300, num_points=278603, device=cpu), pos=[278603, 3], seen=[278603], x=[278603, 20])
-seen_mask:  torch.Size([278603])
-  0%|          | 0/1 [00:49<?, ?it/s, [0;93mval_acc=40.05, val_loss_seg=2.231, val_macc=10.70, val_miou=5.041[0m)]100%|##########| 1/1 [00:49<00:00, 49.99s/it, [0;93mval_acc=40.05, val_loss_seg=2.231, val_macc=10.70, val_miou=5.041[0m)]100%|##########| 1/1 [00:49<00:00, 49.99s/it, [0;93mval_acc=40.05, val_loss_seg=2.231, val_macc=10.70, val_miou=5.041[0m)][2022-10-23 21:32:03,296][torch_points3d.utils.colors][INFO] - [0;94macc: 20.858104572739894 -> 40.05437693099897, macc: 9.090909090909092 -> 10.703246317326256, miou: 1.8961923247944572 -> 5.0413698063502235[0m
-[2022-10-23 21:32:03,314][torch_points3d.metrics.base_tracker][INFO] - ==================================================
-[2022-10-23 21:32:03,314][torch_points3d.metrics.base_tracker][INFO] -     val_loss_seg = 2.2312726974487305
-[2022-10-23 21:32:03,314][torch_points3d.metrics.base_tracker][INFO] -     val_acc = 40.05437693099897
-[2022-10-23 21:32:03,314][torch_points3d.metrics.base_tracker][INFO] -     val_macc = 10.703246317326256
-[2022-10-23 21:32:03,314][torch_points3d.metrics.base_tracker][INFO] -     val_miou = 5.0413698063502235
-[2022-10-23 21:32:03,314][torch_points3d.metrics.base_tracker][INFO] -     val_miou_per_class = {0: '17.67', 1: '37.78', 2: '0.00', 3: '0.00', 4: '0.00', 5: '0.00', 6: '0.00', 7: '0.00', 8: '0.00', 9: '0.00', 10: '0.00', 11: '0.00', 12: '0.00', 13: '0.00', 14: '0.00', 15: '0.00', 16: '0.00', 17: '0.00', 18: '0.00', 19: '0.00'}
-[2022-10-23 21:32:03,314][torch_points3d.metrics.base_tracker][INFO] - ==================================================
-[2022-10-23 21:32:03,314][torch_points3d.trainer][INFO] - EPOCH 21 / 100
+x_seen_mask torch.Size([157485])
+viewing_feats;  torch.Size([157485, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=157485, device=cpu), pos=[157485, 3], seen=[157485], x=[157485, 20])
+seen_mask:  torch.Size([157485])
+  0%|          | 0/1 [00:40<?, ?it/s, [0;92mdata_loading=39.94, iteration=0.754, train_acc=65.78, train_loss_seg=1.176, train_macc=18.67, train_miou=12.85[0m)]100%|##########| 1/1 [00:40<00:00, 40.70s/it, [0;92mdata_loading=39.94, iteration=0.754, train_acc=65.78, train_loss_seg=1.176, train_macc=18.67, train_miou=12.85[0m)]100%|##########| 1/1 [00:40<00:00, 40.70s/it, [0;92mdata_loading=39.94, iteration=0.754, train_acc=65.78, train_loss_seg=1.176, train_macc=18.67, train_miou=12.85[0m)][2022-10-23 21:54:51,632][torch_points3d.trainer][INFO] - Learning rate = 0.077533
+[2022-10-23 21:54:51,632][torch_points3d.trainer][INFO] - EPOCH 23 / 100
 
   0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
-    data = Batch(batch=[189636], coords=[189636, 3], grid_size=[3], id_scan=[3], mapping_index=[189636], origin_id=[189636], pos=[189636, 3], ptr=[4], x=[189636, 9, 10], x_seen_mask=[189636], y=[189636])
-    image = ImageBatch(num_settings=1, num_views=299, num_points=189636, device=cpu)
+    data = Batch(batch=[155242], coords=[155242, 3], grid_size=[3], id_scan=[3], mapping_index=[155242], origin_id=[155242], pos=[155242, 3], ptr=[4], x=[155242, 9, 10], x_seen_mask=[155242], y=[155242])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=155242, device=cpu)
 )
-x_seen_mask torch.Size([189636])
-viewing_feats;  torch.Size([151308, 9, 9])
-THE TWO SEEN MASKS ARE EQUAL:  tensor([True, True, True,  ..., True, True, True])
-data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=189636, device=cpu), pos=[189636, 3], seen=[189636], x=[189636, 20])
-seen_mask:  torch.Size([189636])
-  0%|          | 0/1 [00:41<?, ?it/s, [0;92mdata_loading=40.33, iteration=0.743, train_acc=42.27, train_loss_seg=1.844, train_macc=6.881, train_miou=3.178[0m)]100%|##########| 1/1 [00:41<00:00, 41.08s/it, [0;92mdata_loading=40.33, iteration=0.743, train_acc=42.27, train_loss_seg=1.844, train_macc=6.881, train_miou=3.178[0m)]100%|##########| 1/1 [00:41<00:00, 41.08s/it, [0;92mdata_loading=40.33, iteration=0.743, train_acc=42.27, train_loss_seg=1.844, train_macc=6.881, train_miou=3.178[0m)][2022-10-23 21:32:44,411][torch_points3d.trainer][INFO] - Learning rate = 0.078435
-[2022-10-23 21:32:44,412][torch_points3d.trainer][INFO] - EPOCH 22 / 100
+x_seen_mask torch.Size([155242])
+viewing_feats;  torch.Size([155242, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=155242, device=cpu), pos=[155242, 3], seen=[155242], x=[155242, 20])
+seen_mask:  torch.Size([155242])
+  0%|          | 0/1 [00:40<?, ?it/s, [0;92mdata_loading=39.70, iteration=0.755, train_acc=62.05, train_loss_seg=1.333, train_macc=16.19, train_miou=10.68[0m)]100%|##########| 1/1 [00:40<00:00, 40.46s/it, [0;92mdata_loading=39.70, iteration=0.755, train_acc=62.05, train_loss_seg=1.333, train_macc=16.19, train_miou=10.68[0m)]100%|##########| 1/1 [00:40<00:00, 40.46s/it, [0;92mdata_loading=39.70, iteration=0.755, train_acc=62.05, train_loss_seg=1.333, train_macc=16.19, train_miou=10.68[0m)][2022-10-23 21:55:32,112][torch_points3d.trainer][INFO] - Learning rate = 0.076641
+[2022-10-23 21:55:32,112][torch_points3d.trainer][INFO] - EPOCH 24 / 100
 
   0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
-    data = Batch(batch=[193706], coords=[193706, 3], grid_size=[3], id_scan=[3], mapping_index=[193706], origin_id=[193706], pos=[193706, 3], ptr=[4], x=[193706, 9, 10], x_seen_mask=[193706], y=[193706])
-    image = ImageBatch(num_settings=1, num_views=299, num_points=193706, device=cpu)
+    data = Batch(batch=[154056], coords=[154056, 3], grid_size=[3], id_scan=[3], mapping_index=[154056], origin_id=[154056], pos=[154056, 3], ptr=[4], x=[154056, 9, 10], x_seen_mask=[154056], y=[154056])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=154056, device=cpu)
 )
-x_seen_mask torch.Size([193706])
-viewing_feats;  torch.Size([150665, 9, 9])
-THE TWO SEEN MASKS ARE EQUAL:  tensor([True, True, True,  ..., True, True, True])
-data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=193706, device=cpu), pos=[193706, 3], seen=[193706], x=[193706, 20])
-seen_mask:  torch.Size([193706])
-  0%|          | 0/1 [00:41<?, ?it/s, [0;92mdata_loading=40.69, iteration=0.741, train_acc=39.18, train_loss_seg=1.846, train_macc=6.25 , train_miou=2.448[0m)]100%|##########| 1/1 [00:41<00:00, 41.43s/it, [0;92mdata_loading=40.69, iteration=0.741, train_acc=39.18, train_loss_seg=1.846, train_macc=6.25 , train_miou=2.448[0m)]100%|##########| 1/1 [00:41<00:00, 41.43s/it, [0;92mdata_loading=40.69, iteration=0.741, train_acc=39.18, train_loss_seg=1.846, train_macc=6.25 , train_miou=2.448[0m)][2022-10-23 21:33:25,867][torch_points3d.trainer][INFO] - Learning rate = 0.077533
-[2022-10-23 21:33:25,867][torch_points3d.trainer][INFO] - EPOCH 23 / 100
+x_seen_mask torch.Size([154056])
+viewing_feats;  torch.Size([154056, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=154056, device=cpu), pos=[154056, 3], seen=[154056], x=[154056, 20])
+seen_mask:  torch.Size([154056])
+  0%|          | 0/1 [00:40<?, ?it/s, [0;92mdata_loading=40.03, iteration=0.740, train_acc=74.09, train_loss_seg=0.938, train_macc=23.84, train_miou=18.56[0m)]100%|##########| 1/1 [00:40<00:00, 40.78s/it, [0;92mdata_loading=40.03, iteration=0.740, train_acc=74.09, train_loss_seg=0.938, train_macc=23.84, train_miou=18.56[0m)]100%|##########| 1/1 [00:40<00:00, 40.78s/it, [0;92mdata_loading=40.03, iteration=0.740, train_acc=74.09, train_loss_seg=0.938, train_macc=23.84, train_miou=18.56[0m)][2022-10-23 21:56:12,908][torch_points3d.trainer][INFO] - Learning rate = 0.075760
+[2022-10-23 21:56:12,908][torch_points3d.trainer][INFO] - EPOCH 25 / 100
 
   0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
-    data = Batch(batch=[187425], coords=[187425, 3], grid_size=[3], id_scan=[3], mapping_index=[187425], origin_id=[187425], pos=[187425, 3], ptr=[4], x=[187425, 9, 10], x_seen_mask=[187425], y=[187425])
-    image = ImageBatch(num_settings=1, num_views=299, num_points=187425, device=cpu)
+    data = Batch(batch=[151069], coords=[151069, 3], grid_size=[3], id_scan=[3], mapping_index=[151069], origin_id=[151069], pos=[151069, 3], ptr=[4], x=[151069, 9, 10], x_seen_mask=[151069], y=[151069])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=151069, device=cpu)
 )
-x_seen_mask torch.Size([187425])
-viewing_feats;  torch.Size([147924, 9, 9])
-THE TWO SEEN MASKS ARE EQUAL:  tensor([True, True, True,  ..., True, True, True])
-data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=187425, device=cpu), pos=[187425, 3], seen=[187425], x=[187425, 20])
-seen_mask:  torch.Size([187425])
-  0%|          | 0/1 [00:40<?, ?it/s, [0;92mdata_loading=39.33, iteration=0.72 , train_acc=39.46, train_loss_seg=1.800, train_macc=6.25 , train_miou=2.466[0m)]100%|##########| 1/1 [00:40<00:00, 40.06s/it, [0;92mdata_loading=39.33, iteration=0.72 , train_acc=39.46, train_loss_seg=1.800, train_macc=6.25 , train_miou=2.466[0m)]100%|##########| 1/1 [00:40<00:00, 40.06s/it, [0;92mdata_loading=39.33, iteration=0.72 , train_acc=39.46, train_loss_seg=1.800, train_macc=6.25 , train_miou=2.466[0m)][2022-10-23 21:34:05,948][torch_points3d.trainer][INFO] - Learning rate = 0.076641
-[2022-10-23 21:34:05,949][torch_points3d.trainer][INFO] - EPOCH 24 / 100
+x_seen_mask torch.Size([151069])
+viewing_feats;  torch.Size([151069, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=151069, device=cpu), pos=[151069, 3], seen=[151069], x=[151069, 20])
+seen_mask:  torch.Size([151069])
+  0%|          | 0/1 [00:39<?, ?it/s, [0;92mdata_loading=39.20, iteration=0.729, train_acc=63.67, train_loss_seg=1.267, train_macc=16.06, train_miou=10.78[0m)]100%|##########| 1/1 [00:39<00:00, 39.94s/it, [0;92mdata_loading=39.20, iteration=0.729, train_acc=63.67, train_loss_seg=1.267, train_macc=16.06, train_miou=10.78[0m)]100%|##########| 1/1 [00:39<00:00, 39.94s/it, [0;92mdata_loading=39.20, iteration=0.729, train_acc=63.67, train_loss_seg=1.267, train_macc=16.06, train_miou=10.78[0m)][2022-10-23 21:56:52,864][torch_points3d.trainer][INFO] - Learning rate = 0.074889
 
-  0%|          | 0/1 [00:00<?, ?it/s]slurmstepd: error: *** JOB 10193665 ON r33n6 CANCELLED AT 2022-10-23T21:34:10 ***
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[205916], coords=[205916, 3], grid_size=[3], id_scan=[3], mapping_index=[205916], origin_id=[205916], pos=[205916, 3], ptr=[4], x=[205916, 9, 10], x_seen_mask=[205916], y=[205916])
+    image = ImageBatch(num_settings=1, num_views=300, num_points=205916, device=cpu)
+)
+x_seen_mask torch.Size([205916])
+viewing_feats;  torch.Size([205916, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=300, num_points=205916, device=cpu), pos=[205916, 3], seen=[205916], x=[205916, 20])
+seen_mask:  torch.Size([205916])
+  0%|          | 0/1 [00:47<?, ?it/s, [0;93mval_acc=65.80, val_loss_seg=1.299, val_macc=28.24, val_miou=16.60[0m)]100%|##########| 1/1 [00:47<00:00, 47.48s/it, [0;93mval_acc=65.80, val_loss_seg=1.299, val_macc=28.24, val_miou=16.60[0m)]100%|##########| 1/1 [00:47<00:00, 47.48s/it, [0;93mval_acc=65.80, val_loss_seg=1.299, val_macc=28.24, val_miou=16.60[0m)][2022-10-23 21:57:40,368][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-10-23 21:57:40,368][torch_points3d.metrics.base_tracker][INFO] -     val_loss_seg = 1.2998249530792236
+[2022-10-23 21:57:40,369][torch_points3d.metrics.base_tracker][INFO] -     val_acc = 65.80175471345903
+[2022-10-23 21:57:40,369][torch_points3d.metrics.base_tracker][INFO] -     val_macc = 28.247926009762832
+[2022-10-23 21:57:40,369][torch_points3d.metrics.base_tracker][INFO] -     val_miou = 16.60860680329448
+[2022-10-23 21:57:40,369][torch_points3d.metrics.base_tracker][INFO] -     val_miou_per_class = {0: '79.03', 1: '76.16', 2: '21.60', 3: '0.00', 4: '0.00', 5: '0.00', 6: '22.51', 7: '0.00', 8: '0.00', 9: '0.00', 10: '0.00', 11: '0.00', 12: '0.00', 13: '0.00', 14: '0.00', 15: '0.00', 16: '0.00', 17: '0.00', 18: '0.00', 19: '0.00'}
+[2022-10-23 21:57:40,369][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-10-23 21:57:40,369][torch_points3d.trainer][INFO] - EPOCH 26 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[151572], coords=[151572, 3], grid_size=[3], id_scan=[3], mapping_index=[151572], origin_id=[151572], pos=[151572, 3], ptr=[4], x=[151572, 9, 10], x_seen_mask=[151572], y=[151572])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=151572, device=cpu)
+)
+x_seen_mask torch.Size([151572])
+viewing_feats;  torch.Size([151572, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=151572, device=cpu), pos=[151572, 3], seen=[151572], x=[151572, 20])
+seen_mask:  torch.Size([151572])
+  0%|          | 0/1 [00:39<?, ?it/s, [0;92mdata_loading=38.84, iteration=0.728, train_acc=77.41, train_loss_seg=0.858, train_macc=27.17, train_miou=21.30[0m)]100%|##########| 1/1 [00:39<00:00, 39.57s/it, [0;92mdata_loading=38.84, iteration=0.728, train_acc=77.41, train_loss_seg=0.858, train_macc=27.17, train_miou=21.30[0m)]100%|##########| 1/1 [00:39<00:00, 39.57s/it, [0;92mdata_loading=38.84, iteration=0.728, train_acc=77.41, train_loss_seg=0.858, train_macc=27.17, train_miou=21.30[0m)][2022-10-23 21:58:19,963][torch_points3d.trainer][INFO] - Learning rate = 0.074028
+[2022-10-23 21:58:19,963][torch_points3d.trainer][INFO] - EPOCH 27 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[157473], coords=[157473, 3], grid_size=[3], id_scan=[3], mapping_index=[157473], origin_id=[157473], pos=[157473, 3], ptr=[4], x=[157473, 9, 10], x_seen_mask=[157473], y=[157473])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=157473, device=cpu)
+)
+x_seen_mask torch.Size([157473])
+viewing_feats;  torch.Size([157473, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=157473, device=cpu), pos=[157473, 3], seen=[157473], x=[157473, 20])
+seen_mask:  torch.Size([157473])
+  0%|          | 0/1 [00:40<?, ?it/s, [0;92mdata_loading=39.69, iteration=0.760, train_acc=64.50, train_loss_seg=1.242, train_macc=18.28, train_miou=12.97[0m)]100%|##########| 1/1 [00:40<00:00, 40.46s/it, [0;92mdata_loading=39.69, iteration=0.760, train_acc=64.50, train_loss_seg=1.242, train_macc=18.28, train_miou=12.97[0m)]100%|##########| 1/1 [00:40<00:00, 40.46s/it, [0;92mdata_loading=39.69, iteration=0.760, train_acc=64.50, train_loss_seg=1.242, train_macc=18.28, train_miou=12.97[0m)][2022-10-23 21:59:00,441][torch_points3d.trainer][INFO] - Learning rate = 0.073176
+[2022-10-23 21:59:00,441][torch_points3d.trainer][INFO] - EPOCH 28 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[159226], coords=[159226, 3], grid_size=[3], id_scan=[3], mapping_index=[159226], origin_id=[159226], pos=[159226, 3], ptr=[4], x=[159226, 9, 10], x_seen_mask=[159226], y=[159226])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=159226, device=cpu)
+)
+x_seen_mask torch.Size([159226])
+viewing_feats;  torch.Size([159226, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=159226, device=cpu), pos=[159226, 3], seen=[159226], x=[159226, 20])
+seen_mask:  torch.Size([159226])
+  0%|          | 0/1 [00:40<?, ?it/s, [0;92mdata_loading=39.74, iteration=0.77 , train_acc=65.44, train_loss_seg=1.208, train_macc=19.36, train_miou=13.64[0m)]100%|##########| 1/1 [00:40<00:00, 40.52s/it, [0;92mdata_loading=39.74, iteration=0.77 , train_acc=65.44, train_loss_seg=1.208, train_macc=19.36, train_miou=13.64[0m)]100%|##########| 1/1 [00:40<00:00, 40.52s/it, [0;92mdata_loading=39.74, iteration=0.77 , train_acc=65.44, train_loss_seg=1.208, train_macc=19.36, train_miou=13.64[0m)][2022-10-23 21:59:40,982][torch_points3d.trainer][INFO] - Learning rate = 0.072335
+[2022-10-23 21:59:40,982][torch_points3d.trainer][INFO] - EPOCH 29 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[156878], coords=[156878, 3], grid_size=[3], id_scan=[3], mapping_index=[156878], origin_id=[156878], pos=[156878, 3], ptr=[4], x=[156878, 9, 10], x_seen_mask=[156878], y=[156878])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=156878, device=cpu)
+)
+x_seen_mask torch.Size([156878])
+viewing_feats;  torch.Size([156878, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=156878, device=cpu), pos=[156878, 3], seen=[156878], x=[156878, 20])
+seen_mask:  torch.Size([156878])
+  0%|          | 0/1 [00:39<?, ?it/s, [0;92mdata_loading=38.94, iteration=0.753, train_acc=75.64, train_loss_seg=0.956, train_macc=29.17, train_miou=22.17[0m)]100%|##########| 1/1 [00:39<00:00, 39.70s/it, [0;92mdata_loading=38.94, iteration=0.753, train_acc=75.64, train_loss_seg=0.956, train_macc=29.17, train_miou=22.17[0m)]100%|##########| 1/1 [00:39<00:00, 39.70s/it, [0;92mdata_loading=38.94, iteration=0.753, train_acc=75.64, train_loss_seg=0.956, train_macc=29.17, train_miou=22.17[0m)][2022-10-23 22:00:20,708][torch_points3d.trainer][INFO] - Learning rate = 0.071503
+[2022-10-23 22:00:20,708][torch_points3d.trainer][INFO] - EPOCH 30 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[145924], coords=[145924, 3], grid_size=[3], id_scan=[3], mapping_index=[145924], origin_id=[145924], pos=[145924, 3], ptr=[4], x=[145924, 9, 10], x_seen_mask=[145924], y=[145924])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=145924, device=cpu)
+)
+x_seen_mask torch.Size([145924])
+viewing_feats;  torch.Size([145924, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=145924, device=cpu), pos=[145924, 3], seen=[145924], x=[145924, 20])
+seen_mask:  torch.Size([145924])
+  0%|          | 0/1 [00:39<?, ?it/s, [0;92mdata_loading=39.25, iteration=0.699, train_acc=73.32, train_loss_seg=1.053, train_macc=28.27, train_miou=21.62[0m)]100%|##########| 1/1 [00:39<00:00, 39.95s/it, [0;92mdata_loading=39.25, iteration=0.699, train_acc=73.32, train_loss_seg=1.053, train_macc=28.27, train_miou=21.62[0m)]100%|##########| 1/1 [00:39<00:00, 39.95s/it, [0;92mdata_loading=39.25, iteration=0.699, train_acc=73.32, train_loss_seg=1.053, train_macc=28.27, train_miou=21.62[0m)][2022-10-23 22:01:00,680][torch_points3d.trainer][INFO] - Learning rate = 0.070681
+[2022-10-23 22:01:00,680][torch_points3d.trainer][INFO] - EPOCH 31 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[150279], coords=[150279, 3], grid_size=[3], id_scan=[3], mapping_index=[150279], origin_id=[150279], pos=[150279, 3], ptr=[4], x=[150279, 9, 10], x_seen_mask=[150279], y=[150279])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=150279, device=cpu)
+)
+x_seen_mask torch.Size([150279])
+viewing_feats;  torch.Size([150279, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=150279, device=cpu), pos=[150279, 3], seen=[150279], x=[150279, 20])
+seen_mask:  torch.Size([150279])
+  0%|          | 0/1 [00:39<?, ?it/s, [0;92mdata_loading=39.11, iteration=0.730, train_acc=62.05, train_loss_seg=1.336, train_macc=18.81, train_miou=12.72[0m)]100%|##########| 1/1 [00:39<00:00, 39.84s/it, [0;92mdata_loading=39.11, iteration=0.730, train_acc=62.05, train_loss_seg=1.336, train_macc=18.81, train_miou=12.72[0m)]100%|##########| 1/1 [00:39<00:00, 39.84s/it, [0;92mdata_loading=39.11, iteration=0.730, train_acc=62.05, train_loss_seg=1.336, train_macc=18.81, train_miou=12.72[0m)][2022-10-23 22:01:40,547][torch_points3d.trainer][INFO] - Learning rate = 0.069868
+[2022-10-23 22:01:40,548][torch_points3d.trainer][INFO] - EPOCH 32 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[155886], coords=[155886, 3], grid_size=[3], id_scan=[3], mapping_index=[155886], origin_id=[155886], pos=[155886, 3], ptr=[4], x=[155886, 9, 10], x_seen_mask=[155886], y=[155886])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=155886, device=cpu)
+)
+x_seen_mask torch.Size([155886])
+viewing_feats;  torch.Size([155886, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=155886, device=cpu), pos=[155886, 3], seen=[155886], x=[155886, 20])
+seen_mask:  torch.Size([155886])
+  0%|          | 0/1 [00:40<?, ?it/s, [0;92mdata_loading=39.83, iteration=0.742, train_acc=64.97, train_loss_seg=1.195, train_macc=20.01, train_miou=13.44[0m)]100%|##########| 1/1 [00:40<00:00, 40.58s/it, [0;92mdata_loading=39.83, iteration=0.742, train_acc=64.97, train_loss_seg=1.195, train_macc=20.01, train_miou=13.44[0m)]100%|##########| 1/1 [00:40<00:00, 40.58s/it, [0;92mdata_loading=39.83, iteration=0.742, train_acc=64.97, train_loss_seg=1.195, train_macc=20.01, train_miou=13.44[0m)][2022-10-23 22:02:21,147][torch_points3d.trainer][INFO] - Learning rate = 0.069064
+[2022-10-23 22:02:21,147][torch_points3d.trainer][INFO] - EPOCH 33 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[149573], coords=[149573, 3], grid_size=[3], id_scan=[3], mapping_index=[149573], origin_id=[149573], pos=[149573, 3], ptr=[4], x=[149573, 9, 10], x_seen_mask=[149573], y=[149573])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=149573, device=cpu)
+)
+x_seen_mask torch.Size([149573])
+viewing_feats;  torch.Size([149573, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=149573, device=cpu), pos=[149573, 3], seen=[149573], x=[149573, 20])
+seen_mask:  torch.Size([149573])
+  0%|          | 0/1 [00:40<?, ?it/s, [0;92mdata_loading=39.68, iteration=0.725, train_acc=66.28, train_loss_seg=1.152, train_macc=21.65, train_miou=14.67[0m)]100%|##########| 1/1 [00:40<00:00, 40.42s/it, [0;92mdata_loading=39.68, iteration=0.725, train_acc=66.28, train_loss_seg=1.152, train_macc=21.65, train_miou=14.67[0m)]100%|##########| 1/1 [00:40<00:00, 40.42s/it, [0;92mdata_loading=39.68, iteration=0.725, train_acc=66.28, train_loss_seg=1.152, train_macc=21.65, train_miou=14.67[0m)][2022-10-23 22:03:01,585][torch_points3d.trainer][INFO] - Learning rate = 0.068270
+[2022-10-23 22:03:01,585][torch_points3d.trainer][INFO] - EPOCH 34 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[156930], coords=[156930, 3], grid_size=[3], id_scan=[3], mapping_index=[156930], origin_id=[156930], pos=[156930, 3], ptr=[4], x=[156930, 9, 10], x_seen_mask=[156930], y=[156930])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=156930, device=cpu)
+)
+x_seen_mask torch.Size([156930])
+viewing_feats;  torch.Size([156930, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=156930, device=cpu), pos=[156930, 3], seen=[156930], x=[156930, 20])
+seen_mask:  torch.Size([156930])
+  0%|          | 0/1 [00:40<?, ?it/s, [0;92mdata_loading=39.59, iteration=0.76 , train_acc=63.72, train_loss_seg=1.210, train_macc=20.22, train_miou=13.46[0m)]100%|##########| 1/1 [00:40<00:00, 40.36s/it, [0;92mdata_loading=39.59, iteration=0.76 , train_acc=63.72, train_loss_seg=1.210, train_macc=20.22, train_miou=13.46[0m)]100%|##########| 1/1 [00:40<00:00, 40.36s/it, [0;92mdata_loading=39.59, iteration=0.76 , train_acc=63.72, train_loss_seg=1.210, train_macc=20.22, train_miou=13.46[0m)][2022-10-23 22:03:42,233][torch_points3d.trainer][INFO] - Learning rate = 0.067485
+[2022-10-23 22:03:42,234][torch_points3d.trainer][INFO] - EPOCH 35 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[156768], coords=[156768, 3], grid_size=[3], id_scan=[3], mapping_index=[156768], origin_id=[156768], pos=[156768, 3], ptr=[4], x=[156768, 9, 10], x_seen_mask=[156768], y=[156768])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=156768, device=cpu)
+)
+x_seen_mask torch.Size([156768])
+viewing_feats;  torch.Size([156768, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=156768, device=cpu), pos=[156768, 3], seen=[156768], x=[156768, 20])
+seen_mask:  torch.Size([156768])
+  0%|          | 0/1 [00:40<?, ?it/s, [0;92mdata_loading=39.84, iteration=0.762, train_acc=62.31, train_loss_seg=1.247, train_macc=19.71, train_miou=13.42[0m)]100%|##########| 1/1 [00:40<00:00, 40.61s/it, [0;92mdata_loading=39.84, iteration=0.762, train_acc=62.31, train_loss_seg=1.247, train_macc=19.71, train_miou=13.42[0m)]100%|##########| 1/1 [00:40<00:00, 40.61s/it, [0;92mdata_loading=39.84, iteration=0.762, train_acc=62.31, train_loss_seg=1.247, train_macc=19.71, train_miou=13.42[0m)][2022-10-23 22:04:22,861][torch_points3d.trainer][INFO] - Learning rate = 0.066709
+[2022-10-23 22:04:22,862][torch_points3d.trainer][INFO] - EPOCH 36 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[150823], coords=[150823, 3], grid_size=[3], id_scan=[3], mapping_index=[150823], origin_id=[150823], pos=[150823, 3], ptr=[4], x=[150823, 9, 10], x_seen_mask=[150823], y=[150823])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=150823, device=cpu)
+)
+x_seen_mask torch.Size([150823])
+viewing_feats;  torch.Size([150823, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=150823, device=cpu), pos=[150823, 3], seen=[150823], x=[150823, 20])
+seen_mask:  torch.Size([150823])
+  0%|          | 0/1 [00:39<?, ?it/s, [0;92mdata_loading=38.88, iteration=0.720, train_acc=77.03, train_loss_seg=0.853, train_macc=30.00, train_miou=23.85[0m)]100%|##########| 1/1 [00:39<00:00, 39.61s/it, [0;92mdata_loading=38.88, iteration=0.720, train_acc=77.03, train_loss_seg=0.853, train_macc=30.00, train_miou=23.85[0m)]100%|##########| 1/1 [00:39<00:00, 39.61s/it, [0;92mdata_loading=38.88, iteration=0.720, train_acc=77.03, train_loss_seg=0.853, train_macc=30.00, train_miou=23.85[0m)][2022-10-23 22:05:02,490][torch_points3d.trainer][INFO] - Learning rate = 0.065942
+[2022-10-23 22:05:02,491][torch_points3d.trainer][INFO] - EPOCH 37 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[155291], coords=[155291, 3], grid_size=[3], id_scan=[3], mapping_index=[155291], origin_id=[155291], pos=[155291, 3], ptr=[4], x=[155291, 9, 10], x_seen_mask=[155291], y=[155291])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=155291, device=cpu)
+)
+x_seen_mask torch.Size([155291])
+viewing_feats;  torch.Size([155291, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=155291, device=cpu), pos=[155291, 3], seen=[155291], x=[155291, 20])
+seen_mask:  torch.Size([155291])
+  0%|          | 0/1 [00:41<?, ?it/s, [0;92mdata_loading=40.54, iteration=0.763, train_acc=75.28, train_loss_seg=0.930, train_macc=28.79, train_miou=23.21[0m)]100%|##########| 1/1 [00:41<00:00, 41.31s/it, [0;92mdata_loading=40.54, iteration=0.763, train_acc=75.28, train_loss_seg=0.930, train_macc=28.79, train_miou=23.21[0m)]100%|##########| 1/1 [00:41<00:00, 41.31s/it, [0;92mdata_loading=40.54, iteration=0.763, train_acc=75.28, train_loss_seg=0.930, train_macc=28.79, train_miou=23.21[0m)][2022-10-23 22:05:43,825][torch_points3d.trainer][INFO] - Learning rate = 0.065183
+[2022-10-23 22:05:43,826][torch_points3d.trainer][INFO] - EPOCH 38 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[154618], coords=[154618, 3], grid_size=[3], id_scan=[3], mapping_index=[154618], origin_id=[154618], pos=[154618, 3], ptr=[4], x=[154618, 9, 10], x_seen_mask=[154618], y=[154618])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=154618, device=cpu)
+)
+x_seen_mask torch.Size([154618])
+viewing_feats;  torch.Size([154618, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=154618, device=cpu), pos=[154618, 3], seen=[154618], x=[154618, 20])
+seen_mask:  torch.Size([154618])
+  0%|          | 0/1 [00:40<?, ?it/s, [0;92mdata_loading=39.34, iteration=0.758, train_acc=79.06, train_loss_seg=0.791, train_macc=30.36, train_miou=24.73[0m)]100%|##########| 1/1 [00:40<00:00, 40.10s/it, [0;92mdata_loading=39.34, iteration=0.758, train_acc=79.06, train_loss_seg=0.791, train_macc=30.36, train_miou=24.73[0m)]100%|##########| 1/1 [00:40<00:00, 40.10s/it, [0;92mdata_loading=39.34, iteration=0.758, train_acc=79.06, train_loss_seg=0.791, train_macc=30.36, train_miou=24.73[0m)][2022-10-23 22:06:23,951][torch_points3d.trainer][INFO] - Learning rate = 0.064434
+[2022-10-23 22:06:23,952][torch_points3d.trainer][INFO] - EPOCH 39 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[150023], coords=[150023, 3], grid_size=[3], id_scan=[3], mapping_index=[150023], origin_id=[150023], pos=[150023, 3], ptr=[4], x=[150023, 9, 10], x_seen_mask=[150023], y=[150023])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=150023, device=cpu)
+)
+x_seen_mask torch.Size([150023])
+viewing_feats;  torch.Size([150023, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=150023, device=cpu), pos=[150023, 3], seen=[150023], x=[150023, 20])
+seen_mask:  torch.Size([150023])
+  0%|          | 0/1 [00:40<?, ?it/s, [0;92mdata_loading=39.48, iteration=0.740, train_acc=80.50, train_loss_seg=0.747, train_macc=32.2 , train_miou=26.00[0m)]100%|##########| 1/1 [00:40<00:00, 40.23s/it, [0;92mdata_loading=39.48, iteration=0.740, train_acc=80.50, train_loss_seg=0.747, train_macc=32.2 , train_miou=26.00[0m)]100%|##########| 1/1 [00:40<00:00, 40.23s/it, [0;92mdata_loading=39.48, iteration=0.740, train_acc=80.50, train_loss_seg=0.747, train_macc=32.2 , train_miou=26.00[0m)][2022-10-23 22:07:04,201][torch_points3d.trainer][INFO] - Learning rate = 0.063693
+[2022-10-23 22:07:04,201][torch_points3d.trainer][INFO] - EPOCH 40 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[151910], coords=[151910, 3], grid_size=[3], id_scan=[3], mapping_index=[151910], origin_id=[151910], pos=[151910, 3], ptr=[4], x=[151910, 9, 10], x_seen_mask=[151910], y=[151910])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=151910, device=cpu)
+)
+x_seen_mask torch.Size([151910])
+viewing_feats;  torch.Size([151910, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=151910, device=cpu), pos=[151910, 3], seen=[151910], x=[151910, 20])
+seen_mask:  torch.Size([151910])
+  0%|          | 0/1 [00:40<?, ?it/s, [0;92mdata_loading=39.89, iteration=0.746, train_acc=63.02, train_loss_seg=1.216, train_macc=20.03, train_miou=13.59[0m)]100%|##########| 1/1 [00:40<00:00, 40.64s/it, [0;92mdata_loading=39.89, iteration=0.746, train_acc=63.02, train_loss_seg=1.216, train_macc=20.03, train_miou=13.59[0m)]100%|##########| 1/1 [00:40<00:00, 40.64s/it, [0;92mdata_loading=39.89, iteration=0.746, train_acc=63.02, train_loss_seg=1.216, train_macc=20.03, train_miou=13.59[0m)][2022-10-23 22:07:44,864][torch_points3d.trainer][INFO] - Learning rate = 0.062960
+[2022-10-23 22:07:44,865][torch_points3d.trainer][INFO] - EPOCH 41 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[151476], coords=[151476, 3], grid_size=[3], id_scan=[3], mapping_index=[151476], origin_id=[151476], pos=[151476, 3], ptr=[4], x=[151476, 9, 10], x_seen_mask=[151476], y=[151476])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=151476, device=cpu)
+)
+x_seen_mask torch.Size([151476])
+viewing_feats;  torch.Size([151476, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=151476, device=cpu), pos=[151476, 3], seen=[151476], x=[151476, 20])
+seen_mask:  torch.Size([151476])
+  0%|          | 0/1 [00:40<?, ?it/s, [0;92mdata_loading=39.51, iteration=0.745, train_acc=67.07, train_loss_seg=1.090, train_macc=22.90, train_miou=15.94[0m)]100%|##########| 1/1 [00:40<00:00, 40.26s/it, [0;92mdata_loading=39.51, iteration=0.745, train_acc=67.07, train_loss_seg=1.090, train_macc=22.90, train_miou=15.94[0m)]100%|##########| 1/1 [00:40<00:00, 40.26s/it, [0;92mdata_loading=39.51, iteration=0.745, train_acc=67.07, train_loss_seg=1.090, train_macc=22.90, train_miou=15.94[0m)][2022-10-23 22:08:25,147][torch_points3d.trainer][INFO] - Learning rate = 0.062236
+[2022-10-23 22:08:25,147][torch_points3d.trainer][INFO] - EPOCH 42 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[155866], coords=[155866, 3], grid_size=[3], id_scan=[3], mapping_index=[155866], origin_id=[155866], pos=[155866, 3], ptr=[4], x=[155866, 9, 10], x_seen_mask=[155866], y=[155866])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=155866, device=cpu)
+)
+x_seen_mask torch.Size([155866])
+viewing_feats;  torch.Size([155866, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=155866, device=cpu), pos=[155866, 3], seen=[155866], x=[155866, 20])
+seen_mask:  torch.Size([155866])
+  0%|          | 0/1 [00:40<?, ?it/s, [0;92mdata_loading=39.83, iteration=0.744, train_acc=77.71, train_loss_seg=0.798, train_macc=31.98, train_miou=25.06[0m)]100%|##########| 1/1 [00:40<00:00, 40.58s/it, [0;92mdata_loading=39.83, iteration=0.744, train_acc=77.71, train_loss_seg=0.798, train_macc=31.98, train_miou=25.06[0m)]100%|##########| 1/1 [00:40<00:00, 40.58s/it, [0;92mdata_loading=39.83, iteration=0.744, train_acc=77.71, train_loss_seg=0.798, train_macc=31.98, train_miou=25.06[0m)][2022-10-23 22:09:05,749][torch_points3d.trainer][INFO] - Learning rate = 0.061521
+[2022-10-23 22:09:05,749][torch_points3d.trainer][INFO] - EPOCH 43 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[155111], coords=[155111, 3], grid_size=[3], id_scan=[3], mapping_index=[155111], origin_id=[155111], pos=[155111, 3], ptr=[4], x=[155111, 9, 10], x_seen_mask=[155111], y=[155111])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=155111, device=cpu)
+)
+x_seen_mask torch.Size([155111])
+viewing_feats;  torch.Size([155111, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=155111, device=cpu), pos=[155111, 3], seen=[155111], x=[155111, 20])
+seen_mask:  torch.Size([155111])
+  0%|          | 0/1 [00:40<?, ?it/s, [0;92mdata_loading=39.78, iteration=0.768, train_acc=76.37, train_loss_seg=0.848, train_macc=31.24, train_miou=24.46[0m)]100%|##########| 1/1 [00:40<00:00, 40.55s/it, [0;92mdata_loading=39.78, iteration=0.768, train_acc=76.37, train_loss_seg=0.848, train_macc=31.24, train_miou=24.46[0m)]100%|##########| 1/1 [00:40<00:00, 40.55s/it, [0;92mdata_loading=39.78, iteration=0.768, train_acc=76.37, train_loss_seg=0.848, train_macc=31.24, train_miou=24.46[0m)][2022-10-23 22:09:46,324][torch_points3d.trainer][INFO] - Learning rate = 0.060813
+[2022-10-23 22:09:46,324][torch_points3d.trainer][INFO] - EPOCH 44 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]
