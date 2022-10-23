@@ -332,12 +332,13 @@ class ScannetMM(Scannet):
             
             
             data = MMData(data, image=images)
-            # take subset of only seen points without re-indexing the same point
-            data = data[dense_idx_list[0].unique()]
+#             # take subset of only seen points without re-indexing the same point
+#             data = data[dense_idx_list[0].unique()]
+#             # Save mapping features and M2F features in x
+#             data.data.x = torch.cat(self.get_view_dependent_features(data), dim=-1)
             
-            
-            # Save mapping features and M2F features in x
-            data.data.x = torch.cat(self.get_view_dependent_features(data), dim=-1)
+                                    
+                                    
                         
             return data
         

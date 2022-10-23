@@ -78,6 +78,10 @@ class MVFusion(BaseModel, ABC):
         features = data.x
         seen_mask = data.seen
         
+        print("data in mvfusion model: ", data, flush=True)
+        
+        print("seen_mask: ", seen_mask.shape, flush=True)
+        
         if features.device != self.device:
             features = features.to(self.device)
         
