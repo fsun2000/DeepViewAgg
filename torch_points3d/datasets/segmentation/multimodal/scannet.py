@@ -323,21 +323,25 @@ class ScannetMM(Scannet):
             images[0].m2f_pred_mask = m2f_masks
             images[0].m2f_pred_mask_path = np.array(m2f_mask_paths)
             
-            # Take subset of only seen points
-            # NOTE: each point is contained multiple times if it has multiple correspondences
-            dense_idx_list = [
-                        torch.arange(im.num_points, device=images.device).repeat_interleave(
-                            im.view_csr_indexing[1:] - im.view_csr_indexing[:-1])
-                        for im in images]
-            
-            
-            data = MMData(data, image=images)
+#             # Take subset of only seen points
+#             # NOTE: each point is contained multiple times if it has multiple correspondences
+#             dense_idx_list = [
+#                         torch.arange(im.num_points, device=images.device).repeat_interleave(
+#                             im.view_csr_indexing[1:] - im.view_csr_indexing[:-1])
+#                         for im in images]
 #             # take subset of only seen points without re-indexing the same point
 #             data = data[dense_idx_list[0].unique()]
-#             # Save mapping features and M2F features in x
-#             data.data.x = torch.cat(self.get_view_dependent_features(data), dim=-1)
+
+            data = MMData(data, image=images)
+
+            # Save mapping features and M2F features in x
+            data.data.x = torch.cat(self.get_view_dependent_features(data), dim=-1)
+            # Keep track of seen points
+            csr_idx = data.modalities['image'].view_cat_csr_indexing
+            data.data.x_seen_mask = csr_idx[1:] > csr_idx[:-1]
             
-                                    
+            print(data.data)
+            print(data.data.x_seen_mask.sum())                                    
                                     
                         
             return data

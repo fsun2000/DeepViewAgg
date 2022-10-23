@@ -147,10 +147,16 @@ class MVFusionEncoder(MVFusionBackboneBasedModel, ABC):
 #         s = time.time()
 #         viewing_feats, m2f_feats = self.get_view_dependent_features(data)
 #         print(time.time() - s, flush=True)
-
+        
     
-        viewing_feats = data.x[:, :, :-1]
-        m2f_feats = data.x[:, :, -1:]
+        print("data inside mvfusion application: ", data, flush=True)
+        x_seen_mask = data.x_seen_mask
+        print('x_seen_mask', x_seen_mask.shape)
+    
+        viewing_feats = data.x[x_seen_mask, :, :-1]
+        m2f_feats = data.x[x_seen_mask, :, -1:]
+        
+        print('viewing_feats; ', viewing_feats.shape)
         
         # Mask2Former predictions per view as feature
         # Adjust previously used label mapping [0, 21] with 0 being invalid, to [-1, 20].
@@ -169,20 +175,22 @@ class MVFusionEncoder(MVFusionBackboneBasedModel, ABC):
         }
         
 #         del m2f_feats, invalid_pixel_mask, viewing_feats
-                
                         
         # get logits
         out_scores = self.fusion(fusion_input)
         
-        csr_idx = data.modalities['image'][0].view_csr_indexing
-            
+        # Set logits of unseen points to 0.
+        full_out_scores = torch.zeros((len(x_seen_mask), out_scores.shape[1]), dtype=out_scores.dtype, device=out_scores.device)
+        full_out_scores[x_seen_mask] = out_scores
         # Discard the modalities used in the down modules, only
         # 3D point features are expected to be used in subsequent
         # modules. Restore the input Data object equipped with the
         # proper point positions and modality-generated features.
         csr_idx = data.modalities['image'][0].view_csr_indexing
+        
+        print("THE TWO SEEN MASKS ARE EQUAL: ", torch.all(torch.eq(x_seen_mask, (csr_idx[1:] > csr_idx[:-1]))))
         out = Batch(
-            x=out_scores, 
+            x=full_out_scores, 
             pos=data.pos.to(self.device), 
             seen=(csr_idx[1:] > csr_idx[:-1]).to(self.device))
         out=out.to(self.device)
