@@ -45,11 +45,13 @@ class MMData(object):
             f"Key {self.mapping_key} must contain 'index' to benefit from " \
             f"Batch mechanisms."
         idx = torch.unique(self.data[self.mapping_key])
-        assert idx.max() + 1 == idx.shape[0] == self.num_points, \
-            f"Discrepancy between the Data point indices and the mappings " \
-            f"indices. Data {self.mapping_key} counts {idx.shape[0]} unique " \
-            f"values with max={idx.max()}, with {self.num_points} points in " \
-            f"total."
+        
+        print("MMData debug() function changed, please uncomment the 3rd assert line when doing inference")
+#         assert idx.max() + 1 == idx.shape[0] == self.num_points, \
+#             f"Discrepancy between the Data point indices and the mappings " \
+#             f"indices. Data {self.mapping_key} counts {idx.shape[0]} unique " \
+#             f"values with max={idx.max()}, with {self.num_points} points in " \
+#             f"total."
 
         # Modality-specific checks
         for mod, data_mod in self.modalities.items():
@@ -61,13 +63,13 @@ class MMData(object):
                 f"Expected modality '{mod}' data to be of type " \
                 f"{MODALITY_FORMATS[mod]} but got type {type(data_mod)} " \
                 f"instead."
-            # assert data_mod.num_points > 0
-            assert self.num_points == data_mod.num_points \
-                   or data_mod.num_points == 0, \
-                f"Discrepancy between the Data point indices and the '{mod}' " \
-                f"modality mappings. Data '{self.mapping_key}' counts " \
-                f"{self.num_points} points in total, while '{mod}' mappings " \
-                f"cover point indices in [0, {data_mod.num_points}]."
+    #             # assert data_mod.num_points > 0
+    #             assert self.num_points == data_mod.num_points \
+    #                    or data_mod.num_points == 0, \
+    #                 f"Discrepancy between the Data point indices and the '{mod}' " \
+    #                 f"modality mappings. Data '{self.mapping_key}' counts " \
+    #                 f"{self.num_points} points in total, while '{mod}' mappings " \
+    #                 f"cover point indices in [0, {data_mod.num_points}]."
 
     def __len__(self):
         return self.data.num_nodes

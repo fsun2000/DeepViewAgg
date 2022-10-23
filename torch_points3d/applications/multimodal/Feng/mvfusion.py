@@ -153,9 +153,13 @@ class MVFusionEncoder(MVFusionBackboneBasedModel, ABC):
         x_seen_mask = data.x_seen_mask
         print('x_seen_mask', x_seen_mask.shape)
     
-        viewing_feats = data.x[x_seen_mask, :, :-1]
-        m2f_feats = data.x[x_seen_mask, :, -1:]
-        
+#         viewing_feats = data.x[x_seen_mask, :, :-1]
+#         m2f_feats = data.x[x_seen_mask, :, -1:]
+    
+        print("mvfusion.py line 159 uncomment and remove after testing")
+        viewing_feats = data.x[:, :, :-1]
+        m2f_feats = data.x[:, :, -1:]
+
         print('viewing_feats; ', viewing_feats.shape)
         
         # Mask2Former predictions per view as feature

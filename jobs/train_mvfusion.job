@@ -7,7 +7,7 @@
 #SBATCH --cpus-per-task=4
 #SBATCH --time=05:00:00
 #SBATCH --mem=128000M
-#SBATCH --output=job_logs/mvfusion/temp.out
+#SBATCH --output=job_logs/mvfusion/test_exclude_unseen_from_get_features.out
 
 cd $HOME/DeepViewAgg
 

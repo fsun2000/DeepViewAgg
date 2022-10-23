@@ -824,4 +824,1934 @@ seen_mask:  torch.Size([155111])
   0%|          | 0/1 [00:40<?, ?it/s, [0;92mdata_loading=39.78, iteration=0.768, train_acc=76.37, train_loss_seg=0.848, train_macc=31.24, train_miou=24.46[0m)]100%|##########| 1/1 [00:40<00:00, 40.55s/it, [0;92mdata_loading=39.78, iteration=0.768, train_acc=76.37, train_loss_seg=0.848, train_macc=31.24, train_miou=24.46[0m)]100%|##########| 1/1 [00:40<00:00, 40.55s/it, [0;92mdata_loading=39.78, iteration=0.768, train_acc=76.37, train_loss_seg=0.848, train_macc=31.24, train_miou=24.46[0m)][2022-10-23 22:09:46,324][torch_points3d.trainer][INFO] - Learning rate = 0.060813
 [2022-10-23 22:09:46,324][torch_points3d.trainer][INFO] - EPOCH 44 / 100
 
-  0%|          | 0/1 [00:00<?, ?it/s]
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[158512], coords=[158512, 3], grid_size=[3], id_scan=[3], mapping_index=[158512], origin_id=[158512], pos=[158512, 3], ptr=[4], x=[158512, 9, 10], x_seen_mask=[158512], y=[158512])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=158512, device=cpu)
+)
+x_seen_mask torch.Size([158512])
+viewing_feats;  torch.Size([158512, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=158512, device=cpu), pos=[158512, 3], seen=[158512], x=[158512, 20])
+seen_mask:  torch.Size([158512])
+  0%|          | 0/1 [00:39<?, ?it/s, [0;92mdata_loading=39.01, iteration=0.759, train_acc=67.08, train_loss_seg=1.102, train_macc=22.14, train_miou=15.44[0m)]100%|##########| 1/1 [00:39<00:00, 39.77s/it, [0;92mdata_loading=39.01, iteration=0.759, train_acc=67.08, train_loss_seg=1.102, train_macc=22.14, train_miou=15.44[0m)]100%|##########| 1/1 [00:39<00:00, 39.77s/it, [0;92mdata_loading=39.01, iteration=0.759, train_acc=67.08, train_loss_seg=1.102, train_macc=22.14, train_miou=15.44[0m)][2022-10-23 22:10:26,120][torch_points3d.trainer][INFO] - Learning rate = 0.060114
+[2022-10-23 22:10:26,120][torch_points3d.trainer][INFO] - EPOCH 45 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[146948], coords=[146948, 3], grid_size=[3], id_scan=[3], mapping_index=[146948], origin_id=[146948], pos=[146948, 3], ptr=[4], x=[146948, 9, 10], x_seen_mask=[146948], y=[146948])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=146948, device=cpu)
+)
+x_seen_mask torch.Size([146948])
+viewing_feats;  torch.Size([146948, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=146948, device=cpu), pos=[146948, 3], seen=[146948], x=[146948, 20])
+seen_mask:  torch.Size([146948])
+  0%|          | 0/1 [00:40<?, ?it/s, [0;92mdata_loading=39.30, iteration=0.710, train_acc=79.08, train_loss_seg=0.775, train_macc=34.78, train_miou=27.95[0m)]100%|##########| 1/1 [00:40<00:00, 40.02s/it, [0;92mdata_loading=39.30, iteration=0.710, train_acc=79.08, train_loss_seg=0.775, train_macc=34.78, train_miou=27.95[0m)]100%|##########| 1/1 [00:40<00:00, 40.02s/it, [0;92mdata_loading=39.30, iteration=0.710, train_acc=79.08, train_loss_seg=0.775, train_macc=34.78, train_miou=27.95[0m)][2022-10-23 22:11:06,165][torch_points3d.trainer][INFO] - Learning rate = 0.059422
+[2022-10-23 22:11:06,166][torch_points3d.trainer][INFO] - EPOCH 46 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[147068], coords=[147068, 3], grid_size=[3], id_scan=[3], mapping_index=[147068], origin_id=[147068], pos=[147068, 3], ptr=[4], x=[147068, 9, 10], x_seen_mask=[147068], y=[147068])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=147068, device=cpu)
+)
+x_seen_mask torch.Size([147068])
+viewing_feats;  torch.Size([147068, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=147068, device=cpu), pos=[147068, 3], seen=[147068], x=[147068, 20])
+seen_mask:  torch.Size([147068])
+  0%|          | 0/1 [00:39<?, ?it/s, [0;92mdata_loading=38.96, iteration=0.707, train_acc=78.09, train_loss_seg=0.805, train_macc=34.64, train_miou=27.71[0m)]100%|##########| 1/1 [00:39<00:00, 39.68s/it, [0;92mdata_loading=38.96, iteration=0.707, train_acc=78.09, train_loss_seg=0.805, train_macc=34.64, train_miou=27.71[0m)]100%|##########| 1/1 [00:39<00:00, 39.68s/it, [0;92mdata_loading=38.96, iteration=0.707, train_acc=78.09, train_loss_seg=0.805, train_macc=34.64, train_miou=27.71[0m)][2022-10-23 22:11:45,862][torch_points3d.trainer][INFO] - Learning rate = 0.058739
+[2022-10-23 22:11:45,862][torch_points3d.trainer][INFO] - EPOCH 47 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[150909], coords=[150909, 3], grid_size=[3], id_scan=[3], mapping_index=[150909], origin_id=[150909], pos=[150909, 3], ptr=[4], x=[150909, 9, 10], x_seen_mask=[150909], y=[150909])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=150909, device=cpu)
+)
+x_seen_mask torch.Size([150909])
+viewing_feats;  torch.Size([150909, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=150909, device=cpu), pos=[150909, 3], seen=[150909], x=[150909, 20])
+seen_mask:  torch.Size([150909])
+  0%|          | 0/1 [00:41<?, ?it/s, [0;92mdata_loading=38.96, iteration=2.648, train_acc=70.99, train_loss_seg=0.978, train_macc=26.46, train_miou=19.28[0m)]100%|##########| 1/1 [00:41<00:00, 41.62s/it, [0;92mdata_loading=38.96, iteration=2.648, train_acc=70.99, train_loss_seg=0.978, train_macc=26.46, train_miou=19.28[0m)]100%|##########| 1/1 [00:41<00:00, 41.62s/it, [0;92mdata_loading=38.96, iteration=2.648, train_acc=70.99, train_loss_seg=0.978, train_macc=26.46, train_miou=19.28[0m)][2022-10-23 22:12:27,498][torch_points3d.trainer][INFO] - Learning rate = 0.058064
+[2022-10-23 22:12:27,499][torch_points3d.trainer][INFO] - EPOCH 48 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[151188], coords=[151188, 3], grid_size=[3], id_scan=[3], mapping_index=[151188], origin_id=[151188], pos=[151188, 3], ptr=[4], x=[151188, 9, 10], x_seen_mask=[151188], y=[151188])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=151188, device=cpu)
+)
+x_seen_mask torch.Size([151188])
+viewing_feats;  torch.Size([151188, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=151188, device=cpu), pos=[151188, 3], seen=[151188], x=[151188, 20])
+seen_mask:  torch.Size([151188])
+  0%|          | 0/1 [00:39<?, ?it/s, [0;92mdata_loading=38.88, iteration=0.739, train_acc=68.51, train_loss_seg=1.054, train_macc=24.98, train_miou=17.78[0m)]100%|##########| 1/1 [00:39<00:00, 39.62s/it, [0;92mdata_loading=38.88, iteration=0.739, train_acc=68.51, train_loss_seg=1.054, train_macc=24.98, train_miou=17.78[0m)]100%|##########| 1/1 [00:39<00:00, 39.62s/it, [0;92mdata_loading=38.88, iteration=0.739, train_acc=68.51, train_loss_seg=1.054, train_macc=24.98, train_miou=17.78[0m)][2022-10-23 22:13:07,141][torch_points3d.trainer][INFO] - Learning rate = 0.057396
+[2022-10-23 22:13:07,141][torch_points3d.trainer][INFO] - EPOCH 49 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[151313], coords=[151313, 3], grid_size=[3], id_scan=[3], mapping_index=[151313], origin_id=[151313], pos=[151313, 3], ptr=[4], x=[151313, 9, 10], x_seen_mask=[151313], y=[151313])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=151313, device=cpu)
+)
+x_seen_mask torch.Size([151313])
+viewing_feats;  torch.Size([151313, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=151313, device=cpu), pos=[151313, 3], seen=[151313], x=[151313, 20])
+seen_mask:  torch.Size([151313])
+  0%|          | 0/1 [00:40<?, ?it/s, [0;92mdata_loading=39.76, iteration=0.743, train_acc=80.32, train_loss_seg=0.721, train_macc=37.29, train_miou=30.15[0m)]100%|##########| 1/1 [00:40<00:00, 40.51s/it, [0;92mdata_loading=39.76, iteration=0.743, train_acc=80.32, train_loss_seg=0.721, train_macc=37.29, train_miou=30.15[0m)]100%|##########| 1/1 [00:40<00:00, 40.51s/it, [0;92mdata_loading=39.76, iteration=0.743, train_acc=80.32, train_loss_seg=0.721, train_macc=37.29, train_miou=30.15[0m)][2022-10-23 22:13:47,668][torch_points3d.trainer][INFO] - Learning rate = 0.056736
+[2022-10-23 22:13:47,668][torch_points3d.trainer][INFO] - EPOCH 50 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[153044], coords=[153044, 3], grid_size=[3], id_scan=[3], mapping_index=[153044], origin_id=[153044], pos=[153044, 3], ptr=[4], x=[153044, 9, 10], x_seen_mask=[153044], y=[153044])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=153044, device=cpu)
+)
+x_seen_mask torch.Size([153044])
+viewing_feats;  torch.Size([153044, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=153044, device=cpu), pos=[153044, 3], seen=[153044], x=[153044, 20])
+seen_mask:  torch.Size([153044])
+  0%|          | 0/1 [00:40<?, ?it/s, [0;92mdata_loading=39.63, iteration=0.731, train_acc=81.71, train_loss_seg=0.672, train_macc=37.55, train_miou=30.65[0m)]100%|##########| 1/1 [00:40<00:00, 40.37s/it, [0;92mdata_loading=39.63, iteration=0.731, train_acc=81.71, train_loss_seg=0.672, train_macc=37.55, train_miou=30.65[0m)]100%|##########| 1/1 [00:40<00:00, 40.37s/it, [0;92mdata_loading=39.63, iteration=0.731, train_acc=81.71, train_loss_seg=0.672, train_macc=37.55, train_miou=30.65[0m)][2022-10-23 22:14:28,059][torch_points3d.trainer][INFO] - Learning rate = 0.056083
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[206420], coords=[206420, 3], grid_size=[3], id_scan=[3], mapping_index=[206420], origin_id=[206420], pos=[206420, 3], ptr=[4], x=[206420, 9, 10], x_seen_mask=[206420], y=[206420])
+    image = ImageBatch(num_settings=1, num_views=300, num_points=206420, device=cpu)
+)
+x_seen_mask torch.Size([206420])
+viewing_feats;  torch.Size([206420, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=300, num_points=206420, device=cpu), pos=[206420, 3], seen=[206420], x=[206420, 20])
+seen_mask:  torch.Size([206420])
+  0%|          | 0/1 [00:46<?, ?it/s, [0;93mval_acc=72.52, val_loss_seg=1.039, val_macc=35.93, val_miou=19.33[0m)]100%|##########| 1/1 [00:46<00:00, 46.78s/it, [0;93mval_acc=72.52, val_loss_seg=1.039, val_macc=35.93, val_miou=19.33[0m)]100%|##########| 1/1 [00:46<00:00, 46.78s/it, [0;93mval_acc=72.52, val_loss_seg=1.039, val_macc=35.93, val_miou=19.33[0m)][2022-10-23 22:15:14,844][torch_points3d.utils.colors][INFO] - [0;94macc: 65.80175471345903 -> 72.52194271851346, macc: 28.247926009762832 -> 35.936212693389145, miou: 16.60860680329448 -> 19.333186122604094[0m
+[2022-10-23 22:15:14,860][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-10-23 22:15:14,860][torch_points3d.metrics.base_tracker][INFO] -     val_loss_seg = 1.0391305685043335
+[2022-10-23 22:15:14,860][torch_points3d.metrics.base_tracker][INFO] -     val_acc = 72.52194271851346
+[2022-10-23 22:15:14,860][torch_points3d.metrics.base_tracker][INFO] -     val_macc = 35.936212693389145
+[2022-10-23 22:15:14,860][torch_points3d.metrics.base_tracker][INFO] -     val_miou = 19.333186122604094
+[2022-10-23 22:15:14,861][torch_points3d.metrics.base_tracker][INFO] -     val_miou_per_class = {0: '72.93', 1: '81.39', 2: '53.21', 3: '0.00', 4: '0.00', 5: '0.00', 6: '46.50', 7: '35.52', 8: '0.45', 9: '0.00', 10: '0.00', 11: '0.00', 12: '0.00', 13: '0.00', 14: '0.00', 15: '0.00', 16: '0.00', 17: '0.00', 18: '0.00', 19: '0.00'}
+[2022-10-23 22:15:14,861][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-10-23 22:15:14,861][torch_points3d.trainer][INFO] - EPOCH 51 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[149520], coords=[149520, 3], grid_size=[3], id_scan=[3], mapping_index=[149520], origin_id=[149520], pos=[149520, 3], ptr=[4], x=[149520, 9, 10], x_seen_mask=[149520], y=[149520])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=149520, device=cpu)
+)
+x_seen_mask torch.Size([149520])
+viewing_feats;  torch.Size([149520, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=149520, device=cpu), pos=[149520, 3], seen=[149520], x=[149520, 20])
+seen_mask:  torch.Size([149520])
+  0%|          | 0/1 [00:39<?, ?it/s, [0;92mdata_loading=39.18, iteration=0.714, train_acc=78.32, train_loss_seg=0.776, train_macc=35.96, train_miou=29.04[0m)]100%|##########| 1/1 [00:39<00:00, 39.90s/it, [0;92mdata_loading=39.18, iteration=0.714, train_acc=78.32, train_loss_seg=0.776, train_macc=35.96, train_miou=29.04[0m)]100%|##########| 1/1 [00:39<00:00, 39.90s/it, [0;92mdata_loading=39.18, iteration=0.714, train_acc=78.32, train_loss_seg=0.776, train_macc=35.96, train_miou=29.04[0m)][2022-10-23 22:15:54,788][torch_points3d.trainer][INFO] - Learning rate = 0.055438
+[2022-10-23 22:15:54,788][torch_points3d.trainer][INFO] - EPOCH 52 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[155593], coords=[155593, 3], grid_size=[3], id_scan=[3], mapping_index=[155593], origin_id=[155593], pos=[155593, 3], ptr=[4], x=[155593, 9, 10], x_seen_mask=[155593], y=[155593])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=155593, device=cpu)
+)
+x_seen_mask torch.Size([155593])
+viewing_feats;  torch.Size([155593, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=155593, device=cpu), pos=[155593, 3], seen=[155593], x=[155593, 20])
+seen_mask:  torch.Size([155593])
+  0%|          | 0/1 [00:40<?, ?it/s, [0;92mdata_loading=39.91, iteration=0.754, train_acc=66.86, train_loss_seg=1.113, train_macc=24.23, train_miou=17.15[0m)]100%|##########| 1/1 [00:40<00:00, 40.67s/it, [0;92mdata_loading=39.91, iteration=0.754, train_acc=66.86, train_loss_seg=1.113, train_macc=24.23, train_miou=17.15[0m)]100%|##########| 1/1 [00:40<00:00, 40.67s/it, [0;92mdata_loading=39.91, iteration=0.754, train_acc=66.86, train_loss_seg=1.113, train_macc=24.23, train_miou=17.15[0m)][2022-10-23 22:16:35,483][torch_points3d.trainer][INFO] - Learning rate = 0.054801
+[2022-10-23 22:16:35,483][torch_points3d.trainer][INFO] - EPOCH 53 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[158017], coords=[158017, 3], grid_size=[3], id_scan=[3], mapping_index=[158017], origin_id=[158017], pos=[158017, 3], ptr=[4], x=[158017, 9, 10], x_seen_mask=[158017], y=[158017])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=158017, device=cpu)
+)
+x_seen_mask torch.Size([158017])
+viewing_feats;  torch.Size([158017, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=158017, device=cpu), pos=[158017, 3], seen=[158017], x=[158017, 20])
+seen_mask:  torch.Size([158017])
+  0%|          | 0/1 [00:41<?, ?it/s, [0;92mdata_loading=40.48, iteration=0.758, train_acc=84.33, train_loss_seg=0.574, train_macc=38.66, train_miou=32.54[0m)]100%|##########| 1/1 [00:41<00:00, 41.24s/it, [0;92mdata_loading=40.48, iteration=0.758, train_acc=84.33, train_loss_seg=0.574, train_macc=38.66, train_miou=32.54[0m)]100%|##########| 1/1 [00:41<00:00, 41.24s/it, [0;92mdata_loading=40.48, iteration=0.758, train_acc=84.33, train_loss_seg=0.574, train_macc=38.66, train_miou=32.54[0m)][2022-10-23 22:17:16,746][torch_points3d.trainer][INFO] - Learning rate = 0.054171
+[2022-10-23 22:17:16,746][torch_points3d.trainer][INFO] - EPOCH 54 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[153514], coords=[153514, 3], grid_size=[3], id_scan=[3], mapping_index=[153514], origin_id=[153514], pos=[153514, 3], ptr=[4], x=[153514, 9, 10], x_seen_mask=[153514], y=[153514])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=153514, device=cpu)
+)
+x_seen_mask torch.Size([153514])
+viewing_feats;  torch.Size([153514, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=153514, device=cpu), pos=[153514, 3], seen=[153514], x=[153514, 20])
+seen_mask:  torch.Size([153514])
+  0%|          | 0/1 [00:40<?, ?it/s, [0;92mdata_loading=39.64, iteration=0.757, train_acc=70.49, train_loss_seg=0.976, train_macc=25.57, train_miou=18.64[0m)]100%|##########| 1/1 [00:40<00:00, 40.41s/it, [0;92mdata_loading=39.64, iteration=0.757, train_acc=70.49, train_loss_seg=0.976, train_macc=25.57, train_miou=18.64[0m)]100%|##########| 1/1 [00:40<00:00, 40.41s/it, [0;92mdata_loading=39.64, iteration=0.757, train_acc=70.49, train_loss_seg=0.976, train_macc=25.57, train_miou=18.64[0m)][2022-10-23 22:17:57,173][torch_points3d.trainer][INFO] - Learning rate = 0.053548
+[2022-10-23 22:17:57,174][torch_points3d.trainer][INFO] - EPOCH 55 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[147459], coords=[147459, 3], grid_size=[3], id_scan=[3], mapping_index=[147459], origin_id=[147459], pos=[147459, 3], ptr=[4], x=[147459, 9, 10], x_seen_mask=[147459], y=[147459])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=147459, device=cpu)
+)
+x_seen_mask torch.Size([147459])
+viewing_feats;  torch.Size([147459, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=147459, device=cpu), pos=[147459, 3], seen=[147459], x=[147459, 20])
+seen_mask:  torch.Size([147459])
+  0%|          | 0/1 [00:39<?, ?it/s, [0;92mdata_loading=39.10, iteration=0.723, train_acc=67.23, train_loss_seg=1.090, train_macc=24.50, train_miou=17.27[0m)]100%|##########| 1/1 [00:39<00:00, 39.83s/it, [0;92mdata_loading=39.10, iteration=0.723, train_acc=67.23, train_loss_seg=1.090, train_macc=24.50, train_miou=17.27[0m)]100%|##########| 1/1 [00:39<00:00, 39.83s/it, [0;92mdata_loading=39.10, iteration=0.723, train_acc=67.23, train_loss_seg=1.090, train_macc=24.50, train_miou=17.27[0m)][2022-10-23 22:18:37,024][torch_points3d.trainer][INFO] - Learning rate = 0.052932
+[2022-10-23 22:18:37,024][torch_points3d.trainer][INFO] - EPOCH 56 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[154777], coords=[154777, 3], grid_size=[3], id_scan=[3], mapping_index=[154777], origin_id=[154777], pos=[154777, 3], ptr=[4], x=[154777, 9, 10], x_seen_mask=[154777], y=[154777])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=154777, device=cpu)
+)
+x_seen_mask torch.Size([154777])
+viewing_feats;  torch.Size([154777, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=154777, device=cpu), pos=[154777, 3], seen=[154777], x=[154777, 20])
+seen_mask:  torch.Size([154777])
+  0%|          | 0/1 [00:39<?, ?it/s, [0;92mdata_loading=39.10, iteration=0.757, train_acc=67.35, train_loss_seg=1.090, train_macc=24.76, train_miou=17.38[0m)]100%|##########| 1/1 [00:39<00:00, 39.87s/it, [0;92mdata_loading=39.10, iteration=0.757, train_acc=67.35, train_loss_seg=1.090, train_macc=24.76, train_miou=17.38[0m)]100%|##########| 1/1 [00:39<00:00, 39.87s/it, [0;92mdata_loading=39.10, iteration=0.757, train_acc=67.35, train_loss_seg=1.090, train_macc=24.76, train_miou=17.38[0m)][2022-10-23 22:19:16,913][torch_points3d.trainer][INFO] - Learning rate = 0.052323
+[2022-10-23 22:19:16,914][torch_points3d.trainer][INFO] - EPOCH 57 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[149205], coords=[149205, 3], grid_size=[3], id_scan=[3], mapping_index=[149205], origin_id=[149205], pos=[149205, 3], ptr=[4], x=[149205, 9, 10], x_seen_mask=[149205], y=[149205])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=149205, device=cpu)
+)
+x_seen_mask torch.Size([149205])
+viewing_feats;  torch.Size([149205, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=149205, device=cpu), pos=[149205, 3], seen=[149205], x=[149205, 20])
+seen_mask:  torch.Size([149205])
+  0%|          | 0/1 [00:40<?, ?it/s, [0;92mdata_loading=39.51, iteration=0.734, train_acc=81.59, train_loss_seg=0.655, train_macc=36.87, train_miou=30.61[0m)]100%|##########| 1/1 [00:40<00:00, 40.25s/it, [0;92mdata_loading=39.51, iteration=0.734, train_acc=81.59, train_loss_seg=0.655, train_macc=36.87, train_miou=30.61[0m)]100%|##########| 1/1 [00:40<00:00, 40.25s/it, [0;92mdata_loading=39.51, iteration=0.734, train_acc=81.59, train_loss_seg=0.655, train_macc=36.87, train_miou=30.61[0m)][2022-10-23 22:19:57,182][torch_points3d.trainer][INFO] - Learning rate = 0.051721
+[2022-10-23 22:19:57,182][torch_points3d.trainer][INFO] - EPOCH 58 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[149327], coords=[149327, 3], grid_size=[3], id_scan=[3], mapping_index=[149327], origin_id=[149327], pos=[149327, 3], ptr=[4], x=[149327, 9, 10], x_seen_mask=[149327], y=[149327])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=149327, device=cpu)
+)
+x_seen_mask torch.Size([149327])
+viewing_feats;  torch.Size([149327, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=149327, device=cpu), pos=[149327, 3], seen=[149327], x=[149327, 20])
+seen_mask:  torch.Size([149327])
+  0%|          | 0/1 [00:40<?, ?it/s, [0;92mdata_loading=39.46, iteration=0.725, train_acc=78.76, train_loss_seg=0.757, train_macc=35.54, train_miou=29.35[0m)]100%|##########| 1/1 [00:40<00:00, 40.19s/it, [0;92mdata_loading=39.46, iteration=0.725, train_acc=78.76, train_loss_seg=0.757, train_macc=35.54, train_miou=29.35[0m)]100%|##########| 1/1 [00:40<00:00, 40.19s/it, [0;92mdata_loading=39.46, iteration=0.725, train_acc=78.76, train_loss_seg=0.757, train_macc=35.54, train_miou=29.35[0m)][2022-10-23 22:20:37,392][torch_points3d.trainer][INFO] - Learning rate = 0.051127
+[2022-10-23 22:20:37,392][torch_points3d.trainer][INFO] - EPOCH 59 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[152210], coords=[152210, 3], grid_size=[3], id_scan=[3], mapping_index=[152210], origin_id=[152210], pos=[152210, 3], ptr=[4], x=[152210, 9, 10], x_seen_mask=[152210], y=[152210])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=152210, device=cpu)
+)
+x_seen_mask torch.Size([152210])
+viewing_feats;  torch.Size([152210, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=152210, device=cpu), pos=[152210, 3], seen=[152210], x=[152210, 20])
+seen_mask:  torch.Size([152210])
+  0%|          | 0/1 [00:39<?, ?it/s, [0;92mdata_loading=38.57, iteration=0.744, train_acc=69.07, train_loss_seg=1.02 , train_macc=25.57, train_miou=18.67[0m)]100%|##########| 1/1 [00:39<00:00, 39.32s/it, [0;92mdata_loading=38.57, iteration=0.744, train_acc=69.07, train_loss_seg=1.02 , train_macc=25.57, train_miou=18.67[0m)]100%|##########| 1/1 [00:39<00:00, 39.32s/it, [0;92mdata_loading=38.57, iteration=0.744, train_acc=69.07, train_loss_seg=1.02 , train_macc=25.57, train_miou=18.67[0m)][2022-10-23 22:21:16,732][torch_points3d.trainer][INFO] - Learning rate = 0.050539
+[2022-10-23 22:21:16,732][torch_points3d.trainer][INFO] - EPOCH 60 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[153191], coords=[153191, 3], grid_size=[3], id_scan=[3], mapping_index=[153191], origin_id=[153191], pos=[153191, 3], ptr=[4], x=[153191, 9, 10], x_seen_mask=[153191], y=[153191])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=153191, device=cpu)
+)
+x_seen_mask torch.Size([153191])
+viewing_feats;  torch.Size([153191, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=153191, device=cpu), pos=[153191, 3], seen=[153191], x=[153191, 20])
+seen_mask:  torch.Size([153191])
+  0%|          | 0/1 [00:39<?, ?it/s, [0;92mdata_loading=39.15, iteration=0.744, train_acc=82.76, train_loss_seg=0.626, train_macc=38.43, train_miou=32.53[0m)]100%|##########| 1/1 [00:39<00:00, 39.90s/it, [0;92mdata_loading=39.15, iteration=0.744, train_acc=82.76, train_loss_seg=0.626, train_macc=38.43, train_miou=32.53[0m)]100%|##########| 1/1 [00:39<00:00, 39.90s/it, [0;92mdata_loading=39.15, iteration=0.744, train_acc=82.76, train_loss_seg=0.626, train_macc=38.43, train_miou=32.53[0m)][2022-10-23 22:21:56,656][torch_points3d.trainer][INFO] - Learning rate = 0.049957
+[2022-10-23 22:21:56,657][torch_points3d.trainer][INFO] - EPOCH 61 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[149997], coords=[149997, 3], grid_size=[3], id_scan=[3], mapping_index=[149997], origin_id=[149997], pos=[149997, 3], ptr=[4], x=[149997, 9, 10], x_seen_mask=[149997], y=[149997])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=149997, device=cpu)
+)
+x_seen_mask torch.Size([149997])
+viewing_feats;  torch.Size([149997, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=149997, device=cpu), pos=[149997, 3], seen=[149997], x=[149997, 20])
+seen_mask:  torch.Size([149997])
+  0%|          | 0/1 [00:39<?, ?it/s, [0;92mdata_loading=39.24, iteration=0.717, train_acc=66.41, train_loss_seg=1.077, train_macc=23.77, train_miou=16.82[0m)]100%|##########| 1/1 [00:39<00:00, 39.96s/it, [0;92mdata_loading=39.24, iteration=0.717, train_acc=66.41, train_loss_seg=1.077, train_macc=23.77, train_miou=16.82[0m)]100%|##########| 1/1 [00:39<00:00, 39.96s/it, [0;92mdata_loading=39.24, iteration=0.717, train_acc=66.41, train_loss_seg=1.077, train_macc=23.77, train_miou=16.82[0m)][2022-10-23 22:22:36,640][torch_points3d.trainer][INFO] - Learning rate = 0.049383
+[2022-10-23 22:22:36,640][torch_points3d.trainer][INFO] - EPOCH 62 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[151695], coords=[151695, 3], grid_size=[3], id_scan=[3], mapping_index=[151695], origin_id=[151695], pos=[151695, 3], ptr=[4], x=[151695, 9, 10], x_seen_mask=[151695], y=[151695])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=151695, device=cpu)
+)
+x_seen_mask torch.Size([151695])
+viewing_feats;  torch.Size([151695, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=151695, device=cpu), pos=[151695, 3], seen=[151695], x=[151695, 20])
+seen_mask:  torch.Size([151695])
+  0%|          | 0/1 [00:39<?, ?it/s, [0;92mdata_loading=38.71, iteration=0.721, train_acc=79.93, train_loss_seg=0.724, train_macc=38.54, train_miou=32.32[0m)]100%|##########| 1/1 [00:39<00:00, 39.44s/it, [0;92mdata_loading=38.71, iteration=0.721, train_acc=79.93, train_loss_seg=0.724, train_macc=38.54, train_miou=32.32[0m)]100%|##########| 1/1 [00:39<00:00, 39.44s/it, [0;92mdata_loading=38.71, iteration=0.721, train_acc=79.93, train_loss_seg=0.724, train_macc=38.54, train_miou=32.32[0m)][2022-10-23 22:23:16,101][torch_points3d.trainer][INFO] - Learning rate = 0.048815
+[2022-10-23 22:23:16,101][torch_points3d.trainer][INFO] - EPOCH 63 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[154509], coords=[154509, 3], grid_size=[3], id_scan=[3], mapping_index=[154509], origin_id=[154509], pos=[154509, 3], ptr=[4], x=[154509, 9, 10], x_seen_mask=[154509], y=[154509])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=154509, device=cpu)
+)
+x_seen_mask torch.Size([154509])
+viewing_feats;  torch.Size([154509, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=154509, device=cpu), pos=[154509, 3], seen=[154509], x=[154509, 20])
+seen_mask:  torch.Size([154509])
+  0%|          | 0/1 [00:39<?, ?it/s, [0;92mdata_loading=38.42, iteration=0.749, train_acc=82.83, train_loss_seg=0.639, train_macc=40.72, train_miou=34.08[0m)]100%|##########| 1/1 [00:39<00:00, 39.18s/it, [0;92mdata_loading=38.42, iteration=0.749, train_acc=82.83, train_loss_seg=0.639, train_macc=40.72, train_miou=34.08[0m)]100%|##########| 1/1 [00:39<00:00, 39.18s/it, [0;92mdata_loading=38.42, iteration=0.749, train_acc=82.83, train_loss_seg=0.639, train_macc=40.72, train_miou=34.08[0m)][2022-10-23 22:23:55,301][torch_points3d.trainer][INFO] - Learning rate = 0.048254
+[2022-10-23 22:23:55,301][torch_points3d.trainer][INFO] - EPOCH 64 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[149905], coords=[149905, 3], grid_size=[3], id_scan=[3], mapping_index=[149905], origin_id=[149905], pos=[149905, 3], ptr=[4], x=[149905, 9, 10], x_seen_mask=[149905], y=[149905])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=149905, device=cpu)
+)
+x_seen_mask torch.Size([149905])
+viewing_feats;  torch.Size([149905, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=149905, device=cpu), pos=[149905, 3], seen=[149905], x=[149905, 20])
+seen_mask:  torch.Size([149905])
+  0%|          | 0/1 [00:39<?, ?it/s, [0;92mdata_loading=39.09, iteration=0.747, train_acc=73.33, train_loss_seg=0.889, train_macc=29.86, train_miou=22.55[0m)]100%|##########| 1/1 [00:39<00:00, 39.84s/it, [0;92mdata_loading=39.09, iteration=0.747, train_acc=73.33, train_loss_seg=0.889, train_macc=29.86, train_miou=22.55[0m)]100%|##########| 1/1 [00:39<00:00, 39.84s/it, [0;92mdata_loading=39.09, iteration=0.747, train_acc=73.33, train_loss_seg=0.889, train_macc=29.86, train_miou=22.55[0m)][2022-10-23 22:24:35,165][torch_points3d.trainer][INFO] - Learning rate = 0.047699
+[2022-10-23 22:24:35,165][torch_points3d.trainer][INFO] - EPOCH 65 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[148628], coords=[148628, 3], grid_size=[3], id_scan=[3], mapping_index=[148628], origin_id=[148628], pos=[148628, 3], ptr=[4], x=[148628, 9, 10], x_seen_mask=[148628], y=[148628])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=148628, device=cpu)
+)
+x_seen_mask torch.Size([148628])
+viewing_feats;  torch.Size([148628, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=148628, device=cpu), pos=[148628, 3], seen=[148628], x=[148628, 20])
+seen_mask:  torch.Size([148628])
+  0%|          | 0/1 [00:40<?, ?it/s, [0;92mdata_loading=39.76, iteration=0.730, train_acc=67.84, train_loss_seg=1.021, train_macc=25.80, train_miou=18.40[0m)]100%|##########| 1/1 [00:40<00:00, 40.49s/it, [0;92mdata_loading=39.76, iteration=0.730, train_acc=67.84, train_loss_seg=1.021, train_macc=25.80, train_miou=18.40[0m)]100%|##########| 1/1 [00:40<00:00, 40.49s/it, [0;92mdata_loading=39.76, iteration=0.730, train_acc=67.84, train_loss_seg=1.021, train_macc=25.80, train_miou=18.40[0m)][2022-10-23 22:25:15,683][torch_points3d.trainer][INFO] - Learning rate = 0.047150
+[2022-10-23 22:25:15,684][torch_points3d.trainer][INFO] - EPOCH 66 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[150217], coords=[150217, 3], grid_size=[3], id_scan=[3], mapping_index=[150217], origin_id=[150217], pos=[150217, 3], ptr=[4], x=[150217, 9, 10], x_seen_mask=[150217], y=[150217])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=150217, device=cpu)
+)
+x_seen_mask torch.Size([150217])
+viewing_feats;  torch.Size([150217, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=150217, device=cpu), pos=[150217, 3], seen=[150217], x=[150217, 20])
+seen_mask:  torch.Size([150217])
+  0%|          | 0/1 [00:40<?, ?it/s, [0;92mdata_loading=40.10, iteration=0.732, train_acc=69.75, train_loss_seg=0.988, train_macc=26.40, train_miou=19.19[0m)]100%|##########| 1/1 [00:40<00:00, 40.84s/it, [0;92mdata_loading=40.10, iteration=0.732, train_acc=69.75, train_loss_seg=0.988, train_macc=26.40, train_miou=19.19[0m)]100%|##########| 1/1 [00:40<00:00, 40.84s/it, [0;92mdata_loading=40.10, iteration=0.732, train_acc=69.75, train_loss_seg=0.988, train_macc=26.40, train_miou=19.19[0m)][2022-10-23 22:25:56,547][torch_points3d.trainer][INFO] - Learning rate = 0.046608
+[2022-10-23 22:25:56,548][torch_points3d.trainer][INFO] - EPOCH 67 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[151950], coords=[151950, 3], grid_size=[3], id_scan=[3], mapping_index=[151950], origin_id=[151950], pos=[151950, 3], ptr=[4], x=[151950, 9, 10], x_seen_mask=[151950], y=[151950])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=151950, device=cpu)
+)
+x_seen_mask torch.Size([151950])
+viewing_feats;  torch.Size([151950, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=151950, device=cpu), pos=[151950, 3], seen=[151950], x=[151950, 20])
+seen_mask:  torch.Size([151950])
+  0%|          | 0/1 [00:39<?, ?it/s, [0;92mdata_loading=38.96, iteration=0.734, train_acc=83.82, train_loss_seg=0.608, train_macc=41.05, train_miou=35.02[0m)]100%|##########| 1/1 [00:39<00:00, 39.70s/it, [0;92mdata_loading=38.96, iteration=0.734, train_acc=83.82, train_loss_seg=0.608, train_macc=41.05, train_miou=35.02[0m)]100%|##########| 1/1 [00:39<00:00, 39.70s/it, [0;92mdata_loading=38.96, iteration=0.734, train_acc=83.82, train_loss_seg=0.608, train_macc=41.05, train_miou=35.02[0m)][2022-10-23 22:26:36,267][torch_points3d.trainer][INFO] - Learning rate = 0.046072
+[2022-10-23 22:26:36,268][torch_points3d.trainer][INFO] - EPOCH 68 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[149452], coords=[149452, 3], grid_size=[3], id_scan=[3], mapping_index=[149452], origin_id=[149452], pos=[149452, 3], ptr=[4], x=[149452, 9, 10], x_seen_mask=[149452], y=[149452])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=149452, device=cpu)
+)
+x_seen_mask torch.Size([149452])
+viewing_feats;  torch.Size([149452, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=149452, device=cpu), pos=[149452, 3], seen=[149452], x=[149452, 20])
+seen_mask:  torch.Size([149452])
+  0%|          | 0/1 [00:39<?, ?it/s, [0;92mdata_loading=39.05, iteration=0.740, train_acc=82.82, train_loss_seg=0.608, train_macc=41.35, train_miou=34.75[0m)]100%|##########| 1/1 [00:39<00:00, 39.80s/it, [0;92mdata_loading=39.05, iteration=0.740, train_acc=82.82, train_loss_seg=0.608, train_macc=41.35, train_miou=34.75[0m)]100%|##########| 1/1 [00:39<00:00, 39.80s/it, [0;92mdata_loading=39.05, iteration=0.740, train_acc=82.82, train_loss_seg=0.608, train_macc=41.35, train_miou=34.75[0m)][2022-10-23 22:27:16,088][torch_points3d.trainer][INFO] - Learning rate = 0.045542
+[2022-10-23 22:27:16,088][torch_points3d.trainer][INFO] - EPOCH 69 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[158140], coords=[158140, 3], grid_size=[3], id_scan=[3], mapping_index=[158140], origin_id=[158140], pos=[158140, 3], ptr=[4], x=[158140, 9, 10], x_seen_mask=[158140], y=[158140])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=158140, device=cpu)
+)
+x_seen_mask torch.Size([158140])
+viewing_feats;  torch.Size([158140, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=158140, device=cpu), pos=[158140, 3], seen=[158140], x=[158140, 20])
+seen_mask:  torch.Size([158140])
+  0%|          | 0/1 [00:40<?, ?it/s, [0;92mdata_loading=39.49, iteration=0.760, train_acc=74.58, train_loss_seg=0.852, train_macc=30.95, train_miou=23.19[0m)]100%|##########| 1/1 [00:40<00:00, 40.25s/it, [0;92mdata_loading=39.49, iteration=0.760, train_acc=74.58, train_loss_seg=0.852, train_macc=30.95, train_miou=23.19[0m)]100%|##########| 1/1 [00:40<00:00, 40.25s/it, [0;92mdata_loading=39.49, iteration=0.760, train_acc=74.58, train_loss_seg=0.852, train_macc=30.95, train_miou=23.19[0m)][2022-10-23 22:27:56,374][torch_points3d.trainer][INFO] - Learning rate = 0.045018
+[2022-10-23 22:27:56,374][torch_points3d.trainer][INFO] - EPOCH 70 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[148930], coords=[148930, 3], grid_size=[3], id_scan=[3], mapping_index=[148930], origin_id=[148930], pos=[148930, 3], ptr=[4], x=[148930, 9, 10], x_seen_mask=[148930], y=[148930])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=148930, device=cpu)
+)
+x_seen_mask torch.Size([148930])
+viewing_feats;  torch.Size([148930, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=148930, device=cpu), pos=[148930, 3], seen=[148930], x=[148930, 20])
+seen_mask:  torch.Size([148930])
+  0%|          | 0/1 [00:39<?, ?it/s, [0;92mdata_loading=38.97, iteration=0.735, train_acc=68.95, train_loss_seg=0.988, train_macc=26.14, train_miou=19.06[0m)]100%|##########| 1/1 [00:39<00:00, 39.71s/it, [0;92mdata_loading=38.97, iteration=0.735, train_acc=68.95, train_loss_seg=0.988, train_macc=26.14, train_miou=19.06[0m)]100%|##########| 1/1 [00:39<00:00, 39.71s/it, [0;92mdata_loading=38.97, iteration=0.735, train_acc=68.95, train_loss_seg=0.988, train_macc=26.14, train_miou=19.06[0m)][2022-10-23 22:28:36,101][torch_points3d.trainer][INFO] - Learning rate = 0.044501
+[2022-10-23 22:28:36,102][torch_points3d.trainer][INFO] - EPOCH 71 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[148484], coords=[148484, 3], grid_size=[3], id_scan=[3], mapping_index=[148484], origin_id=[148484], pos=[148484, 3], ptr=[4], x=[148484, 9, 10], x_seen_mask=[148484], y=[148484])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=148484, device=cpu)
+)
+x_seen_mask torch.Size([148484])
+viewing_feats;  torch.Size([148484, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=148484, device=cpu), pos=[148484, 3], seen=[148484], x=[148484, 20])
+seen_mask:  torch.Size([148484])
+  0%|          | 0/1 [00:39<?, ?it/s, [0;92mdata_loading=39.13, iteration=0.718, train_acc=83.37, train_loss_seg=0.604, train_macc=42.54, train_miou=35.41[0m)]100%|##########| 1/1 [00:39<00:00, 39.85s/it, [0;92mdata_loading=39.13, iteration=0.718, train_acc=83.37, train_loss_seg=0.604, train_macc=42.54, train_miou=35.41[0m)]100%|##########| 1/1 [00:39<00:00, 39.85s/it, [0;92mdata_loading=39.13, iteration=0.718, train_acc=83.37, train_loss_seg=0.604, train_macc=42.54, train_miou=35.41[0m)][2022-10-23 22:29:15,973][torch_points3d.trainer][INFO] - Learning rate = 0.043989
+[2022-10-23 22:29:15,974][torch_points3d.trainer][INFO] - EPOCH 72 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[147678], coords=[147678, 3], grid_size=[3], id_scan=[3], mapping_index=[147678], origin_id=[147678], pos=[147678, 3], ptr=[4], x=[147678, 9, 10], x_seen_mask=[147678], y=[147678])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=147678, device=cpu)
+)
+x_seen_mask torch.Size([147678])
+viewing_feats;  torch.Size([147678, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=147678, device=cpu), pos=[147678, 3], seen=[147678], x=[147678, 20])
+seen_mask:  torch.Size([147678])
+  0%|          | 0/1 [00:39<?, ?it/s, [0;92mdata_loading=38.68, iteration=0.726, train_acc=71.43, train_loss_seg=0.916, train_macc=29.79, train_miou=22.22[0m)]100%|##########| 1/1 [00:39<00:00, 39.41s/it, [0;92mdata_loading=38.68, iteration=0.726, train_acc=71.43, train_loss_seg=0.916, train_macc=29.79, train_miou=22.22[0m)]100%|##########| 1/1 [00:39<00:00, 39.41s/it, [0;92mdata_loading=38.68, iteration=0.726, train_acc=71.43, train_loss_seg=0.916, train_macc=29.79, train_miou=22.22[0m)][2022-10-23 22:29:55,407][torch_points3d.trainer][INFO] - Learning rate = 0.043483
+[2022-10-23 22:29:55,407][torch_points3d.trainer][INFO] - EPOCH 73 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[150015], coords=[150015, 3], grid_size=[3], id_scan=[3], mapping_index=[150015], origin_id=[150015], pos=[150015, 3], ptr=[4], x=[150015, 9, 10], x_seen_mask=[150015], y=[150015])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=150015, device=cpu)
+)
+x_seen_mask torch.Size([150015])
+viewing_feats;  torch.Size([150015, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=150015, device=cpu), pos=[150015, 3], seen=[150015], x=[150015, 20])
+seen_mask:  torch.Size([150015])
+  0%|          | 0/1 [00:39<?, ?it/s, [0;92mdata_loading=39.07, iteration=0.722, train_acc=67.81, train_loss_seg=1.015, train_macc=27.28, train_miou=19.52[0m)]100%|##########| 1/1 [00:39<00:00, 39.80s/it, [0;92mdata_loading=39.07, iteration=0.722, train_acc=67.81, train_loss_seg=1.015, train_macc=27.28, train_miou=19.52[0m)]100%|##########| 1/1 [00:39<00:00, 39.80s/it, [0;92mdata_loading=39.07, iteration=0.722, train_acc=67.81, train_loss_seg=1.015, train_macc=27.28, train_miou=19.52[0m)][2022-10-23 22:30:35,226][torch_points3d.trainer][INFO] - Learning rate = 0.042983
+[2022-10-23 22:30:35,227][torch_points3d.trainer][INFO] - EPOCH 74 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[148401], coords=[148401, 3], grid_size=[3], id_scan=[3], mapping_index=[148401], origin_id=[148401], pos=[148401, 3], ptr=[4], x=[148401, 9, 10], x_seen_mask=[148401], y=[148401])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=148401, device=cpu)
+)
+x_seen_mask torch.Size([148401])
+viewing_feats;  torch.Size([148401, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=148401, device=cpu), pos=[148401, 3], seen=[148401], x=[148401, 20])
+seen_mask:  torch.Size([148401])
+  0%|          | 0/1 [00:39<?, ?it/s, [0;92mdata_loading=39.07, iteration=0.719, train_acc=84.12, train_loss_seg=0.576, train_macc=43.74, train_miou=36.86[0m)]100%|##########| 1/1 [00:39<00:00, 39.79s/it, [0;92mdata_loading=39.07, iteration=0.719, train_acc=84.12, train_loss_seg=0.576, train_macc=43.74, train_miou=36.86[0m)]100%|##########| 1/1 [00:39<00:00, 39.79s/it, [0;92mdata_loading=39.07, iteration=0.719, train_acc=84.12, train_loss_seg=0.576, train_macc=43.74, train_miou=36.86[0m)][2022-10-23 22:31:15,041][torch_points3d.trainer][INFO] - Learning rate = 0.042489
+[2022-10-23 22:31:15,041][torch_points3d.trainer][INFO] - EPOCH 75 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[161608], coords=[161608, 3], grid_size=[3], id_scan=[3], mapping_index=[161608], origin_id=[161608], pos=[161608, 3], ptr=[4], x=[161608, 9, 10], x_seen_mask=[161608], y=[161608])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=161608, device=cpu)
+)
+x_seen_mask torch.Size([161608])
+viewing_feats;  torch.Size([161608, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=161608, device=cpu), pos=[161608, 3], seen=[161608], x=[161608, 20])
+seen_mask:  torch.Size([161608])
+  0%|          | 0/1 [00:40<?, ?it/s, [0;92mdata_loading=39.58, iteration=0.762, train_acc=83.97, train_loss_seg=0.585, train_macc=43.29, train_miou=36.52[0m)]100%|##########| 1/1 [00:40<00:00, 40.35s/it, [0;92mdata_loading=39.58, iteration=0.762, train_acc=83.97, train_loss_seg=0.585, train_macc=43.29, train_miou=36.52[0m)]100%|##########| 1/1 [00:40<00:00, 40.35s/it, [0;92mdata_loading=39.58, iteration=0.762, train_acc=83.97, train_loss_seg=0.585, train_macc=43.29, train_miou=36.52[0m)][2022-10-23 22:31:55,415][torch_points3d.trainer][INFO] - Learning rate = 0.042000
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[206352], coords=[206352, 3], grid_size=[3], id_scan=[3], mapping_index=[206352], origin_id=[206352], pos=[206352, 3], ptr=[4], x=[206352, 9, 10], x_seen_mask=[206352], y=[206352])
+    image = ImageBatch(num_settings=1, num_views=300, num_points=206352, device=cpu)
+)
+x_seen_mask torch.Size([206352])
+viewing_feats;  torch.Size([206352, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=300, num_points=206352, device=cpu), pos=[206352, 3], seen=[206352], x=[206352, 20])
+seen_mask:  torch.Size([206352])
+  0%|          | 0/1 [00:47<?, ?it/s, [0;93mval_acc=73.36, val_loss_seg=0.924, val_macc=40.12, val_miou=22.95[0m)]100%|##########| 1/1 [00:47<00:00, 47.12s/it, [0;93mval_acc=73.36, val_loss_seg=0.924, val_macc=40.12, val_miou=22.95[0m)]100%|##########| 1/1 [00:47<00:00, 47.12s/it, [0;93mval_acc=73.36, val_loss_seg=0.924, val_macc=40.12, val_miou=22.95[0m)][2022-10-23 22:32:42,543][torch_points3d.utils.colors][INFO] - [0;94macc: 72.52194271851346 -> 73.36949906057319, macc: 35.936212693389145 -> 40.12617512983905, miou: 19.333186122604094 -> 22.954306111831677[0m
+[2022-10-23 22:32:42,562][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-10-23 22:32:42,563][torch_points3d.metrics.base_tracker][INFO] -     val_loss_seg = 0.9243447184562683
+[2022-10-23 22:32:42,563][torch_points3d.metrics.base_tracker][INFO] -     val_acc = 73.36949906057319
+[2022-10-23 22:32:42,563][torch_points3d.metrics.base_tracker][INFO] -     val_macc = 40.12617512983905
+[2022-10-23 22:32:42,563][torch_points3d.metrics.base_tracker][INFO] -     val_miou = 22.954306111831677
+[2022-10-23 22:32:42,563][torch_points3d.metrics.base_tracker][INFO] -     val_miou_per_class = {0: '74.70', 1: '77.38', 2: '57.05', 3: '0.00', 4: '0.00', 5: '0.00', 6: '53.41', 7: '74.94', 8: '6.84', 9: '0.00', 10: '0.00', 11: '0.00', 12: '0.00', 13: '0.00', 14: '0.00', 15: '0.00', 16: '0.00', 17: '0.00', 18: '0.00', 19: '0.00'}
+[2022-10-23 22:32:42,563][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-10-23 22:32:42,563][torch_points3d.trainer][INFO] - EPOCH 76 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[157058], coords=[157058, 3], grid_size=[3], id_scan=[3], mapping_index=[157058], origin_id=[157058], pos=[157058, 3], ptr=[4], x=[157058, 9, 10], x_seen_mask=[157058], y=[157058])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=157058, device=cpu)
+)
+x_seen_mask torch.Size([157058])
+viewing_feats;  torch.Size([157058, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=157058, device=cpu), pos=[157058, 3], seen=[157058], x=[157058, 20])
+seen_mask:  torch.Size([157058])
+  0%|          | 0/1 [00:39<?, ?it/s, [0;92mdata_loading=39.23, iteration=0.753, train_acc=87.54, train_loss_seg=0.474, train_macc=45.80, train_miou=39.61[0m)]100%|##########| 1/1 [00:39<00:00, 39.99s/it, [0;92mdata_loading=39.23, iteration=0.753, train_acc=87.54, train_loss_seg=0.474, train_macc=45.80, train_miou=39.61[0m)]100%|##########| 1/1 [00:39<00:00, 39.99s/it, [0;92mdata_loading=39.23, iteration=0.753, train_acc=87.54, train_loss_seg=0.474, train_macc=45.80, train_miou=39.61[0m)][2022-10-23 22:33:22,573][torch_points3d.trainer][INFO] - Learning rate = 0.041517
+[2022-10-23 22:33:22,574][torch_points3d.trainer][INFO] - EPOCH 77 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[153622], coords=[153622, 3], grid_size=[3], id_scan=[3], mapping_index=[153622], origin_id=[153622], pos=[153622, 3], ptr=[4], x=[153622, 9, 10], x_seen_mask=[153622], y=[153622])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=153622, device=cpu)
+)
+x_seen_mask torch.Size([153622])
+viewing_feats;  torch.Size([153622, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=153622, device=cpu), pos=[153622, 3], seen=[153622], x=[153622, 20])
+seen_mask:  torch.Size([153622])
+  0%|          | 0/1 [00:39<?, ?it/s, [0;92mdata_loading=38.74, iteration=0.735, train_acc=83.85, train_loss_seg=0.578, train_macc=42.92, train_miou=36.38[0m)]100%|##########| 1/1 [00:39<00:00, 39.48s/it, [0;92mdata_loading=38.74, iteration=0.735, train_acc=83.85, train_loss_seg=0.578, train_macc=42.92, train_miou=36.38[0m)]100%|##########| 1/1 [00:39<00:00, 39.48s/it, [0;92mdata_loading=38.74, iteration=0.735, train_acc=83.85, train_loss_seg=0.578, train_macc=42.92, train_miou=36.38[0m)][2022-10-23 22:34:02,072][torch_points3d.trainer][INFO] - Learning rate = 0.041040
+[2022-10-23 22:34:02,073][torch_points3d.trainer][INFO] - EPOCH 78 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[158783], coords=[158783, 3], grid_size=[3], id_scan=[3], mapping_index=[158783], origin_id=[158783], pos=[158783, 3], ptr=[4], x=[158783, 9, 10], x_seen_mask=[158783], y=[158783])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=158783, device=cpu)
+)
+x_seen_mask torch.Size([158783])
+viewing_feats;  torch.Size([158783, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=158783, device=cpu), pos=[158783, 3], seen=[158783], x=[158783, 20])
+seen_mask:  torch.Size([158783])
+  0%|          | 0/1 [00:40<?, ?it/s, [0;92mdata_loading=39.95, iteration=0.781, train_acc=68.21, train_loss_seg=1.026, train_macc=25.53, train_miou=18.60[0m)]100%|##########| 1/1 [00:40<00:00, 40.74s/it, [0;92mdata_loading=39.95, iteration=0.781, train_acc=68.21, train_loss_seg=1.026, train_macc=25.53, train_miou=18.60[0m)]100%|##########| 1/1 [00:40<00:00, 40.74s/it, [0;92mdata_loading=39.95, iteration=0.781, train_acc=68.21, train_loss_seg=1.026, train_macc=25.53, train_miou=18.60[0m)][2022-10-23 22:34:42,832][torch_points3d.trainer][INFO] - Learning rate = 0.040568
+[2022-10-23 22:34:42,832][torch_points3d.trainer][INFO] - EPOCH 79 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[153578], coords=[153578, 3], grid_size=[3], id_scan=[3], mapping_index=[153578], origin_id=[153578], pos=[153578, 3], ptr=[4], x=[153578, 9, 10], x_seen_mask=[153578], y=[153578])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=153578, device=cpu)
+)
+x_seen_mask torch.Size([153578])
+viewing_feats;  torch.Size([153578, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=153578, device=cpu), pos=[153578, 3], seen=[153578], x=[153578, 20])
+seen_mask:  torch.Size([153578])
+  0%|          | 0/1 [00:39<?, ?it/s, [0;92mdata_loading=38.35, iteration=0.747, train_acc=87.60, train_loss_seg=0.450, train_macc=46.01, train_miou=39.66[0m)]100%|##########| 1/1 [00:39<00:00, 39.10s/it, [0;92mdata_loading=38.35, iteration=0.747, train_acc=87.60, train_loss_seg=0.450, train_macc=46.01, train_miou=39.66[0m)]100%|##########| 1/1 [00:39<00:00, 39.10s/it, [0;92mdata_loading=38.35, iteration=0.747, train_acc=87.60, train_loss_seg=0.450, train_macc=46.01, train_miou=39.66[0m)][2022-10-23 22:35:21,955][torch_points3d.trainer][INFO] - Learning rate = 0.040101
+[2022-10-23 22:35:21,955][torch_points3d.trainer][INFO] - EPOCH 80 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[155247], coords=[155247, 3], grid_size=[3], id_scan=[3], mapping_index=[155247], origin_id=[155247], pos=[155247, 3], ptr=[4], x=[155247, 9, 10], x_seen_mask=[155247], y=[155247])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=155247, device=cpu)
+)
+x_seen_mask torch.Size([155247])
+viewing_feats;  torch.Size([155247, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=155247, device=cpu), pos=[155247, 3], seen=[155247], x=[155247, 20])
+seen_mask:  torch.Size([155247])
+  0%|          | 0/1 [00:40<?, ?it/s, [0;92mdata_loading=39.47, iteration=0.765, train_acc=70.40, train_loss_seg=0.964, train_macc=29.40, train_miou=21.12[0m)]100%|##########| 1/1 [00:40<00:00, 40.24s/it, [0;92mdata_loading=39.47, iteration=0.765, train_acc=70.40, train_loss_seg=0.964, train_macc=29.40, train_miou=21.12[0m)]100%|##########| 1/1 [00:40<00:00, 40.24s/it, [0;92mdata_loading=39.47, iteration=0.765, train_acc=70.40, train_loss_seg=0.964, train_macc=29.40, train_miou=21.12[0m)][2022-10-23 22:36:02,221][torch_points3d.trainer][INFO] - Learning rate = 0.039640
+[2022-10-23 22:36:02,221][torch_points3d.trainer][INFO] - EPOCH 81 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[151613], coords=[151613, 3], grid_size=[3], id_scan=[3], mapping_index=[151613], origin_id=[151613], pos=[151613, 3], ptr=[4], x=[151613, 9, 10], x_seen_mask=[151613], y=[151613])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=151613, device=cpu)
+)
+x_seen_mask torch.Size([151613])
+viewing_feats;  torch.Size([151613, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=151613, device=cpu), pos=[151613, 3], seen=[151613], x=[151613, 20])
+seen_mask:  torch.Size([151613])
+  0%|          | 0/1 [00:39<?, ?it/s, [0;92mdata_loading=39.08, iteration=0.739, train_acc=81.07, train_loss_seg=0.656, train_macc=41.35, train_miou=34.15[0m)]100%|##########| 1/1 [00:39<00:00, 39.82s/it, [0;92mdata_loading=39.08, iteration=0.739, train_acc=81.07, train_loss_seg=0.656, train_macc=41.35, train_miou=34.15[0m)]100%|##########| 1/1 [00:39<00:00, 39.82s/it, [0;92mdata_loading=39.08, iteration=0.739, train_acc=81.07, train_loss_seg=0.656, train_macc=41.35, train_miou=34.15[0m)][2022-10-23 22:36:42,062][torch_points3d.trainer][INFO] - Learning rate = 0.039184
+[2022-10-23 22:36:42,063][torch_points3d.trainer][INFO] - EPOCH 82 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[156529], coords=[156529, 3], grid_size=[3], id_scan=[3], mapping_index=[156529], origin_id=[156529], pos=[156529, 3], ptr=[4], x=[156529, 9, 10], x_seen_mask=[156529], y=[156529])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=156529, device=cpu)
+)
+x_seen_mask torch.Size([156529])
+viewing_feats;  torch.Size([156529, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=156529, device=cpu), pos=[156529, 3], seen=[156529], x=[156529, 20])
+seen_mask:  torch.Size([156529])
+  0%|          | 0/1 [00:39<?, ?it/s, [0;92mdata_loading=38.90, iteration=0.771, train_acc=74.42, train_loss_seg=0.831, train_macc=33.18, train_miou=25.18[0m)]100%|##########| 1/1 [00:39<00:00, 39.67s/it, [0;92mdata_loading=38.90, iteration=0.771, train_acc=74.42, train_loss_seg=0.831, train_macc=33.18, train_miou=25.18[0m)]100%|##########| 1/1 [00:39<00:00, 39.68s/it, [0;92mdata_loading=38.90, iteration=0.771, train_acc=74.42, train_loss_seg=0.831, train_macc=33.18, train_miou=25.18[0m)][2022-10-23 22:37:21,758][torch_points3d.trainer][INFO] - Learning rate = 0.038734
+[2022-10-23 22:37:21,759][torch_points3d.trainer][INFO] - EPOCH 83 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[155691], coords=[155691, 3], grid_size=[3], id_scan=[3], mapping_index=[155691], origin_id=[155691], pos=[155691, 3], ptr=[4], x=[155691, 9, 10], x_seen_mask=[155691], y=[155691])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=155691, device=cpu)
+)
+x_seen_mask torch.Size([155691])
+viewing_feats;  torch.Size([155691, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=155691, device=cpu), pos=[155691, 3], seen=[155691], x=[155691, 20])
+seen_mask:  torch.Size([155691])
+  0%|          | 0/1 [00:40<?, ?it/s, [0;92mdata_loading=39.42, iteration=0.749, train_acc=85.01, train_loss_seg=0.54 , train_macc=45.68, train_miou=39.16[0m)]100%|##########| 1/1 [00:40<00:00, 40.18s/it, [0;92mdata_loading=39.42, iteration=0.749, train_acc=85.01, train_loss_seg=0.54 , train_macc=45.68, train_miou=39.16[0m)]100%|##########| 1/1 [00:40<00:00, 40.18s/it, [0;92mdata_loading=39.42, iteration=0.749, train_acc=85.01, train_loss_seg=0.54 , train_macc=45.68, train_miou=39.16[0m)][2022-10-23 22:38:01,956][torch_points3d.trainer][INFO] - Learning rate = 0.038288
+[2022-10-23 22:38:01,956][torch_points3d.trainer][INFO] - EPOCH 84 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[152146], coords=[152146, 3], grid_size=[3], id_scan=[3], mapping_index=[152146], origin_id=[152146], pos=[152146, 3], ptr=[4], x=[152146, 9, 10], x_seen_mask=[152146], y=[152146])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=152146, device=cpu)
+)
+x_seen_mask torch.Size([152146])
+viewing_feats;  torch.Size([152146, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=152146, device=cpu), pos=[152146, 3], seen=[152146], x=[152146, 20])
+seen_mask:  torch.Size([152146])
+  0%|          | 0/1 [00:39<?, ?it/s, [0;92mdata_loading=38.99, iteration=0.758, train_acc=82.26, train_loss_seg=0.628, train_macc=43.21, train_miou=36.48[0m)]100%|##########| 1/1 [00:39<00:00, 39.76s/it, [0;92mdata_loading=38.99, iteration=0.758, train_acc=82.26, train_loss_seg=0.628, train_macc=43.21, train_miou=36.48[0m)]100%|##########| 1/1 [00:39<00:00, 39.76s/it, [0;92mdata_loading=38.99, iteration=0.758, train_acc=82.26, train_loss_seg=0.628, train_macc=43.21, train_miou=36.48[0m)][2022-10-23 22:38:41,738][torch_points3d.trainer][INFO] - Learning rate = 0.037848
+[2022-10-23 22:38:41,738][torch_points3d.trainer][INFO] - EPOCH 85 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[155094], coords=[155094, 3], grid_size=[3], id_scan=[3], mapping_index=[155094], origin_id=[155094], pos=[155094, 3], ptr=[4], x=[155094, 9, 10], x_seen_mask=[155094], y=[155094])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=155094, device=cpu)
+)
+x_seen_mask torch.Size([155094])
+viewing_feats;  torch.Size([155094, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=155094, device=cpu), pos=[155094, 3], seen=[155094], x=[155094, 20])
+seen_mask:  torch.Size([155094])
+  0%|          | 0/1 [00:40<?, ?it/s, [0;92mdata_loading=39.53, iteration=0.760, train_acc=67.66, train_loss_seg=1.060, train_macc=27.90, train_miou=19.95[0m)]100%|##########| 1/1 [00:40<00:00, 40.29s/it, [0;92mdata_loading=39.53, iteration=0.760, train_acc=67.66, train_loss_seg=1.060, train_macc=27.90, train_miou=19.95[0m)]100%|##########| 1/1 [00:40<00:00, 40.29s/it, [0;92mdata_loading=39.53, iteration=0.760, train_acc=67.66, train_loss_seg=1.060, train_macc=27.90, train_miou=19.95[0m)][2022-10-23 22:39:22,051][torch_points3d.trainer][INFO] - Learning rate = 0.037413
+[2022-10-23 22:39:22,051][torch_points3d.trainer][INFO] - EPOCH 86 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[155899], coords=[155899, 3], grid_size=[3], id_scan=[3], mapping_index=[155899], origin_id=[155899], pos=[155899, 3], ptr=[4], x=[155899, 9, 10], x_seen_mask=[155899], y=[155899])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=155899, device=cpu)
+)
+x_seen_mask torch.Size([155899])
+viewing_feats;  torch.Size([155899, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=155899, device=cpu), pos=[155899, 3], seen=[155899], x=[155899, 20])
+seen_mask:  torch.Size([155899])
+  0%|          | 0/1 [00:40<?, ?it/s, [0;92mdata_loading=39.72, iteration=0.758, train_acc=81.76, train_loss_seg=0.632, train_macc=44.08, train_miou=36.39[0m)]100%|##########| 1/1 [00:40<00:00, 40.48s/it, [0;92mdata_loading=39.72, iteration=0.758, train_acc=81.76, train_loss_seg=0.632, train_macc=44.08, train_miou=36.39[0m)]100%|##########| 1/1 [00:40<00:00, 40.48s/it, [0;92mdata_loading=39.72, iteration=0.758, train_acc=81.76, train_loss_seg=0.632, train_macc=44.08, train_miou=36.39[0m)][2022-10-23 22:40:02,558][torch_points3d.trainer][INFO] - Learning rate = 0.036982
+[2022-10-23 22:40:02,558][torch_points3d.trainer][INFO] - EPOCH 87 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[154492], coords=[154492, 3], grid_size=[3], id_scan=[3], mapping_index=[154492], origin_id=[154492], pos=[154492, 3], ptr=[4], x=[154492, 9, 10], x_seen_mask=[154492], y=[154492])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=154492, device=cpu)
+)
+x_seen_mask torch.Size([154492])
+viewing_feats;  torch.Size([154492, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=154492, device=cpu), pos=[154492, 3], seen=[154492], x=[154492, 20])
+seen_mask:  torch.Size([154492])
+  0%|          | 0/1 [00:39<?, ?it/s, [0;92mdata_loading=39.23, iteration=0.763, train_acc=73.87, train_loss_seg=0.838, train_macc=34.01, train_miou=25.40[0m)]100%|##########| 1/1 [00:39<00:00, 39.99s/it, [0;92mdata_loading=39.23, iteration=0.763, train_acc=73.87, train_loss_seg=0.838, train_macc=34.01, train_miou=25.40[0m)]100%|##########| 1/1 [00:39<00:00, 39.99s/it, [0;92mdata_loading=39.23, iteration=0.763, train_acc=73.87, train_loss_seg=0.838, train_macc=34.01, train_miou=25.40[0m)][2022-10-23 22:40:42,583][torch_points3d.trainer][INFO] - Learning rate = 0.036557
+[2022-10-23 22:40:42,583][torch_points3d.trainer][INFO] - EPOCH 88 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[150551], coords=[150551, 3], grid_size=[3], id_scan=[3], mapping_index=[150551], origin_id=[150551], pos=[150551, 3], ptr=[4], x=[150551, 9, 10], x_seen_mask=[150551], y=[150551])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=150551, device=cpu)
+)
+x_seen_mask torch.Size([150551])
+viewing_feats;  torch.Size([150551, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=150551, device=cpu), pos=[150551, 3], seen=[150551], x=[150551, 20])
+seen_mask:  torch.Size([150551])
+  0%|          | 0/1 [00:39<?, ?it/s, [0;92mdata_loading=38.70, iteration=0.744, train_acc=72.30, train_loss_seg=0.921, train_macc=33.18, train_miou=24.59[0m)]100%|##########| 1/1 [00:39<00:00, 39.45s/it, [0;92mdata_loading=38.70, iteration=0.744, train_acc=72.30, train_loss_seg=0.921, train_macc=33.18, train_miou=24.59[0m)]100%|##########| 1/1 [00:39<00:00, 39.45s/it, [0;92mdata_loading=38.70, iteration=0.744, train_acc=72.30, train_loss_seg=0.921, train_macc=33.18, train_miou=24.59[0m)][2022-10-23 22:41:22,055][torch_points3d.trainer][INFO] - Learning rate = 0.036137
+[2022-10-23 22:41:22,055][torch_points3d.trainer][INFO] - EPOCH 89 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[150337], coords=[150337, 3], grid_size=[3], id_scan=[3], mapping_index=[150337], origin_id=[150337], pos=[150337, 3], ptr=[4], x=[150337, 9, 10], x_seen_mask=[150337], y=[150337])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=150337, device=cpu)
+)
+x_seen_mask torch.Size([150337])
+viewing_feats;  torch.Size([150337, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=150337, device=cpu), pos=[150337, 3], seen=[150337], x=[150337, 20])
+seen_mask:  torch.Size([150337])
+  0%|          | 0/1 [00:39<?, ?it/s, [0;92mdata_loading=38.86, iteration=0.722, train_acc=88.27, train_loss_seg=0.441, train_macc=49.68, train_miou=43.53[0m)]100%|##########| 1/1 [00:39<00:00, 39.59s/it, [0;92mdata_loading=38.86, iteration=0.722, train_acc=88.27, train_loss_seg=0.441, train_macc=49.68, train_miou=43.53[0m)]100%|##########| 1/1 [00:39<00:00, 39.59s/it, [0;92mdata_loading=38.86, iteration=0.722, train_acc=88.27, train_loss_seg=0.441, train_macc=49.68, train_miou=43.53[0m)][2022-10-23 22:42:01,667][torch_points3d.trainer][INFO] - Learning rate = 0.035721
+[2022-10-23 22:42:01,668][torch_points3d.trainer][INFO] - EPOCH 90 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[154745], coords=[154745, 3], grid_size=[3], id_scan=[3], mapping_index=[154745], origin_id=[154745], pos=[154745, 3], ptr=[4], x=[154745, 9, 10], x_seen_mask=[154745], y=[154745])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=154745, device=cpu)
+)
+x_seen_mask torch.Size([154745])
+viewing_feats;  torch.Size([154745, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=154745, device=cpu), pos=[154745, 3], seen=[154745], x=[154745, 20])
+seen_mask:  torch.Size([154745])
+  0%|          | 0/1 [00:39<?, ?it/s, [0;92mdata_loading=38.98, iteration=0.759, train_acc=88.55, train_loss_seg=0.427, train_macc=49.62, train_miou=43.31[0m)]100%|##########| 1/1 [00:39<00:00, 39.75s/it, [0;92mdata_loading=38.98, iteration=0.759, train_acc=88.55, train_loss_seg=0.427, train_macc=49.62, train_miou=43.31[0m)]100%|##########| 1/1 [00:39<00:00, 39.75s/it, [0;92mdata_loading=38.98, iteration=0.759, train_acc=88.55, train_loss_seg=0.427, train_macc=49.62, train_miou=43.31[0m)][2022-10-23 22:42:41,436][torch_points3d.trainer][INFO] - Learning rate = 0.035310
+[2022-10-23 22:42:41,436][torch_points3d.trainer][INFO] - EPOCH 91 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[152475], coords=[152475, 3], grid_size=[3], id_scan=[3], mapping_index=[152475], origin_id=[152475], pos=[152475, 3], ptr=[4], x=[152475, 9, 10], x_seen_mask=[152475], y=[152475])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=152475, device=cpu)
+)
+x_seen_mask torch.Size([152475])
+viewing_feats;  torch.Size([152475, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=152475, device=cpu), pos=[152475, 3], seen=[152475], x=[152475, 20])
+seen_mask:  torch.Size([152475])
+  0%|          | 0/1 [00:39<?, ?it/s, [0;92mdata_loading=39.21, iteration=0.731, train_acc=71.56, train_loss_seg=0.866, train_macc=33.31, train_miou=25.66[0m)]100%|##########| 1/1 [00:39<00:00, 39.95s/it, [0;92mdata_loading=39.21, iteration=0.731, train_acc=71.56, train_loss_seg=0.866, train_macc=33.31, train_miou=25.66[0m)]100%|##########| 1/1 [00:39<00:00, 39.95s/it, [0;92mdata_loading=39.21, iteration=0.731, train_acc=71.56, train_loss_seg=0.866, train_macc=33.31, train_miou=25.66[0m)][2022-10-23 22:43:21,408][torch_points3d.trainer][INFO] - Learning rate = 0.034904
+[2022-10-23 22:43:21,408][torch_points3d.trainer][INFO] - EPOCH 92 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[155784], coords=[155784, 3], grid_size=[3], id_scan=[3], mapping_index=[155784], origin_id=[155784], pos=[155784, 3], ptr=[4], x=[155784, 9, 10], x_seen_mask=[155784], y=[155784])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=155784, device=cpu)
+)
+x_seen_mask torch.Size([155784])
+viewing_feats;  torch.Size([155784, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=155784, device=cpu), pos=[155784, 3], seen=[155784], x=[155784, 20])
+seen_mask:  torch.Size([155784])
+  0%|          | 0/1 [00:40<?, ?it/s, [0;92mdata_loading=39.98, iteration=0.770, train_acc=67.28, train_loss_seg=1.015, train_macc=27.81, train_miou=19.89[0m)]100%|##########| 1/1 [00:40<00:00, 40.76s/it, [0;92mdata_loading=39.98, iteration=0.770, train_acc=67.28, train_loss_seg=1.015, train_macc=27.81, train_miou=19.89[0m)]100%|##########| 1/1 [00:40<00:00, 40.76s/it, [0;92mdata_loading=39.98, iteration=0.770, train_acc=67.28, train_loss_seg=1.015, train_macc=27.81, train_miou=19.89[0m)][2022-10-23 22:44:02,191][torch_points3d.trainer][INFO] - Learning rate = 0.034503
+[2022-10-23 22:44:02,191][torch_points3d.trainer][INFO] - EPOCH 93 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[146811], coords=[146811, 3], grid_size=[3], id_scan=[3], mapping_index=[146811], origin_id=[146811], pos=[146811, 3], ptr=[4], x=[146811, 9, 10], x_seen_mask=[146811], y=[146811])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=146811, device=cpu)
+)
+x_seen_mask torch.Size([146811])
+viewing_feats;  torch.Size([146811, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=146811, device=cpu), pos=[146811, 3], seen=[146811], x=[146811, 20])
+seen_mask:  torch.Size([146811])
+  0%|          | 0/1 [00:39<?, ?it/s, [0;92mdata_loading=38.76, iteration=0.718, train_acc=88.47, train_loss_seg=0.428, train_macc=49.79, train_miou=43.72[0m)]100%|##########| 1/1 [00:39<00:00, 39.48s/it, [0;92mdata_loading=38.76, iteration=0.718, train_acc=88.47, train_loss_seg=0.428, train_macc=49.79, train_miou=43.72[0m)]100%|##########| 1/1 [00:39<00:00, 39.48s/it, [0;92mdata_loading=38.76, iteration=0.718, train_acc=88.47, train_loss_seg=0.428, train_macc=49.79, train_miou=43.72[0m)][2022-10-23 22:44:41,696][torch_points3d.trainer][INFO] - Learning rate = 0.034106
+[2022-10-23 22:44:41,697][torch_points3d.trainer][INFO] - EPOCH 94 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[161601], coords=[161601, 3], grid_size=[3], id_scan=[3], mapping_index=[161601], origin_id=[161601], pos=[161601, 3], ptr=[4], x=[161601, 9, 10], x_seen_mask=[161601], y=[161601])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=161601, device=cpu)
+)
+x_seen_mask torch.Size([161601])
+viewing_feats;  torch.Size([161601, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=161601, device=cpu), pos=[161601, 3], seen=[161601], x=[161601, 20])
+seen_mask:  torch.Size([161601])
+  0%|          | 0/1 [00:40<?, ?it/s, [0;92mdata_loading=39.47, iteration=0.798, train_acc=89.16, train_loss_seg=0.406, train_macc=49.85, train_miou=43.99[0m)]100%|##########| 1/1 [00:40<00:00, 40.28s/it, [0;92mdata_loading=39.47, iteration=0.798, train_acc=89.16, train_loss_seg=0.406, train_macc=49.85, train_miou=43.99[0m)]100%|##########| 1/1 [00:40<00:00, 40.28s/it, [0;92mdata_loading=39.47, iteration=0.798, train_acc=89.16, train_loss_seg=0.406, train_macc=49.85, train_miou=43.99[0m)][2022-10-23 22:45:21,995][torch_points3d.trainer][INFO] - Learning rate = 0.033714
+[2022-10-23 22:45:21,996][torch_points3d.trainer][INFO] - EPOCH 95 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[152210], coords=[152210, 3], grid_size=[3], id_scan=[3], mapping_index=[152210], origin_id=[152210], pos=[152210, 3], ptr=[4], x=[152210, 9, 10], x_seen_mask=[152210], y=[152210])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=152210, device=cpu)
+)
+x_seen_mask torch.Size([152210])
+viewing_feats;  torch.Size([152210, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=152210, device=cpu), pos=[152210, 3], seen=[152210], x=[152210, 20])
+seen_mask:  torch.Size([152210])
+  0%|          | 0/1 [00:39<?, ?it/s, [0;92mdata_loading=39.12, iteration=0.747, train_acc=88.16, train_loss_seg=0.430, train_macc=49.96, train_miou=43.88[0m)]100%|##########| 1/1 [00:39<00:00, 39.87s/it, [0;92mdata_loading=39.12, iteration=0.747, train_acc=88.16, train_loss_seg=0.430, train_macc=49.96, train_miou=43.88[0m)]100%|##########| 1/1 [00:39<00:00, 39.87s/it, [0;92mdata_loading=39.12, iteration=0.747, train_acc=88.16, train_loss_seg=0.430, train_macc=49.96, train_miou=43.88[0m)][2022-10-23 22:46:01,890][torch_points3d.trainer][INFO] - Learning rate = 0.033326
+[2022-10-23 22:46:01,891][torch_points3d.trainer][INFO] - EPOCH 96 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[147716], coords=[147716, 3], grid_size=[3], id_scan=[3], mapping_index=[147716], origin_id=[147716], pos=[147716, 3], ptr=[4], x=[147716, 9, 10], x_seen_mask=[147716], y=[147716])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=147716, device=cpu)
+)
+x_seen_mask torch.Size([147716])
+viewing_feats;  torch.Size([147716, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=147716, device=cpu), pos=[147716, 3], seen=[147716], x=[147716, 20])
+seen_mask:  torch.Size([147716])
+  0%|          | 0/1 [00:39<?, ?it/s, [0;92mdata_loading=38.50, iteration=0.721, train_acc=71.35, train_loss_seg=0.955, train_macc=31.73, train_miou=24.06[0m)]100%|##########| 1/1 [00:39<00:00, 39.23s/it, [0;92mdata_loading=38.50, iteration=0.721, train_acc=71.35, train_loss_seg=0.955, train_macc=31.73, train_miou=24.06[0m)]100%|##########| 1/1 [00:39<00:00, 39.23s/it, [0;92mdata_loading=38.50, iteration=0.721, train_acc=71.35, train_loss_seg=0.955, train_macc=31.73, train_miou=24.06[0m)][2022-10-23 22:46:41,139][torch_points3d.trainer][INFO] - Learning rate = 0.032943
+[2022-10-23 22:46:41,139][torch_points3d.trainer][INFO] - EPOCH 97 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[152269], coords=[152269, 3], grid_size=[3], id_scan=[3], mapping_index=[152269], origin_id=[152269], pos=[152269, 3], ptr=[4], x=[152269, 9, 10], x_seen_mask=[152269], y=[152269])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=152269, device=cpu)
+)
+x_seen_mask torch.Size([152269])
+viewing_feats;  torch.Size([152269, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=152269, device=cpu), pos=[152269, 3], seen=[152269], x=[152269, 20])
+seen_mask:  torch.Size([152269])
+  0%|          | 0/1 [00:40<?, ?it/s, [0;92mdata_loading=39.47, iteration=0.737, train_acc=83.01, train_loss_seg=0.603, train_macc=45.44, train_miou=38.25[0m)]100%|##########| 1/1 [00:40<00:00, 40.21s/it, [0;92mdata_loading=39.47, iteration=0.737, train_acc=83.01, train_loss_seg=0.603, train_macc=45.44, train_miou=38.25[0m)]100%|##########| 1/1 [00:40<00:00, 40.21s/it, [0;92mdata_loading=39.47, iteration=0.737, train_acc=83.01, train_loss_seg=0.603, train_macc=45.44, train_miou=38.25[0m)][2022-10-23 22:47:21,373][torch_points3d.trainer][INFO] - Learning rate = 0.032564
+[2022-10-23 22:47:21,373][torch_points3d.trainer][INFO] - EPOCH 98 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[147587], coords=[147587, 3], grid_size=[3], id_scan=[3], mapping_index=[147587], origin_id=[147587], pos=[147587, 3], ptr=[4], x=[147587, 9, 10], x_seen_mask=[147587], y=[147587])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=147587, device=cpu)
+)
+x_seen_mask torch.Size([147587])
+viewing_feats;  torch.Size([147587, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=147587, device=cpu), pos=[147587, 3], seen=[147587], x=[147587, 20])
+seen_mask:  torch.Size([147587])
+  0%|          | 0/1 [00:39<?, ?it/s, [0;92mdata_loading=38.48, iteration=0.714, train_acc=68.89, train_loss_seg=1.001, train_macc=30.66, train_miou=21.96[0m)]100%|##########| 1/1 [00:39<00:00, 39.20s/it, [0;92mdata_loading=38.48, iteration=0.714, train_acc=68.89, train_loss_seg=1.001, train_macc=30.66, train_miou=21.96[0m)]100%|##########| 1/1 [00:39<00:00, 39.20s/it, [0;92mdata_loading=38.48, iteration=0.714, train_acc=68.89, train_loss_seg=1.001, train_macc=30.66, train_miou=21.96[0m)][2022-10-23 22:48:00,595][torch_points3d.trainer][INFO] - Learning rate = 0.032189
+[2022-10-23 22:48:00,596][torch_points3d.trainer][INFO] - EPOCH 99 / 100
+
+  0%|          | 0/1 [00:00<?, ?it/s]data inside mvfusion application:  MMBatch(
+    data = Batch(batch=[154479], coords=[154479, 3], grid_size=[3], id_scan=[3], mapping_index=[154479], origin_id=[154479], pos=[154479, 3], ptr=[4], x=[154479, 9, 10], x_seen_mask=[154479], y=[154479])
+    image = ImageBatch(num_settings=1, num_views=299, num_points=154479, device=cpu)
+)
+x_seen_mask torch.Size([154479])
+viewing_feats;  torch.Size([154479, 9, 9])
+THE TWO SEEN MASKS ARE EQUAL:  tensor(True)
+data in mvfusion model:  Batch(image=ImageBatch(num_settings=1, num_views=299, num_points=154479, device=cpu), pos=[154479, 3], seen=[154479], x=[154479, 20])
+seen_mask:  torch.Size([154479])
+  0%|          | 0/1 [00:40<?, ?it/s, [0;92mdata_loading=39.41, iteration=0.763, train_acc=89.26, train_loss_seg=0.406, train_macc=53.75, train_miou=46.36[0m)]100%|##########| 1/1 [00:40<00:00, 40.17s/it, [0;92mdata_loading=39.41, iteration=0.763, train_acc=89.26, train_loss_seg=0.406, train_macc=53.75, train_miou=46.36[0m)]100%|##########| 1/1 [00:40<00:00, 40.17s/it, [0;92mdata_loading=39.41, iteration=0.763, train_acc=89.26, train_loss_seg=0.406, train_macc=53.75, train_miou=46.36[0m)][2022-10-23 22:48:40,793][torch_points3d.trainer][INFO] - Learning rate = 0.031819
+Data(coords=[44460, 3], grid_size=[1], id_scan=[1], mapping_index=[44460], origin_id=[44460], pos=[44460, 3], x=[44460, 9, 10], x_seen_mask=[44460], y=[44460])
+tensor(44460)
+Data(coords=[47915, 3], grid_size=[1], id_scan=[1], mapping_index=[47915], origin_id=[47915], pos=[47915, 3], x=[47915, 9, 10], x_seen_mask=[47915], y=[47915])
+tensor(47915)
+Data(coords=[55887, 3], grid_size=[1], id_scan=[1], mapping_index=[55887], origin_id=[55887], pos=[55887, 3], x=[55887, 9, 10], x_seen_mask=[55887], y=[55887])
+tensor(55887)
+Data(coords=[51694, 3], grid_size=[1], id_scan=[1], mapping_index=[51694], origin_id=[51694], pos=[51694, 3], x=[51694, 9, 10], x_seen_mask=[51694], y=[51694])
+tensor(51694)
+Data(coords=[59314, 3], grid_size=[1], id_scan=[1], mapping_index=[59314], origin_id=[59314], pos=[59314, 3], x=[59314, 9, 10], x_seen_mask=[59314], y=[59314])
+tensor(59314)
+Data(coords=[45441, 3], grid_size=[1], id_scan=[1], mapping_index=[45441], origin_id=[45441], pos=[45441, 3], x=[45441, 9, 10], x_seen_mask=[45441], y=[45441])
+tensor(45441)
+Data(coords=[46122, 3], grid_size=[1], id_scan=[1], mapping_index=[46122], origin_id=[46122], pos=[46122, 3], x=[46122, 9, 10], x_seen_mask=[46122], y=[46122])
+tensor(46122)
+Data(coords=[57638, 3], grid_size=[1], id_scan=[1], mapping_index=[57638], origin_id=[57638], pos=[57638, 3], x=[57638, 9, 10], x_seen_mask=[57638], y=[57638])
+tensor(57638)
+Data(coords=[42099, 3], grid_size=[1], id_scan=[1], mapping_index=[42099], origin_id=[42099], pos=[42099, 3], x=[42099, 9, 10], x_seen_mask=[42099], y=[42099])
+tensor(42099)
+Data(coords=[45684, 3], grid_size=[1], id_scan=[1], mapping_index=[45684], origin_id=[45684], pos=[45684, 3], x=[45684, 9, 10], x_seen_mask=[45684], y=[45684])
+tensor(45684)
+Data(coords=[60553, 3], grid_size=[1], id_scan=[1], mapping_index=[60553], origin_id=[60553], pos=[60553, 3], x=[60553, 9, 10], x_seen_mask=[60553], y=[60553])
+tensor(60553)
+Data(coords=[44821, 3], grid_size=[1], id_scan=[1], mapping_index=[44821], origin_id=[44821], pos=[44821, 3], x=[44821, 9, 10], x_seen_mask=[44821], y=[44821])
+tensor(44821)
+Data(coords=[60420, 3], grid_size=[1], id_scan=[1], mapping_index=[60420], origin_id=[60420], pos=[60420, 3], x=[60420, 9, 10], x_seen_mask=[60420], y=[60420])
+tensor(60420)
+Data(coords=[45844, 3], grid_size=[1], id_scan=[1], mapping_index=[45844], origin_id=[45844], pos=[45844, 3], x=[45844, 9, 10], x_seen_mask=[45844], y=[45844])
+tensor(45844)
+Data(coords=[45651, 3], grid_size=[1], id_scan=[1], mapping_index=[45651], origin_id=[45651], pos=[45651, 3], x=[45651, 9, 10], x_seen_mask=[45651], y=[45651])
+tensor(45651)
+Data(coords=[52310, 3], grid_size=[1], id_scan=[1], mapping_index=[52310], origin_id=[52310], pos=[52310, 3], x=[52310, 9, 10], x_seen_mask=[52310], y=[52310])
+tensor(52310)
+Data(coords=[56820, 3], grid_size=[1], id_scan=[1], mapping_index=[56820], origin_id=[56820], pos=[56820, 3], x=[56820, 9, 10], x_seen_mask=[56820], y=[56820])
+tensor(56820)
+Data(coords=[49176, 3], grid_size=[1], id_scan=[1], mapping_index=[49176], origin_id=[49176], pos=[49176, 3], x=[49176, 9, 10], x_seen_mask=[49176], y=[49176])
+tensor(49176)
+Data(coords=[45424, 3], grid_size=[1], id_scan=[1], mapping_index=[45424], origin_id=[45424], pos=[45424, 3], x=[45424, 9, 10], x_seen_mask=[45424], y=[45424])
+tensor(45424)
+Data(coords=[44611, 3], grid_size=[1], id_scan=[1], mapping_index=[44611], origin_id=[44611], pos=[44611, 3], x=[44611, 9, 10], x_seen_mask=[44611], y=[44611])
+tensor(44611)
+Data(coords=[56583, 3], grid_size=[1], id_scan=[1], mapping_index=[56583], origin_id=[56583], pos=[56583, 3], x=[56583, 9, 10], x_seen_mask=[56583], y=[56583])
+tensor(56583)
+Data(coords=[43737, 3], grid_size=[1], id_scan=[1], mapping_index=[43737], origin_id=[43737], pos=[43737, 3], x=[43737, 9, 10], x_seen_mask=[43737], y=[43737])
+tensor(43737)
+Data(coords=[44845, 3], grid_size=[1], id_scan=[1], mapping_index=[44845], origin_id=[44845], pos=[44845, 3], x=[44845, 9, 10], x_seen_mask=[44845], y=[44845])
+tensor(44845)
+Data(coords=[58835, 3], grid_size=[1], id_scan=[1], mapping_index=[58835], origin_id=[58835], pos=[58835, 3], x=[58835, 9, 10], x_seen_mask=[58835], y=[58835])
+tensor(58835)
+Data(coords=[45460, 3], grid_size=[1], id_scan=[1], mapping_index=[45460], origin_id=[45460], pos=[45460, 3], x=[45460, 9, 10], x_seen_mask=[45460], y=[45460])
+tensor(45460)
+Data(coords=[48971, 3], grid_size=[1], id_scan=[1], mapping_index=[48971], origin_id=[48971], pos=[48971, 3], x=[48971, 9, 10], x_seen_mask=[48971], y=[48971])
+tensor(48971)
+Data(coords=[57703, 3], grid_size=[1], id_scan=[1], mapping_index=[57703], origin_id=[57703], pos=[57703, 3], x=[57703, 9, 10], x_seen_mask=[57703], y=[57703])
+tensor(57703)
+Data(coords=[43611, 3], grid_size=[1], id_scan=[1], mapping_index=[43611], origin_id=[43611], pos=[43611, 3], x=[43611, 9, 10], x_seen_mask=[43611], y=[43611])
+tensor(43611)
+Data(coords=[48609, 3], grid_size=[1], id_scan=[1], mapping_index=[48609], origin_id=[48609], pos=[48609, 3], x=[48609, 9, 10], x_seen_mask=[48609], y=[48609])
+tensor(48609)
+Data(coords=[60465, 3], grid_size=[1], id_scan=[1], mapping_index=[60465], origin_id=[60465], pos=[60465, 3], x=[60465, 9, 10], x_seen_mask=[60465], y=[60465])
+tensor(60465)
+Data(coords=[60410, 3], grid_size=[1], id_scan=[1], mapping_index=[60410], origin_id=[60410], pos=[60410, 3], x=[60410, 9, 10], x_seen_mask=[60410], y=[60410])
+tensor(60410)
+Data(coords=[47751, 3], grid_size=[1], id_scan=[1], mapping_index=[47751], origin_id=[47751], pos=[47751, 3], x=[47751, 9, 10], x_seen_mask=[47751], y=[47751])
+tensor(47751)
+Data(coords=[42697, 3], grid_size=[1], id_scan=[1], mapping_index=[42697], origin_id=[42697], pos=[42697, 3], x=[42697, 9, 10], x_seen_mask=[42697], y=[42697])
+tensor(42697)
+Data(coords=[42607, 3], grid_size=[1], id_scan=[1], mapping_index=[42607], origin_id=[42607], pos=[42607, 3], x=[42607, 9, 10], x_seen_mask=[42607], y=[42607])
+tensor(42607)
+Data(coords=[47978, 3], grid_size=[1], id_scan=[1], mapping_index=[47978], origin_id=[47978], pos=[47978, 3], x=[47978, 9, 10], x_seen_mask=[47978], y=[47978])
+tensor(47978)
+Data(coords=[58977, 3], grid_size=[1], id_scan=[1], mapping_index=[58977], origin_id=[58977], pos=[58977, 3], x=[58977, 9, 10], x_seen_mask=[58977], y=[58977])
+tensor(58977)
+Data(coords=[60155, 3], grid_size=[1], id_scan=[1], mapping_index=[60155], origin_id=[60155], pos=[60155, 3], x=[60155, 9, 10], x_seen_mask=[60155], y=[60155])
+tensor(60155)
+Data(coords=[40705, 3], grid_size=[1], id_scan=[1], mapping_index=[40705], origin_id=[40705], pos=[40705, 3], x=[40705, 9, 10], x_seen_mask=[40705], y=[40705])
+tensor(40705)
+Data(coords=[46328, 3], grid_size=[1], id_scan=[1], mapping_index=[46328], origin_id=[46328], pos=[46328, 3], x=[46328, 9, 10], x_seen_mask=[46328], y=[46328])
+tensor(46328)
+Data(coords=[59195, 3], grid_size=[1], id_scan=[1], mapping_index=[59195], origin_id=[59195], pos=[59195, 3], x=[59195, 9, 10], x_seen_mask=[59195], y=[59195])
+tensor(59195)
+Data(coords=[48485, 3], grid_size=[1], id_scan=[1], mapping_index=[48485], origin_id=[48485], pos=[48485, 3], x=[48485, 9, 10], x_seen_mask=[48485], y=[48485])
+tensor(48485)
+Data(coords=[46019, 3], grid_size=[1], id_scan=[1], mapping_index=[46019], origin_id=[46019], pos=[46019, 3], x=[46019, 9, 10], x_seen_mask=[46019], y=[46019])
+tensor(46019)
+Data(coords=[55740, 3], grid_size=[1], id_scan=[1], mapping_index=[55740], origin_id=[55740], pos=[55740, 3], x=[55740, 9, 10], x_seen_mask=[55740], y=[55740])
+tensor(55740)
+Data(coords=[47968, 3], grid_size=[1], id_scan=[1], mapping_index=[47968], origin_id=[47968], pos=[47968, 3], x=[47968, 9, 10], x_seen_mask=[47968], y=[47968])
+tensor(47968)
+Data(coords=[44491, 3], grid_size=[1], id_scan=[1], mapping_index=[44491], origin_id=[44491], pos=[44491, 3], x=[44491, 9, 10], x_seen_mask=[44491], y=[44491])
+tensor(44491)
+Data(coords=[42447, 3], grid_size=[1], id_scan=[1], mapping_index=[42447], origin_id=[42447], pos=[42447, 3], x=[42447, 9, 10], x_seen_mask=[42447], y=[42447])
+tensor(42447)
+Data(coords=[57975, 3], grid_size=[1], id_scan=[1], mapping_index=[57975], origin_id=[57975], pos=[57975, 3], x=[57975, 9, 10], x_seen_mask=[57975], y=[57975])
+tensor(57975)
+Data(coords=[49268, 3], grid_size=[1], id_scan=[1], mapping_index=[49268], origin_id=[49268], pos=[49268, 3], x=[49268, 9, 10], x_seen_mask=[49268], y=[49268])
+tensor(49268)
+Data(coords=[45576, 3], grid_size=[1], id_scan=[1], mapping_index=[45576], origin_id=[45576], pos=[45576, 3], x=[45576, 9, 10], x_seen_mask=[45576], y=[45576])
+tensor(45576)
+Data(coords=[44066, 3], grid_size=[1], id_scan=[1], mapping_index=[44066], origin_id=[44066], pos=[44066, 3], x=[44066, 9, 10], x_seen_mask=[44066], y=[44066])
+tensor(44066)
+Data(coords=[58276, 3], grid_size=[1], id_scan=[1], mapping_index=[58276], origin_id=[58276], pos=[58276, 3], x=[58276, 9, 10], x_seen_mask=[58276], y=[58276])
+tensor(58276)
+Data(coords=[46225, 3], grid_size=[1], id_scan=[1], mapping_index=[46225], origin_id=[46225], pos=[46225, 3], x=[46225, 9, 10], x_seen_mask=[46225], y=[46225])
+tensor(46225)
+Data(coords=[61808, 3], grid_size=[1], id_scan=[1], mapping_index=[61808], origin_id=[61808], pos=[61808, 3], x=[61808, 9, 10], x_seen_mask=[61808], y=[61808])
+tensor(61808)
+Data(coords=[50785, 3], grid_size=[1], id_scan=[1], mapping_index=[50785], origin_id=[50785], pos=[50785, 3], x=[50785, 9, 10], x_seen_mask=[50785], y=[50785])
+tensor(50785)
+Data(coords=[46948, 3], grid_size=[1], id_scan=[1], mapping_index=[46948], origin_id=[46948], pos=[46948, 3], x=[46948, 9, 10], x_seen_mask=[46948], y=[46948])
+tensor(46948)
+Data(coords=[49382, 3], grid_size=[1], id_scan=[1], mapping_index=[49382], origin_id=[49382], pos=[49382, 3], x=[49382, 9, 10], x_seen_mask=[49382], y=[49382])
+tensor(49382)
+Data(coords=[57746, 3], grid_size=[1], id_scan=[1], mapping_index=[57746], origin_id=[57746], pos=[57746, 3], x=[57746, 9, 10], x_seen_mask=[57746], y=[57746])
+tensor(57746)
+Data(coords=[59917, 3], grid_size=[1], id_scan=[1], mapping_index=[59917], origin_id=[59917], pos=[59917, 3], x=[59917, 9, 10], x_seen_mask=[59917], y=[59917])
+tensor(59917)
+Data(coords=[44942, 3], grid_size=[1], id_scan=[1], mapping_index=[44942], origin_id=[44942], pos=[44942, 3], x=[44942, 9, 10], x_seen_mask=[44942], y=[44942])
+tensor(44942)
+Data(coords=[44784, 3], grid_size=[1], id_scan=[1], mapping_index=[44784], origin_id=[44784], pos=[44784, 3], x=[44784, 9, 10], x_seen_mask=[44784], y=[44784])
+tensor(44784)
+Data(coords=[41176, 3], grid_size=[1], id_scan=[1], mapping_index=[41176], origin_id=[41176], pos=[41176, 3], x=[41176, 9, 10], x_seen_mask=[41176], y=[41176])
+tensor(41176)
+Data(coords=[59989, 3], grid_size=[1], id_scan=[1], mapping_index=[59989], origin_id=[59989], pos=[59989, 3], x=[59989, 9, 10], x_seen_mask=[59989], y=[59989])
+tensor(59989)
+Data(coords=[43045, 3], grid_size=[1], id_scan=[1], mapping_index=[43045], origin_id=[43045], pos=[43045, 3], x=[43045, 9, 10], x_seen_mask=[43045], y=[43045])
+tensor(43045)
+Data(coords=[47404, 3], grid_size=[1], id_scan=[1], mapping_index=[47404], origin_id=[47404], pos=[47404, 3], x=[47404, 9, 10], x_seen_mask=[47404], y=[47404])
+tensor(47404)
+Data(coords=[43736, 3], grid_size=[1], id_scan=[1], mapping_index=[43736], origin_id=[43736], pos=[43736, 3], x=[43736, 9, 10], x_seen_mask=[43736], y=[43736])
+tensor(43736)
+Data(coords=[59617, 3], grid_size=[1], id_scan=[1], mapping_index=[59617], origin_id=[59617], pos=[59617, 3], x=[59617, 9, 10], x_seen_mask=[59617], y=[59617])
+tensor(59617)
+Data(coords=[47163, 3], grid_size=[1], id_scan=[1], mapping_index=[47163], origin_id=[47163], pos=[47163, 3], x=[47163, 9, 10], x_seen_mask=[47163], y=[47163])
+tensor(47163)
+Data(coords=[52418, 3], grid_size=[1], id_scan=[1], mapping_index=[52418], origin_id=[52418], pos=[52418, 3], x=[52418, 9, 10], x_seen_mask=[52418], y=[52418])
+tensor(52418)
+Data(coords=[57898, 3], grid_size=[1], id_scan=[1], mapping_index=[57898], origin_id=[57898], pos=[57898, 3], x=[57898, 9, 10], x_seen_mask=[57898], y=[57898])
+tensor(57898)
+Data(coords=[50171, 3], grid_size=[1], id_scan=[1], mapping_index=[50171], origin_id=[50171], pos=[50171, 3], x=[50171, 9, 10], x_seen_mask=[50171], y=[50171])
+tensor(50171)
+Data(coords=[59070, 3], grid_size=[1], id_scan=[1], mapping_index=[59070], origin_id=[59070], pos=[59070, 3], x=[59070, 9, 10], x_seen_mask=[59070], y=[59070])
+tensor(59070)
+Data(coords=[47699, 3], grid_size=[1], id_scan=[1], mapping_index=[47699], origin_id=[47699], pos=[47699, 3], x=[47699, 9, 10], x_seen_mask=[47699], y=[47699])
+tensor(47699)
+Data(coords=[47693, 3], grid_size=[1], id_scan=[1], mapping_index=[47693], origin_id=[47693], pos=[47693, 3], x=[47693, 9, 10], x_seen_mask=[47693], y=[47693])
+tensor(47693)
+Data(coords=[59612, 3], grid_size=[1], id_scan=[1], mapping_index=[59612], origin_id=[59612], pos=[59612, 3], x=[59612, 9, 10], x_seen_mask=[59612], y=[59612])
+tensor(59612)
+Data(coords=[47337, 3], grid_size=[1], id_scan=[1], mapping_index=[47337], origin_id=[47337], pos=[47337, 3], x=[47337, 9, 10], x_seen_mask=[47337], y=[47337])
+tensor(47337)
+Data(coords=[47897, 3], grid_size=[1], id_scan=[1], mapping_index=[47897], origin_id=[47897], pos=[47897, 3], x=[47897, 9, 10], x_seen_mask=[47897], y=[47897])
+tensor(47897)
+Data(coords=[46766, 3], grid_size=[1], id_scan=[1], mapping_index=[46766], origin_id=[46766], pos=[46766, 3], x=[46766, 9, 10], x_seen_mask=[46766], y=[46766])
+tensor(46766)
+Data(coords=[60982, 3], grid_size=[1], id_scan=[1], mapping_index=[60982], origin_id=[60982], pos=[60982, 3], x=[60982, 9, 10], x_seen_mask=[60982], y=[60982])
+tensor(60982)
+Data(coords=[49520, 3], grid_size=[1], id_scan=[1], mapping_index=[49520], origin_id=[49520], pos=[49520, 3], x=[49520, 9, 10], x_seen_mask=[49520], y=[49520])
+tensor(49520)
+Data(coords=[58270, 3], grid_size=[1], id_scan=[1], mapping_index=[58270], origin_id=[58270], pos=[58270, 3], x=[58270, 9, 10], x_seen_mask=[58270], y=[58270])
+tensor(58270)
+Data(coords=[50059, 3], grid_size=[1], id_scan=[1], mapping_index=[50059], origin_id=[50059], pos=[50059, 3], x=[50059, 9, 10], x_seen_mask=[50059], y=[50059])
+tensor(50059)
+Data(coords=[44115, 3], grid_size=[1], id_scan=[1], mapping_index=[44115], origin_id=[44115], pos=[44115, 3], x=[44115, 9, 10], x_seen_mask=[44115], y=[44115])
+tensor(44115)
+Data(coords=[44611, 3], grid_size=[1], id_scan=[1], mapping_index=[44611], origin_id=[44611], pos=[44611, 3], x=[44611, 9, 10], x_seen_mask=[44611], y=[44611])
+tensor(44611)
+Data(coords=[58425, 3], grid_size=[1], id_scan=[1], mapping_index=[58425], origin_id=[58425], pos=[58425, 3], x=[58425, 9, 10], x_seen_mask=[58425], y=[58425])
+tensor(58425)
+Data(coords=[46640, 3], grid_size=[1], id_scan=[1], mapping_index=[46640], origin_id=[46640], pos=[46640, 3], x=[46640, 9, 10], x_seen_mask=[46640], y=[46640])
+tensor(46640)
+Data(coords=[51258, 3], grid_size=[1], id_scan=[1], mapping_index=[51258], origin_id=[51258], pos=[51258, 3], x=[51258, 9, 10], x_seen_mask=[51258], y=[51258])
+tensor(51258)
+Data(coords=[59147, 3], grid_size=[1], id_scan=[1], mapping_index=[59147], origin_id=[59147], pos=[59147, 3], x=[59147, 9, 10], x_seen_mask=[59147], y=[59147])
+tensor(59147)
+Data(coords=[58314, 3], grid_size=[1], id_scan=[1], mapping_index=[58314], origin_id=[58314], pos=[58314, 3], x=[58314, 9, 10], x_seen_mask=[58314], y=[58314])
+tensor(58314)
+Data(coords=[48180, 3], grid_size=[1], id_scan=[1], mapping_index=[48180], origin_id=[48180], pos=[48180, 3], x=[48180, 9, 10], x_seen_mask=[48180], y=[48180])
+tensor(48180)
+Data(coords=[47909, 3], grid_size=[1], id_scan=[1], mapping_index=[47909], origin_id=[47909], pos=[47909, 3], x=[47909, 9, 10], x_seen_mask=[47909], y=[47909])
+tensor(47909)
+Data(coords=[47709, 3], grid_size=[1], id_scan=[1], mapping_index=[47709], origin_id=[47709], pos=[47709, 3], x=[47709, 9, 10], x_seen_mask=[47709], y=[47709])
+tensor(47709)
+Data(coords=[61316, 3], grid_size=[1], id_scan=[1], mapping_index=[61316], origin_id=[61316], pos=[61316, 3], x=[61316, 9, 10], x_seen_mask=[61316], y=[61316])
+tensor(61316)
+Data(coords=[46149, 3], grid_size=[1], id_scan=[1], mapping_index=[46149], origin_id=[46149], pos=[46149, 3], x=[46149, 9, 10], x_seen_mask=[46149], y=[46149])
+tensor(46149)
+Data(coords=[46005, 3], grid_size=[1], id_scan=[1], mapping_index=[46005], origin_id=[46005], pos=[46005, 3], x=[46005, 9, 10], x_seen_mask=[46005], y=[46005])
+tensor(46005)
+Data(coords=[60340, 3], grid_size=[1], id_scan=[1], mapping_index=[60340], origin_id=[60340], pos=[60340, 3], x=[60340, 9, 10], x_seen_mask=[60340], y=[60340])
+tensor(60340)
+Data(coords=[46290, 3], grid_size=[1], id_scan=[1], mapping_index=[46290], origin_id=[46290], pos=[46290, 3], x=[46290, 9, 10], x_seen_mask=[46290], y=[46290])
+tensor(46290)
+Data(coords=[51836, 3], grid_size=[1], id_scan=[1], mapping_index=[51836], origin_id=[51836], pos=[51836, 3], x=[51836, 9, 10], x_seen_mask=[51836], y=[51836])
+tensor(51836)
+Data(coords=[49176, 3], grid_size=[1], id_scan=[1], mapping_index=[49176], origin_id=[49176], pos=[49176, 3], x=[49176, 9, 10], x_seen_mask=[49176], y=[49176])
+tensor(49176)
+Data(coords=[59344, 3], grid_size=[1], id_scan=[1], mapping_index=[59344], origin_id=[59344], pos=[59344, 3], x=[59344, 9, 10], x_seen_mask=[59344], y=[59344])
+tensor(59344)
+Data(coords=[43550, 3], grid_size=[1], id_scan=[1], mapping_index=[43550], origin_id=[43550], pos=[43550, 3], x=[43550, 9, 10], x_seen_mask=[43550], y=[43550])
+tensor(43550)
+Data(coords=[58307, 3], grid_size=[1], id_scan=[1], mapping_index=[58307], origin_id=[58307], pos=[58307, 3], x=[58307, 9, 10], x_seen_mask=[58307], y=[58307])
+tensor(58307)
+Data(coords=[49271, 3], grid_size=[1], id_scan=[1], mapping_index=[49271], origin_id=[49271], pos=[49271, 3], x=[49271, 9, 10], x_seen_mask=[49271], y=[49271])
+tensor(49271)
+Data(coords=[61903, 3], grid_size=[1], id_scan=[1], mapping_index=[61903], origin_id=[61903], pos=[61903, 3], x=[61903, 9, 10], x_seen_mask=[61903], y=[61903])
+tensor(61903)
+Data(coords=[48505, 3], grid_size=[1], id_scan=[1], mapping_index=[48505], origin_id=[48505], pos=[48505, 3], x=[48505, 9, 10], x_seen_mask=[48505], y=[48505])
+tensor(48505)
+Data(coords=[46247, 3], grid_size=[1], id_scan=[1], mapping_index=[46247], origin_id=[46247], pos=[46247, 3], x=[46247, 9, 10], x_seen_mask=[46247], y=[46247])
+tensor(46247)
+Data(coords=[47848, 3], grid_size=[1], id_scan=[1], mapping_index=[47848], origin_id=[47848], pos=[47848, 3], x=[47848, 9, 10], x_seen_mask=[47848], y=[47848])
+tensor(47848)
+Data(coords=[49035, 3], grid_size=[1], id_scan=[1], mapping_index=[49035], origin_id=[49035], pos=[49035, 3], x=[49035, 9, 10], x_seen_mask=[49035], y=[49035])
+tensor(49035)
+Data(coords=[58626, 3], grid_size=[1], id_scan=[1], mapping_index=[58626], origin_id=[58626], pos=[58626, 3], x=[58626, 9, 10], x_seen_mask=[58626], y=[58626])
+tensor(58626)
+Data(coords=[46441, 3], grid_size=[1], id_scan=[1], mapping_index=[46441], origin_id=[46441], pos=[46441, 3], x=[46441, 9, 10], x_seen_mask=[46441], y=[46441])
+tensor(46441)
+Data(coords=[57323, 3], grid_size=[1], id_scan=[1], mapping_index=[57323], origin_id=[57323], pos=[57323, 3], x=[57323, 9, 10], x_seen_mask=[57323], y=[57323])
+tensor(57323)
+Data(coords=[50452, 3], grid_size=[1], id_scan=[1], mapping_index=[50452], origin_id=[50452], pos=[50452, 3], x=[50452, 9, 10], x_seen_mask=[50452], y=[50452])
+tensor(50452)
+Data(coords=[47953, 3], grid_size=[1], id_scan=[1], mapping_index=[47953], origin_id=[47953], pos=[47953, 3], x=[47953, 9, 10], x_seen_mask=[47953], y=[47953])
+tensor(47953)
+Data(coords=[56887, 3], grid_size=[1], id_scan=[1], mapping_index=[56887], origin_id=[56887], pos=[56887, 3], x=[56887, 9, 10], x_seen_mask=[56887], y=[56887])
+tensor(56887)
+Data(coords=[46296, 3], grid_size=[1], id_scan=[1], mapping_index=[46296], origin_id=[46296], pos=[46296, 3], x=[46296, 9, 10], x_seen_mask=[46296], y=[46296])
+tensor(46296)
+Data(coords=[59136, 3], grid_size=[1], id_scan=[1], mapping_index=[59136], origin_id=[59136], pos=[59136, 3], x=[59136, 9, 10], x_seen_mask=[59136], y=[59136])
+tensor(59136)
+Data(coords=[50419, 3], grid_size=[1], id_scan=[1], mapping_index=[50419], origin_id=[50419], pos=[50419, 3], x=[50419, 9, 10], x_seen_mask=[50419], y=[50419])
+tensor(50419)
+Data(coords=[43436, 3], grid_size=[1], id_scan=[1], mapping_index=[43436], origin_id=[43436], pos=[43436, 3], x=[43436, 9, 10], x_seen_mask=[43436], y=[43436])
+tensor(43436)
+Data(coords=[45238, 3], grid_size=[1], id_scan=[1], mapping_index=[45238], origin_id=[45238], pos=[45238, 3], x=[45238, 9, 10], x_seen_mask=[45238], y=[45238])
+tensor(45238)
+Data(coords=[60753, 3], grid_size=[1], id_scan=[1], mapping_index=[60753], origin_id=[60753], pos=[60753, 3], x=[60753, 9, 10], x_seen_mask=[60753], y=[60753])
+tensor(60753)
+Data(coords=[51337, 3], grid_size=[1], id_scan=[1], mapping_index=[51337], origin_id=[51337], pos=[51337, 3], x=[51337, 9, 10], x_seen_mask=[51337], y=[51337])
+tensor(51337)
+Data(coords=[46330, 3], grid_size=[1], id_scan=[1], mapping_index=[46330], origin_id=[46330], pos=[46330, 3], x=[46330, 9, 10], x_seen_mask=[46330], y=[46330])
+tensor(46330)
+Data(coords=[48090, 3], grid_size=[1], id_scan=[1], mapping_index=[48090], origin_id=[48090], pos=[48090, 3], x=[48090, 9, 10], x_seen_mask=[48090], y=[48090])
+tensor(48090)
+Data(coords=[59833, 3], grid_size=[1], id_scan=[1], mapping_index=[59833], origin_id=[59833], pos=[59833, 3], x=[59833, 9, 10], x_seen_mask=[59833], y=[59833])
+tensor(59833)
+Data(coords=[47281, 3], grid_size=[1], id_scan=[1], mapping_index=[47281], origin_id=[47281], pos=[47281, 3], x=[47281, 9, 10], x_seen_mask=[47281], y=[47281])
+tensor(47281)
+Data(coords=[59467, 3], grid_size=[1], id_scan=[1], mapping_index=[59467], origin_id=[59467], pos=[59467, 3], x=[59467, 9, 10], x_seen_mask=[59467], y=[59467])
+tensor(59467)
+Data(coords=[48896, 3], grid_size=[1], id_scan=[1], mapping_index=[48896], origin_id=[48896], pos=[48896, 3], x=[48896, 9, 10], x_seen_mask=[48896], y=[48896])
+tensor(48896)
+Data(coords=[48844, 3], grid_size=[1], id_scan=[1], mapping_index=[48844], origin_id=[48844], pos=[48844, 3], x=[48844, 9, 10], x_seen_mask=[48844], y=[48844])
+tensor(48844)
+Data(coords=[48800, 3], grid_size=[1], id_scan=[1], mapping_index=[48800], origin_id=[48800], pos=[48800, 3], x=[48800, 9, 10], x_seen_mask=[48800], y=[48800])
+tensor(48800)
+Data(coords=[59530, 3], grid_size=[1], id_scan=[1], mapping_index=[59530], origin_id=[59530], pos=[59530, 3], x=[59530, 9, 10], x_seen_mask=[59530], y=[59530])
+tensor(59530)
+Data(coords=[58433, 3], grid_size=[1], id_scan=[1], mapping_index=[58433], origin_id=[58433], pos=[58433, 3], x=[58433, 9, 10], x_seen_mask=[58433], y=[58433])
+tensor(58433)
+Data(coords=[51338, 3], grid_size=[1], id_scan=[1], mapping_index=[51338], origin_id=[51338], pos=[51338, 3], x=[51338, 9, 10], x_seen_mask=[51338], y=[51338])
+tensor(51338)
+Data(coords=[47714, 3], grid_size=[1], id_scan=[1], mapping_index=[47714], origin_id=[47714], pos=[47714, 3], x=[47714, 9, 10], x_seen_mask=[47714], y=[47714])
+tensor(47714)
+Data(coords=[43741, 3], grid_size=[1], id_scan=[1], mapping_index=[43741], origin_id=[43741], pos=[43741, 3], x=[43741, 9, 10], x_seen_mask=[43741], y=[43741])
+tensor(43741)
+Data(coords=[58213, 3], grid_size=[1], id_scan=[1], mapping_index=[58213], origin_id=[58213], pos=[58213, 3], x=[58213, 9, 10], x_seen_mask=[58213], y=[58213])
+tensor(58213)
+Data(coords=[50525, 3], grid_size=[1], id_scan=[1], mapping_index=[50525], origin_id=[50525], pos=[50525, 3], x=[50525, 9, 10], x_seen_mask=[50525], y=[50525])
+tensor(50525)
+Data(coords=[44926, 3], grid_size=[1], id_scan=[1], mapping_index=[44926], origin_id=[44926], pos=[44926, 3], x=[44926, 9, 10], x_seen_mask=[44926], y=[44926])
+tensor(44926)
+Data(coords=[61713, 3], grid_size=[1], id_scan=[1], mapping_index=[61713], origin_id=[61713], pos=[61713, 3], x=[61713, 9, 10], x_seen_mask=[61713], y=[61713])
+tensor(61713)
+Data(coords=[48603, 3], grid_size=[1], id_scan=[1], mapping_index=[48603], origin_id=[48603], pos=[48603, 3], x=[48603, 9, 10], x_seen_mask=[48603], y=[48603])
+tensor(48603)
+Data(coords=[50223, 3], grid_size=[1], id_scan=[1], mapping_index=[50223], origin_id=[50223], pos=[50223, 3], x=[50223, 9, 10], x_seen_mask=[50223], y=[50223])
+tensor(50223)
+Data(coords=[48994, 3], grid_size=[1], id_scan=[1], mapping_index=[48994], origin_id=[48994], pos=[48994, 3], x=[48994, 9, 10], x_seen_mask=[48994], y=[48994])
+tensor(48994)
+Data(coords=[59809, 3], grid_size=[1], id_scan=[1], mapping_index=[59809], origin_id=[59809], pos=[59809, 3], x=[59809, 9, 10], x_seen_mask=[59809], y=[59809])
+tensor(59809)
+Data(coords=[45486, 3], grid_size=[1], id_scan=[1], mapping_index=[45486], origin_id=[45486], pos=[45486, 3], x=[45486, 9, 10], x_seen_mask=[45486], y=[45486])
+tensor(45486)
+Data(coords=[61481, 3], grid_size=[1], id_scan=[1], mapping_index=[61481], origin_id=[61481], pos=[61481, 3], x=[61481, 9, 10], x_seen_mask=[61481], y=[61481])
+tensor(61481)
+Data(coords=[47089, 3], grid_size=[1], id_scan=[1], mapping_index=[47089], origin_id=[47089], pos=[47089, 3], x=[47089, 9, 10], x_seen_mask=[47089], y=[47089])
+tensor(47089)
+Data(coords=[46069, 3], grid_size=[1], id_scan=[1], mapping_index=[46069], origin_id=[46069], pos=[46069, 3], x=[46069, 9, 10], x_seen_mask=[46069], y=[46069])
+tensor(46069)
+Data(coords=[58437, 3], grid_size=[1], id_scan=[1], mapping_index=[58437], origin_id=[58437], pos=[58437, 3], x=[58437, 9, 10], x_seen_mask=[58437], y=[58437])
+tensor(58437)
+Data(coords=[44368, 3], grid_size=[1], id_scan=[1], mapping_index=[44368], origin_id=[44368], pos=[44368, 3], x=[44368, 9, 10], x_seen_mask=[44368], y=[44368])
+tensor(44368)
+Data(coords=[46838, 3], grid_size=[1], id_scan=[1], mapping_index=[46838], origin_id=[46838], pos=[46838, 3], x=[46838, 9, 10], x_seen_mask=[46838], y=[46838])
+tensor(46838)
+Data(coords=[59935, 3], grid_size=[1], id_scan=[1], mapping_index=[59935], origin_id=[59935], pos=[59935, 3], x=[59935, 9, 10], x_seen_mask=[59935], y=[59935])
+tensor(59935)
+Data(coords=[44296, 3], grid_size=[1], id_scan=[1], mapping_index=[44296], origin_id=[44296], pos=[44296, 3], x=[44296, 9, 10], x_seen_mask=[44296], y=[44296])
+tensor(44296)
+Data(coords=[47352, 3], grid_size=[1], id_scan=[1], mapping_index=[47352], origin_id=[47352], pos=[47352, 3], x=[47352, 9, 10], x_seen_mask=[47352], y=[47352])
+tensor(47352)
+Data(coords=[59350, 3], grid_size=[1], id_scan=[1], mapping_index=[59350], origin_id=[59350], pos=[59350, 3], x=[59350, 9, 10], x_seen_mask=[59350], y=[59350])
+tensor(59350)
+Data(coords=[42619, 3], grid_size=[1], id_scan=[1], mapping_index=[42619], origin_id=[42619], pos=[42619, 3], x=[42619, 9, 10], x_seen_mask=[42619], y=[42619])
+tensor(42619)
+Data(coords=[58538, 3], grid_size=[1], id_scan=[1], mapping_index=[58538], origin_id=[58538], pos=[58538, 3], x=[58538, 9, 10], x_seen_mask=[58538], y=[58538])
+tensor(58538)
+Data(coords=[46649, 3], grid_size=[1], id_scan=[1], mapping_index=[46649], origin_id=[46649], pos=[46649, 3], x=[46649, 9, 10], x_seen_mask=[46649], y=[46649])
+tensor(46649)
+Data(coords=[46385, 3], grid_size=[1], id_scan=[1], mapping_index=[46385], origin_id=[46385], pos=[46385, 3], x=[46385, 9, 10], x_seen_mask=[46385], y=[46385])
+tensor(46385)
+Data(coords=[42803, 3], grid_size=[1], id_scan=[1], mapping_index=[42803], origin_id=[42803], pos=[42803, 3], x=[42803, 9, 10], x_seen_mask=[42803], y=[42803])
+tensor(42803)
+Data(coords=[49511, 3], grid_size=[1], id_scan=[1], mapping_index=[49511], origin_id=[49511], pos=[49511, 3], x=[49511, 9, 10], x_seen_mask=[49511], y=[49511])
+tensor(49511)
+Data(coords=[58953, 3], grid_size=[1], id_scan=[1], mapping_index=[58953], origin_id=[58953], pos=[58953, 3], x=[58953, 9, 10], x_seen_mask=[58953], y=[58953])
+tensor(58953)
+Data(coords=[48324, 3], grid_size=[1], id_scan=[1], mapping_index=[48324], origin_id=[48324], pos=[48324, 3], x=[48324, 9, 10], x_seen_mask=[48324], y=[48324])
+tensor(48324)
+Data(coords=[49343, 3], grid_size=[1], id_scan=[1], mapping_index=[49343], origin_id=[49343], pos=[49343, 3], x=[49343, 9, 10], x_seen_mask=[49343], y=[49343])
+tensor(49343)
+Data(coords=[59806, 3], grid_size=[1], id_scan=[1], mapping_index=[59806], origin_id=[59806], pos=[59806, 3], x=[59806, 9, 10], x_seen_mask=[59806], y=[59806])
+tensor(59806)
+Data(coords=[51175, 3], grid_size=[1], id_scan=[1], mapping_index=[51175], origin_id=[51175], pos=[51175, 3], x=[51175, 9, 10], x_seen_mask=[51175], y=[51175])
+tensor(51175)
+Data(coords=[58034, 3], grid_size=[1], id_scan=[1], mapping_index=[58034], origin_id=[58034], pos=[58034, 3], x=[58034, 9, 10], x_seen_mask=[58034], y=[58034])
+tensor(58034)
+Data(coords=[47147, 3], grid_size=[1], id_scan=[1], mapping_index=[47147], origin_id=[47147], pos=[47147, 3], x=[47147, 9, 10], x_seen_mask=[47147], y=[47147])
+tensor(47147)
+Data(coords=[59403, 3], grid_size=[1], id_scan=[1], mapping_index=[59403], origin_id=[59403], pos=[59403, 3], x=[59403, 9, 10], x_seen_mask=[59403], y=[59403])
+tensor(59403)
+Data(coords=[50153, 3], grid_size=[1], id_scan=[1], mapping_index=[50153], origin_id=[50153], pos=[50153, 3], x=[50153, 9, 10], x_seen_mask=[50153], y=[50153])
+tensor(50153)
+Data(coords=[49670, 3], grid_size=[1], id_scan=[1], mapping_index=[49670], origin_id=[49670], pos=[49670, 3], x=[49670, 9, 10], x_seen_mask=[49670], y=[49670])
+tensor(49670)
+Data(coords=[44748, 3], grid_size=[1], id_scan=[1], mapping_index=[44748], origin_id=[44748], pos=[44748, 3], x=[44748, 9, 10], x_seen_mask=[44748], y=[44748])
+tensor(44748)
+Data(coords=[57402, 3], grid_size=[1], id_scan=[1], mapping_index=[57402], origin_id=[57402], pos=[57402, 3], x=[57402, 9, 10], x_seen_mask=[57402], y=[57402])
+tensor(57402)
+Data(coords=[42867, 3], grid_size=[1], id_scan=[1], mapping_index=[42867], origin_id=[42867], pos=[42867, 3], x=[42867, 9, 10], x_seen_mask=[42867], y=[42867])
+tensor(42867)
+Data(coords=[46585, 3], grid_size=[1], id_scan=[1], mapping_index=[46585], origin_id=[46585], pos=[46585, 3], x=[46585, 9, 10], x_seen_mask=[46585], y=[46585])
+tensor(46585)
+Data(coords=[50269, 3], grid_size=[1], id_scan=[1], mapping_index=[50269], origin_id=[50269], pos=[50269, 3], x=[50269, 9, 10], x_seen_mask=[50269], y=[50269])
+tensor(50269)
+Data(coords=[60024, 3], grid_size=[1], id_scan=[1], mapping_index=[60024], origin_id=[60024], pos=[60024, 3], x=[60024, 9, 10], x_seen_mask=[60024], y=[60024])
+tensor(60024)
+Data(coords=[48037, 3], grid_size=[1], id_scan=[1], mapping_index=[48037], origin_id=[48037], pos=[48037, 3], x=[48037, 9, 10], x_seen_mask=[48037], y=[48037])
+tensor(48037)
+Data(coords=[61063, 3], grid_size=[1], id_scan=[1], mapping_index=[61063], origin_id=[61063], pos=[61063, 3], x=[61063, 9, 10], x_seen_mask=[61063], y=[61063])
+tensor(61063)
+Data(coords=[47536, 3], grid_size=[1], id_scan=[1], mapping_index=[47536], origin_id=[47536], pos=[47536, 3], x=[47536, 9, 10], x_seen_mask=[47536], y=[47536])
+tensor(47536)
+Data(coords=[45228, 3], grid_size=[1], id_scan=[1], mapping_index=[45228], origin_id=[45228], pos=[45228, 3], x=[45228, 9, 10], x_seen_mask=[45228], y=[45228])
+tensor(45228)
+Data(coords=[57179, 3], grid_size=[1], id_scan=[1], mapping_index=[57179], origin_id=[57179], pos=[57179, 3], x=[57179, 9, 10], x_seen_mask=[57179], y=[57179])
+tensor(57179)
+Data(coords=[43517, 3], grid_size=[1], id_scan=[1], mapping_index=[43517], origin_id=[43517], pos=[43517, 3], x=[43517, 9, 10], x_seen_mask=[43517], y=[43517])
+tensor(43517)
+Data(coords=[57795, 3], grid_size=[1], id_scan=[1], mapping_index=[57795], origin_id=[57795], pos=[57795, 3], x=[57795, 9, 10], x_seen_mask=[57795], y=[57795])
+tensor(57795)
+Data(coords=[49532, 3], grid_size=[1], id_scan=[1], mapping_index=[49532], origin_id=[49532], pos=[49532, 3], x=[49532, 9, 10], x_seen_mask=[49532], y=[49532])
+tensor(49532)
+Data(coords=[50931, 3], grid_size=[1], id_scan=[1], mapping_index=[50931], origin_id=[50931], pos=[50931, 3], x=[50931, 9, 10], x_seen_mask=[50931], y=[50931])
+tensor(50931)
+Data(coords=[58678, 3], grid_size=[1], id_scan=[1], mapping_index=[58678], origin_id=[58678], pos=[58678, 3], x=[58678, 9, 10], x_seen_mask=[58678], y=[58678])
+tensor(58678)
+Data(coords=[45719, 3], grid_size=[1], id_scan=[1], mapping_index=[45719], origin_id=[45719], pos=[45719, 3], x=[45719, 9, 10], x_seen_mask=[45719], y=[45719])
+tensor(45719)
+Data(coords=[45882, 3], grid_size=[1], id_scan=[1], mapping_index=[45882], origin_id=[45882], pos=[45882, 3], x=[45882, 9, 10], x_seen_mask=[45882], y=[45882])
+tensor(45882)
+Data(coords=[48845, 3], grid_size=[1], id_scan=[1], mapping_index=[48845], origin_id=[48845], pos=[48845, 3], x=[48845, 9, 10], x_seen_mask=[48845], y=[48845])
+tensor(48845)
+Data(coords=[49002, 3], grid_size=[1], id_scan=[1], mapping_index=[49002], origin_id=[49002], pos=[49002, 3], x=[49002, 9, 10], x_seen_mask=[49002], y=[49002])
+tensor(49002)
+Data(coords=[59701, 3], grid_size=[1], id_scan=[1], mapping_index=[59701], origin_id=[59701], pos=[59701, 3], x=[59701, 9, 10], x_seen_mask=[59701], y=[59701])
+tensor(59701)
+Data(coords=[47239, 3], grid_size=[1], id_scan=[1], mapping_index=[47239], origin_id=[47239], pos=[47239, 3], x=[47239, 9, 10], x_seen_mask=[47239], y=[47239])
+tensor(47239)
+Data(coords=[60641, 3], grid_size=[1], id_scan=[1], mapping_index=[60641], origin_id=[60641], pos=[60641, 3], x=[60641, 9, 10], x_seen_mask=[60641], y=[60641])
+tensor(60641)
+Data(coords=[48006, 3], grid_size=[1], id_scan=[1], mapping_index=[48006], origin_id=[48006], pos=[48006, 3], x=[48006, 9, 10], x_seen_mask=[48006], y=[48006])
+tensor(48006)
+Data(coords=[60128, 3], grid_size=[1], id_scan=[1], mapping_index=[60128], origin_id=[60128], pos=[60128, 3], x=[60128, 9, 10], x_seen_mask=[60128], y=[60128])
+tensor(60128)
+Data(coords=[47429, 3], grid_size=[1], id_scan=[1], mapping_index=[47429], origin_id=[47429], pos=[47429, 3], x=[47429, 9, 10], x_seen_mask=[47429], y=[47429])
+tensor(47429)
+Data(coords=[42877, 3], grid_size=[1], id_scan=[1], mapping_index=[42877], origin_id=[42877], pos=[42877, 3], x=[42877, 9, 10], x_seen_mask=[42877], y=[42877])
+tensor(42877)
+Data(coords=[60802, 3], grid_size=[1], id_scan=[1], mapping_index=[60802], origin_id=[60802], pos=[60802, 3], x=[60802, 9, 10], x_seen_mask=[60802], y=[60802])
+tensor(60802)
+Data(coords=[47083, 3], grid_size=[1], id_scan=[1], mapping_index=[47083], origin_id=[47083], pos=[47083, 3], x=[47083, 9, 10], x_seen_mask=[47083], y=[47083])
+tensor(47083)
+Data(coords=[41688, 3], grid_size=[1], id_scan=[1], mapping_index=[41688], origin_id=[41688], pos=[41688, 3], x=[41688, 9, 10], x_seen_mask=[41688], y=[41688])
+tensor(41688)
+Data(coords=[58508, 3], grid_size=[1], id_scan=[1], mapping_index=[58508], origin_id=[58508], pos=[58508, 3], x=[58508, 9, 10], x_seen_mask=[58508], y=[58508])
+tensor(58508)
+Data(coords=[46429, 3], grid_size=[1], id_scan=[1], mapping_index=[46429], origin_id=[46429], pos=[46429, 3], x=[46429, 9, 10], x_seen_mask=[46429], y=[46429])
+tensor(46429)
+Data(coords=[48732, 3], grid_size=[1], id_scan=[1], mapping_index=[48732], origin_id=[48732], pos=[48732, 3], x=[48732, 9, 10], x_seen_mask=[48732], y=[48732])
+tensor(48732)
+Data(coords=[59845, 3], grid_size=[1], id_scan=[1], mapping_index=[59845], origin_id=[59845], pos=[59845, 3], x=[59845, 9, 10], x_seen_mask=[59845], y=[59845])
+tensor(59845)
+Data(coords=[48490, 3], grid_size=[1], id_scan=[1], mapping_index=[48490], origin_id=[48490], pos=[48490, 3], x=[48490, 9, 10], x_seen_mask=[48490], y=[48490])
+tensor(48490)
+Data(coords=[48595, 3], grid_size=[1], id_scan=[1], mapping_index=[48595], origin_id=[48595], pos=[48595, 3], x=[48595, 9, 10], x_seen_mask=[48595], y=[48595])
+tensor(48595)
+Data(coords=[50927, 3], grid_size=[1], id_scan=[1], mapping_index=[50927], origin_id=[50927], pos=[50927, 3], x=[50927, 9, 10], x_seen_mask=[50927], y=[50927])
+tensor(50927)
+Data(coords=[59005, 3], grid_size=[1], id_scan=[1], mapping_index=[59005], origin_id=[59005], pos=[59005, 3], x=[59005, 9, 10], x_seen_mask=[59005], y=[59005])
+tensor(59005)
+Data(coords=[41250, 3], grid_size=[1], id_scan=[1], mapping_index=[41250], origin_id=[41250], pos=[41250, 3], x=[41250, 9, 10], x_seen_mask=[41250], y=[41250])
+tensor(41250)
+Data(coords=[45935, 3], grid_size=[1], id_scan=[1], mapping_index=[45935], origin_id=[45935], pos=[45935, 3], x=[45935, 9, 10], x_seen_mask=[45935], y=[45935])
+tensor(45935)
+Data(coords=[50064, 3], grid_size=[1], id_scan=[1], mapping_index=[50064], origin_id=[50064], pos=[50064, 3], x=[50064, 9, 10], x_seen_mask=[50064], y=[50064])
+tensor(50064)
+Data(coords=[60769, 3], grid_size=[1], id_scan=[1], mapping_index=[60769], origin_id=[60769], pos=[60769, 3], x=[60769, 9, 10], x_seen_mask=[60769], y=[60769])
+tensor(60769)
+Data(coords=[44569, 3], grid_size=[1], id_scan=[1], mapping_index=[44569], origin_id=[44569], pos=[44569, 3], x=[44569, 9, 10], x_seen_mask=[44569], y=[44569])
+tensor(44569)
+Data(coords=[44032, 3], grid_size=[1], id_scan=[1], mapping_index=[44032], origin_id=[44032], pos=[44032, 3], x=[44032, 9, 10], x_seen_mask=[44032], y=[44032])
+tensor(44032)
+Data(coords=[57952, 3], grid_size=[1], id_scan=[1], mapping_index=[57952], origin_id=[57952], pos=[57952, 3], x=[57952, 9, 10], x_seen_mask=[57952], y=[57952])
+tensor(57952)
+Data(coords=[44603, 3], grid_size=[1], id_scan=[1], mapping_index=[44603], origin_id=[44603], pos=[44603, 3], x=[44603, 9, 10], x_seen_mask=[44603], y=[44603])
+tensor(44603)
+Data(coords=[49002, 3], grid_size=[1], id_scan=[1], mapping_index=[49002], origin_id=[49002], pos=[49002, 3], x=[49002, 9, 10], x_seen_mask=[49002], y=[49002])
+tensor(49002)
+Data(coords=[57218, 3], grid_size=[1], id_scan=[1], mapping_index=[57218], origin_id=[57218], pos=[57218, 3], x=[57218, 9, 10], x_seen_mask=[57218], y=[57218])
+tensor(57218)
+Data(coords=[44514, 3], grid_size=[1], id_scan=[1], mapping_index=[44514], origin_id=[44514], pos=[44514, 3], x=[44514, 9, 10], x_seen_mask=[44514], y=[44514])
+tensor(44514)
+Data(coords=[60371, 3], grid_size=[1], id_scan=[1], mapping_index=[60371], origin_id=[60371], pos=[60371, 3], x=[60371, 9, 10], x_seen_mask=[60371], y=[60371])
+tensor(60371)
+Data(coords=[49052, 3], grid_size=[1], id_scan=[1], mapping_index=[49052], origin_id=[49052], pos=[49052, 3], x=[49052, 9, 10], x_seen_mask=[49052], y=[49052])
+tensor(49052)
+Data(coords=[46462, 3], grid_size=[1], id_scan=[1], mapping_index=[46462], origin_id=[46462], pos=[46462, 3], x=[46462, 9, 10], x_seen_mask=[46462], y=[46462])
+tensor(46462)
+Data(coords=[50502, 3], grid_size=[1], id_scan=[1], mapping_index=[50502], origin_id=[50502], pos=[50502, 3], x=[50502, 9, 10], x_seen_mask=[50502], y=[50502])
+tensor(50502)
+Data(coords=[58327, 3], grid_size=[1], id_scan=[1], mapping_index=[58327], origin_id=[58327], pos=[58327, 3], x=[58327, 9, 10], x_seen_mask=[58327], y=[58327])
+tensor(58327)
+Data(coords=[58189, 3], grid_size=[1], id_scan=[1], mapping_index=[58189], origin_id=[58189], pos=[58189, 3], x=[58189, 9, 10], x_seen_mask=[58189], y=[58189])
+tensor(58189)
+Data(coords=[44301, 3], grid_size=[1], id_scan=[1], mapping_index=[44301], origin_id=[44301], pos=[44301, 3], x=[44301, 9, 10], x_seen_mask=[44301], y=[44301])
+tensor(44301)
+Data(coords=[44681, 3], grid_size=[1], id_scan=[1], mapping_index=[44681], origin_id=[44681], pos=[44681, 3], x=[44681, 9, 10], x_seen_mask=[44681], y=[44681])
+tensor(44681)
+Data(coords=[46445, 3], grid_size=[1], id_scan=[1], mapping_index=[46445], origin_id=[46445], pos=[46445, 3], x=[46445, 9, 10], x_seen_mask=[46445], y=[46445])
+tensor(46445)
+Data(coords=[48026, 3], grid_size=[1], id_scan=[1], mapping_index=[48026], origin_id=[48026], pos=[48026, 3], x=[48026, 9, 10], x_seen_mask=[48026], y=[48026])
+tensor(48026)
+Data(coords=[60147, 3], grid_size=[1], id_scan=[1], mapping_index=[60147], origin_id=[60147], pos=[60147, 3], x=[60147, 9, 10], x_seen_mask=[60147], y=[60147])
+tensor(60147)
+Data(coords=[61811, 3], grid_size=[1], id_scan=[1], mapping_index=[61811], origin_id=[61811], pos=[61811, 3], x=[61811, 9, 10], x_seen_mask=[61811], y=[61811])
+tensor(61811)
+Data(coords=[50618, 3], grid_size=[1], id_scan=[1], mapping_index=[50618], origin_id=[50618], pos=[50618, 3], x=[50618, 9, 10], x_seen_mask=[50618], y=[50618])
+tensor(50618)
+Data(coords=[43568, 3], grid_size=[1], id_scan=[1], mapping_index=[43568], origin_id=[43568], pos=[43568, 3], x=[43568, 9, 10], x_seen_mask=[43568], y=[43568])
+tensor(43568)
+Data(coords=[57869, 3], grid_size=[1], id_scan=[1], mapping_index=[57869], origin_id=[57869], pos=[57869, 3], x=[57869, 9, 10], x_seen_mask=[57869], y=[57869])
+tensor(57869)
+Data(coords=[45727, 3], grid_size=[1], id_scan=[1], mapping_index=[45727], origin_id=[45727], pos=[45727, 3], x=[45727, 9, 10], x_seen_mask=[45727], y=[45727])
+tensor(45727)
+Data(coords=[46427, 3], grid_size=[1], id_scan=[1], mapping_index=[46427], origin_id=[46427], pos=[46427, 3], x=[46427, 9, 10], x_seen_mask=[46427], y=[46427])
+tensor(46427)
+Data(coords=[52722, 3], grid_size=[1], id_scan=[1], mapping_index=[52722], origin_id=[52722], pos=[52722, 3], x=[52722, 9, 10], x_seen_mask=[52722], y=[52722])
+tensor(52722)
+Data(coords=[45001, 3], grid_size=[1], id_scan=[1], mapping_index=[45001], origin_id=[45001], pos=[45001, 3], x=[45001, 9, 10], x_seen_mask=[45001], y=[45001])
+tensor(45001)
+Data(coords=[58038, 3], grid_size=[1], id_scan=[1], mapping_index=[58038], origin_id=[58038], pos=[58038, 3], x=[58038, 9, 10], x_seen_mask=[58038], y=[58038])
+tensor(58038)
+Data(coords=[59170, 3], grid_size=[1], id_scan=[1], mapping_index=[59170], origin_id=[59170], pos=[59170, 3], x=[59170, 9, 10], x_seen_mask=[59170], y=[59170])
+tensor(59170)
+Data(coords=[48618, 3], grid_size=[1], id_scan=[1], mapping_index=[48618], origin_id=[48618], pos=[48618, 3], x=[48618, 9, 10], x_seen_mask=[48618], y=[48618])
+tensor(48618)
+Data(coords=[44122, 3], grid_size=[1], id_scan=[1], mapping_index=[44122], origin_id=[44122], pos=[44122, 3], x=[44122, 9, 10], x_seen_mask=[44122], y=[44122])
+tensor(44122)
+Data(coords=[42970, 3], grid_size=[1], id_scan=[1], mapping_index=[42970], origin_id=[42970], pos=[42970, 3], x=[42970, 9, 10], x_seen_mask=[42970], y=[42970])
+tensor(42970)
+Data(coords=[48856, 3], grid_size=[1], id_scan=[1], mapping_index=[48856], origin_id=[48856], pos=[48856, 3], x=[48856, 9, 10], x_seen_mask=[48856], y=[48856])
+tensor(48856)
+Data(coords=[61480, 3], grid_size=[1], id_scan=[1], mapping_index=[61480], origin_id=[61480], pos=[61480, 3], x=[61480, 9, 10], x_seen_mask=[61480], y=[61480])
+tensor(61480)
+Data(coords=[57713, 3], grid_size=[1], id_scan=[1], mapping_index=[57713], origin_id=[57713], pos=[57713, 3], x=[57713, 9, 10], x_seen_mask=[57713], y=[57713])
+tensor(57713)
+Data(coords=[44312, 3], grid_size=[1], id_scan=[1], mapping_index=[44312], origin_id=[44312], pos=[44312, 3], x=[44312, 9, 10], x_seen_mask=[44312], y=[44312])
+tensor(44312)
+Data(coords=[49451, 3], grid_size=[1], id_scan=[1], mapping_index=[49451], origin_id=[49451], pos=[49451, 3], x=[49451, 9, 10], x_seen_mask=[49451], y=[49451])
+tensor(49451)
+Data(coords=[49638, 3], grid_size=[1], id_scan=[1], mapping_index=[49638], origin_id=[49638], pos=[49638, 3], x=[49638, 9, 10], x_seen_mask=[49638], y=[49638])
+tensor(49638)
+Data(coords=[59085, 3], grid_size=[1], id_scan=[1], mapping_index=[59085], origin_id=[59085], pos=[59085, 3], x=[59085, 9, 10], x_seen_mask=[59085], y=[59085])
+tensor(59085)
+Data(coords=[50389, 3], grid_size=[1], id_scan=[1], mapping_index=[50389], origin_id=[50389], pos=[50389, 3], x=[50389, 9, 10], x_seen_mask=[50389], y=[50389])
+tensor(50389)
+Data(coords=[49633, 3], grid_size=[1], id_scan=[1], mapping_index=[49633], origin_id=[49633], pos=[49633, 3], x=[49633, 9, 10], x_seen_mask=[49633], y=[49633])
+tensor(49633)
+Data(coords=[46123, 3], grid_size=[1], id_scan=[1], mapping_index=[46123], origin_id=[46123], pos=[46123, 3], x=[46123, 9, 10], x_seen_mask=[46123], y=[46123])
+tensor(46123)
+Data(coords=[60110, 3], grid_size=[1], id_scan=[1], mapping_index=[60110], origin_id=[60110], pos=[60110, 3], x=[60110, 9, 10], x_seen_mask=[60110], y=[60110])
+tensor(60110)
+Data(coords=[45843, 3], grid_size=[1], id_scan=[1], mapping_index=[45843], origin_id=[45843], pos=[45843, 3], x=[45843, 9, 10], x_seen_mask=[45843], y=[45843])
+tensor(45843)
+Data(coords=[46841, 3], grid_size=[1], id_scan=[1], mapping_index=[46841], origin_id=[46841], pos=[46841, 3], x=[46841, 9, 10], x_seen_mask=[46841], y=[46841])
+tensor(46841)
+Data(coords=[60411, 3], grid_size=[1], id_scan=[1], mapping_index=[60411], origin_id=[60411], pos=[60411, 3], x=[60411, 9, 10], x_seen_mask=[60411], y=[60411])
+tensor(60411)
+Data(coords=[58481, 3], grid_size=[1], id_scan=[1], mapping_index=[58481], origin_id=[58481], pos=[58481, 3], x=[58481, 9, 10], x_seen_mask=[58481], y=[58481])
+tensor(58481)
+Data(coords=[47625, 3], grid_size=[1], id_scan=[1], mapping_index=[47625], origin_id=[47625], pos=[47625, 3], x=[47625, 9, 10], x_seen_mask=[47625], y=[47625])
+tensor(47625)
+Data(coords=[49005, 3], grid_size=[1], id_scan=[1], mapping_index=[49005], origin_id=[49005], pos=[49005, 3], x=[49005, 9, 10], x_seen_mask=[49005], y=[49005])
+tensor(49005)
+Data(coords=[58749, 3], grid_size=[1], id_scan=[1], mapping_index=[58749], origin_id=[58749], pos=[58749, 3], x=[58749, 9, 10], x_seen_mask=[58749], y=[58749])
+tensor(58749)
+Data(coords=[40714, 3], grid_size=[1], id_scan=[1], mapping_index=[40714], origin_id=[40714], pos=[40714, 3], x=[40714, 9, 10], x_seen_mask=[40714], y=[40714])
+tensor(40714)
+Data(coords=[42580, 3], grid_size=[1], id_scan=[1], mapping_index=[42580], origin_id=[42580], pos=[42580, 3], x=[42580, 9, 10], x_seen_mask=[42580], y=[42580])
+tensor(42580)
+Data(coords=[59097, 3], grid_size=[1], id_scan=[1], mapping_index=[59097], origin_id=[59097], pos=[59097, 3], x=[59097, 9, 10], x_seen_mask=[59097], y=[59097])
+tensor(59097)
+Data(coords=[49589, 3], grid_size=[1], id_scan=[1], mapping_index=[49589], origin_id=[49589], pos=[49589, 3], x=[49589, 9, 10], x_seen_mask=[49589], y=[49589])
+tensor(49589)
+Data(coords=[49826, 3], grid_size=[1], id_scan=[1], mapping_index=[49826], origin_id=[49826], pos=[49826, 3], x=[49826, 9, 10], x_seen_mask=[49826], y=[49826])
+tensor(49826)
+Data(coords=[49975, 3], grid_size=[1], id_scan=[1], mapping_index=[49975], origin_id=[49975], pos=[49975, 3], x=[49975, 9, 10], x_seen_mask=[49975], y=[49975])
+tensor(49975)
+Data(coords=[48539, 3], grid_size=[1], id_scan=[1], mapping_index=[48539], origin_id=[48539], pos=[48539, 3], x=[48539, 9, 10], x_seen_mask=[48539], y=[48539])
+tensor(48539)
+Data(coords=[58589, 3], grid_size=[1], id_scan=[1], mapping_index=[58589], origin_id=[58589], pos=[58589, 3], x=[58589, 9, 10], x_seen_mask=[58589], y=[58589])
+tensor(58589)
+Data(coords=[59041, 3], grid_size=[1], id_scan=[1], mapping_index=[59041], origin_id=[59041], pos=[59041, 3], x=[59041, 9, 10], x_seen_mask=[59041], y=[59041])
+tensor(59041)
+Data(coords=[44885, 3], grid_size=[1], id_scan=[1], mapping_index=[44885], origin_id=[44885], pos=[44885, 3], x=[44885, 9, 10], x_seen_mask=[44885], y=[44885])
+tensor(44885)
+Data(coords=[43022, 3], grid_size=[1], id_scan=[1], mapping_index=[43022], origin_id=[43022], pos=[43022, 3], x=[43022, 9, 10], x_seen_mask=[43022], y=[43022])
+tensor(43022)
+Data(coords=[57726, 3], grid_size=[1], id_scan=[1], mapping_index=[57726], origin_id=[57726], pos=[57726, 3], x=[57726, 9, 10], x_seen_mask=[57726], y=[57726])
+tensor(57726)
+Data(coords=[48957, 3], grid_size=[1], id_scan=[1], mapping_index=[48957], origin_id=[48957], pos=[48957, 3], x=[48957, 9, 10], x_seen_mask=[48957], y=[48957])
+tensor(48957)
+Data(coords=[46720, 3], grid_size=[1], id_scan=[1], mapping_index=[46720], origin_id=[46720], pos=[46720, 3], x=[46720, 9, 10], x_seen_mask=[46720], y=[46720])
+tensor(46720)
+Data(coords=[43608, 3], grid_size=[1], id_scan=[1], mapping_index=[43608], origin_id=[43608], pos=[43608, 3], x=[43608, 9, 10], x_seen_mask=[43608], y=[43608])
+tensor(43608)
+Data(coords=[44706, 3], grid_size=[1], id_scan=[1], mapping_index=[44706], origin_id=[44706], pos=[44706, 3], x=[44706, 9, 10], x_seen_mask=[44706], y=[44706])
+tensor(44706)
+Data(coords=[58754, 3], grid_size=[1], id_scan=[1], mapping_index=[58754], origin_id=[58754], pos=[58754, 3], x=[58754, 9, 10], x_seen_mask=[58754], y=[58754])
+tensor(58754)
+Data(coords=[45576, 3], grid_size=[1], id_scan=[1], mapping_index=[45576], origin_id=[45576], pos=[45576, 3], x=[45576, 9, 10], x_seen_mask=[45576], y=[45576])
+tensor(45576)
+Data(coords=[42495, 3], grid_size=[1], id_scan=[1], mapping_index=[42495], origin_id=[42495], pos=[42495, 3], x=[42495, 9, 10], x_seen_mask=[42495], y=[42495])
+tensor(42495)
+Data(coords=[58530, 3], grid_size=[1], id_scan=[1], mapping_index=[58530], origin_id=[58530], pos=[58530, 3], x=[58530, 9, 10], x_seen_mask=[58530], y=[58530])
+tensor(58530)
+Data(coords=[49238, 3], grid_size=[1], id_scan=[1], mapping_index=[49238], origin_id=[49238], pos=[49238, 3], x=[49238, 9, 10], x_seen_mask=[49238], y=[49238])
+tensor(49238)
+Data(coords=[44468, 3], grid_size=[1], id_scan=[1], mapping_index=[44468], origin_id=[44468], pos=[44468, 3], x=[44468, 9, 10], x_seen_mask=[44468], y=[44468])
+tensor(44468)
+Data(coords=[57203, 3], grid_size=[1], id_scan=[1], mapping_index=[57203], origin_id=[57203], pos=[57203, 3], x=[57203, 9, 10], x_seen_mask=[57203], y=[57203])
+tensor(57203)
+Data(coords=[44751, 3], grid_size=[1], id_scan=[1], mapping_index=[44751], origin_id=[44751], pos=[44751, 3], x=[44751, 9, 10], x_seen_mask=[44751], y=[44751])
+tensor(44751)
+Data(coords=[57841, 3], grid_size=[1], id_scan=[1], mapping_index=[57841], origin_id=[57841], pos=[57841, 3], x=[57841, 9, 10], x_seen_mask=[57841], y=[57841])
+tensor(57841)
+Data(coords=[44749, 3], grid_size=[1], id_scan=[1], mapping_index=[44749], origin_id=[44749], pos=[44749, 3], x=[44749, 9, 10], x_seen_mask=[44749], y=[44749])
+tensor(44749)
+Data(coords=[46076, 3], grid_size=[1], id_scan=[1], mapping_index=[46076], origin_id=[46076], pos=[46076, 3], x=[46076, 9, 10], x_seen_mask=[46076], y=[46076])
+tensor(46076)
+Data(coords=[47482, 3], grid_size=[1], id_scan=[1], mapping_index=[47482], origin_id=[47482], pos=[47482, 3], x=[47482, 9, 10], x_seen_mask=[47482], y=[47482])
+tensor(47482)
+Data(coords=[57630, 3], grid_size=[1], id_scan=[1], mapping_index=[57630], origin_id=[57630], pos=[57630, 3], x=[57630, 9, 10], x_seen_mask=[57630], y=[57630])
+tensor(57630)
+Data(coords=[58907, 3], grid_size=[1], id_scan=[1], mapping_index=[58907], origin_id=[58907], pos=[58907, 3], x=[58907, 9, 10], x_seen_mask=[58907], y=[58907])
+tensor(58907)
+Data(coords=[48801, 3], grid_size=[1], id_scan=[1], mapping_index=[48801], origin_id=[48801], pos=[48801, 3], x=[48801, 9, 10], x_seen_mask=[48801], y=[48801])
+tensor(48801)
+Data(coords=[49912, 3], grid_size=[1], id_scan=[1], mapping_index=[49912], origin_id=[49912], pos=[49912, 3], x=[49912, 9, 10], x_seen_mask=[49912], y=[49912])
+tensor(49912)
+Data(coords=[62516, 3], grid_size=[1], id_scan=[1], mapping_index=[62516], origin_id=[62516], pos=[62516, 3], x=[62516, 9, 10], x_seen_mask=[62516], y=[62516])
+tensor(62516)
+Data(coords=[46815, 3], grid_size=[1], id_scan=[1], mapping_index=[46815], origin_id=[46815], pos=[46815, 3], x=[46815, 9, 10], x_seen_mask=[46815], y=[46815])
+tensor(46815)
+Data(coords=[41982, 3], grid_size=[1], id_scan=[1], mapping_index=[41982], origin_id=[41982], pos=[41982, 3], x=[41982, 9, 10], x_seen_mask=[41982], y=[41982])
+tensor(41982)
+Data(coords=[50625, 3], grid_size=[1], id_scan=[1], mapping_index=[50625], origin_id=[50625], pos=[50625, 3], x=[50625, 9, 10], x_seen_mask=[50625], y=[50625])
+tensor(50625)
+Data(coords=[46211, 3], grid_size=[1], id_scan=[1], mapping_index=[46211], origin_id=[46211], pos=[46211, 3], x=[46211, 9, 10], x_seen_mask=[46211], y=[46211])
+tensor(46211)
+Data(coords=[59256, 3], grid_size=[1], id_scan=[1], mapping_index=[59256], origin_id=[59256], pos=[59256, 3], x=[59256, 9, 10], x_seen_mask=[59256], y=[59256])
+tensor(59256)
+Data(coords=[56988, 3], grid_size=[1], id_scan=[1], mapping_index=[56988], origin_id=[56988], pos=[56988, 3], x=[56988, 9, 10], x_seen_mask=[56988], y=[56988])
+tensor(56988)
+Data(coords=[46910, 3], grid_size=[1], id_scan=[1], mapping_index=[46910], origin_id=[46910], pos=[46910, 3], x=[46910, 9, 10], x_seen_mask=[46910], y=[46910])
+tensor(46910)
+Data(coords=[49146, 3], grid_size=[1], id_scan=[1], mapping_index=[49146], origin_id=[49146], pos=[49146, 3], x=[49146, 9, 10], x_seen_mask=[49146], y=[49146])
+tensor(49146)
+Data(coords=[47502, 3], grid_size=[1], id_scan=[1], mapping_index=[47502], origin_id=[47502], pos=[47502, 3], x=[47502, 9, 10], x_seen_mask=[47502], y=[47502])
+tensor(47502)
+Data(coords=[56355, 3], grid_size=[1], id_scan=[1], mapping_index=[56355], origin_id=[56355], pos=[56355, 3], x=[56355, 9, 10], x_seen_mask=[56355], y=[56355])
+tensor(56355)
+Data(coords=[45089, 3], grid_size=[1], id_scan=[1], mapping_index=[45089], origin_id=[45089], pos=[45089, 3], x=[45089, 9, 10], x_seen_mask=[45089], y=[45089])
+tensor(45089)
+Data(coords=[46978, 3], grid_size=[1], id_scan=[1], mapping_index=[46978], origin_id=[46978], pos=[46978, 3], x=[46978, 9, 10], x_seen_mask=[46978], y=[46978])
+tensor(46978)
+Data(coords=[44020, 3], grid_size=[1], id_scan=[1], mapping_index=[44020], origin_id=[44020], pos=[44020, 3], x=[44020, 9, 10], x_seen_mask=[44020], y=[44020])
+tensor(44020)
+Data(coords=[58522, 3], grid_size=[1], id_scan=[1], mapping_index=[58522], origin_id=[58522], pos=[58522, 3], x=[58522, 9, 10], x_seen_mask=[58522], y=[58522])
+tensor(58522)
+Data(coords=[58372, 3], grid_size=[1], id_scan=[1], mapping_index=[58372], origin_id=[58372], pos=[58372, 3], x=[58372, 9, 10], x_seen_mask=[58372], y=[58372])
+tensor(58372)
+Data(coords=[52342, 3], grid_size=[1], id_scan=[1], mapping_index=[52342], origin_id=[52342], pos=[52342, 3], x=[52342, 9, 10], x_seen_mask=[52342], y=[52342])
+tensor(52342)
+Data(coords=[44870, 3], grid_size=[1], id_scan=[1], mapping_index=[44870], origin_id=[44870], pos=[44870, 3], x=[44870, 9, 10], x_seen_mask=[44870], y=[44870])
+tensor(44870)
+Data(coords=[48320, 3], grid_size=[1], id_scan=[1], mapping_index=[48320], origin_id=[48320], pos=[48320, 3], x=[48320, 9, 10], x_seen_mask=[48320], y=[48320])
+tensor(48320)
+Data(coords=[58578, 3], grid_size=[1], id_scan=[1], mapping_index=[58578], origin_id=[58578], pos=[58578, 3], x=[58578, 9, 10], x_seen_mask=[58578], y=[58578])
+tensor(58578)
+Data(coords=[48695, 3], grid_size=[1], id_scan=[1], mapping_index=[48695], origin_id=[48695], pos=[48695, 3], x=[48695, 9, 10], x_seen_mask=[48695], y=[48695])
+tensor(48695)
+Data(coords=[50400, 3], grid_size=[1], id_scan=[1], mapping_index=[50400], origin_id=[50400], pos=[50400, 3], x=[50400, 9, 10], x_seen_mask=[50400], y=[50400])
+tensor(50400)
+Data(coords=[45816, 3], grid_size=[1], id_scan=[1], mapping_index=[45816], origin_id=[45816], pos=[45816, 3], x=[45816, 9, 10], x_seen_mask=[45816], y=[45816])
+tensor(45816)
+Data(coords=[61244, 3], grid_size=[1], id_scan=[1], mapping_index=[61244], origin_id=[61244], pos=[61244, 3], x=[61244, 9, 10], x_seen_mask=[61244], y=[61244])
+tensor(61244)
+Data(coords=[60774, 3], grid_size=[1], id_scan=[1], mapping_index=[60774], origin_id=[60774], pos=[60774, 3], x=[60774, 9, 10], x_seen_mask=[60774], y=[60774])
+tensor(60774)
+Data(coords=[49272, 3], grid_size=[1], id_scan=[1], mapping_index=[49272], origin_id=[49272], pos=[49272, 3], x=[49272, 9, 10], x_seen_mask=[49272], y=[49272])
+tensor(49272)
+Data(coords=[47971, 3], grid_size=[1], id_scan=[1], mapping_index=[47971], origin_id=[47971], pos=[47971, 3], x=[47971, 9, 10], x_seen_mask=[47971], y=[47971])
+tensor(47971)
+Data(coords=[61329, 3], grid_size=[1], id_scan=[1], mapping_index=[61329], origin_id=[61329], pos=[61329, 3], x=[61329, 9, 10], x_seen_mask=[61329], y=[61329])
+tensor(61329)
+Data(coords=[46424, 3], grid_size=[1], id_scan=[1], mapping_index=[46424], origin_id=[46424], pos=[46424, 3], x=[46424, 9, 10], x_seen_mask=[46424], y=[46424])
+tensor(46424)
+Data(coords=[46264, 3], grid_size=[1], id_scan=[1], mapping_index=[46264], origin_id=[46264], pos=[46264, 3], x=[46264, 9, 10], x_seen_mask=[46264], y=[46264])
+tensor(46264)
+Data(coords=[44411, 3], grid_size=[1], id_scan=[1], mapping_index=[44411], origin_id=[44411], pos=[44411, 3], x=[44411, 9, 10], x_seen_mask=[44411], y=[44411])
+tensor(44411)
+Data(coords=[50117, 3], grid_size=[1], id_scan=[1], mapping_index=[50117], origin_id=[50117], pos=[50117, 3], x=[50117, 9, 10], x_seen_mask=[50117], y=[50117])
+tensor(50117)
+Data(coords=[58986, 3], grid_size=[1], id_scan=[1], mapping_index=[58986], origin_id=[58986], pos=[58986, 3], x=[58986, 9, 10], x_seen_mask=[58986], y=[58986])
+tensor(58986)
+Data(coords=[43764, 3], grid_size=[1], id_scan=[1], mapping_index=[43764], origin_id=[43764], pos=[43764, 3], x=[43764, 9, 10], x_seen_mask=[43764], y=[43764])
+tensor(43764)
+Data(coords=[60410, 3], grid_size=[1], id_scan=[1], mapping_index=[60410], origin_id=[60410], pos=[60410, 3], x=[60410, 9, 10], x_seen_mask=[60410], y=[60410])
+tensor(60410)
+Data(coords=[47862, 3], grid_size=[1], id_scan=[1], mapping_index=[47862], origin_id=[47862], pos=[47862, 3], x=[47862, 9, 10], x_seen_mask=[47862], y=[47862])
+tensor(47862)
+Data(coords=[43917, 3], grid_size=[1], id_scan=[1], mapping_index=[43917], origin_id=[43917], pos=[43917, 3], x=[43917, 9, 10], x_seen_mask=[43917], y=[43917])
+tensor(43917)
+Data(coords=[56663, 3], grid_size=[1], id_scan=[1], mapping_index=[56663], origin_id=[56663], pos=[56663, 3], x=[56663, 9, 10], x_seen_mask=[56663], y=[56663])
+tensor(56663)
+Data(coords=[46879, 3], grid_size=[1], id_scan=[1], mapping_index=[46879], origin_id=[46879], pos=[46879, 3], x=[46879, 9, 10], x_seen_mask=[46879], y=[46879])
+tensor(46879)
+Data(coords=[42034, 3], grid_size=[1], id_scan=[1], mapping_index=[42034], origin_id=[42034], pos=[42034, 3], x=[42034, 9, 10], x_seen_mask=[42034], y=[42034])
+tensor(42034)
+Data(coords=[58403, 3], grid_size=[1], id_scan=[1], mapping_index=[58403], origin_id=[58403], pos=[58403, 3], x=[58403, 9, 10], x_seen_mask=[58403], y=[58403])
+tensor(58403)
+Data(coords=[42930, 3], grid_size=[1], id_scan=[1], mapping_index=[42930], origin_id=[42930], pos=[42930, 3], x=[42930, 9, 10], x_seen_mask=[42930], y=[42930])
+tensor(42930)
+Data(coords=[48415, 3], grid_size=[1], id_scan=[1], mapping_index=[48415], origin_id=[48415], pos=[48415, 3], x=[48415, 9, 10], x_seen_mask=[48415], y=[48415])
+tensor(48415)
+Data(coords=[59335, 3], grid_size=[1], id_scan=[1], mapping_index=[59335], origin_id=[59335], pos=[59335, 3], x=[59335, 9, 10], x_seen_mask=[59335], y=[59335])
+tensor(59335)
+Data(coords=[47027, 3], grid_size=[1], id_scan=[1], mapping_index=[47027], origin_id=[47027], pos=[47027, 3], x=[47027, 9, 10], x_seen_mask=[47027], y=[47027])
+tensor(47027)
+Data(coords=[42555, 3], grid_size=[1], id_scan=[1], mapping_index=[42555], origin_id=[42555], pos=[42555, 3], x=[42555, 9, 10], x_seen_mask=[42555], y=[42555])
+tensor(42555)
+Data(coords=[58103, 3], grid_size=[1], id_scan=[1], mapping_index=[58103], origin_id=[58103], pos=[58103, 3], x=[58103, 9, 10], x_seen_mask=[58103], y=[58103])
+tensor(58103)
+Data(coords=[47587, 3], grid_size=[1], id_scan=[1], mapping_index=[47587], origin_id=[47587], pos=[47587, 3], x=[47587, 9, 10], x_seen_mask=[47587], y=[47587])
+tensor(47587)
+Data(coords=[57859, 3], grid_size=[1], id_scan=[1], mapping_index=[57859], origin_id=[57859], pos=[57859, 3], x=[57859, 9, 10], x_seen_mask=[57859], y=[57859])
+tensor(57859)
+Data(coords=[47020, 3], grid_size=[1], id_scan=[1], mapping_index=[47020], origin_id=[47020], pos=[47020, 3], x=[47020, 9, 10], x_seen_mask=[47020], y=[47020])
+tensor(47020)
+Data(coords=[44326, 3], grid_size=[1], id_scan=[1], mapping_index=[44326], origin_id=[44326], pos=[44326, 3], x=[44326, 9, 10], x_seen_mask=[44326], y=[44326])
+tensor(44326)
+Data(coords=[60904, 3], grid_size=[1], id_scan=[1], mapping_index=[60904], origin_id=[60904], pos=[60904, 3], x=[60904, 9, 10], x_seen_mask=[60904], y=[60904])
+tensor(60904)
+Data(coords=[46389, 3], grid_size=[1], id_scan=[1], mapping_index=[46389], origin_id=[46389], pos=[46389, 3], x=[46389, 9, 10], x_seen_mask=[46389], y=[46389])
+tensor(46389)
+Data(coords=[47734, 3], grid_size=[1], id_scan=[1], mapping_index=[47734], origin_id=[47734], pos=[47734, 3], x=[47734, 9, 10], x_seen_mask=[47734], y=[47734])
+tensor(47734)
+Data(coords=[46280, 3], grid_size=[1], id_scan=[1], mapping_index=[46280], origin_id=[46280], pos=[46280, 3], x=[46280, 9, 10], x_seen_mask=[46280], y=[46280])
+tensor(46280)
+Data(coords=[57960, 3], grid_size=[1], id_scan=[1], mapping_index=[57960], origin_id=[57960], pos=[57960, 3], x=[57960, 9, 10], x_seen_mask=[57960], y=[57960])
+tensor(57960)
+Data(coords=[45087, 3], grid_size=[1], id_scan=[1], mapping_index=[45087], origin_id=[45087], pos=[45087, 3], x=[45087, 9, 10], x_seen_mask=[45087], y=[45087])
+tensor(45087)
+Data(coords=[50735, 3], grid_size=[1], id_scan=[1], mapping_index=[50735], origin_id=[50735], pos=[50735, 3], x=[50735, 9, 10], x_seen_mask=[50735], y=[50735])
+tensor(50735)
+Data(coords=[38930, 3], grid_size=[1], id_scan=[1], mapping_index=[38930], origin_id=[38930], pos=[38930, 3], x=[38930, 9, 10], x_seen_mask=[38930], y=[38930])
+tensor(38930)
+Data(coords=[56380, 3], grid_size=[1], id_scan=[1], mapping_index=[56380], origin_id=[56380], pos=[56380, 3], x=[56380, 9, 10], x_seen_mask=[56380], y=[56380])
+tensor(56380)
+Data(coords=[41221, 3], grid_size=[1], id_scan=[1], mapping_index=[41221], origin_id=[41221], pos=[41221, 3], x=[41221, 9, 10], x_seen_mask=[41221], y=[41221])
+tensor(41221)
+Data(coords=[60068, 3], grid_size=[1], id_scan=[1], mapping_index=[60068], origin_id=[60068], pos=[60068, 3], x=[60068, 9, 10], x_seen_mask=[60068], y=[60068])
+tensor(60068)
+Data(coords=[50921, 3], grid_size=[1], id_scan=[1], mapping_index=[50921], origin_id=[50921], pos=[50921, 3], x=[50921, 9, 10], x_seen_mask=[50921], y=[50921])
+tensor(50921)
+Data(coords=[45294, 3], grid_size=[1], id_scan=[1], mapping_index=[45294], origin_id=[45294], pos=[45294, 3], x=[45294, 9, 10], x_seen_mask=[45294], y=[45294])
+tensor(45294)
+Data(coords=[46577, 3], grid_size=[1], id_scan=[1], mapping_index=[46577], origin_id=[46577], pos=[46577, 3], x=[46577, 9, 10], x_seen_mask=[46577], y=[46577])
+tensor(46577)
+Data(coords=[58081, 3], grid_size=[1], id_scan=[1], mapping_index=[58081], origin_id=[58081], pos=[58081, 3], x=[58081, 9, 10], x_seen_mask=[58081], y=[58081])
+tensor(58081)
+Data(coords=[44654, 3], grid_size=[1], id_scan=[1], mapping_index=[44654], origin_id=[44654], pos=[44654, 3], x=[44654, 9, 10], x_seen_mask=[44654], y=[44654])
+tensor(44654)
+Data(coords=[48269, 3], grid_size=[1], id_scan=[1], mapping_index=[48269], origin_id=[48269], pos=[48269, 3], x=[48269, 9, 10], x_seen_mask=[48269], y=[48269])
+tensor(48269)
+Data(coords=[60268, 3], grid_size=[1], id_scan=[1], mapping_index=[60268], origin_id=[60268], pos=[60268, 3], x=[60268, 9, 10], x_seen_mask=[60268], y=[60268])
+tensor(60268)
+Data(coords=[57464, 3], grid_size=[1], id_scan=[1], mapping_index=[57464], origin_id=[57464], pos=[57464, 3], x=[57464, 9, 10], x_seen_mask=[57464], y=[57464])
+tensor(57464)
+Data(coords=[51533, 3], grid_size=[1], id_scan=[1], mapping_index=[51533], origin_id=[51533], pos=[51533, 3], x=[51533, 9, 10], x_seen_mask=[51533], y=[51533])
+tensor(51533)
+Data(coords=[46141, 3], grid_size=[1], id_scan=[1], mapping_index=[46141], origin_id=[46141], pos=[46141, 3], x=[46141, 9, 10], x_seen_mask=[46141], y=[46141])
+tensor(46141)
+Data(coords=[46542, 3], grid_size=[1], id_scan=[1], mapping_index=[46542], origin_id=[46542], pos=[46542, 3], x=[46542, 9, 10], x_seen_mask=[46542], y=[46542])
+tensor(46542)
+Data(coords=[44122, 3], grid_size=[1], id_scan=[1], mapping_index=[44122], origin_id=[44122], pos=[44122, 3], x=[44122, 9, 10], x_seen_mask=[44122], y=[44122])
+tensor(44122)
+Data(coords=[59333, 3], grid_size=[1], id_scan=[1], mapping_index=[59333], origin_id=[59333], pos=[59333, 3], x=[59333, 9, 10], x_seen_mask=[59333], y=[59333])
+tensor(59333)
+Data(coords=[44086, 3], grid_size=[1], id_scan=[1], mapping_index=[44086], origin_id=[44086], pos=[44086, 3], x=[44086, 9, 10], x_seen_mask=[44086], y=[44086])
+tensor(44086)
+Data(coords=[47511, 3], grid_size=[1], id_scan=[1], mapping_index=[47511], origin_id=[47511], pos=[47511, 3], x=[47511, 9, 10], x_seen_mask=[47511], y=[47511])
+tensor(47511)
+Data(coords=[60056, 3], grid_size=[1], id_scan=[1], mapping_index=[60056], origin_id=[60056], pos=[60056, 3], x=[60056, 9, 10], x_seen_mask=[60056], y=[60056])
+tensor(60056)
+Data(coords=[58684, 3], grid_size=[1], id_scan=[1], mapping_index=[58684], origin_id=[58684], pos=[58684, 3], x=[58684, 9, 10], x_seen_mask=[58684], y=[58684])
+tensor(58684)
+Data(coords=[47062, 3], grid_size=[1], id_scan=[1], mapping_index=[47062], origin_id=[47062], pos=[47062, 3], x=[47062, 9, 10], x_seen_mask=[47062], y=[47062])
+tensor(47062)
+Data(coords=[45949, 3], grid_size=[1], id_scan=[1], mapping_index=[45949], origin_id=[45949], pos=[45949, 3], x=[45949, 9, 10], x_seen_mask=[45949], y=[45949])
+tensor(45949)
+Data(coords=[44107, 3], grid_size=[1], id_scan=[1], mapping_index=[44107], origin_id=[44107], pos=[44107, 3], x=[44107, 9, 10], x_seen_mask=[44107], y=[44107])
+tensor(44107)
+Data(coords=[41345, 3], grid_size=[1], id_scan=[1], mapping_index=[41345], origin_id=[41345], pos=[41345, 3], x=[41345, 9, 10], x_seen_mask=[41345], y=[41345])
+tensor(41345)
+Data(coords=[58549, 3], grid_size=[1], id_scan=[1], mapping_index=[58549], origin_id=[58549], pos=[58549, 3], x=[58549, 9, 10], x_seen_mask=[58549], y=[58549])
+tensor(58549)
+Data(coords=[44556, 3], grid_size=[1], id_scan=[1], mapping_index=[44556], origin_id=[44556], pos=[44556, 3], x=[44556, 9, 10], x_seen_mask=[44556], y=[44556])
+tensor(44556)
+Data(coords=[60085, 3], grid_size=[1], id_scan=[1], mapping_index=[60085], origin_id=[60085], pos=[60085, 3], x=[60085, 9, 10], x_seen_mask=[60085], y=[60085])
+tensor(60085)
+Data(coords=[49868, 3], grid_size=[1], id_scan=[1], mapping_index=[49868], origin_id=[49868], pos=[49868, 3], x=[49868, 9, 10], x_seen_mask=[49868], y=[49868])
+tensor(49868)
+Data(coords=[46461, 3], grid_size=[1], id_scan=[1], mapping_index=[46461], origin_id=[46461], pos=[46461, 3], x=[46461, 9, 10], x_seen_mask=[46461], y=[46461])
+tensor(46461)
+Data(coords=[58648, 3], grid_size=[1], id_scan=[1], mapping_index=[58648], origin_id=[58648], pos=[58648, 3], x=[58648, 9, 10], x_seen_mask=[58648], y=[58648])
+tensor(58648)
+Data(coords=[49066, 3], grid_size=[1], id_scan=[1], mapping_index=[49066], origin_id=[49066], pos=[49066, 3], x=[49066, 9, 10], x_seen_mask=[49066], y=[49066])
+tensor(49066)
+Data(coords=[56914, 3], grid_size=[1], id_scan=[1], mapping_index=[56914], origin_id=[56914], pos=[56914, 3], x=[56914, 9, 10], x_seen_mask=[56914], y=[56914])
+tensor(56914)
+Data(coords=[50061, 3], grid_size=[1], id_scan=[1], mapping_index=[50061], origin_id=[50061], pos=[50061, 3], x=[50061, 9, 10], x_seen_mask=[50061], y=[50061])
+tensor(50061)
+Data(coords=[42930, 3], grid_size=[1], id_scan=[1], mapping_index=[42930], origin_id=[42930], pos=[42930, 3], x=[42930, 9, 10], x_seen_mask=[42930], y=[42930])
+tensor(42930)
+Data(coords=[41572, 3], grid_size=[1], id_scan=[1], mapping_index=[41572], origin_id=[41572], pos=[41572, 3], x=[41572, 9, 10], x_seen_mask=[41572], y=[41572])
+tensor(41572)
+Data(coords=[59456, 3], grid_size=[1], id_scan=[1], mapping_index=[59456], origin_id=[59456], pos=[59456, 3], x=[59456, 9, 10], x_seen_mask=[59456], y=[59456])
+tensor(59456)
+Data(coords=[47341, 3], grid_size=[1], id_scan=[1], mapping_index=[47341], origin_id=[47341], pos=[47341, 3], x=[47341, 9, 10], x_seen_mask=[47341], y=[47341])
+tensor(47341)
+Data(coords=[42610, 3], grid_size=[1], id_scan=[1], mapping_index=[42610], origin_id=[42610], pos=[42610, 3], x=[42610, 9, 10], x_seen_mask=[42610], y=[42610])
+tensor(42610)
+Data(coords=[46186, 3], grid_size=[1], id_scan=[1], mapping_index=[46186], origin_id=[46186], pos=[46186, 3], x=[46186, 9, 10], x_seen_mask=[46186], y=[46186])
+tensor(46186)
+Data(coords=[59832, 3], grid_size=[1], id_scan=[1], mapping_index=[59832], origin_id=[59832], pos=[59832, 3], x=[59832, 9, 10], x_seen_mask=[59832], y=[59832])
+tensor(59832)
+Data(coords=[47585, 3], grid_size=[1], id_scan=[1], mapping_index=[47585], origin_id=[47585], pos=[47585, 3], x=[47585, 9, 10], x_seen_mask=[47585], y=[47585])
+tensor(47585)
+Data(coords=[48586, 3], grid_size=[1], id_scan=[1], mapping_index=[48586], origin_id=[48586], pos=[48586, 3], x=[48586, 9, 10], x_seen_mask=[48586], y=[48586])
+tensor(48586)
+Data(coords=[58239, 3], grid_size=[1], id_scan=[1], mapping_index=[58239], origin_id=[58239], pos=[58239, 3], x=[58239, 9, 10], x_seen_mask=[58239], y=[58239])
+tensor(58239)
+Data(coords=[59215, 3], grid_size=[1], id_scan=[1], mapping_index=[59215], origin_id=[59215], pos=[59215, 3], x=[59215, 9, 10], x_seen_mask=[59215], y=[59215])
+tensor(59215)
+Data(coords=[48168, 3], grid_size=[1], id_scan=[1], mapping_index=[48168], origin_id=[48168], pos=[48168, 3], x=[48168, 9, 10], x_seen_mask=[48168], y=[48168])
+tensor(48168)
+Data(coords=[42834, 3], grid_size=[1], id_scan=[1], mapping_index=[42834], origin_id=[42834], pos=[42834, 3], x=[42834, 9, 10], x_seen_mask=[42834], y=[42834])
+tensor(42834)
+Data(coords=[43205, 3], grid_size=[1], id_scan=[1], mapping_index=[43205], origin_id=[43205], pos=[43205, 3], x=[43205, 9, 10], x_seen_mask=[43205], y=[43205])
+tensor(43205)
+Data(coords=[56140, 3], grid_size=[1], id_scan=[1], mapping_index=[56140], origin_id=[56140], pos=[56140, 3], x=[56140, 9, 10], x_seen_mask=[56140], y=[56140])
+tensor(56140)
+Data(coords=[47947, 3], grid_size=[1], id_scan=[1], mapping_index=[47947], origin_id=[47947], pos=[47947, 3], x=[47947, 9, 10], x_seen_mask=[47947], y=[47947])
+tensor(47947)
+Data(coords=[60233, 3], grid_size=[1], id_scan=[1], mapping_index=[60233], origin_id=[60233], pos=[60233, 3], x=[60233, 9, 10], x_seen_mask=[60233], y=[60233])
+tensor(60233)
+Data(coords=[46054, 3], grid_size=[1], id_scan=[1], mapping_index=[46054], origin_id=[46054], pos=[46054, 3], x=[46054, 9, 10], x_seen_mask=[46054], y=[46054])
+tensor(46054)
+Data(coords=[45663, 3], grid_size=[1], id_scan=[1], mapping_index=[45663], origin_id=[45663], pos=[45663, 3], x=[45663, 9, 10], x_seen_mask=[45663], y=[45663])
+tensor(45663)
+Data(coords=[58867, 3], grid_size=[1], id_scan=[1], mapping_index=[58867], origin_id=[58867], pos=[58867, 3], x=[58867, 9, 10], x_seen_mask=[58867], y=[58867])
+tensor(58867)
+Data(coords=[47139, 3], grid_size=[1], id_scan=[1], mapping_index=[47139], origin_id=[47139], pos=[47139, 3], x=[47139, 9, 10], x_seen_mask=[47139], y=[47139])
+tensor(47139)
+Data(coords=[43546, 3], grid_size=[1], id_scan=[1], mapping_index=[43546], origin_id=[43546], pos=[43546, 3], x=[43546, 9, 10], x_seen_mask=[43546], y=[43546])
+tensor(43546)
+Data(coords=[42255, 3], grid_size=[1], id_scan=[1], mapping_index=[42255], origin_id=[42255], pos=[42255, 3], x=[42255, 9, 10], x_seen_mask=[42255], y=[42255])
+tensor(42255)
+Data(coords=[57504, 3], grid_size=[1], id_scan=[1], mapping_index=[57504], origin_id=[57504], pos=[57504, 3], x=[57504, 9, 10], x_seen_mask=[57504], y=[57504])
+tensor(57504)
+Data(coords=[49693, 3], grid_size=[1], id_scan=[1], mapping_index=[49693], origin_id=[49693], pos=[49693, 3], x=[49693, 9, 10], x_seen_mask=[49693], y=[49693])
+tensor(49693)
+Data(coords=[59107, 3], grid_size=[1], id_scan=[1], mapping_index=[59107], origin_id=[59107], pos=[59107, 3], x=[59107, 9, 10], x_seen_mask=[59107], y=[59107])
+tensor(59107)
+Data(coords=[44280, 3], grid_size=[1], id_scan=[1], mapping_index=[44280], origin_id=[44280], pos=[44280, 3], x=[44280, 9, 10], x_seen_mask=[44280], y=[44280])
+tensor(44280)
+Data(coords=[48454, 3], grid_size=[1], id_scan=[1], mapping_index=[48454], origin_id=[48454], pos=[48454, 3], x=[48454, 9, 10], x_seen_mask=[48454], y=[48454])
+tensor(48454)
+Data(coords=[59871, 3], grid_size=[1], id_scan=[1], mapping_index=[59871], origin_id=[59871], pos=[59871, 3], x=[59871, 9, 10], x_seen_mask=[59871], y=[59871])
+tensor(59871)
+Data(coords=[49771, 3], grid_size=[1], id_scan=[1], mapping_index=[49771], origin_id=[49771], pos=[49771, 3], x=[49771, 9, 10], x_seen_mask=[49771], y=[49771])
+tensor(49771)
+Data(coords=[48498, 3], grid_size=[1], id_scan=[1], mapping_index=[48498], origin_id=[48498], pos=[48498, 3], x=[48498, 9, 10], x_seen_mask=[48498], y=[48498])
+tensor(48498)
+Data(coords=[46456, 3], grid_size=[1], id_scan=[1], mapping_index=[46456], origin_id=[46456], pos=[46456, 3], x=[46456, 9, 10], x_seen_mask=[46456], y=[46456])
+tensor(46456)
+Data(coords=[58397, 3], grid_size=[1], id_scan=[1], mapping_index=[58397], origin_id=[58397], pos=[58397, 3], x=[58397, 9, 10], x_seen_mask=[58397], y=[58397])
+tensor(58397)
+Data(coords=[45363, 3], grid_size=[1], id_scan=[1], mapping_index=[45363], origin_id=[45363], pos=[45363, 3], x=[45363, 9, 10], x_seen_mask=[45363], y=[45363])
+tensor(45363)
+Data(coords=[48449, 3], grid_size=[1], id_scan=[1], mapping_index=[48449], origin_id=[48449], pos=[48449, 3], x=[48449, 9, 10], x_seen_mask=[48449], y=[48449])
+tensor(48449)
+Data(coords=[41672, 3], grid_size=[1], id_scan=[1], mapping_index=[41672], origin_id=[41672], pos=[41672, 3], x=[41672, 9, 10], x_seen_mask=[41672], y=[41672])
+tensor(41672)
+Data(coords=[58809, 3], grid_size=[1], id_scan=[1], mapping_index=[58809], origin_id=[58809], pos=[58809, 3], x=[58809, 9, 10], x_seen_mask=[58809], y=[58809])
+tensor(58809)
+Data(coords=[45099, 3], grid_size=[1], id_scan=[1], mapping_index=[45099], origin_id=[45099], pos=[45099, 3], x=[45099, 9, 10], x_seen_mask=[45099], y=[45099])
+tensor(45099)
+Data(coords=[61525, 3], grid_size=[1], id_scan=[1], mapping_index=[61525], origin_id=[61525], pos=[61525, 3], x=[61525, 9, 10], x_seen_mask=[61525], y=[61525])
+tensor(61525)
+Data(coords=[46565, 3], grid_size=[1], id_scan=[1], mapping_index=[46565], origin_id=[46565], pos=[46565, 3], x=[46565, 9, 10], x_seen_mask=[46565], y=[46565])
+tensor(46565)
+Data(coords=[45695, 3], grid_size=[1], id_scan=[1], mapping_index=[45695], origin_id=[45695], pos=[45695, 3], x=[45695, 9, 10], x_seen_mask=[45695], y=[45695])
+tensor(45695)
+Data(coords=[60694, 3], grid_size=[1], id_scan=[1], mapping_index=[60694], origin_id=[60694], pos=[60694, 3], x=[60694, 9, 10], x_seen_mask=[60694], y=[60694])
+tensor(60694)
+Data(coords=[42095, 3], grid_size=[1], id_scan=[1], mapping_index=[42095], origin_id=[42095], pos=[42095, 3], x=[42095, 9, 10], x_seen_mask=[42095], y=[42095])
+tensor(42095)
+Data(coords=[56215, 3], grid_size=[1], id_scan=[1], mapping_index=[56215], origin_id=[56215], pos=[56215, 3], x=[56215, 9, 10], x_seen_mask=[56215], y=[56215])
+tensor(56215)
+Data(coords=[46358, 3], grid_size=[1], id_scan=[1], mapping_index=[46358], origin_id=[46358], pos=[46358, 3], x=[46358, 9, 10], x_seen_mask=[46358], y=[46358])
+tensor(46358)
+Data(coords=[42874, 3], grid_size=[1], id_scan=[1], mapping_index=[42874], origin_id=[42874], pos=[42874, 3], x=[42874, 9, 10], x_seen_mask=[42874], y=[42874])
+tensor(42874)
+Data(coords=[46245, 3], grid_size=[1], id_scan=[1], mapping_index=[46245], origin_id=[46245], pos=[46245, 3], x=[46245, 9, 10], x_seen_mask=[46245], y=[46245])
+tensor(46245)
+Data(coords=[56985, 3], grid_size=[1], id_scan=[1], mapping_index=[56985], origin_id=[56985], pos=[56985, 3], x=[56985, 9, 10], x_seen_mask=[56985], y=[56985])
+tensor(56985)
+Data(coords=[44448, 3], grid_size=[1], id_scan=[1], mapping_index=[44448], origin_id=[44448], pos=[44448, 3], x=[44448, 9, 10], x_seen_mask=[44448], y=[44448])
+tensor(44448)
+Data(coords=[60285, 3], grid_size=[1], id_scan=[1], mapping_index=[60285], origin_id=[60285], pos=[60285, 3], x=[60285, 9, 10], x_seen_mask=[60285], y=[60285])
+tensor(60285)
+Data(coords=[45396, 3], grid_size=[1], id_scan=[1], mapping_index=[45396], origin_id=[45396], pos=[45396, 3], x=[45396, 9, 10], x_seen_mask=[45396], y=[45396])
+tensor(45396)
+Data(coords=[44258, 3], grid_size=[1], id_scan=[1], mapping_index=[44258], origin_id=[44258], pos=[44258, 3], x=[44258, 9, 10], x_seen_mask=[44258], y=[44258])
+tensor(44258)
+Data(coords=[49452, 3], grid_size=[1], id_scan=[1], mapping_index=[49452], origin_id=[49452], pos=[49452, 3], x=[49452, 9, 10], x_seen_mask=[49452], y=[49452])
+tensor(49452)
+Data(coords=[41180, 3], grid_size=[1], id_scan=[1], mapping_index=[41180], origin_id=[41180], pos=[41180, 3], x=[41180, 9, 10], x_seen_mask=[41180], y=[41180])
+tensor(41180)
+Data(coords=[59383, 3], grid_size=[1], id_scan=[1], mapping_index=[59383], origin_id=[59383], pos=[59383, 3], x=[59383, 9, 10], x_seen_mask=[59383], y=[59383])
+tensor(59383)
+Data(coords=[57101, 3], grid_size=[1], id_scan=[1], mapping_index=[57101], origin_id=[57101], pos=[57101, 3], x=[57101, 9, 10], x_seen_mask=[57101], y=[57101])
+tensor(57101)
+Data(coords=[46352, 3], grid_size=[1], id_scan=[1], mapping_index=[46352], origin_id=[46352], pos=[46352, 3], x=[46352, 9, 10], x_seen_mask=[46352], y=[46352])
+tensor(46352)
+Data(coords=[46024, 3], grid_size=[1], id_scan=[1], mapping_index=[46024], origin_id=[46024], pos=[46024, 3], x=[46024, 9, 10], x_seen_mask=[46024], y=[46024])
+tensor(46024)
+Data(coords=[43840, 3], grid_size=[1], id_scan=[1], mapping_index=[43840], origin_id=[43840], pos=[43840, 3], x=[43840, 9, 10], x_seen_mask=[43840], y=[43840])
+tensor(43840)
+Data(coords=[47403, 3], grid_size=[1], id_scan=[1], mapping_index=[47403], origin_id=[47403], pos=[47403, 3], x=[47403, 9, 10], x_seen_mask=[47403], y=[47403])
+tensor(47403)
+Data(coords=[57158, 3], grid_size=[1], id_scan=[1], mapping_index=[57158], origin_id=[57158], pos=[57158, 3], x=[57158, 9, 10], x_seen_mask=[57158], y=[57158])
+tensor(57158)
+Data(coords=[44047, 3], grid_size=[1], id_scan=[1], mapping_index=[44047], origin_id=[44047], pos=[44047, 3], x=[44047, 9, 10], x_seen_mask=[44047], y=[44047])
+tensor(44047)
+Data(coords=[44194, 3], grid_size=[1], id_scan=[1], mapping_index=[44194], origin_id=[44194], pos=[44194, 3], x=[44194, 9, 10], x_seen_mask=[44194], y=[44194])
+tensor(44194)
+Data(coords=[59638, 3], grid_size=[1], id_scan=[1], mapping_index=[59638], origin_id=[59638], pos=[59638, 3], x=[59638, 9, 10], x_seen_mask=[59638], y=[59638])
+tensor(59638)
+Data(coords=[61284, 3], grid_size=[1], id_scan=[1], mapping_index=[61284], origin_id=[61284], pos=[61284, 3], x=[61284, 9, 10], x_seen_mask=[61284], y=[61284])
+tensor(61284)
+Data(coords=[49569, 3], grid_size=[1], id_scan=[1], mapping_index=[49569], origin_id=[49569], pos=[49569, 3], x=[49569, 9, 10], x_seen_mask=[49569], y=[49569])
+tensor(49569)
+Data(coords=[50755, 3], grid_size=[1], id_scan=[1], mapping_index=[50755], origin_id=[50755], pos=[50755, 3], x=[50755, 9, 10], x_seen_mask=[50755], y=[50755])
+tensor(50755)
+Data(coords=[47112, 3], grid_size=[1], id_scan=[1], mapping_index=[47112], origin_id=[47112], pos=[47112, 3], x=[47112, 9, 10], x_seen_mask=[47112], y=[47112])
+tensor(47112)
+Data(coords=[51108, 3], grid_size=[1], id_scan=[1], mapping_index=[51108], origin_id=[51108], pos=[51108, 3], x=[51108, 9, 10], x_seen_mask=[51108], y=[51108])
+tensor(51108)
+Data(coords=[57770, 3], grid_size=[1], id_scan=[1], mapping_index=[57770], origin_id=[57770], pos=[57770, 3], x=[57770, 9, 10], x_seen_mask=[57770], y=[57770])
+tensor(57770)
+Data(coords=[50797, 3], grid_size=[1], id_scan=[1], mapping_index=[50797], origin_id=[50797], pos=[50797, 3], x=[50797, 9, 10], x_seen_mask=[50797], y=[50797])
+tensor(50797)
+Data(coords=[44788, 3], grid_size=[1], id_scan=[1], mapping_index=[44788], origin_id=[44788], pos=[44788, 3], x=[44788, 9, 10], x_seen_mask=[44788], y=[44788])
+tensor(44788)
+Data(coords=[61473, 3], grid_size=[1], id_scan=[1], mapping_index=[61473], origin_id=[61473], pos=[61473, 3], x=[61473, 9, 10], x_seen_mask=[61473], y=[61473])
+tensor(61473)
+Data(coords=[42386, 3], grid_size=[1], id_scan=[1], mapping_index=[42386], origin_id=[42386], pos=[42386, 3], x=[42386, 9, 10], x_seen_mask=[42386], y=[42386])
+tensor(42386)
+Data(coords=[48796, 3], grid_size=[1], id_scan=[1], mapping_index=[48796], origin_id=[48796], pos=[48796, 3], x=[48796, 9, 10], x_seen_mask=[48796], y=[48796])
+tensor(48796)
+Data(coords=[58746, 3], grid_size=[1], id_scan=[1], mapping_index=[58746], origin_id=[58746], pos=[58746, 3], x=[58746, 9, 10], x_seen_mask=[58746], y=[58746])
+tensor(58746)
+Data(coords=[46464, 3], grid_size=[1], id_scan=[1], mapping_index=[46464], origin_id=[46464], pos=[46464, 3], x=[46464, 9, 10], x_seen_mask=[46464], y=[46464])
+tensor(46464)
+Data(coords=[46901, 3], grid_size=[1], id_scan=[1], mapping_index=[46901], origin_id=[46901], pos=[46901, 3], x=[46901, 9, 10], x_seen_mask=[46901], y=[46901])
+tensor(46901)
+Data(coords=[60257, 3], grid_size=[1], id_scan=[1], mapping_index=[60257], origin_id=[60257], pos=[60257, 3], x=[60257, 9, 10], x_seen_mask=[60257], y=[60257])
+tensor(60257)
+Data(coords=[50054, 3], grid_size=[1], id_scan=[1], mapping_index=[50054], origin_id=[50054], pos=[50054, 3], x=[50054, 9, 10], x_seen_mask=[50054], y=[50054])
+tensor(50054)
+Data(coords=[47614, 3], grid_size=[1], id_scan=[1], mapping_index=[47614], origin_id=[47614], pos=[47614, 3], x=[47614, 9, 10], x_seen_mask=[47614], y=[47614])
+tensor(47614)
+Data(coords=[59126, 3], grid_size=[1], id_scan=[1], mapping_index=[59126], origin_id=[59126], pos=[59126, 3], x=[59126, 9, 10], x_seen_mask=[59126], y=[59126])
+tensor(59126)
+Data(coords=[48966, 3], grid_size=[1], id_scan=[1], mapping_index=[48966], origin_id=[48966], pos=[48966, 3], x=[48966, 9, 10], x_seen_mask=[48966], y=[48966])
+tensor(48966)
+Data(coords=[49400, 3], grid_size=[1], id_scan=[1], mapping_index=[49400], origin_id=[49400], pos=[49400, 3], x=[49400, 9, 10], x_seen_mask=[49400], y=[49400])
+tensor(49400)
+Data(coords=[60417, 3], grid_size=[1], id_scan=[1], mapping_index=[60417], origin_id=[60417], pos=[60417, 3], x=[60417, 9, 10], x_seen_mask=[60417], y=[60417])
+tensor(60417)
+Data(coords=[43834, 3], grid_size=[1], id_scan=[1], mapping_index=[43834], origin_id=[43834], pos=[43834, 3], x=[43834, 9, 10], x_seen_mask=[43834], y=[43834])
+tensor(43834)
+Data(coords=[60792, 3], grid_size=[1], id_scan=[1], mapping_index=[60792], origin_id=[60792], pos=[60792, 3], x=[60792, 9, 10], x_seen_mask=[60792], y=[60792])
+tensor(60792)
+Data(coords=[40771, 3], grid_size=[1], id_scan=[1], mapping_index=[40771], origin_id=[40771], pos=[40771, 3], x=[40771, 9, 10], x_seen_mask=[40771], y=[40771])
+tensor(40771)
+Data(coords=[51095, 3], grid_size=[1], id_scan=[1], mapping_index=[51095], origin_id=[51095], pos=[51095, 3], x=[51095, 9, 10], x_seen_mask=[51095], y=[51095])
+tensor(51095)
+Data(coords=[58355, 3], grid_size=[1], id_scan=[1], mapping_index=[58355], origin_id=[58355], pos=[58355, 3], x=[58355, 9, 10], x_seen_mask=[58355], y=[58355])
+tensor(58355)
+Data(coords=[44128, 3], grid_size=[1], id_scan=[1], mapping_index=[44128], origin_id=[44128], pos=[44128, 3], x=[44128, 9, 10], x_seen_mask=[44128], y=[44128])
+tensor(44128)
+Data(coords=[47667, 3], grid_size=[1], id_scan=[1], mapping_index=[47667], origin_id=[47667], pos=[47667, 3], x=[47667, 9, 10], x_seen_mask=[47667], y=[47667])
+tensor(47667)
+Data(coords=[47154, 3], grid_size=[1], id_scan=[1], mapping_index=[47154], origin_id=[47154], pos=[47154, 3], x=[47154, 9, 10], x_seen_mask=[47154], y=[47154])
+tensor(47154)
+Data(coords=[58908, 3], grid_size=[1], id_scan=[1], mapping_index=[58908], origin_id=[58908], pos=[58908, 3], x=[58908, 9, 10], x_seen_mask=[58908], y=[58908])
+tensor(58908)
+Data(coords=[60240, 3], grid_size=[1], id_scan=[1], mapping_index=[60240], origin_id=[60240], pos=[60240, 3], x=[60240, 9, 10], x_seen_mask=[60240], y=[60240])
+tensor(60240)
+Data(coords=[49630, 3], grid_size=[1], id_scan=[1], mapping_index=[49630], origin_id=[49630], pos=[49630, 3], x=[49630, 9, 10], x_seen_mask=[49630], y=[49630])
+tensor(49630)
+Data(coords=[45377, 3], grid_size=[1], id_scan=[1], mapping_index=[45377], origin_id=[45377], pos=[45377, 3], x=[45377, 9, 10], x_seen_mask=[45377], y=[45377])
+tensor(45377)
+Data(coords=[48831, 3], grid_size=[1], id_scan=[1], mapping_index=[48831], origin_id=[48831], pos=[48831, 3], x=[48831, 9, 10], x_seen_mask=[48831], y=[48831])
+tensor(48831)
+Data(coords=[43621, 3], grid_size=[1], id_scan=[1], mapping_index=[43621], origin_id=[43621], pos=[43621, 3], x=[43621, 9, 10], x_seen_mask=[43621], y=[43621])
+tensor(43621)
+Data(coords=[58011, 3], grid_size=[1], id_scan=[1], mapping_index=[58011], origin_id=[58011], pos=[58011, 3], x=[58011, 9, 10], x_seen_mask=[58011], y=[58011])
+tensor(58011)
+Data(coords=[48821, 3], grid_size=[1], id_scan=[1], mapping_index=[48821], origin_id=[48821], pos=[48821, 3], x=[48821, 9, 10], x_seen_mask=[48821], y=[48821])
+tensor(48821)
+Data(coords=[59347, 3], grid_size=[1], id_scan=[1], mapping_index=[59347], origin_id=[59347], pos=[59347, 3], x=[59347, 9, 10], x_seen_mask=[59347], y=[59347])
+tensor(59347)
+Data(coords=[43445, 3], grid_size=[1], id_scan=[1], mapping_index=[43445], origin_id=[43445], pos=[43445, 3], x=[43445, 9, 10], x_seen_mask=[43445], y=[43445])
+tensor(43445)
+Data(coords=[58620, 3], grid_size=[1], id_scan=[1], mapping_index=[58620], origin_id=[58620], pos=[58620, 3], x=[58620, 9, 10], x_seen_mask=[58620], y=[58620])
+tensor(58620)
+Data(coords=[47039, 3], grid_size=[1], id_scan=[1], mapping_index=[47039], origin_id=[47039], pos=[47039, 3], x=[47039, 9, 10], x_seen_mask=[47039], y=[47039])
+tensor(47039)
+Data(coords=[41266, 3], grid_size=[1], id_scan=[1], mapping_index=[41266], origin_id=[41266], pos=[41266, 3], x=[41266, 9, 10], x_seen_mask=[41266], y=[41266])
+tensor(41266)
+Data(coords=[57435, 3], grid_size=[1], id_scan=[1], mapping_index=[57435], origin_id=[57435], pos=[57435, 3], x=[57435, 9, 10], x_seen_mask=[57435], y=[57435])
+tensor(57435)
+Data(coords=[49065, 3], grid_size=[1], id_scan=[1], mapping_index=[49065], origin_id=[49065], pos=[49065, 3], x=[49065, 9, 10], x_seen_mask=[49065], y=[49065])
+tensor(49065)
+Data(coords=[50029, 3], grid_size=[1], id_scan=[1], mapping_index=[50029], origin_id=[50029], pos=[50029, 3], x=[50029, 9, 10], x_seen_mask=[50029], y=[50029])
+tensor(50029)
+Data(coords=[46533, 3], grid_size=[1], id_scan=[1], mapping_index=[46533], origin_id=[46533], pos=[46533, 3], x=[46533, 9, 10], x_seen_mask=[46533], y=[46533])
+tensor(46533)
+Data(coords=[46479, 3], grid_size=[1], id_scan=[1], mapping_index=[46479], origin_id=[46479], pos=[46479, 3], x=[46479, 9, 10], x_seen_mask=[46479], y=[46479])
+tensor(46479)
+Data(coords=[57177, 3], grid_size=[1], id_scan=[1], mapping_index=[57177], origin_id=[57177], pos=[57177, 3], x=[57177, 9, 10], x_seen_mask=[57177], y=[57177])
+tensor(57177)
+Data(coords=[45590, 3], grid_size=[1], id_scan=[1], mapping_index=[45590], origin_id=[45590], pos=[45590, 3], x=[45590, 9, 10], x_seen_mask=[45590], y=[45590])
+tensor(45590)
+Data(coords=[60827, 3], grid_size=[1], id_scan=[1], mapping_index=[60827], origin_id=[60827], pos=[60827, 3], x=[60827, 9, 10], x_seen_mask=[60827], y=[60827])
+tensor(60827)
+Data(coords=[49274, 3], grid_size=[1], id_scan=[1], mapping_index=[49274], origin_id=[49274], pos=[49274, 3], x=[49274, 9, 10], x_seen_mask=[49274], y=[49274])
+tensor(49274)
+Data(coords=[58921, 3], grid_size=[1], id_scan=[1], mapping_index=[58921], origin_id=[58921], pos=[58921, 3], x=[58921, 9, 10], x_seen_mask=[58921], y=[58921])
+tensor(58921)
+Data(coords=[42422, 3], grid_size=[1], id_scan=[1], mapping_index=[42422], origin_id=[42422], pos=[42422, 3], x=[42422, 9, 10], x_seen_mask=[42422], y=[42422])
+tensor(42422)
+Data(coords=[44709, 3], grid_size=[1], id_scan=[1], mapping_index=[44709], origin_id=[44709], pos=[44709, 3], x=[44709, 9, 10], x_seen_mask=[44709], y=[44709])
+tensor(44709)
+Data(coords=[43595, 3], grid_size=[1], id_scan=[1], mapping_index=[43595], origin_id=[43595], pos=[43595, 3], x=[43595, 9, 10], x_seen_mask=[43595], y=[43595])
+tensor(43595)
+Data(coords=[51131, 3], grid_size=[1], id_scan=[1], mapping_index=[51131], origin_id=[51131], pos=[51131, 3], x=[51131, 9, 10], x_seen_mask=[51131], y=[51131])
+tensor(51131)
+Data(coords=[57420, 3], grid_size=[1], id_scan=[1], mapping_index=[57420], origin_id=[57420], pos=[57420, 3], x=[57420, 9, 10], x_seen_mask=[57420], y=[57420])
+tensor(57420)
+Data(coords=[48106, 3], grid_size=[1], id_scan=[1], mapping_index=[48106], origin_id=[48106], pos=[48106, 3], x=[48106, 9, 10], x_seen_mask=[48106], y=[48106])
+tensor(48106)
+Data(coords=[46584, 3], grid_size=[1], id_scan=[1], mapping_index=[46584], origin_id=[46584], pos=[46584, 3], x=[46584, 9, 10], x_seen_mask=[46584], y=[46584])
+tensor(46584)
+Data(coords=[61169, 3], grid_size=[1], id_scan=[1], mapping_index=[61169], origin_id=[61169], pos=[61169, 3], x=[61169, 9, 10], x_seen_mask=[61169], y=[61169])
+tensor(61169)
+Data(coords=[57464, 3], grid_size=[1], id_scan=[1], mapping_index=[57464], origin_id=[57464], pos=[57464, 3], x=[57464, 9, 10], x_seen_mask=[57464], y=[57464])
+tensor(57464)
+Data(coords=[47096, 3], grid_size=[1], id_scan=[1], mapping_index=[47096], origin_id=[47096], pos=[47096, 3], x=[47096, 9, 10], x_seen_mask=[47096], y=[47096])
+tensor(47096)
+Data(coords=[50534, 3], grid_size=[1], id_scan=[1], mapping_index=[50534], origin_id=[50534], pos=[50534, 3], x=[50534, 9, 10], x_seen_mask=[50534], y=[50534])
+tensor(50534)
+Data(coords=[45343, 3], grid_size=[1], id_scan=[1], mapping_index=[45343], origin_id=[45343], pos=[45343, 3], x=[45343, 9, 10], x_seen_mask=[45343], y=[45343])
+tensor(45343)
+Data(coords=[60429, 3], grid_size=[1], id_scan=[1], mapping_index=[60429], origin_id=[60429], pos=[60429, 3], x=[60429, 9, 10], x_seen_mask=[60429], y=[60429])
+tensor(60429)
+Data(coords=[47426, 3], grid_size=[1], id_scan=[1], mapping_index=[47426], origin_id=[47426], pos=[47426, 3], x=[47426, 9, 10], x_seen_mask=[47426], y=[47426])
+tensor(47426)
+Data(coords=[51616, 3], grid_size=[1], id_scan=[1], mapping_index=[51616], origin_id=[51616], pos=[51616, 3], x=[51616, 9, 10], x_seen_mask=[51616], y=[51616])
+tensor(51616)
+Data(coords=[58117, 3], grid_size=[1], id_scan=[1], mapping_index=[58117], origin_id=[58117], pos=[58117, 3], x=[58117, 9, 10], x_seen_mask=[58117], y=[58117])
+tensor(58117)
+Data(coords=[46166, 3], grid_size=[1], id_scan=[1], mapping_index=[46166], origin_id=[46166], pos=[46166, 3], x=[46166, 9, 10], x_seen_mask=[46166], y=[46166])
+tensor(46166)
+Data(coords=[43889, 3], grid_size=[1], id_scan=[1], mapping_index=[43889], origin_id=[43889], pos=[43889, 3], x=[43889, 9, 10], x_seen_mask=[43889], y=[43889])
+tensor(43889)
+Data(coords=[46762, 3], grid_size=[1], id_scan=[1], mapping_index=[46762], origin_id=[46762], pos=[46762, 3], x=[46762, 9, 10], x_seen_mask=[46762], y=[46762])
+tensor(46762)
+Data(coords=[59431, 3], grid_size=[1], id_scan=[1], mapping_index=[59431], origin_id=[59431], pos=[59431, 3], x=[59431, 9, 10], x_seen_mask=[59431], y=[59431])
+tensor(59431)
+Data(coords=[59431, 3], grid_size=[1], id_scan=[1], mapping_index=[59431], origin_id=[59431], pos=[59431, 3], x=[59431, 9, 10], x_seen_mask=[59431], y=[59431])
+tensor(59431)
+Data(coords=[45670, 3], grid_size=[1], id_scan=[1], mapping_index=[45670], origin_id=[45670], pos=[45670, 3], x=[45670, 9, 10], x_seen_mask=[45670], y=[45670])
+tensor(45670)
+Data(coords=[49391, 3], grid_size=[1], id_scan=[1], mapping_index=[49391], origin_id=[49391], pos=[49391, 3], x=[49391, 9, 10], x_seen_mask=[49391], y=[49391])
+tensor(49391)
+Data(coords=[43335, 3], grid_size=[1], id_scan=[1], mapping_index=[43335], origin_id=[43335], pos=[43335, 3], x=[43335, 9, 10], x_seen_mask=[43335], y=[43335])
+tensor(43335)
+Data(coords=[44050, 3], grid_size=[1], id_scan=[1], mapping_index=[44050], origin_id=[44050], pos=[44050, 3], x=[44050, 9, 10], x_seen_mask=[44050], y=[44050])
+tensor(44050)
+Data(coords=[58424, 3], grid_size=[1], id_scan=[1], mapping_index=[58424], origin_id=[58424], pos=[58424, 3], x=[58424, 9, 10], x_seen_mask=[58424], y=[58424])
+tensor(58424)
+Data(coords=[45284, 3], grid_size=[1], id_scan=[1], mapping_index=[45284], origin_id=[45284], pos=[45284, 3], x=[45284, 9, 10], x_seen_mask=[45284], y=[45284])
+tensor(45284)
+Data(coords=[46132, 3], grid_size=[1], id_scan=[1], mapping_index=[46132], origin_id=[46132], pos=[46132, 3], x=[46132, 9, 10], x_seen_mask=[46132], y=[46132])
+tensor(46132)
+Data(coords=[59135, 3], grid_size=[1], id_scan=[1], mapping_index=[59135], origin_id=[59135], pos=[59135, 3], x=[59135, 9, 10], x_seen_mask=[59135], y=[59135])
+tensor(59135)
+Data(coords=[61170, 3], grid_size=[1], id_scan=[1], mapping_index=[61170], origin_id=[61170], pos=[61170, 3], x=[61170, 9, 10], x_seen_mask=[61170], y=[61170])
+tensor(61170)
+Data(coords=[45581, 3], grid_size=[1], id_scan=[1], mapping_index=[45581], origin_id=[45581], pos=[45581, 3], x=[45581, 9, 10], x_seen_mask=[45581], y=[45581])
+tensor(45581)
+Data(coords=[46039, 3], grid_size=[1], id_scan=[1], mapping_index=[46039], origin_id=[46039], pos=[46039, 3], x=[46039, 9, 10], x_seen_mask=[46039], y=[46039])
+tensor(46039)
+Data(coords=[59357, 3], grid_size=[1], id_scan=[1], mapping_index=[59357], origin_id=[59357], pos=[59357, 3], x=[59357, 9, 10], x_seen_mask=[59357], y=[59357])
+tensor(59357)
+Data(coords=[44425, 3], grid_size=[1], id_scan=[1], mapping_index=[44425], origin_id=[44425], pos=[44425, 3], x=[44425, 9, 10], x_seen_mask=[44425], y=[44425])
+tensor(44425)
+Data(coords=[46555, 3], grid_size=[1], id_scan=[1], mapping_index=[46555], origin_id=[46555], pos=[46555, 3], x=[46555, 9, 10], x_seen_mask=[46555], y=[46555])
+tensor(46555)
+Data(coords=[60079, 3], grid_size=[1], id_scan=[1], mapping_index=[60079], origin_id=[60079], pos=[60079, 3], x=[60079, 9, 10], x_seen_mask=[60079], y=[60079])
+tensor(60079)
+Data(coords=[49376, 3], grid_size=[1], id_scan=[1], mapping_index=[49376], origin_id=[49376], pos=[49376, 3], x=[49376, 9, 10], x_seen_mask=[49376], y=[49376])
+tensor(49376)
+Data(coords=[40717, 3], grid_size=[1], id_scan=[1], mapping_index=[40717], origin_id=[40717], pos=[40717, 3], x=[40717, 9, 10], x_seen_mask=[40717], y=[40717])
+tensor(40717)
+Data(coords=[52846, 3], grid_size=[1], id_scan=[1], mapping_index=[52846], origin_id=[52846], pos=[52846, 3], x=[52846, 9, 10], x_seen_mask=[52846], y=[52846])
+tensor(52846)
+Data(coords=[57752, 3], grid_size=[1], id_scan=[1], mapping_index=[57752], origin_id=[57752], pos=[57752, 3], x=[57752, 9, 10], x_seen_mask=[57752], y=[57752])
+tensor(57752)
+Data(coords=[44147, 3], grid_size=[1], id_scan=[1], mapping_index=[44147], origin_id=[44147], pos=[44147, 3], x=[44147, 9, 10], x_seen_mask=[44147], y=[44147])
+tensor(44147)
+Data(coords=[60220, 3], grid_size=[1], id_scan=[1], mapping_index=[60220], origin_id=[60220], pos=[60220, 3], x=[60220, 9, 10], x_seen_mask=[60220], y=[60220])
+tensor(60220)
+Data(coords=[45818, 3], grid_size=[1], id_scan=[1], mapping_index=[45818], origin_id=[45818], pos=[45818, 3], x=[45818, 9, 10], x_seen_mask=[45818], y=[45818])
+tensor(45818)
+Data(coords=[45256, 3], grid_size=[1], id_scan=[1], mapping_index=[45256], origin_id=[45256], pos=[45256, 3], x=[45256, 9, 10], x_seen_mask=[45256], y=[45256])
+tensor(45256)
+Data(coords=[60541, 3], grid_size=[1], id_scan=[1], mapping_index=[60541], origin_id=[60541], pos=[60541, 3], x=[60541, 9, 10], x_seen_mask=[60541], y=[60541])
+tensor(60541)
+Data(coords=[45833, 3], grid_size=[1], id_scan=[1], mapping_index=[45833], origin_id=[45833], pos=[45833, 3], x=[45833, 9, 10], x_seen_mask=[45833], y=[45833])
+tensor(45833)
+Data(coords=[46101, 3], grid_size=[1], id_scan=[1], mapping_index=[46101], origin_id=[46101], pos=[46101, 3], x=[46101, 9, 10], x_seen_mask=[46101], y=[46101])
+tensor(46101)
+Data(coords=[47705, 3], grid_size=[1], id_scan=[1], mapping_index=[47705], origin_id=[47705], pos=[47705, 3], x=[47705, 9, 10], x_seen_mask=[47705], y=[47705])
+tensor(47705)
+Data(coords=[61115, 3], grid_size=[1], id_scan=[1], mapping_index=[61115], origin_id=[61115], pos=[61115, 3], x=[61115, 9, 10], x_seen_mask=[61115], y=[61115])
+tensor(61115)
+Data(coords=[51478, 3], grid_size=[1], id_scan=[1], mapping_index=[51478], origin_id=[51478], pos=[51478, 3], x=[51478, 9, 10], x_seen_mask=[51478], y=[51478])
+tensor(51478)
+Data(coords=[51256, 3], grid_size=[1], id_scan=[1], mapping_index=[51256], origin_id=[51256], pos=[51256, 3], x=[51256, 9, 10], x_seen_mask=[51256], y=[51256])
+tensor(51256)
+Data(coords=[44206, 3], grid_size=[1], id_scan=[1], mapping_index=[44206], origin_id=[44206], pos=[44206, 3], x=[44206, 9, 10], x_seen_mask=[44206], y=[44206])
+tensor(44206)
+Data(coords=[60322, 3], grid_size=[1], id_scan=[1], mapping_index=[60322], origin_id=[60322], pos=[60322, 3], x=[60322, 9, 10], x_seen_mask=[60322], y=[60322])
+tensor(60322)
+Data(coords=[45224, 3], grid_size=[1], id_scan=[1], mapping_index=[45224], origin_id=[45224], pos=[45224, 3], x=[45224, 9, 10], x_seen_mask=[45224], y=[45224])
+tensor(45224)
+Data(coords=[59485, 3], grid_size=[1], id_scan=[1], mapping_index=[59485], origin_id=[59485], pos=[59485, 3], x=[59485, 9, 10], x_seen_mask=[59485], y=[59485])
+tensor(59485)
+Data(coords=[46760, 3], grid_size=[1], id_scan=[1], mapping_index=[46760], origin_id=[46760], pos=[46760, 3], x=[46760, 9, 10], x_seen_mask=[46760], y=[46760])
+tensor(46760)
+Data(coords=[41779, 3], grid_size=[1], id_scan=[1], mapping_index=[41779], origin_id=[41779], pos=[41779, 3], x=[41779, 9, 10], x_seen_mask=[41779], y=[41779])
+tensor(41779)
+Data(coords=[48085, 3], grid_size=[1], id_scan=[1], mapping_index=[48085], origin_id=[48085], pos=[48085, 3], x=[48085, 9, 10], x_seen_mask=[48085], y=[48085])
+tensor(48085)
+Data(coords=[56947, 3], grid_size=[1], id_scan=[1], mapping_index=[56947], origin_id=[56947], pos=[56947, 3], x=[56947, 9, 10], x_seen_mask=[56947], y=[56947])
+tensor(56947)
+Data(coords=[46022, 3], grid_size=[1], id_scan=[1], mapping_index=[46022], origin_id=[46022], pos=[46022, 3], x=[46022, 9, 10], x_seen_mask=[46022], y=[46022])
+tensor(46022)
+Data(coords=[50959, 3], grid_size=[1], id_scan=[1], mapping_index=[50959], origin_id=[50959], pos=[50959, 3], x=[50959, 9, 10], x_seen_mask=[50959], y=[50959])
+tensor(50959)
+Data(coords=[60771, 3], grid_size=[1], id_scan=[1], mapping_index=[60771], origin_id=[60771], pos=[60771, 3], x=[60771, 9, 10], x_seen_mask=[60771], y=[60771])
+tensor(60771)
+Data(coords=[50366, 3], grid_size=[1], id_scan=[1], mapping_index=[50366], origin_id=[50366], pos=[50366, 3], x=[50366, 9, 10], x_seen_mask=[50366], y=[50366])
+tensor(50366)
+Data(coords=[59911, 3], grid_size=[1], id_scan=[1], mapping_index=[59911], origin_id=[59911], pos=[59911, 3], x=[59911, 9, 10], x_seen_mask=[59911], y=[59911])
+tensor(59911)
+Data(coords=[51324, 3], grid_size=[1], id_scan=[1], mapping_index=[51324], origin_id=[51324], pos=[51324, 3], x=[51324, 9, 10], x_seen_mask=[51324], y=[51324])
+tensor(51324)
+Data(coords=[50671, 3], grid_size=[1], id_scan=[1], mapping_index=[50671], origin_id=[50671], pos=[50671, 3], x=[50671, 9, 10], x_seen_mask=[50671], y=[50671])
+tensor(50671)
+Data(coords=[45954, 3], grid_size=[1], id_scan=[1], mapping_index=[45954], origin_id=[45954], pos=[45954, 3], x=[45954, 9, 10], x_seen_mask=[45954], y=[45954])
+tensor(45954)
+Data(coords=[58327, 3], grid_size=[1], id_scan=[1], mapping_index=[58327], origin_id=[58327], pos=[58327, 3], x=[58327, 9, 10], x_seen_mask=[58327], y=[58327])
+tensor(58327)
+Data(coords=[58064, 3], grid_size=[1], id_scan=[1], mapping_index=[58064], origin_id=[58064], pos=[58064, 3], x=[58064, 9, 10], x_seen_mask=[58064], y=[58064])
+tensor(58064)
+Data(coords=[49436, 3], grid_size=[1], id_scan=[1], mapping_index=[49436], origin_id=[49436], pos=[49436, 3], x=[49436, 9, 10], x_seen_mask=[49436], y=[49436])
+tensor(49436)
+Data(coords=[44710, 3], grid_size=[1], id_scan=[1], mapping_index=[44710], origin_id=[44710], pos=[44710, 3], x=[44710, 9, 10], x_seen_mask=[44710], y=[44710])
+tensor(44710)
+Data(coords=[57738, 3], grid_size=[1], id_scan=[1], mapping_index=[57738], origin_id=[57738], pos=[57738, 3], x=[57738, 9, 10], x_seen_mask=[57738], y=[57738])
+tensor(57738)
+Data(coords=[51693, 3], grid_size=[1], id_scan=[1], mapping_index=[51693], origin_id=[51693], pos=[51693, 3], x=[51693, 9, 10], x_seen_mask=[51693], y=[51693])
+tensor(51693)
+Data(coords=[41693, 3], grid_size=[1], id_scan=[1], mapping_index=[41693], origin_id=[41693], pos=[41693, 3], x=[41693, 9, 10], x_seen_mask=[41693], y=[41693])
+tensor(41693)
+Data(coords=[45592, 3], grid_size=[1], id_scan=[1], mapping_index=[45592], origin_id=[45592], pos=[45592, 3], x=[45592, 9, 10], x_seen_mask=[45592], y=[45592])
+tensor(45592)
+Data(coords=[59558, 3], grid_size=[1], id_scan=[1], mapping_index=[59558], origin_id=[59558], pos=[59558, 3], x=[59558, 9, 10], x_seen_mask=[59558], y=[59558])
+tensor(59558)
+Data(coords=[42566, 3], grid_size=[1], id_scan=[1], mapping_index=[42566], origin_id=[42566], pos=[42566, 3], x=[42566, 9, 10], x_seen_mask=[42566], y=[42566])
+tensor(42566)
+Data(coords=[50147, 3], grid_size=[1], id_scan=[1], mapping_index=[50147], origin_id=[50147], pos=[50147, 3], x=[50147, 9, 10], x_seen_mask=[50147], y=[50147])
+tensor(50147)
+Data(coords=[57693, 3], grid_size=[1], id_scan=[1], mapping_index=[57693], origin_id=[57693], pos=[57693, 3], x=[57693, 9, 10], x_seen_mask=[57693], y=[57693])
+tensor(57693)
+Data(coords=[49077, 3], grid_size=[1], id_scan=[1], mapping_index=[49077], origin_id=[49077], pos=[49077, 3], x=[49077, 9, 10], x_seen_mask=[49077], y=[49077])
+tensor(49077)
+Data(coords=[59492, 3], grid_size=[1], id_scan=[1], mapping_index=[59492], origin_id=[59492], pos=[59492, 3], x=[59492, 9, 10], x_seen_mask=[59492], y=[59492])
+tensor(59492)
+Data(coords=[45831, 3], grid_size=[1], id_scan=[1], mapping_index=[45831], origin_id=[45831], pos=[45831, 3], x=[45831, 9, 10], x_seen_mask=[45831], y=[45831])
+tensor(45831)
+Data(coords=[46946, 3], grid_size=[1], id_scan=[1], mapping_index=[46946], origin_id=[46946], pos=[46946, 3], x=[46946, 9, 10], x_seen_mask=[46946], y=[46946])
+tensor(46946)
+Data(coords=[59263, 3], grid_size=[1], id_scan=[1], mapping_index=[59263], origin_id=[59263], pos=[59263, 3], x=[59263, 9, 10], x_seen_mask=[59263], y=[59263])
+tensor(59263)
+Data(coords=[42169, 3], grid_size=[1], id_scan=[1], mapping_index=[42169], origin_id=[42169], pos=[42169, 3], x=[42169, 9, 10], x_seen_mask=[42169], y=[42169])
+tensor(42169)
+Data(coords=[45828, 3], grid_size=[1], id_scan=[1], mapping_index=[45828], origin_id=[45828], pos=[45828, 3], x=[45828, 9, 10], x_seen_mask=[45828], y=[45828])
+tensor(45828)
+Data(coords=[43913, 3], grid_size=[1], id_scan=[1], mapping_index=[43913], origin_id=[43913], pos=[43913, 3], x=[43913, 9, 10], x_seen_mask=[43913], y=[43913])
+tensor(43913)
+Data(coords=[44556, 3], grid_size=[1], id_scan=[1], mapping_index=[44556], origin_id=[44556], pos=[44556, 3], x=[44556, 9, 10], x_seen_mask=[44556], y=[44556])
+tensor(44556)
+Data(coords=[59118, 3], grid_size=[1], id_scan=[1], mapping_index=[59118], origin_id=[59118], pos=[59118, 3], x=[59118, 9, 10], x_seen_mask=[59118], y=[59118])
+tensor(59118)
+Data(coords=[58829, 3], grid_size=[1], id_scan=[1], mapping_index=[58829], origin_id=[58829], pos=[58829, 3], x=[58829, 9, 10], x_seen_mask=[58829], y=[58829])
+tensor(58829)
+Data(coords=[52228, 3], grid_size=[1], id_scan=[1], mapping_index=[52228], origin_id=[52228], pos=[52228, 3], x=[52228, 9, 10], x_seen_mask=[52228], y=[52228])
+tensor(52228)
+Data(coords=[45076, 3], grid_size=[1], id_scan=[1], mapping_index=[45076], origin_id=[45076], pos=[45076, 3], x=[45076, 9, 10], x_seen_mask=[45076], y=[45076])
+tensor(45076)
+Data(coords=[61484, 3], grid_size=[1], id_scan=[1], mapping_index=[61484], origin_id=[61484], pos=[61484, 3], x=[61484, 9, 10], x_seen_mask=[61484], y=[61484])
+tensor(61484)
+Data(coords=[48449, 3], grid_size=[1], id_scan=[1], mapping_index=[48449], origin_id=[48449], pos=[48449, 3], x=[48449, 9, 10], x_seen_mask=[48449], y=[48449])
+tensor(48449)
+Data(coords=[44546, 3], grid_size=[1], id_scan=[1], mapping_index=[44546], origin_id=[44546], pos=[44546, 3], x=[44546, 9, 10], x_seen_mask=[44546], y=[44546])
+tensor(44546)
+Data(coords=[72540, 3], grid_size=[1], id_scan=[1], mapping_index=[72540], origin_id=[72540], pos=[72540, 3], x=[72540, 9, 10], x_seen_mask=[72540], y=[72540])
+tensor(72540)
+Data(coords=[69792, 3], grid_size=[1], id_scan=[1], mapping_index=[69792], origin_id=[69792], pos=[69792, 3], x=[69792, 9, 10], x_seen_mask=[69792], y=[69792])
+tensor(69792)
+Data(coords=[64933, 3], grid_size=[1], id_scan=[1], mapping_index=[64933], origin_id=[64933], pos=[64933, 3], x=[64933, 9, 10], x_seen_mask=[64933], y=[64933])
+tensor(64933)
+Data(coords=[72605, 3], grid_size=[1], id_scan=[1], mapping_index=[72605], origin_id=[72605], pos=[72605, 3], x=[72605, 9, 10], x_seen_mask=[72605], y=[72605])
+tensor(72605)
+Data(coords=[68444, 3], grid_size=[1], id_scan=[1], mapping_index=[68444], origin_id=[68444], pos=[68444, 3], x=[68444, 9, 10], x_seen_mask=[68444], y=[68444])
+tensor(68444)
+Data(coords=[64867, 3], grid_size=[1], id_scan=[1], mapping_index=[64867], origin_id=[64867], pos=[64867, 3], x=[64867, 9, 10], x_seen_mask=[64867], y=[64867])
+tensor(64867)
+Data(coords=[71117, 3], grid_size=[1], id_scan=[1], mapping_index=[71117], origin_id=[71117], pos=[71117, 3], x=[71117, 9, 10], x_seen_mask=[71117], y=[71117])
+tensor(71117)
+Data(coords=[67747, 3], grid_size=[1], id_scan=[1], mapping_index=[67747], origin_id=[67747], pos=[67747, 3], x=[67747, 9, 10], x_seen_mask=[67747], y=[67747])
+tensor(67747)
+Data(coords=[64999, 3], grid_size=[1], id_scan=[1], mapping_index=[64999], origin_id=[64999], pos=[64999, 3], x=[64999, 9, 10], x_seen_mask=[64999], y=[64999])
+tensor(64999)
+Data(coords=[71080, 3], grid_size=[1], id_scan=[1], mapping_index=[71080], origin_id=[71080], pos=[71080, 3], x=[71080, 9, 10], x_seen_mask=[71080], y=[71080])
+tensor(71080)
+Data(coords=[69711, 3], grid_size=[1], id_scan=[1], mapping_index=[69711], origin_id=[69711], pos=[69711, 3], x=[69711, 9, 10], x_seen_mask=[69711], y=[69711])
+tensor(69711)
+Data(coords=[65629, 3], grid_size=[1], id_scan=[1], mapping_index=[65629], origin_id=[65629], pos=[65629, 3], x=[65629, 9, 10], x_seen_mask=[65629], y=[65629])
+tensor(65629)
+Data(coords=[73705, 3], grid_size=[1], id_scan=[1], mapping_index=[73705], origin_id=[73705], pos=[73705, 3], x=[73705, 9, 10], x_seen_mask=[73705], y=[73705])
+tensor(73705)
+Data(coords=[69583, 3], grid_size=[1], id_scan=[1], mapping_index=[69583], origin_id=[69583], pos=[69583, 3], x=[69583, 9, 10], x_seen_mask=[69583], y=[69583])
+tensor(69583)
+Data(coords=[64154, 3], grid_size=[1], id_scan=[1], mapping_index=[64154], origin_id=[64154], pos=[64154, 3], x=[64154, 9, 10], x_seen_mask=[64154], y=[64154])
+tensor(64154)
+Data(coords=[70277, 3], grid_size=[1], id_scan=[1], mapping_index=[70277], origin_id=[70277], pos=[70277, 3], x=[70277, 9, 10], x_seen_mask=[70277], y=[70277])
+tensor(70277)
+Data(coords=[70451, 3], grid_size=[1], id_scan=[1], mapping_index=[70451], origin_id=[70451], pos=[70451, 3], x=[70451, 9, 10], x_seen_mask=[70451], y=[70451])
+tensor(70451)
+Data(coords=[65624, 3], grid_size=[1], id_scan=[1], mapping_index=[65624], origin_id=[65624], pos=[65624, 3], x=[65624, 9, 10], x_seen_mask=[65624], y=[65624])
+tensor(65624)
+

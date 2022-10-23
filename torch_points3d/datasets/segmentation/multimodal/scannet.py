@@ -332,12 +332,12 @@ class ScannetMM(Scannet):
                         torch.arange(im.num_points, device=images.device).repeat_interleave(
                             im.view_csr_indexing[1:] - im.view_csr_indexing[:-1])
                         for im in images]
-            # take subset of only seen points without re-indexing the same point
-            data = data[dense_idx_list[0].unique()]
+#             # take subset of only seen points without re-indexing the same point
+#             data = data[dense_idx_list[0].unique()]
 
 
             # Save mapping features and M2F features in x
-            data.data.x = torch.cat(self.get_view_dependent_features(data), dim=-1)
+            data.data.x = torch.cat(self.get_view_dependent_features(data[dense_idx_list[0].unique()]), dim=-1)
             # Keep track of seen points
             csr_idx = data.modalities['image'].view_cat_csr_indexing
             data.data.x_seen_mask = csr_idx[1:] > csr_idx[:-1]

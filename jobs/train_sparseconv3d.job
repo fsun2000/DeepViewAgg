@@ -5,9 +5,9 @@
 #SBATCH --job-name=sparseconv3d
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=4
-#SBATCH --time=05:00:00
+#SBATCH --time=48:00:00
 #SBATCH --mem=190000M
-#SBATCH --output=job_logs/dva/train_sparseconv3d_partial.out
+#SBATCH --output=job_logs/dva/train_sparseconv3d_fulldata.out
 
 cd $HOME/DeepViewAgg
 
