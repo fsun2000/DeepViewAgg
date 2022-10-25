@@ -120,6 +120,10 @@ class ScannetMM(Scannet):
         self.m2f_preds_dirname = m2f_preds_dirname
         self.load_m2f_masks = load_m2f_masks
         super(ScannetMM, self).__init__(*args, **kwargs)
+        
+        mapping_idx_to_scan = getattr(
+            self, f"MAPPING_IDX_TO_SCAN_{self.split.upper()}_NAMES")
+        print(mapping_idx_to_scan)
     
         print("temporarily hard code N-views in get_view_dependent_features()")
 

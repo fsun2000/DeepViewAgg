@@ -244,25 +244,25 @@ class BaseModel(torch.nn.Module, TrackerInterface, DatasetInterface, CheckpointI
         with torch.cuda.amp.autocast(enabled=self.is_mixed_precision()): # enable autocasting if supported
             self.forward(epoch=epoch)  # first call forward to calculate intermediate results
         
-        orig_losses = self._do_scale_loss() # scale losses if needed
-        make_optimizer_step = self._manage_optimizer_zero_grad()  # Accumulate gradient if option is up
-        self.backward()  # calculate gradients
-        self._do_unscale_loss(orig_losses) # unscale losses to orig
+#         orig_losses = self._do_scale_loss() # scale losses if needed
+#         make_optimizer_step = self._manage_optimizer_zero_grad()  # Accumulate gradient if option is up
+#         self.backward()  # calculate gradients
+#         self._do_unscale_loss(orig_losses) # unscale losses to orig
 
-        if self._grad_clip > 0:
-            torch.nn.utils.clip_grad_value_(self.parameters(), self._grad_clip)
+#         if self._grad_clip > 0:
+#             torch.nn.utils.clip_grad_value_(self.parameters(), self._grad_clip)
 
-#         print("disabled optimizer step", flush=True)
-        if make_optimizer_step:
-            self._grad_scale.step(self._optimizer)  # update parameters
+        print("disabled optimizer step", flush=True)
+#         if make_optimizer_step:
+#             self._grad_scale.step(self._optimizer)  # update parameters
 
-        if self._lr_scheduler:
-            self._do_scheduler_update("_update_lr_scheduler_on", self._lr_scheduler, epoch, batch_size)
+#         if self._lr_scheduler:
+#             self._do_scheduler_update("_update_lr_scheduler_on", self._lr_scheduler, epoch, batch_size)
 
-        if self._bn_scheduler:
-            self._do_scheduler_update("_update_bn_scheduler_on", self._bn_scheduler, epoch, batch_size)
+#         if self._bn_scheduler:
+#             self._do_scheduler_update("_update_bn_scheduler_on", self._bn_scheduler, epoch, batch_size)
 
-        self._grad_scale.update() # update scaling
+#         self._grad_scale.update() # update scaling
         self._num_epochs = epoch
         self._num_batches += 1
         self._num_samples += batch_size

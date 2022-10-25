@@ -119,6 +119,8 @@ class MVFusionEncoder(MVFusionBackboneBasedModel, ABC):
             - pos [N, 3] (coords or real pos if xyz is in data)
             - x [N, output_nc]
         """
+        
+        print("data.data.id_scan: ", data.data.id_scan, flush=True)
            
         ### Feng: this has been moved to dataset __getitem__
 #         # Take subset of only seen points
@@ -161,26 +163,39 @@ class MVFusionEncoder(MVFusionBackboneBasedModel, ABC):
         # Adjust previously used label mapping [0, 21] with 0 being invalid, to [-1, 20].
         # As M2F model does not produce 0 preds, updated labels are within [0, 19]
         m2f_feats = m2f_feats - 1   
-        m2f_feats = torch.nn.functional.one_hot(m2f_feats.squeeze().long(), self.n_classes)
+#         m2f_feats = torch.nn.functional.one_hot(m2f_feats.squeeze().long(), self.n_classes)
     
         ### Multi-view fusion of M2F and viewing conditions using Transformer
         # TODO: remove assumption that pixel validity is the 1st feature
         invalid_pixel_mask = viewing_feats[:, :, 0] == 0.
         
-        fusion_input = {
-            'invalid_pixels_mask': invalid_pixel_mask.to(self.device),
-            'viewing_features': viewing_feats.to(self.device),
-            'one_hot_mask_labels': m2f_feats.to(self.device)
-        }
+#         fusion_input = {
+#             'invalid_pixels_mask': invalid_pixel_mask.to(self.device),
+#             'viewing_features': viewing_feats.to(self.device),
+#             'one_hot_mask_labels': m2f_feats.to(self.device)
+#         }
         
-#         del m2f_feats, invalid_pixel_mask, viewing_feats
+# #         del m2f_feats, invalid_pixel_mask, viewing_feats
                         
-        # get logits
-        out_scores = self.fusion(fusion_input)
+#         # get logits
+#         out_scores = self.fusion(fusion_input)
+
+        #### FENG: TEMP: to test puse M2F label prediction    
+        valid_m2f_feats = []
+        for i in range(len(m2f_feats)):
+            valid_m2f_feats.append(m2f_feats[i][~invalid_pixel_mask[i]])
+
+        out_scores = []
+        for m2feats_of_seen_point in valid_m2f_feats:
+            out_scores.append(torch.mode(m2feats_of_seen_point.squeeze(), dim=0)[0])
+        out_scores = torch.stack(out_scores, dim=0)
+        out_scores = torch.nn.functional.one_hot(out_scores.squeeze().long(), self.n_classes).float()
+
         
         # Set logits of unseen points to 0.
         full_out_scores = torch.zeros((len(x_seen_mask), out_scores.shape[1]), dtype=out_scores.dtype, device=out_scores.device)
         full_out_scores[x_seen_mask] = out_scores
+        
         # Discard the modalities used in the down modules, only
         # 3D point features are expected to be used in subsequent
         # modules. Restore the input Data object equipped with the

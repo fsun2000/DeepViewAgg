@@ -201,15 +201,16 @@ class Trainer:
         iter_data_time = time.time()
         with Ctq(train_loader) as tq_train_loader:
             for i, data in enumerate(tq_train_loader):
+                print("i: ", i, flush=True)
                 
                 t_data = time.time() - iter_data_time
                 iter_start_time = time.time()
                 self._model.set_input(data, self._device)
                 self._model.optimize_parameters(epoch, self._dataset.batch_size)
-                if i % 10 == 0:
-                    with torch.no_grad():
-                        self._tracker.track(
-                            self._model, data=data, **self.tracker_options)
+#                 if i % 10 == 0:
+                with torch.no_grad():
+                    self._tracker.track(
+                        self._model, data=data, **self.tracker_options)
 
                 tq_train_loader.set_postfix(
                     **self._tracker.get_metrics(),
@@ -232,6 +233,8 @@ class Trainer:
                         return 0
 
         self._finalize_epoch(epoch)
+        self._tracker.print_summary()
+
 
     def _test_epoch(self, epoch, stage_name: str):
         voting_runs = self._cfg.get("voting_runs", 1)
@@ -257,7 +260,9 @@ class Trainer:
 
             for i in range(voting_runs):
                 with Ctq(loader) as tq_loader:
-                    for data in tq_loader:
+                    for i, data in enumerate(tq_loader):
+                        print("i: ", i, flush=True)
+
                         with torch.no_grad():
                             self._model.set_input(data, self._device)
                             with torch.cuda.amp.autocast(enabled=self._model.is_mixed_precision()):

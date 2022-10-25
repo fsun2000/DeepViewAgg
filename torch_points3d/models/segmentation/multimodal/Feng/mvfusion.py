@@ -101,7 +101,7 @@ class MVFusion(BaseModel, ABC):
                     self.input.modalities[m][i].pred = data[m][i].x
         
     
-        # Feng: directly use the logits output from DVA_cls_5_fusion_7 class with MLP_head inside
+        # Feng: directly use the logits output from DVA_cls_5_fusion_7 class with MLP_head inside, so _HAS_HEAD is set to False
         logits = self.head(features) if self._HAS_HEAD else features
         self.output = F.log_softmax(logits, dim=-1)
 
