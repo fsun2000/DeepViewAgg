@@ -1,0 +1,21 @@
+#!/bin/bash
+
+#SBATCH --partition=gpu_titanrtx_shared
+#SBATCH --gpus=1
+#SBATCH --job-name=m2f
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=4
+#SBATCH --time=02:00:00
+#SBATCH --mem=190000M
+#SBATCH --output=job_logs/mvfusion/eval_m2f_preds_masks2.out
+
+cd $HOME/DeepViewAgg
+
+module purge
+
+module load 2021
+module load CUDA/11.3.1
+
+#export C_INCLUDE_PATH="/home/fsun/DeepViewAgg/sparsehash:$CPLUS_INCLUDE_PATH"
+export HYDRA_FULL_ERROR=1
+./scripts/train_scannet_mvfusion.sh
