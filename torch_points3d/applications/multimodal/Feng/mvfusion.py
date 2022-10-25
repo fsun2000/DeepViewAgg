@@ -149,18 +149,13 @@ class MVFusionEncoder(MVFusionBackboneBasedModel, ABC):
 #         print(time.time() - s, flush=True)
         
     
-        print("data inside mvfusion application: ", data, flush=True)
         x_seen_mask = data.x_seen_mask
-        print('x_seen_mask', x_seen_mask.shape)
     
 #         viewing_feats = data.x[x_seen_mask, :, :-1]
 #         m2f_feats = data.x[x_seen_mask, :, -1:]
-    
-        print("mvfusion.py line 159 uncomment and remove after testing")
+        # Features from only seen point-image matches are included in 'x'
         viewing_feats = data.x[:, :, :-1]
         m2f_feats = data.x[:, :, -1:]
-
-        print('viewing_feats; ', viewing_feats.shape)
         
         # Mask2Former predictions per view as feature
         # Adjust previously used label mapping [0, 21] with 0 being invalid, to [-1, 20].
@@ -192,7 +187,6 @@ class MVFusionEncoder(MVFusionBackboneBasedModel, ABC):
         # proper point positions and modality-generated features.
         csr_idx = data.modalities['image'][0].view_csr_indexing
         
-        print("THE TWO SEEN MASKS ARE EQUAL: ", torch.all(torch.eq(x_seen_mask, (csr_idx[1:] > csr_idx[:-1]))))
         out = Batch(
             x=full_out_scores, 
             pos=data.pos.to(self.device), 

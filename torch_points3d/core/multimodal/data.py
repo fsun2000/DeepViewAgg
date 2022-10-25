@@ -9,7 +9,9 @@ from torch_points3d.utils.multimodal import tensor_idx, MAPPING_KEY
 MODALITY_FORMATS = {"image": ImageData}
 MODALITY_NAMES = list(MODALITY_FORMATS.keys())
 
+print("MMData debug() function changed, please uncomment the 3rd assert line when doing inference without M2F features!", flush=True)
 
+      
 class MMData(object):
     """
     A holder for multimodal data.
@@ -46,7 +48,6 @@ class MMData(object):
             f"Batch mechanisms."
         idx = torch.unique(self.data[self.mapping_key])
         
-        print("MMData debug() function changed, please uncomment the 3rd assert line when doing inference")
 #         assert idx.max() + 1 == idx.shape[0] == self.num_points, \
 #             f"Discrepancy between the Data point indices and the mappings " \
 #             f"indices. Data {self.mapping_key} counts {idx.shape[0]} unique " \

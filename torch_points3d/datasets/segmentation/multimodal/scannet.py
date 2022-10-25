@@ -341,9 +341,7 @@ class ScannetMM(Scannet):
             # Keep track of seen points
             csr_idx = data.modalities['image'].view_cat_csr_indexing
             data.data.x_seen_mask = csr_idx[1:] > csr_idx[:-1]
-            
-            print(data.data)
-            print(data.data.x_seen_mask.sum())                                    
+                                           
                                     
                         
             return data

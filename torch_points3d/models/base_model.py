@@ -252,6 +252,7 @@ class BaseModel(torch.nn.Module, TrackerInterface, DatasetInterface, CheckpointI
         if self._grad_clip > 0:
             torch.nn.utils.clip_grad_value_(self.parameters(), self._grad_clip)
 
+#         print("disabled optimizer step", flush=True)
         if make_optimizer_step:
             self._grad_scale.step(self._optimizer)  # update parameters
 
