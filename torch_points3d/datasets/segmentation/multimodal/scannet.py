@@ -279,7 +279,7 @@ class ScannetMM(Scannet):
         mapping_idx_to_scan = getattr(
             self, f"MAPPING_IDX_TO_SCAN_{self.split.upper()}_NAMES")
         scan_name = mapping_idx_to_scan[int(data.id_scan.item())]
-
+        
         # Load the corresponding 2D data and mappings
         i_split = self.SPLITS.index(self.split)
         images = torch.load(osp.join(
@@ -311,9 +311,10 @@ class ScannetMM(Scannet):
                 
                 pred_mask_path = osp.join(m2f_dir, m2f_filename)
                 pred_mask = Image.open(pred_mask_path)
-                pred_mask = pred_mask.resize(self.img_ref_size, resample=Image.NEAREST)
+                pred_mask = pred_mask.resize(self.img_ref_size, resample=Image.NEAREST) 
                 
-                m2f_masks.append(pil_to_tensor(pred_mask))   # maybe need to be saved as floats
+                # minus 1 to match DVA label classes ranging [-1, 19] instead of [0, 20]
+                m2f_masks.append(pil_to_tensor(pred_mask) - 1)   # maybe need to be saved as floats
                 
                 m2f_mask_paths.append(pred_mask_path)
                                 
@@ -326,21 +327,22 @@ class ScannetMM(Scannet):
             
             data = MMData(data, image=images)
 
-            # Take subset of only seen points
-            # NOTE: each point is contained multiple times if it has multiple correspondences
-            dense_idx_list = [
-                        torch.arange(im.num_points, device=images.device).repeat_interleave(
-                            im.view_csr_indexing[1:] - im.view_csr_indexing[:-1])
-                        for im in images]
-#             # take subset of only seen points without re-indexing the same point
-#             data = data[dense_idx_list[0].unique()]
+            print("Viewing feature extraction for MVFusion is disabled", flush=True)
+#             # Take subset of only seen points
+#             # NOTE: each point is contained multiple times if it has multiple correspondences
+#             dense_idx_list = [
+#                         torch.arange(im.num_points, device=images.device).repeat_interleave(
+#                             im.view_csr_indexing[1:] - im.view_csr_indexing[:-1])
+#                         for im in images]
+# #             # take subset of only seen points without re-indexing the same point
+# #             data = data[dense_idx_list[0].unique()]
 
 
-            # Save mapping features and M2F features in x
-            data.data.x = torch.cat(self.get_view_dependent_features(data[dense_idx_list[0].unique()]), dim=-1)
-            # Keep track of seen points
-            csr_idx = data.modalities['image'].view_cat_csr_indexing
-            data.data.x_seen_mask = csr_idx[1:] > csr_idx[:-1]
+#             # Save mapping features and M2F features in x
+#             data.data.x = torch.cat(self.get_view_dependent_features(data[dense_idx_list[0].unique()]), dim=-1)
+#             # Keep track of seen points
+#             csr_idx = data.modalities['image'].view_cat_csr_indexing
+#             data.data.x_seen_mask = csr_idx[1:] > csr_idx[:-1]
                                            
                                     
                         
@@ -480,6 +482,7 @@ class ScannetDatasetMM(BaseDatasetMM, ABC):
         neucon_frame_skip: int = dataset_opt.get('neucon_frame_skip', 1)
         m2f_preds_dirname: str = dataset_opt.get('m2f_preds_dirname', '')
         load_m2f_masks: bool = dataset_opt.get('load_m2f_masks', False)
+        print("load_m2f_masks: ", load_m2f_masks)
 
         print("initialize train dataset")
         self.train_dataset = ScannetMM(

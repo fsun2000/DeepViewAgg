@@ -108,7 +108,7 @@ def identity_PCA(x, dim=3):
 
 def visualize_3d(
         mm_data, figsize=800, width=None, height=None, class_names=None,
-        class_colors=None, class_opacities=None,  voxel=0.1, max_points=100000,
+        class_colors=None, class_opacities=None, voxel=0.1, max_points=100000,
         pointsize=5, error_color=None, show_image_number=True, **kwargs):
     """3D data interactive visualization.
 
@@ -524,7 +524,8 @@ def visualize_2d(
       appear brightened or darkened
     :param class_colors: colors for point labels in MMData
     :param back: background mode for non-mapped pixels visualization:
-      'x' will use the image features, 'pred' will use image predictions.
+      'x' will use the image features, 'pred' will use image predictions,
+      and 'm2f' will use Mask2Former predicted masks.
       Otherwise, fallback to 'x'
     :param front: foreground mode used for mapped pixels visualization:
       'map' simply uses a dark/bright pattern between the background and
@@ -576,12 +577,19 @@ def visualize_2d(
             'data': data,
             'front': front,
             'back': back}
+    
+    print("DFD")
+    print("bacl: ", back)
 
     # Set the image background with a fallback to 'x' attribute.
     # The background must be an image attribute carrying a tensor of
     # size (Num_Views, C, H, W) ((Num_Views, H, W) is accepted for
     # 'pred' labels only).
     if back is None or any([getattr(im, back, None) is None for im in images]):
+        print("back :", back)
+        for im in images:
+            print(im.__dict__.keys())
+        print([getattr(im, back, None) is None for im in images])
         back = 'x'
     elif any([not isinstance(getattr(im, back), torch.Tensor) for im in images]) \
             or any([getattr(im, back).shape[0] != im.num_views for im in images]) \
@@ -592,10 +600,12 @@ def visualize_2d(
 
     # Load images, if need be
     if back == 'x':
+        print("back is x")
         images = ImageData([im.load() if im.x is None else im for im in images])
-
+        
     # Convert 2D predicted labels to RGB colors
     if back == 'pred':
+        print("back is pred")
         for im in images:
             # Convert logits to labels if need be
             if len(im.pred.shape) == 4 and im.pred.is_floating_point():
@@ -603,7 +613,27 @@ def visualize_2d(
             elif len(im.pred.shape) != 3:
                 raise ValueError("Image predictions must be int labels or float logits.")
             im.background = torch.ByteTensor(class_colors)[im.pred.long()].permute(0, 3, 1, 2)
+    
+    print("LOLKEK")
+    if back == 'm2f_pred_mask':
+        print("back is m2f_pred_mask")
+        for im in images:
+            print(im.m2f_pred_mask.shape)
+            if len(im.m2f_pred_mask.shape) != 4:
+                raise ValueError("M2F predictions must be image masks.")
+            im.pred = im.m2f_pred_mask.long().squeeze()
+            print('class_colors: ', class_colors)
+            print('torch.ByteTensor(class_colors)', torch.ByteTensor(class_colors).shape)
+            print('im.pred', im.pred.shape)
 
+            im.background = torch.ByteTensor(class_colors)[im.pred].permute(0, 3, 1, 2)
+            print(' im.background ',  im.background.shape)
+            
+        print("images[-1].background", images[-1].background.shape)
+        print("im pred: ", images[-1].pred.shape)
+            
+        back = 'pred'   # Following code can be handled using 'pred' processing
+            
     # Convert the background to RGB, if need be. All images are handled
     # at once, in case we need to PCA the features in a common
     # projective space.
@@ -625,6 +655,9 @@ def visualize_2d(
         for im in images:
             im.background = getattr(im, back).byte()
 
+    print(back)
+
+            
     # Set the error visualization parameters
     no_3d_y = getattr(data, 'y', None) is None
     no_3d_pred = getattr(data, 'pred', None) is None
@@ -726,6 +759,8 @@ def visualize_2d(
 
             if 'y' in front:
                 # Set mapping mask to point labels
+                print("data.y", data.y)
+                print("class_colors", class_colors)
                 color = torch.ByteTensor(class_colors)[data.y]
                 color = color.repeat_interleave(
                     im.mappings.pointers[1:] - im.mappings.pointers[:-1],
@@ -735,6 +770,9 @@ def visualize_2d(
                     - im.mappings.values[1].pointers[:-1],
                     dim=0)
                 viz = im.background_alpha.clone()
+                print('viz.shape: ', viz.shape)
+                print('color.shape: ', color.shape)
+                print('idx: ', idx)
                 viz[idx] = color
                 im.visualizations.append(viz)
                 im.front.append(color)
