@@ -1160,8 +1160,8 @@ class SameSettingImageData:
             if self.mappings is not None else None,
             mask=self.mask.clone() if self.mask is not None else None,
             visibility=copy.deepcopy(self.visibility) if hasattr(self, 'visibility') else None,
-            m2f_pred_mask=self.m2f_pred_mask if self.m2f_pred_mask is not None else None,
-            m2f_pred_mask_path=self.m2f_pred_mask_path if self.m2f_pred_mask_path is not None else None)
+            m2f_pred_mask=self.m2f_pred_mask[idx] if self.m2f_pred_mask is not None else None,
+            m2f_pred_mask_path=self.m2f_pred_mask_path[idx_numpy] if self.m2f_pred_mask_path is not None else None)
 
     def __iter__(self):
         """Iteration mechanism.

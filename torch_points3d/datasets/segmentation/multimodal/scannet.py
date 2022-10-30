@@ -13,6 +13,9 @@ from torchvision.transforms.functional import pil_to_tensor
 
 import os
 import os.path as osp
+import time
+import random
+
 
 
 log = logging.getLogger(__name__)
@@ -269,11 +272,17 @@ class ScannetMM(Scannet):
         assert isinstance(idx, int), \
             f"Indexing with {type(idx)} is not supported, only " \
             f"{int} are accepted."
+        
+        start = time.time()
 
         # Get the 3D point sample and apply transforms
         data = self.get(idx)
-        data = data if self.transform is None else self.transform(data)
         
+        transform_3d_time = time.time()
+        data = data if self.transform is None else self.transform(data)
+        print('transform_3d_time ', time.time() - transform_3d_time)
+        
+        loading_2d_data_time = time.time()
 
         # Recover the scan name
         mapping_idx_to_scan = getattr(
@@ -285,9 +294,17 @@ class ScannetMM(Scannet):
         images = torch.load(osp.join(
             self.processed_2d_paths[i_split], scan_name + '.pt'))
         
+        print('loading_2d_data_time ', time.time() - loading_2d_data_time)
+        image_transform_time = time.time()
+        
         # Run image transforms
         if self.transform_image is not None:
             data, images = self.transform_image(data, images)
+            
+        print('image_transform_time ', time.time() - image_transform_time)
+            
+            
+        print("dva only time: ", time.time() - start)
         
             
         # Load Mask2Former predicted masks if dirname is given in dataset config       
@@ -302,8 +319,11 @@ class ScannetMM(Scannet):
             m2f_dir = first_img_path.split(os.sep)[:-3]
             m2f_dir = os.sep.join([*m2f_dir, self.m2f_preds_dirname])
             
+            load_m2f_mask_time = time.time()
+            
             m2f_masks = []
             m2f_mask_paths = []
+            print('images[0].path', len(images[0].path))
             for rgb_path in images[0].path:
 
                 m2f_filename, ext = osp.splitext(rgb_path.split(os.sep)[-1])
@@ -324,86 +344,165 @@ class ScannetMM(Scannet):
             images[0].m2f_pred_mask = m2f_masks
             images[0].m2f_pred_mask_path = np.array(m2f_mask_paths)
             
+            print('load_m2f_mask_time ', time.time() - load_m2f_mask_time)
+            
             
             data = MMData(data, image=images)
+            del images
 
-            print("Viewing feature extraction for MVFusion is disabled", flush=True)
-#             # Take subset of only seen points
-#             # NOTE: each point is contained multiple times if it has multiple correspondences
-#             dense_idx_list = [
-#                         torch.arange(im.num_points, device=images.device).repeat_interleave(
-#                             im.view_csr_indexing[1:] - im.view_csr_indexing[:-1])
-#                         for im in images]
-# #             # take subset of only seen points without re-indexing the same point
-# #             data = data[dense_idx_list[0].unique()]
+            # Take subset of only seen points
+            # NOTE: each point is contained multiple times if it has multiple correspondences
+            csr_idx = data.modalities['image'][0].view_csr_indexing
+            dense_idx_list = [
+                        torch.arange(data.modalities['image'].num_points).repeat_interleave(
+                            csr_idx[1:] - csr_idx[:-1])]
+            # take subset of only seen points without re-indexing the same point
+            data = data[dense_idx_list[0].unique()]
+                
+            h = time.time()
+            
+            csr_idx = data.modalities['image'][0].view_csr_indexing
+            n_seen = csr_idx[1:] - csr_idx[:-1]
+            
+            N_VIEWS = 9
+            mapping_feats = data.modalities['image'][0].mappings.values[2]
+            view_feats = torch.zeros((data.modalities['image'].num_points, N_VIEWS, mapping_feats.shape[-1]))
+            
+            
+            # at most how many viewpoints each point has
+            clipped_n_seen = torch.clip(n_seen, max=N_VIEWS)
+            
+            for_0_new = time.time()
+            pixel_validity = torch.range(1, N_VIEWS).repeat(data.modalities['image'].num_points, 1)
+            pixel_validity = ( pixel_validity <= clipped_n_seen.unsqueeze(-1) )
 
+            
+#             for_1 = time.time()
+#             # randomly select 1 >= N <= 9 mapping feature vectors for each 3d point
+#             view_feat_idx = []
+#             for i in range(len(csr_idx) - 1):
+#                 view_feat_idx.extend(random.sample(range(csr_idx[i], csr_idx[i+1]), clipped_n_seen[i]))
+#             view_feat_idx = torch.LongTensor(view_feat_idx)
+            
+#             print("for_1 time: ", time.time() - for_1)
+            
+            for_1 = time.time()
+            # randomly select 1 >= N <= 9 mapping feature vectors for each 3d point
+            view_feat_idx = []
+            for i in range(len(csr_idx) - 1):
+                n = clipped_n_seen[i]
+                if n < 9:
+                    view_feat_idx.extend(list(range(csr_idx[i], csr_idx[i+1])))
+                else:
+                    view_feat_idx.extend(np.random.choice(range(csr_idx[i], csr_idx[i+1]), size=n.numpy(), replace=False))
+                    
+            view_feat_idx = torch.LongTensor(view_feat_idx)
+            
+                        
+            print("for_1 time: ", time.time() - for_1)
+            
+            
+            # change format of mapping features to be compatible with MVFusion model: [n_points, n_views, map_feat_dim]
+            view_feats[pixel_validity] = mapping_feats[view_feat_idx]
+            
+            # insert pixel validity feature
+            view_feats = torch.concat((pixel_validity.unsqueeze(-1), view_feats), dim=-1)
+                        
+            # same for m2f feats
+            mapped_m2f_feats = data.modalities['image'][0].get_mapped_m2f_features(interpolate=True)
+            m2f_feats = torch.randint(low=0, high=self.num_classes, size=(data.modalities['image'].num_points, N_VIEWS, 1))
+            m2f_feats[pixel_validity] = mapped_m2f_feats[view_feat_idx].long()
 
+                        
+            data.data.x = torch.cat((view_feats, m2f_feats), dim=-1)
+#             print('data.data.x: ', data.data.x)
+            
+            
+            
+            print("new viewing feat extraction time: ", time.time() - h)
+            
+#             asd = time.time()
+#             data.data.x = torch.cat(self.get_view_dependent_features(data), dim=-1)
+#             print("previous feature get time: ", time.time() - asd)
+            
 #             # Save mapping features and M2F features in x
-#             data.data.x = torch.cat(self.get_view_dependent_features(data[dense_idx_list[0].unique()]), dim=-1)
+#             data.data.x = torch.cat(self.get_view_dependent_features(data), dim=-1)#[dense_idx_list[0].unique()]), dim=-1)
 #             # Keep track of seen points
 #             csr_idx = data.modalities['image'].view_cat_csr_indexing
 #             data.data.x_seen_mask = csr_idx[1:] > csr_idx[:-1]
                                            
-                                    
+            print("total getitem time: ", time.time() - start, flush=True)
                         
             return data
         
         return MMData(data, image=images)
 
-    def get_view_dependent_features(self, mm_data):
-        n_views = 9
+#     def get_view_dependent_features(self, mm_data):
         
-        image_data = mm_data.modalities['image']
-        csr_idx = image_data.view_cat_csr_indexing
-
-        viewing_conditions = image_data[0].mappings.values[2]
+#         s = time.time()
+#         n_views = 9
         
-        assert len(image_data) == 1
-        m2f_mapped_feats = image_data[0].get_mapped_m2f_features(interpolate=True)
+#         image_data = mm_data.modalities['image']
+#         csr_idx = image_data.view_cat_csr_indexing
+
+#         viewing_conditions = image_data[0].mappings.values[2]
         
+#         assert len(image_data) == 1
+#         m2f_mapped_feats = image_data[0].get_mapped_m2f_features(interpolate=True)
         
+#         # Add pixel validity as first feature
+#         viewing_conditions = torch.cat((torch.ones(viewing_conditions.shape[0], 1).to(viewing_conditions.device),
+#                                         viewing_conditions), dim=1)
 
-        # Add pixel validity as first feature
-        viewing_conditions = torch.cat((torch.ones(viewing_conditions.shape[0], 1).to(viewing_conditions.device),
-                                        viewing_conditions), dim=1)
+#         # Calculate amount of empty views. There should be n_points * n_views filled view conditions in total.
+#         n_seen = csr_idx[1:] - csr_idx[:-1]
+#         unfilled_points = n_seen[n_seen < n_views]
+#         n_views_to_fill = int(len(unfilled_points) * n_views - sum(unfilled_points))
 
-        # Calculate amount of empty views. There should be n_points * n_views filled view conditions in total.
-        n_seen = csr_idx[1:] - csr_idx[:-1]
-        unfilled_points = n_seen[n_seen < n_views]
-        n_views_to_fill = int(len(unfilled_points) * n_views - sum(unfilled_points))
-
-        # generate random viewing conditions
-        random_invalid_views = viewing_conditions[np.random.choice(range(len(viewing_conditions)), size=n_views_to_fill, replace=True)]
-        # set pixel validity to invalid
-        random_invalid_views[:, 0] = 0
-        random_m2f_preds = m2f_mapped_feats[np.random.choice(range(len(viewing_conditions)), size=n_views_to_fill, replace=True)]
-
-
-        # concat viewing conditions and random invalid views, then index the tensor such that each point
-        # either has 9 valid subsampled views, or is filled to 9 views with random views
-        combined_tensor = torch.cat((viewing_conditions, random_invalid_views), dim=0)
-        combined_m2f_tensor = torch.cat((m2f_mapped_feats, random_m2f_preds), dim=0)
         
         
-        unused_invalid_view_idx = len(viewing_conditions)
-        combined_idx = []
-        for i, n in enumerate(n_seen):
-            if n < n_views:
-                n_empty_views = n_views -  n
-                combined_idx += list(range(csr_idx[i], csr_idx[i+1])) + \
-                                list(range(unused_invalid_view_idx, unused_invalid_view_idx + n_empty_views))
-                unused_invalid_view_idx += n_empty_views
-            elif n > n_views:
-                sampled_idx = sorted(np.random.choice(range(csr_idx[i], csr_idx[i+1]), size=n_views, replace=False))
-                combined_idx += sampled_idx
-            else:
-                combined_idx += list(range(csr_idx[i], csr_idx[i+1]))
-
-        # re-index tensor for MVFusion format
-        combined_tensor = combined_tensor[combined_idx]
-        combined_m2f_tensor = combined_m2f_tensor[combined_idx]
+#         f = time.time()
         
-        return combined_tensor.reshape(mm_data.num_points, n_views, -1), combined_m2f_tensor.reshape(mm_data.num_points, n_views, 1)
+#         # generate random viewing conditions
+#         random_invalid_views = viewing_conditions[np.random.choice(range(len(viewing_conditions)), size=n_views_to_fill, replace=True)]
+#         # set pixel validity to invalid
+#         random_invalid_views[:, 0] = 0
+#         random_m2f_preds = m2f_mapped_feats[np.random.choice(range(len(viewing_conditions)), size=n_views_to_fill, replace=True)]
+
+#         print('generation of invalid features', time.time() - f)
+
+        
+        
+        
+#         # concat viewing conditions and random invalid views, then index the tensor such that each point
+#         # either has 9 valid subsampled views, or is filled to 9 views with random views
+#         combined_tensor = torch.cat((viewing_conditions, random_invalid_views), dim=0)
+#         combined_m2f_tensor = torch.cat((m2f_mapped_feats, random_m2f_preds), dim=0)
+#         unused_invalid_view_idx = len(viewing_conditions)
+#         combined_idx = []
+        
+#         d = time.time()
+
+#         for i, n in enumerate(n_seen):
+#             if n < n_views:
+#                 n_empty_views = n_views -  n
+#                 combined_idx += list(range(csr_idx[i], csr_idx[i+1])) + \
+#                                 list(range(unused_invalid_view_idx, unused_invalid_view_idx + n_empty_views))
+#                 unused_invalid_view_idx += n_empty_views
+#             elif n > n_views:
+#                 sampled_idx = sorted(np.random.choice(range(csr_idx[i], csr_idx[i+1]), size=n_views, replace=False))
+#                 combined_idx += sampled_idx
+#             else:
+#                 combined_idx += list(range(csr_idx[i], csr_idx[i+1]))
+                
+#         print('the ungodly for-loop', time.time() - d)
+
+#         # re-index tensor for MVFusion format
+#         combined_tensor = combined_tensor[combined_idx]
+#         combined_m2f_tensor = combined_m2f_tensor[combined_idx]
+        
+        
+#         return combined_tensor.reshape(mm_data.num_points, n_views, -1), combined_m2f_tensor.reshape(mm_data.num_points, n_views, 1)
     
     @staticmethod
     def uncollate(data_collated, slices_dict, scan_id_to_name, skip_keys=[]):

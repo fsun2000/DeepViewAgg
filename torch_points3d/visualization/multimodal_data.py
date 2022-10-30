@@ -594,6 +594,8 @@ def visualize_2d(
     elif any([not isinstance(getattr(im, back), torch.Tensor) for im in images]) \
             or any([getattr(im, back).shape[0] != im.num_views for im in images]) \
             or any([getattr(im, back).shape[-2:] != im.img_size[::-1] for im in images]):
+        print([getattr(im, back).shape for im in images])
+        print(any([getattr(im, back).shape[0] != im.num_views for im in images]))
         raise ValueError(f"Background attribute '{back}' cannot be treated as an image tensor.")
     elif back != 'pred' and any([len(getattr(im, back).shape) != 4 for im in images]):
         raise ValueError(f"Background attribute '{back}' must have shape (Num_Views, C, H, W).")
