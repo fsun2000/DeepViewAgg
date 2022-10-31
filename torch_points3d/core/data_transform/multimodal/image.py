@@ -1211,10 +1211,14 @@ class RandomHorizontalFlip(ImageTransform):
             # images.x = torch.flip(images.x, [3])
             flip_index = torch.arange(images.x.shape[-1] - 1, -1, -1)
             images.x = images.x[..., flip_index]
-
+            
+            if images.m2f_pred_mask is not None:
+                images.m2f_pred_mask = images.m2f_pred_mask[..., flip_index]
+            
             _, _, _, width = images.x.shape
             images.mappings.pixels[:, 0] = \
                 width - 1 - images.mappings.pixels[:, 0]
+            
 
         return data, images
 

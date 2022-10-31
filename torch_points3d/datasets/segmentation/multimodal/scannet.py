@@ -15,6 +15,7 @@ import os
 import os.path as osp
 import time
 import random
+from torch_points3d.core.data_transform.multimodal.image import RandomHorizontalFlip
 
 
 
@@ -295,14 +296,19 @@ class ScannetMM(Scannet):
             self.processed_2d_paths[i_split], scan_name + '.pt'))
         
         print('loading_2d_data_time ', time.time() - loading_2d_data_time)
-        image_transform_time = time.time()
         
         # Run image transforms
-        if self.transform_image is not None:
+        if self.transform_image is not None and self.load_m2f_masks is False:
             data, images = self.transform_image(data, images)
-            
-        print('image_transform_time ', time.time() - image_transform_time)
-            
+        else:
+            for transform in self.transform_image.transforms:
+                if isinstance(transform, RandomHorizontalFlip):
+                    randomhorizontalflip = transform
+                    continue
+                else:
+                    trans_time = time.time()
+                    data, images = transform(data, images)
+                    print(time.time() - trans_time)            
             
         print("dva only time: ", time.time() - start)
         
@@ -346,7 +352,24 @@ class ScannetMM(Scannet):
             
             print('load_m2f_mask_time ', time.time() - load_m2f_mask_time)
             
+            image_transform_time = time.time()
+        
+            # Run image transforms
+#             if self.transform_image is not None:
+#                 for transform in self.transform_image.transforms:
+#                     if isinstance(transform, RandomHorizontalFlip):
+#                 data, images = self.transform_image(data, images)
             
+            # Augment both M2F and RGB color images
+            try:
+                data, images = randomhorizontalflip(data, images)
+            except: 
+                pass
+
+            
+            print('randomhorizontalflip ', time.time() - image_transform_time)
+
+                
             data = MMData(data, image=images)
             del images
 
