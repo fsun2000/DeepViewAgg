@@ -157,10 +157,9 @@ class MVFusionEncoder(MVFusionBackboneBasedModel, ABC):
         viewing_feats = data.x[:, :, :-1]
         m2f_feats = data.x[:, :, -1:]
         
+        
+        
         # Mask2Former predictions per view as feature
-        # Adjust previously used label mapping [0, 21] with 0 being invalid, to [-1, 20].
-        # As M2F model does not produce 0 preds, updated labels are within [0, 19]
-        m2f_feats = m2f_feats - 1   
         m2f_feats = torch.nn.functional.one_hot(m2f_feats.squeeze().long(), self.n_classes)
     
         ### Multi-view fusion of M2F and viewing conditions using Transformer
