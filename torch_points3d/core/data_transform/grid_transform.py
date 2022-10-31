@@ -151,8 +151,6 @@ class GridSampling3D:
         return data
 
     def __call__(self, data):
-        print("GridSampling3D is applied on :", data, flush=True)
-        print("does this result in errors when 'x' contains viewing features for MVFusion?", flush=True)
         if isinstance(data, list):
             data = [self._process(d) for d in data]
         else:

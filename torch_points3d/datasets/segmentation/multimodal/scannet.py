@@ -274,17 +274,10 @@ class ScannetMM(Scannet):
             f"Indexing with {type(idx)} is not supported, only " \
             f"{int} are accepted."
         
-        start = time.time()
-
         # Get the 3D point sample and apply transforms
         data = self.get(idx)
-        
-        transform_3d_time = time.time()
         data = data if self.transform is None else self.transform(data)
-        print('transform_3d_time ', time.time() - transform_3d_time)
         
-        loading_2d_data_time = time.time()
-
         # Recover the scan name
         mapping_idx_to_scan = getattr(
             self, f"MAPPING_IDX_TO_SCAN_{self.split.upper()}_NAMES")
@@ -294,9 +287,7 @@ class ScannetMM(Scannet):
         i_split = self.SPLITS.index(self.split)
         images = torch.load(osp.join(
             self.processed_2d_paths[i_split], scan_name + '.pt'))
-        
-        print('loading_2d_data_time ', time.time() - loading_2d_data_time)
-        
+                
         # Run image transforms
         if self.transform_image is not None and self.load_m2f_masks is False:
             data, images = self.transform_image(data, images)
@@ -306,11 +297,7 @@ class ScannetMM(Scannet):
                     randomhorizontalflip = transform
                     continue
                 else:
-                    trans_time = time.time()
                     data, images = transform(data, images)
-                    print(time.time() - trans_time)            
-            
-        print("dva only time: ", time.time() - start)
         
             
         # Load Mask2Former predicted masks if dirname is given in dataset config       
@@ -324,12 +311,9 @@ class ScannetMM(Scannet):
             first_img_path = images[0].path[0]
             m2f_dir = first_img_path.split(os.sep)[:-3]
             m2f_dir = os.sep.join([*m2f_dir, self.m2f_preds_dirname])
-            
-            load_m2f_mask_time = time.time()
-            
+                        
             m2f_masks = []
             m2f_mask_paths = []
-            print('images[0].path', len(images[0].path))
             for rgb_path in images[0].path:
 
                 m2f_filename, ext = osp.splitext(rgb_path.split(os.sep)[-1])
@@ -349,26 +333,11 @@ class ScannetMM(Scannet):
             # Store M2F pred mask in data
             images[0].m2f_pred_mask = m2f_masks
             images[0].m2f_pred_mask_path = np.array(m2f_mask_paths)
-            
-            print('load_m2f_mask_time ', time.time() - load_m2f_mask_time)
-            
-            image_transform_time = time.time()
-        
-            # Run image transforms
-#             if self.transform_image is not None:
-#                 for transform in self.transform_image.transforms:
-#                     if isinstance(transform, RandomHorizontalFlip):
-#                 data, images = self.transform_image(data, images)
-            
-            # Augment both M2F and RGB color images
+                                
             try:
                 data, images = randomhorizontalflip(data, images)
             except: 
                 pass
-
-            
-            print('randomhorizontalflip ', time.time() - image_transform_time)
-
                 
             data = MMData(data, image=images)
             del images
@@ -381,9 +350,7 @@ class ScannetMM(Scannet):
                             csr_idx[1:] - csr_idx[:-1])]
             # take subset of only seen points without re-indexing the same point
             data = data[dense_idx_list[0].unique()]
-                
-            h = time.time()
-            
+                            
             csr_idx = data.modalities['image'][0].view_csr_indexing
             n_seen = csr_idx[1:] - csr_idx[:-1]
             
@@ -395,21 +362,9 @@ class ScannetMM(Scannet):
             # at most how many viewpoints each point has
             clipped_n_seen = torch.clip(n_seen, max=N_VIEWS)
             
-            for_0_new = time.time()
             pixel_validity = torch.range(1, N_VIEWS).repeat(data.modalities['image'].num_points, 1)
             pixel_validity = ( pixel_validity <= clipped_n_seen.unsqueeze(-1) )
 
-            
-#             for_1 = time.time()
-#             # randomly select 1 >= N <= 9 mapping feature vectors for each 3d point
-#             view_feat_idx = []
-#             for i in range(len(csr_idx) - 1):
-#                 view_feat_idx.extend(random.sample(range(csr_idx[i], csr_idx[i+1]), clipped_n_seen[i]))
-#             view_feat_idx = torch.LongTensor(view_feat_idx)
-            
-#             print("for_1 time: ", time.time() - for_1)
-            
-            for_1 = time.time()
             # randomly select 1 >= N <= 9 mapping feature vectors for each 3d point
             view_feat_idx = []
             for i in range(len(csr_idx) - 1):
@@ -420,11 +375,7 @@ class ScannetMM(Scannet):
                     view_feat_idx.extend(np.random.choice(range(csr_idx[i], csr_idx[i+1]), size=n.numpy(), replace=False))
                     
             view_feat_idx = torch.LongTensor(view_feat_idx)
-            
-                        
-            print("for_1 time: ", time.time() - for_1)
-            
-            
+
             # change format of mapping features to be compatible with MVFusion model: [n_points, n_views, map_feat_dim]
             view_feats[pixel_validity] = mapping_feats[view_feat_idx]
             
@@ -436,26 +387,10 @@ class ScannetMM(Scannet):
             m2f_feats = torch.randint(low=0, high=self.num_classes, size=(data.modalities['image'].num_points, N_VIEWS, 1))
             m2f_feats[pixel_validity] = mapped_m2f_feats[view_feat_idx].long()
 
-                        
+            # Save mapping + m2f features in x
             data.data.x = torch.cat((view_feats, m2f_feats), dim=-1)
-#             print('data.data.x: ', data.data.x)
-            
-            
-            
-            print("new viewing feat extraction time: ", time.time() - h)
-            
-#             asd = time.time()
-#             data.data.x = torch.cat(self.get_view_dependent_features(data), dim=-1)
-#             print("previous feature get time: ", time.time() - asd)
-            
-#             # Save mapping features and M2F features in x
-#             data.data.x = torch.cat(self.get_view_dependent_features(data), dim=-1)#[dense_idx_list[0].unique()]), dim=-1)
-#             # Keep track of seen points
-#             csr_idx = data.modalities['image'].view_cat_csr_indexing
-#             data.data.x_seen_mask = csr_idx[1:] > csr_idx[:-1]
-                                           
-            print("total getitem time: ", time.time() - start, flush=True)
-                        
+            data.data.x_seen_mask = csr_idx[1:] > csr_idx[:-1]
+                                                                   
             return data
         
         return MMData(data, image=images)

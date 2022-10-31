@@ -25,7 +25,7 @@ frame_pose: True
 frame_intrinsics: True
 frame_skip: 1   # must be 1 if neucon_metas_dir is given
 neucon_metas_dir: /project/fsun/data/scannet/axis_aligned_metas   # link to dir containing Neucon processed meta file, used to grab image_ids
-m2f_preds_dirname: m2f_masks_2   # directory of Mask2Former predicted masks located inside each scan's directory
+m2f_preds_dirname: m2f_masks   # directory of Mask2Former predicted masks located inside each scan's directory
 
 pre_transform:
     - transform: SaveOriginalPosId    # Required so that one can recover the multimodal mappings after the transforms

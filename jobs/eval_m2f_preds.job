@@ -4,10 +4,10 @@
 #SBATCH --gpus=1
 #SBATCH --job-name=m2f
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=4
+#SBATCH --cpus-per-task=5
 #SBATCH --time=02:00:00
 #SBATCH --mem=190000M
-#SBATCH --output=job_logs/mvfusion/eval_m2f_preds_masks2.out
+#SBATCH --output=job_logs/mvfusion/eval_m2f_preds_masks_correct.out
 
 cd $HOME/DeepViewAgg
 
