@@ -107,6 +107,9 @@ class MVFusion(BaseModel, ABC):
 
         if not self.training and not torch.all(seen_mask):    # Skip if all points were seen
             if torch.any(seen_mask):
+                print("Currently propagating predictions to unseen points in validation run")
+                
+                
                 # If the module is in eval mode, propagate the output of the
                 # nearest seen point to unseen points
                 # nn_search = NearestNeighbors(

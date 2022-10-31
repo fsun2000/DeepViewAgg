@@ -389,7 +389,7 @@ class ScannetMM(Scannet):
 
             # Save mapping + m2f features in x
             data.data.x = torch.cat((view_feats, m2f_feats), dim=-1)
-            data.data.x_seen_mask = csr_idx[1:] > csr_idx[:-1]
+#             data.data.x_seen_mask = csr_idx[1:] > csr_idx[:-1]
                                                                    
             return data
         
