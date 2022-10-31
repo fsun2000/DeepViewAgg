@@ -8,7 +8,7 @@ cuda: 0
 precompute_multi_scale: False # Compute multiscate features on cpu for faster training / inference
 optim:
   base_lr: 0.1
-  accumulated_gradient: 2 # Accumulate gradient accumulated_gradient * batch_size
+#   accumulated_gradient: -1 # Accumulate gradient accumulated_gradient * batch_size
   grad_clip: -1
   optimizer:
     class: SGD
@@ -23,7 +23,10 @@ optim:
       momentum: 0.9
       weight_decay: 1e-4
       dampening: 0.1
-  lr_scheduler: ${lr_scheduler}
+  lr_scheduler:
+    class: ExponentialLR
+    params:
+      gamma: 0.955  # in 100 epochs, LR decays by 1/100th  following 1 * (0.955)^100 where lr = 1
   bn_scheduler:
     bn_policy: "step_decay"
     params:
