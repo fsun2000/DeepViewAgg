@@ -150,6 +150,9 @@ class Trainer:
             log.info("EPOCH %i / %i", epoch, self._cfg.training.epochs)
 
             self._train_epoch(epoch)
+            
+            # Uncomment for M2F mode pred evaluation
+#             self.evaluate_m2f_train_set(epoch)
 
             if self.profiling:
                 return 0
@@ -232,7 +235,53 @@ class Trainer:
                         return 0
 
         self._finalize_epoch(epoch)
+        
+    def evaluate_m2f_train_set(self, epoch):
+        self._model.eval()
+        if self.enable_dropout:
+            self._model.enable_dropout_in_eval()
+        self._tracker.reset("train")
+        if self.has_visualization:
+            self._visualizer.reset(epoch, "train")
+        train_loader = self._dataset.train_dataloader
 
+        iter_data_time = time.time()
+        with Ctq(train_loader) as tq_train_loader:
+            for i, data in enumerate(tq_train_loader):
+                
+                t_data = time.time() - iter_data_time
+                iter_start_time = time.time()
+                
+                with torch.no_grad():
+                    self._model.set_input(data, self._device)
+                    with torch.cuda.amp.autocast(enabled=self._model.is_mixed_precision()):
+                        self._model.forward(epoch=epoch)
+                    if i % 10 == 0:
+                        self._tracker.track(
+                            self._model, data=data, **self.tracker_options)
+                tq_train_loader.set_postfix(
+                    **self._tracker.get_metrics(),
+                    data_loading=float(t_data),
+                    iteration=float(time.time() - iter_start_time),
+                    color=COLORS.TRAIN_COLOR
+                )                        
+
+                if self._visualizer.is_active:
+                    self._visualizer.save_visuals(
+                        self._model.get_current_visuals())
+
+                iter_data_time = time.time()
+
+                if self.early_break:
+                    break
+
+                if self.profiling:
+                    if i > self.num_batches:
+                        return 0
+
+        self._finalize_epoch(epoch)
+        
+        
     def _test_epoch(self, epoch, stage_name: str):
         voting_runs = self._cfg.get("voting_runs", 1)
         if stage_name == "test":

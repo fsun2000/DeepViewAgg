@@ -119,52 +119,42 @@ class MVFusionEncoder(MVFusionBackboneBasedModel, ABC):
             - pos [N, 3] (coords or real pos if xyz is in data)
             - x [N, output_nc]
         """
-           
-        ### Feng: this has been moved to dataset __getitem__
-#         # Take subset of only seen points
-#         # idx mapping from each pixel to point
-#         # NOTE: each point is contained multiple times if it has multiple correspondences
-#         im_data = data.modalities['image']
-#         dense_idx_list = [
-#                     torch.arange(im.num_points, device=im_data.device).repeat_interleave(
-#                         im.view_csr_indexing[1:] - im.view_csr_indexing[:-1])
-#                     for im in im_data]
-#         # take subset of only seen points without re-indexing the same point
-#         ### TODO: this converts data from MMBatch to MMData class when slicing
-#         ### Does this cause any errors downstream?
-#         data = data[dense_idx_list[0].unique()]
 
-        
         """  Feng: temporarily skip this as we do not use 3d data, and we only have 1 ImageSetting
         # Apply ONLY atomic-level pooling which is in `down_modules`
         for i in range(len(self.down_modules)):
             mm_data_dict = self.down_modules[i](mm_data_dict)
         """
+
+#         #### Mode preds
+#         pixel_validity = data.data.x[:, :, 0].bool()
+#         mv_preds = data.data.x[:, :, -1].long()
+
+#         valid_m2f_feats = []
+#         for i in range(len(mv_preds)):
+#             valid_m2f_feats.append(mv_preds[i][pixel_validity[i]])
+
+#         mode_preds = []
+#         for m2feats_of_seen_point in valid_m2f_feats:
+#             mode_preds.append(torch.mode(m2feats_of_seen_point.squeeze(), dim=0)[0])
+#         mode_preds = torch.stack(mode_preds, dim=0)
     
-#         # Gather 9 (valid and invalid) viewing conditions for each point
-#         # Invalid viewing conditions serve as padding
+#         out_scores = torch.nn.functional.one_hot(mode_preds.squeeze().long(), self.n_classes).float()
         
-#         s = time.time()
-#         viewing_feats, m2f_feats = self.get_view_dependent_features(data)
-#         print(time.time() - s, flush=True)
-        
+#         print("out_scores: ", out_scores, out_scores.shape)
     
-#         x_seen_mask = data.x_seen_mask
     
-#         viewing_feats = data.x[x_seen_mask, :, :-1]
-#         m2f_feats = data.x[x_seen_mask, :, -1:]
+    
         # Features from only seen point-image matches are included in 'x'
         viewing_feats = data.x[:, :, :-1]
-        m2f_feats = data.x[:, :, -1:]
-        
-        
+        m2f_feats = data.x[:, :, -1]
         
         # Mask2Former predictions per view as feature
         m2f_feats = torch.nn.functional.one_hot(m2f_feats.squeeze().long(), self.n_classes)
     
         ### Multi-view fusion of M2F and viewing conditions using Transformer
         # TODO: remove assumption that pixel validity is the 1st feature
-        invalid_pixel_mask = viewing_feats[:, :, 0] == 0.
+        invalid_pixel_mask = viewing_feats[:, :, 0] == 0
         
         fusion_input = {
             'invalid_pixels_mask': invalid_pixel_mask.to(self.device),
@@ -172,23 +162,27 @@ class MVFusionEncoder(MVFusionBackboneBasedModel, ABC):
             'one_hot_mask_labels': m2f_feats.to(self.device)
         }
         
-#         del m2f_feats, invalid_pixel_mask, viewing_feats
-                        
         # get logits
         out_scores = self.fusion(fusion_input)
+                
         
         csr_idx = data.modalities['image'][0].view_csr_indexing
         x_seen_mask = csr_idx[1:] > csr_idx[:-1]
-        # Set logits of unseen points to 0.
-        full_out_scores = torch.zeros((len(x_seen_mask), out_scores.shape[1]), dtype=out_scores.dtype, device=out_scores.device)
-        full_out_scores[x_seen_mask] = out_scores
+        
+        
+        ###### Not used as we leave out unseen points for fairness.
+#         # Set logits of unseen points to 0.
+#         full_out_scores = torch.zeros((len(x_seen_mask), out_scores.shape[1]), dtype=out_scores.dtype, device=out_scores.device)
+#         full_out_scores[x_seen_mask] = out_scores
+        
+        
         # Discard the modalities used in the down modules, only
         # 3D point features are expected to be used in subsequent
         # modules. Restore the input Data object equipped with the
         # proper point positions and modality-generated features.
         
         out = Batch(
-            x=full_out_scores, 
+            x=out_scores, 
             pos=data.pos.to(self.device), 
             seen=x_seen_mask.to(self.device))
         out=out.to(self.device)
