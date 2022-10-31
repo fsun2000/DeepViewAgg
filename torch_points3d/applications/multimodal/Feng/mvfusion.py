@@ -144,7 +144,6 @@ class MVFusionEncoder(MVFusionBackboneBasedModel, ABC):
 #         print("out_scores: ", out_scores, out_scores.shape)
     
     
-    
         # Features from only seen point-image matches are included in 'x'
         viewing_feats = data.x[:, :, :-1]
         m2f_feats = data.x[:, :, -1]

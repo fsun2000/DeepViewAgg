@@ -4,10 +4,10 @@
 #SBATCH --gpus=1
 #SBATCH --job-name=mvfusion
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=4
-#SBATCH --time=50:00:00
+#SBATCH --cpus-per-task=9
+#SBATCH --time=24:00:00
 #SBATCH --mem=190000M
-#SBATCH --output=job_logs/mvfusion/train_mvfusion_fulldata.out
+#SBATCH --output=job_logs/mvfusion_complex/mvfusion.out
 
 cd $HOME/DeepViewAgg
 

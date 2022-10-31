@@ -309,7 +309,7 @@ def visualize_3d(
     initialized_visibility = True
 
     # Draw a trace for 3D point cloud features
-    if getattr(data, 'x', None) is not None:
+    if getattr(data, 'x', None) is not None:# and getattr(data, 'x', None).shape[-1] < 3:
         # Recover the features and convert them to an RGB format for 
         # visualization.
         data.feat_3d = feats_to_rgb(data.x, normalize=True)

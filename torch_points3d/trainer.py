@@ -113,14 +113,17 @@ class Trainer:
         self._model.log_optimizers()
         log.info("Model size = %i", sum(param.numel() for param in self._model.parameters() if param.requires_grad))
 
-        # Set dataloaders
+        # Set both dataloaders for first epoch. For some reason the validation loaders do not consume memory untill called.
         self._dataset.create_dataloaders(
             self._model,
             self._cfg.training.batch_size,
             self._cfg.training.shuffle,
             self._cfg.training.num_workers,
             self.precompute_multi_scale,
+            train_only=False,
+            val_only=False
         )
+        
         log.info(self._dataset)
 
         # Verify attributes in dataset
@@ -145,7 +148,7 @@ class Trainer:
 
     def train(self):
         self._is_training = True
-
+        
         for epoch in range(self._checkpoint.start_epoch, self._cfg.training.epochs):
             log.info("EPOCH %i / %i", epoch, self._cfg.training.epochs)
 
@@ -160,11 +163,34 @@ class Trainer:
             if epoch % self.eval_frequency != 0:
                 continue
 
+            # Create validation loader and delete train loader from system memory
+            self._dataset.create_dataloaders(
+                self._model,
+                self._cfg.training.batch_size,
+                self._cfg.training.shuffle,
+                self._cfg.training.num_workers,
+                self.precompute_multi_scale,
+                train_only=False,
+                val_only=True
+            )
+        
             if self._dataset.has_val_loader:
                 self._test_epoch(epoch, "val")
 
             if self._dataset.has_test_loaders:
                 self._test_epoch(epoch, "test")
+
+            # Create train loader and delete validation loader from system memory
+            self._dataset.create_dataloaders(
+                self._model,
+                self._cfg.training.batch_size,
+                self._cfg.training.shuffle,
+                self._cfg.training.num_workers,
+                self.precompute_multi_scale,
+                train_only=True,
+                val_only=False
+            )
+
 
         # Single test evaluation in resume case
         if self._checkpoint.start_epoch > self._cfg.training.epochs:
@@ -235,6 +261,8 @@ class Trainer:
                         return 0
 
         self._finalize_epoch(epoch)
+        self._tracker.print_summary()
+
         
     def evaluate_m2f_train_set(self, epoch):
         self._model.eval()
@@ -280,9 +308,11 @@ class Trainer:
                         return 0
 
         self._finalize_epoch(epoch)
+        self._tracker.print_summary()
         
         
     def _test_epoch(self, epoch, stage_name: str):
+        
         voting_runs = self._cfg.get("voting_runs", 1)
         if stage_name == "test":
             loaders = self._dataset.test_dataloaders

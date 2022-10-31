@@ -345,14 +345,21 @@ class ScannetMM(Scannet):
             # Take subset of only seen points
             # NOTE: each point is contained multiple times if it has multiple correspondences
             csr_idx = data.modalities['image'][0].view_csr_indexing
-            dense_idx_list = [
-                        torch.arange(data.modalities['image'].num_points).repeat_interleave(
-                            csr_idx[1:] - csr_idx[:-1])]
+            dense_idx_list = torch.arange(data.modalities['image'].num_points).repeat_interleave(csr_idx[1:] - csr_idx[:-1])
             # take subset of only seen points without re-indexing the same point
-            data = data[dense_idx_list[0].unique()]
-                            
+            data = data[dense_idx_list.unique()]
+            
             csr_idx = data.modalities['image'][0].view_csr_indexing
             n_seen = csr_idx[1:] - csr_idx[:-1]
+            
+            # cull least visible points
+            MAX_N_POINTS = 30000
+            if data.modalities['image'].num_points > MAX_N_POINTS:
+                sort_idx = torch.argsort(n_seen, descending=True)
+                data = data[sort_idx[:MAX_N_POINTS]]
+                csr_idx = data.modalities['image'][0].view_csr_indexing
+                n_seen = csr_idx[1:] - csr_idx[:-1]
+
             
             N_VIEWS = 9
             mapping_feats = data.modalities['image'][0].mappings.values[2]

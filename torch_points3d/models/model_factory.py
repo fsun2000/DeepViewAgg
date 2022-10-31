@@ -50,5 +50,4 @@ def instantiate_model(config, dataset) -> BaseModel:
 #     print("model_cls: ", model_cls)    
     
     model = model_cls(model_config, "dummy", dataset, modellib)
-    print("model: ", model)
     return model

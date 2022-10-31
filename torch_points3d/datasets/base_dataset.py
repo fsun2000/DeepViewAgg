@@ -215,6 +215,8 @@ class BaseDataset:
         shuffle: bool,
         num_workers: int,
         precompute_multi_scale: bool,
+        train_only: bool = False,
+        val_only: bool = False
     ):
         """ Creates the data loaders. Must be called in order to
         complete the setup of the Dataset.
@@ -223,9 +225,11 @@ class BaseDataset:
         self._batch_size = batch_size
 
         if self.train_sampler:
+            print("self.train_sampler == True")
+            print("NOTE: this flag has not been tested by Feng ")
             log.info(self.train_sampler)
 
-        if self.train_dataset:
+        if self.train_dataset and not val_only:
             self._train_loader = self._dataloader(
                 self.train_dataset,
                 self.train_pre_batch_collate_transform,
@@ -236,8 +240,16 @@ class BaseDataset:
                 num_workers=num_workers,
                 sampler=self.train_sampler,
             )
+            if train_only:
+                # Delete validation loader from system memory
+                try:
+                    del self._val_loader
+                except:
+                    pass
 
         if self.test_dataset:
+            print("creating test loader")
+            print("NOTE: this flag has not been tested by Feng ")
             self._test_loaders = [
                 self._dataloader(
                     dataset,
@@ -252,7 +264,7 @@ class BaseDataset:
                 for dataset in self.test_dataset
             ]
 
-        if self.val_dataset:
+        if self.val_dataset and not train_only:
             self._val_loader = self._dataloader(
                 self.val_dataset,
                 self.val_pre_batch_collate_transform,
@@ -263,8 +275,16 @@ class BaseDataset:
                 num_workers=num_workers,
                 sampler=self.val_sampler,
             )
+            if val_only:
+                # Delete train loader from system memory
+                try:
+                    del self._train_loader
+                except:
+                    pass
 
         if precompute_multi_scale:
+            print("precompute_multi_scale == True")
+            print("NOTE: this flag has not been tested by Feng ")
             self.set_strategies(model)
 
     def _dataloader(self, dataset, pre_batch_collate_transform, conv_type,
