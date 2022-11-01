@@ -1,0 +1,642 @@
+MMData debug() function changed, please uncomment the 3rd assert line when doing inference without M2F features!
+[2022-11-01 16:41:07,460][torch_points3d.trainer][INFO] - DEVICE : cuda
+load_m2f_masks:  False
+initialize train dataset
+temporarily hard code N-views in get_view_dependent_features()
+initialize val dataset
+temporarily hard code N-views in get_view_dependent_features()
+task:  segmentation.multimodal
+tested_model_name:  Res16UNet34
+class_name:  APIModel
+model_module:  torch_points3d.models.segmentation.multimodal.sparseconv3d
+name, cls of chosen model_cls:  APIModel <class 'torch_points3d.models.segmentation.sparseconv3d.APIModel'>
+Starting backbone initialization
+dataset.feature_dimension:  3
+[2022-11-01 16:41:28,775][torch_points3d.applications.modelfactory][INFO] - The config will be used to build the model
+FEAT:  {'FEAT': 3}
+nc_in:  3
+nc_in:  32
+nc_in:  32
+nc_in:  64
+nc_in:  128
+nc_in:  256
+nc_in:  128
+nc_in:  128
+nc_in:  96
+nc_in:  96
+[2022-11-01 16:41:29,187][torch_points3d.core.schedulers.bn_schedulers][INFO] - Setting batchnorm momentum at 0.02
+task:  segmentation.multimodal
+tested_model_name:  Res16UNet34
+[2022-11-01 16:41:29,404][torch_points3d.trainer][WARNING] - The model will not be able to be used from pretrained weights without the corresponding dataset. Current properties are {'feature_dimension': 3, 'num_classes': 20}
+[2022-11-01 16:41:29,404][torch_points3d.trainer][INFO] - APIModel(
+  (backbone): SparseConv3dUnet(
+    (inner_modules): ModuleList(
+      (0): Identity()
+    )
+    (down_modules): ModuleList(
+      (0): ResNetDown(
+        (conv_in): Seq(
+          (0): Conv3d(in_channels=3, out_channels=32, kernel_size=3, stride=1, dilation=1)
+          (1): BatchNorm(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+        )
+      )
+      (1): ResNetDown(
+        (conv_in): Seq(
+          (0): Conv3d(in_channels=32, out_channels=32, kernel_size=2, stride=2, dilation=1)
+          (1): BatchNorm(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+        )
+        (blocks): Seq(
+          (0): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=32, out_channels=32, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=32, out_channels=32, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+          )
+          (1): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=32, out_channels=32, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=32, out_channels=32, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+          )
+        )
+      )
+      (2): ResNetDown(
+        (conv_in): Seq(
+          (0): Conv3d(in_channels=32, out_channels=32, kernel_size=2, stride=2, dilation=1)
+          (1): BatchNorm(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+        )
+        (blocks): Seq(
+          (0): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=32, out_channels=64, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(64, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=64, out_channels=64, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(64, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+            (downsample): Seq(
+              (0): Conv3d(in_channels=32, out_channels=64, kernel_size=1, stride=1, dilation=1)
+              (1): BatchNorm(64, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+            )
+          )
+          (1): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=64, out_channels=64, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(64, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=64, out_channels=64, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(64, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+          )
+          (2): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=64, out_channels=64, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(64, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=64, out_channels=64, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(64, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+          )
+        )
+      )
+      (3): ResNetDown(
+        (conv_in): Seq(
+          (0): Conv3d(in_channels=64, out_channels=64, kernel_size=2, stride=2, dilation=1)
+          (1): BatchNorm(64, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+        )
+        (blocks): Seq(
+          (0): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=64, out_channels=128, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+            (downsample): Seq(
+              (0): Conv3d(in_channels=64, out_channels=128, kernel_size=1, stride=1, dilation=1)
+              (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+            )
+          )
+          (1): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+          )
+          (2): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+          )
+          (3): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+          )
+        )
+      )
+      (4): ResNetDown(
+        (conv_in): Seq(
+          (0): Conv3d(in_channels=128, out_channels=128, kernel_size=2, stride=2, dilation=1)
+          (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+        )
+        (blocks): Seq(
+          (0): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=128, out_channels=256, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+            (downsample): Seq(
+              (0): Conv3d(in_channels=128, out_channels=256, kernel_size=1, stride=1, dilation=1)
+              (1): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+            )
+          )
+          (1): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+          )
+          (2): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+          )
+          (3): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+          )
+          (4): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+          )
+          (5): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+          )
+        )
+      )
+    )
+    (up_modules): ModuleList(
+      (0): ResNetUp(
+        (conv_in): Seq(
+          (0): Conv3d(in_channels=256, out_channels=256, kernel_size=2, stride=2, dilation=1)
+          (1): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+        )
+        (blocks): Seq(
+          (0): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=384, out_channels=128, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+            (downsample): Seq(
+              (0): Conv3d(in_channels=384, out_channels=128, kernel_size=1, stride=1, dilation=1)
+              (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+            )
+          )
+        )
+      )
+      (1): ResNetUp(
+        (conv_in): Seq(
+          (0): Conv3d(in_channels=128, out_channels=128, kernel_size=2, stride=2, dilation=1)
+          (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+        )
+        (blocks): Seq(
+          (0): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=192, out_channels=128, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+            (downsample): Seq(
+              (0): Conv3d(in_channels=192, out_channels=128, kernel_size=1, stride=1, dilation=1)
+              (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+            )
+          )
+        )
+      )
+      (2): ResNetUp(
+        (conv_in): Seq(
+          (0): Conv3d(in_channels=128, out_channels=128, kernel_size=2, stride=2, dilation=1)
+          (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+        )
+        (blocks): Seq(
+          (0): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=160, out_channels=96, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(96, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=96, out_channels=96, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(96, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+            (downsample): Seq(
+              (0): Conv3d(in_channels=160, out_channels=96, kernel_size=1, stride=1, dilation=1)
+              (1): BatchNorm(96, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+            )
+          )
+        )
+      )
+      (3): ResNetUp(
+        (conv_in): Seq(
+          (0): Conv3d(in_channels=96, out_channels=96, kernel_size=2, stride=2, dilation=1)
+          (1): BatchNorm(96, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+        )
+        (blocks): Seq(
+          (0): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=128, out_channels=96, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(96, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=96, out_channels=96, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(96, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+            (downsample): Seq(
+              (0): Conv3d(in_channels=128, out_channels=96, kernel_size=1, stride=1, dilation=1)
+              (1): BatchNorm(96, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+            )
+          )
+        )
+      )
+      (4): ResNetUp(
+        (conv_in): Seq(
+          (0): Conv3d(in_channels=96, out_channels=96, kernel_size=3, stride=1, dilation=1)
+          (1): BatchNorm(96, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+        )
+        (blocks): Seq(
+          (0): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=96, out_channels=96, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(96, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=96, out_channels=96, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(96, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+          )
+        )
+      )
+    )
+  )
+  (head): Sequential(
+    (0): Linear(in_features=96, out_features=20, bias=True)
+  )
+)
+[2022-11-01 16:41:29,406][torch_points3d.utils.colors][INFO] - [0;32mOptimizer: SGD (
+Parameter Group 0
+    dampening: 0.1
+    foreach: None
+    initial_lr: 0.1
+    lr: 0.1
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 0.0001
+)[0m
+[2022-11-01 16:41:29,406][torch_points3d.utils.colors][INFO] - [0;32mLearning Rate Scheduler: ExponentialLR({'gamma': 0.955}, update_scheduler_on=on_epoch)[0m
+[2022-11-01 16:41:29,406][torch_points3d.utils.colors][INFO] - [0;32mBatchNorm Scheduler: BNMomentumScheduler(base_momentum: 0.02, update_scheduler_on=on_epoch)[0m
+[2022-11-01 16:41:29,406][torch_points3d.utils.colors][INFO] - [0;32mAccumulated gradients: None[0m
+[2022-11-01 16:41:29,407][torch_points3d.trainer][INFO] - Model size = 30456052
+[2022-11-01 16:41:29,408][torch_points3d.trainer][INFO] - Dataset: ScannetDatasetMM 
+[0;95mtrain_pre_batch_collate_transform [0m= None
+[0;95mval_pre_batch_collate_transform [0m= None
+[0;95mtest_pre_batch_collate_transform [0m= None
+[0;95mpre_transform [0m= Compose([
+    SaveOriginalPosId,
+    PCAComputePointwise(num_neighbors=50, r=None, use_full_pos=False, use_cuda=False, use_faiss=False, ncells=None, nprobes=10, chunk_size=1000000),
+    EigenFeatures(norm=True, linearity=True, planarity=True, scattering=True, temperature=None),
+    RemoveAttributes(attr_names=['eigenvalues', 'eigenvectors'], strict=False),
+])
+[0;95mtest_transform [0m= Compose([
+    GridSampling3D(grid_size=0.03, quantize_coords=True, mode=last),
+    XYZFeature(axis=['x', 'y', 'z']),
+    AddFeatsByKeys(pos_x=True, pos_y=True, pos_z=True, rgb=False, linearity=False, norm=False, planarity=False, scattering=False),
+])
+[0;95mtrain_transform [0m= Compose([
+    ElasticDistortion(apply_distorsion=True, granularity=[0.2, 0.8], magnitude=[0.4, 1.6]),
+    Random3AxisRotation(apply_rotation=True, rot_x=8, rot_y=8, rot_z=180),
+    Random symmetry of axes: x=True, y=True, z=False,
+    RandomScaleAnisotropic([0.9, 1.1]),
+    GridSampling3D(grid_size=0.03, quantize_coords=True, mode=last),
+    XYZFeature(axis=['x', 'y', 'z']),
+    AddFeatsByKeys(pos_x=True, pos_y=True, pos_z=True, rgb=False, linearity=False, norm=False, planarity=False, scattering=False),
+])
+[0;95mval_transform [0m= Compose([
+    GridSampling3D(grid_size=0.03, quantize_coords=True, mode=last),
+    XYZFeature(axis=['x', 'y', 'z']),
+    AddFeatsByKeys(pos_x=True, pos_y=True, pos_z=True, rgb=False, linearity=False, norm=False, planarity=False, scattering=False),
+])
+[0;95minference_transform [0m= Compose([
+    SaveOriginalPosId,
+    PCAComputePointwise(num_neighbors=50, r=None, use_full_pos=False, use_cuda=False, use_faiss=False, ncells=None, nprobes=10, chunk_size=1000000),
+    EigenFeatures(norm=True, linearity=True, planarity=True, scattering=True, temperature=None),
+    RemoveAttributes(attr_names=['eigenvalues', 'eigenvectors'], strict=False),
+    GridSampling3D(grid_size=0.03, quantize_coords=True, mode=last),
+    XYZFeature(axis=['x', 'y', 'z']),
+    AddFeatsByKeys(pos_x=True, pos_y=True, pos_z=True, rgb=False, linearity=False, norm=False, planarity=False, scattering=False),
+])
+[0;95mpre_transform_image [0m= ComposeMultiModal([
+    LoadImages(ref_size=[320, 240], crop_size=None, crop_offsets=None, downscale=None, show_progress=False),
+    NonStaticMask(ref_size=(320, 240), proj_upscale=1, n_sample=5),
+    MapImages(key=mapping_index, verbose=False, cylinder=False, ref_size=[320, 240], proj_upscale=1, method=SplattingVisibility, use_cuda=False, kwargs={'voxel': 0.03, 'r_max': 8, 'r_min': 0.05, 'exact': True, 'camera': 'scannet'}),
+    NeighborhoodBasedMappingFeatures(k_list=[50], voxel=0.01, compute_density=True, compute_occlusion=True, use_faiss=False, use_cuda=False, ncells=None, nprobes=10, verbose=True),
+])
+[0;95mtest_transform_image [0m= ComposeMultiModal([
+    SelectMappingFromPointId(key=mapping_index),
+    ToImageData(),
+    PickImagesFromMemoryCredit(credit=7680000, use_coverage=True, k_coverage=2),
+    ToFloatImage(),
+    Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+])
+[0;95mtrain_transform_image [0m= ComposeMultiModal([
+    SelectMappingFromPointId(key=mapping_index),
+    ToImageData(),
+    PickImagesFromMemoryCredit(credit=7680000, use_coverage=True, k_coverage=2),
+    JitterMappingFeatures(sigma=0.02, clip=0.03),
+    ColorJitter(brightness=[0.4, 1.6], contrast=[0.4, 1.6], saturation=[0.30000000000000004, 1.7], hue=None),
+    RandomHorizontalFlip(p=0.5),
+    ToFloatImage(),
+    Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+])
+[0;95mval_transform_image [0m= ComposeMultiModal([
+    SelectMappingFromPointId(key=mapping_index),
+    ToImageData(),
+    PickImagesFromMemoryCredit(credit=7680000, use_coverage=True, k_coverage=2),
+    ToFloatImage(),
+    Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+])
+[0;95minference_transform_image [0m= ComposeMultiModal([
+    LoadImages(ref_size=[320, 240], crop_size=None, crop_offsets=None, downscale=None, show_progress=False),
+    NonStaticMask(ref_size=(320, 240), proj_upscale=1, n_sample=5),
+    MapImages(key=mapping_index, verbose=False, cylinder=False, ref_size=[320, 240], proj_upscale=1, method=SplattingVisibility, use_cuda=False, kwargs={'voxel': 0.03, 'r_max': 8, 'r_min': 0.05, 'exact': True, 'camera': 'scannet'}),
+    NeighborhoodBasedMappingFeatures(k_list=[50], voxel=0.01, compute_density=True, compute_occlusion=True, use_faiss=False, use_cuda=False, ncells=None, nprobes=10, verbose=True),
+    SelectMappingFromPointId(key=mapping_index),
+    ToImageData(),
+    PickImagesFromMemoryCredit(credit=7680000, use_coverage=True, k_coverage=2),
+    ToFloatImage(),
+    Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+])
+Size of [0;95mtrain_dataset [0m= 3
+Size of [0;95mtest_dataset [0m= 0
+Size of [0;95mval_dataset [0m= 3
+[0;95mBatch size =[0m 1
+[2022-11-01 16:41:35,966][torch_points3d.datasets.base_dataset][INFO] - Available stage selection datasets: [0;95m ['val'] [0m
+[2022-11-01 16:41:35,967][torch_points3d.datasets.base_dataset][INFO] - The models will be selected using the metrics on following dataset: [0;95m val [0m
+[2022-11-01 16:41:38,130][torch_points3d.trainer][INFO] - EPOCH 1 / 100
+  0%|          | 0/3 [00:00<?, ?it/s]_set_input call in SparseConv3dUnet forward
+  0%|          | 0/3 [00:13<?, ?it/s, [0;92mdata_loading=12.04, iteration=1.047, train_acc=4.320, train_loss_cross_entropy=3.090, train_loss_seg=3.090, train_macc=4.801, train_miou=0.530[0m)] 33%|###3      | 1/3 [00:13<00:26, 13.09s/it, [0;92mdata_loading=12.04, iteration=1.047, train_acc=4.320, train_loss_cross_entropy=3.090, train_loss_seg=3.090, train_macc=4.801, train_miou=0.530[0m)]_set_input call in SparseConv3dUnet forward
+ 33%|###3      | 1/3 [00:19<00:26, 13.09s/it, [0;92mdata_loading=6.467, iteration=0.213, train_acc=4.320, train_loss_cross_entropy=3.090, train_loss_seg=3.090, train_macc=4.801, train_miou=0.530[0m)] 67%|######6   | 2/3 [00:19<00:09,  9.32s/it, [0;92mdata_loading=6.467, iteration=0.213, train_acc=4.320, train_loss_cross_entropy=3.090, train_loss_seg=3.090, train_macc=4.801, train_miou=0.530[0m)]_set_input call in SparseConv3dUnet forward
+ 67%|######6   | 2/3 [00:19<00:09,  9.32s/it, [0;92mdata_loading=0.000, iteration=0.178, train_acc=4.320, train_loss_cross_entropy=3.090, train_loss_seg=3.090, train_macc=4.801, train_miou=0.530[0m)]100%|##########| 3/3 [00:19<00:00,  5.15s/it, [0;92mdata_loading=0.000, iteration=0.178, train_acc=4.320, train_loss_cross_entropy=3.090, train_loss_seg=3.090, train_macc=4.801, train_miou=0.530[0m)]100%|##########| 3/3 [00:19<00:00,  6.65s/it, [0;92mdata_loading=0.000, iteration=0.178, train_acc=4.320, train_loss_cross_entropy=3.090, train_loss_seg=3.090, train_macc=4.801, train_miou=0.530[0m)][2022-11-01 16:41:58,654][torch_points3d.trainer][INFO] - Learning rate = 0.095500
+[2022-11-01 16:41:58,655][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-11-01 16:41:58,655][torch_points3d.metrics.base_tracker][INFO] -     train_loss_seg = 3.0907859802246094
+[2022-11-01 16:41:58,655][torch_points3d.metrics.base_tracker][INFO] -     train_loss_cross_entropy = 3.0907859802246094
+[2022-11-01 16:41:58,655][torch_points3d.metrics.base_tracker][INFO] -     train_acc = 4.320465541157763
+[2022-11-01 16:41:58,655][torch_points3d.metrics.base_tracker][INFO] -     train_macc = 4.801518141054771
+[2022-11-01 16:41:58,655][torch_points3d.metrics.base_tracker][INFO] -     train_miou = 0.5303918758401666
+[2022-11-01 16:41:58,656][torch_points3d.metrics.base_tracker][INFO] -     train_miou_per_class = {0: '2.21', 1: '5.84', 2: '0.00', 3: '0.00', 4: '1.04', 5: '0.00', 6: '0.06', 7: '0.74', 8: '0.00', 9: '0.00', 10: '0.00', 11: '0.00', 12: '0.00', 13: '0.00', 14: '0.00', 15: '0.00', 16: '0.00', 17: '0.00', 18: '0.00', 19: '0.73'}
+[2022-11-01 16:41:58,656][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-11-01 16:41:58,656][torch_points3d.trainer][INFO] - EPOCH 2 / 100
+
+  0%|          | 0/3 [00:00<?, ?it/s]_set_input call in SparseConv3dUnet forward
+  0%|          | 0/3 [00:12<?, ?it/s, [0;92mdata_loading=11.88, iteration=0.206, train_acc=65.25, train_loss_cross_entropy=1.341, train_loss_seg=1.341, train_macc=21.78, train_miou=15.30[0m)] 33%|###3      | 1/3 [00:12<00:24, 12.09s/it, [0;92mdata_loading=11.88, iteration=0.206, train_acc=65.25, train_loss_cross_entropy=1.341, train_loss_seg=1.341, train_macc=21.78, train_miou=15.30[0m)]_set_input call in SparseConv3dUnet forward
+ 33%|###3      | 1/3 [00:12<00:24, 12.09s/it, [0;92mdata_loading=0.000, iteration=0.243, train_acc=65.25, train_loss_cross_entropy=1.341, train_loss_seg=1.341, train_macc=21.78, train_miou=15.30[0m)] 67%|######6   | 2/3 [00:12<00:05,  5.12s/it, [0;92mdata_loading=0.000, iteration=0.243, train_acc=65.25, train_loss_cross_entropy=1.341, train_loss_seg=1.341, train_macc=21.78, train_miou=15.30[0m)]_set_input call in SparseConv3dUnet forward
+ 67%|######6   | 2/3 [00:19<00:05,  5.12s/it, [0;92mdata_loading=6.992, iteration=0.221, train_acc=65.25, train_loss_cross_entropy=1.341, train_loss_seg=1.341, train_macc=21.78, train_miou=15.30[0m)]100%|##########| 3/3 [00:19<00:00,  6.08s/it, [0;92mdata_loading=6.992, iteration=0.221, train_acc=65.25, train_loss_cross_entropy=1.341, train_loss_seg=1.341, train_macc=21.78, train_miou=15.30[0m)]100%|##########| 3/3 [00:19<00:00,  6.52s/it, [0;92mdata_loading=6.992, iteration=0.221, train_acc=65.25, train_loss_cross_entropy=1.341, train_loss_seg=1.341, train_macc=21.78, train_miou=15.30[0m)][2022-11-01 16:42:18,798][torch_points3d.trainer][INFO] - Learning rate = 0.091202
+[2022-11-01 16:42:18,799][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-11-01 16:42:18,799][torch_points3d.metrics.base_tracker][INFO] -     train_loss_seg = 1.34125554561615
+[2022-11-01 16:42:18,799][torch_points3d.metrics.base_tracker][INFO] -     train_loss_cross_entropy = 1.34125554561615
+[2022-11-01 16:42:18,799][torch_points3d.metrics.base_tracker][INFO] -     train_acc = 65.25541321113944
+[2022-11-01 16:42:18,799][torch_points3d.metrics.base_tracker][INFO] -     train_macc = 21.782370266249732
+[2022-11-01 16:42:18,800][torch_points3d.metrics.base_tracker][INFO] -     train_miou = 15.308286255777512
+[2022-11-01 16:42:18,800][torch_points3d.metrics.base_tracker][INFO] -     train_miou_per_class = {0: '44.02', 1: '63.14', 2: '0.00', 3: '0.00', 4: '0.00', 5: '0.00', 6: '0.00', 7: '0.00', 8: '0.00', 9: '0.00', 10: '0.00', 11: '0.00', 12: '0.00', 13: '0.00', 14: '0.00', 15: '0.00', 16: '0.00', 17: '0.00', 18: '0.00', 19: '0.00'}
+[2022-11-01 16:42:18,800][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-11-01 16:42:18,800][torch_points3d.trainer][INFO] - EPOCH 3 / 100
+
+  0%|          | 0/3 [00:00<?, ?it/s]_set_input call in SparseConv3dUnet forward
+  0%|          | 0/3 [00:19<?, ?it/s, [0;92mdata_loading=19.41, iteration=0.24 , train_acc=27.70, train_loss_cross_entropy=3.503, train_loss_seg=3.503, train_macc=9.280, train_miou=3.203[0m)] 33%|###3      | 1/3 [00:19<00:39, 19.65s/it, [0;92mdata_loading=19.41, iteration=0.24 , train_acc=27.70, train_loss_cross_entropy=3.503, train_loss_seg=3.503, train_macc=9.280, train_miou=3.203[0m)]_set_input call in SparseConv3dUnet forward
+ 33%|###3      | 1/3 [00:19<00:39, 19.65s/it, [0;92mdata_loading=0.000, iteration=0.173, train_acc=27.70, train_loss_cross_entropy=3.503, train_loss_seg=3.503, train_macc=9.280, train_miou=3.203[0m)] 67%|######6   | 2/3 [00:19<00:08,  8.19s/it, [0;92mdata_loading=0.000, iteration=0.173, train_acc=27.70, train_loss_cross_entropy=3.503, train_loss_seg=3.503, train_macc=9.280, train_miou=3.203[0m)]_set_input call in SparseConv3dUnet forward
+ 67%|######6   | 2/3 [00:20<00:08,  8.19s/it, [0;92mdata_loading=0.000, iteration=0.184, train_acc=27.70, train_loss_cross_entropy=3.503, train_loss_seg=3.503, train_macc=9.280, train_miou=3.203[0m)]100%|##########| 3/3 [00:20<00:00,  4.54s/it, [0;92mdata_loading=0.000, iteration=0.184, train_acc=27.70, train_loss_cross_entropy=3.503, train_loss_seg=3.503, train_macc=9.280, train_miou=3.203[0m)]100%|##########| 3/3 [00:20<00:00,  6.67s/it, [0;92mdata_loading=0.000, iteration=0.184, train_acc=27.70, train_loss_cross_entropy=3.503, train_loss_seg=3.503, train_macc=9.280, train_miou=3.203[0m)][2022-11-01 16:42:39,395][torch_points3d.trainer][INFO] - Learning rate = 0.087098
+[2022-11-01 16:42:39,396][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-11-01 16:42:39,396][torch_points3d.metrics.base_tracker][INFO] -     train_loss_seg = 3.503122091293335
+[2022-11-01 16:42:39,396][torch_points3d.metrics.base_tracker][INFO] -     train_loss_cross_entropy = 3.503122091293335
+[2022-11-01 16:42:39,396][torch_points3d.metrics.base_tracker][INFO] -     train_acc = 27.704770806986673
+[2022-11-01 16:42:39,396][torch_points3d.metrics.base_tracker][INFO] -     train_macc = 9.280849463696073
+[2022-11-01 16:42:39,396][torch_points3d.metrics.base_tracker][INFO] -     train_miou = 3.2035104616543073
+[2022-11-01 16:42:39,396][torch_points3d.metrics.base_tracker][INFO] -     train_miou_per_class = {0: '20.46', 1: '27.59', 2: '0.00', 3: '0.00', 4: '0.00', 5: '0.00', 6: '0.00', 7: '0.00', 8: '0.00', 9: '0.00', 10: '0.00', 11: '0.00', 12: '0.00', 13: '0.00', 14: '0.00', 15: '0.00', 16: '0.00', 17: '0.00', 18: '0.00', 19: '0.00'}
+[2022-11-01 16:42:39,397][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-11-01 16:42:39,397][torch_points3d.trainer][INFO] - EPOCH 4 / 100
+
+  0%|          | 0/3 [00:00<?, ?it/s]_set_input call in SparseConv3dUnet forward
+  0%|          | 0/3 [00:12<?, ?it/s, [0;92mdata_loading=11.89, iteration=0.262, train_acc=69.83, train_loss_cross_entropy=1.429, train_loss_seg=1.429, train_macc=25.98, train_miou=15.56[0m)] 33%|###3      | 1/3 [00:12<00:24, 12.16s/it, [0;92mdata_loading=11.89, iteration=0.262, train_acc=69.83, train_loss_cross_entropy=1.429, train_loss_seg=1.429, train_macc=25.98, train_miou=15.56[0m)]_set_input call in SparseConv3dUnet forward
+ 33%|###3      | 1/3 [00:12<00:24, 12.16s/it, [0;92mdata_loading=0.000, iteration=0.235, train_acc=69.83, train_loss_cross_entropy=1.429, train_loss_seg=1.429, train_macc=25.98, train_miou=15.56[0m)] 67%|######6   | 2/3 [00:12<00:05,  5.15s/it, [0;92mdata_loading=0.000, iteration=0.235, train_acc=69.83, train_loss_cross_entropy=1.429, train_loss_seg=1.429, train_macc=25.98, train_miou=15.56[0m)]_set_input call in SparseConv3dUnet forward
+ 67%|######6   | 2/3 [00:19<00:05,  5.15s/it, [0;92mdata_loading=6.814, iteration=0.218, train_acc=69.83, train_loss_cross_entropy=1.429, train_loss_seg=1.429, train_macc=25.98, train_miou=15.56[0m)]100%|##########| 3/3 [00:19<00:00,  6.01s/it, [0;92mdata_loading=6.814, iteration=0.218, train_acc=69.83, train_loss_cross_entropy=1.429, train_loss_seg=1.429, train_macc=25.98, train_miou=15.56[0m)]100%|##########| 3/3 [00:19<00:00,  6.48s/it, [0;92mdata_loading=6.814, iteration=0.218, train_acc=69.83, train_loss_cross_entropy=1.429, train_loss_seg=1.429, train_macc=25.98, train_miou=15.56[0m)][2022-11-01 16:42:59,397][torch_points3d.trainer][INFO] - Learning rate = 0.083179
+[2022-11-01 16:42:59,398][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-11-01 16:42:59,398][torch_points3d.metrics.base_tracker][INFO] -     train_loss_seg = 1.429421305656433
+[2022-11-01 16:42:59,398][torch_points3d.metrics.base_tracker][INFO] -     train_loss_cross_entropy = 1.429421305656433
+[2022-11-01 16:42:59,398][torch_points3d.metrics.base_tracker][INFO] -     train_acc = 69.83475315611209
+[2022-11-01 16:42:59,398][torch_points3d.metrics.base_tracker][INFO] -     train_macc = 25.983491919811325
+[2022-11-01 16:42:59,398][torch_points3d.metrics.base_tracker][INFO] -     train_miou = 15.569643808604614
+[2022-11-01 16:42:59,398][torch_points3d.metrics.base_tracker][INFO] -     train_miou_per_class = {0: '57.47', 1: '77.53', 2: '0.00', 3: '0.00', 4: '0.00', 5: '0.00', 6: '5.12', 7: '0.00', 8: '0.00', 9: '0.00', 10: '0.00', 11: '0.00', 12: '0.00', 13: '0.00', 14: '0.00', 15: '0.00', 16: '0.00', 17: '0.00', 18: '0.00', 19: '0.00'}
+[2022-11-01 16:42:59,399][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-11-01 16:42:59,399][torch_points3d.trainer][INFO] - EPOCH 5 / 100
+
+  0%|          | 0/3 [00:00<?, ?it/s]_set_input call in SparseConv3dUnet forward
+  0%|          | 0/3 [00:12<?, ?it/s, [0;92mdata_loading=11.86, iteration=0.292, train_acc=80.97, train_loss_cross_entropy=0.915, train_loss_seg=0.915, train_macc=27.29, train_miou=17.49[0m)] 33%|###3      | 1/3 [00:12<00:24, 12.16s/it, [0;92mdata_loading=11.86, iteration=0.292, train_acc=80.97, train_loss_cross_entropy=0.915, train_loss_seg=0.915, train_macc=27.29, train_miou=17.49[0m)]_set_input call in SparseConv3dUnet forward
+ 33%|###3      | 1/3 [00:12<00:24, 12.16s/it, [0;92mdata_loading=0.009, iteration=0.232, train_acc=80.97, train_loss_cross_entropy=0.915, train_loss_seg=0.915, train_macc=27.29, train_miou=17.49[0m)] 67%|######6   | 2/3 [00:12<00:05,  5.15s/it, [0;92mdata_loading=0.009, iteration=0.232, train_acc=80.97, train_loss_cross_entropy=0.915, train_loss_seg=0.915, train_macc=27.29, train_miou=17.49[0m)]_set_input call in SparseConv3dUnet forward
+ 67%|######6   | 2/3 [00:19<00:05,  5.15s/it, [0;92mdata_loading=7.123, iteration=0.219, train_acc=80.97, train_loss_cross_entropy=0.915, train_loss_seg=0.915, train_macc=27.29, train_miou=17.49[0m)]100%|##########| 3/3 [00:19<00:00,  6.15s/it, [0;92mdata_loading=7.123, iteration=0.219, train_acc=80.97, train_loss_cross_entropy=0.915, train_loss_seg=0.915, train_macc=27.29, train_miou=17.49[0m)]100%|##########| 3/3 [00:19<00:00,  6.58s/it, [0;92mdata_loading=7.123, iteration=0.219, train_acc=80.97, train_loss_cross_entropy=0.915, train_loss_seg=0.915, train_macc=27.29, train_miou=17.49[0m)][2022-11-01 16:43:19,721][torch_points3d.trainer][INFO] - Learning rate = 0.079436
+[2022-11-01 16:43:19,722][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-11-01 16:43:19,722][torch_points3d.metrics.base_tracker][INFO] -     train_loss_seg = 0.9151870012283325
+[2022-11-01 16:43:19,722][torch_points3d.metrics.base_tracker][INFO] -     train_loss_cross_entropy = 0.9151870012283325
+[2022-11-01 16:43:19,722][torch_points3d.metrics.base_tracker][INFO] -     train_acc = 80.97108279513586
+[2022-11-01 16:43:19,722][torch_points3d.metrics.base_tracker][INFO] -     train_macc = 27.29327643118357
+[2022-11-01 16:43:19,722][torch_points3d.metrics.base_tracker][INFO] -     train_miou = 17.493590933061785
+[2022-11-01 16:43:19,722][torch_points3d.metrics.base_tracker][INFO] -     train_miou_per_class = {0: '69.36', 1: '86.49', 2: '0.00', 3: '0.00', 4: '0.00', 5: '0.00', 6: '1.60', 7: '0.00', 8: '0.00', 9: '0.00', 10: '0.00', 11: '0.00', 12: '0.00', 13: '0.00', 14: '0.00', 15: '0.00', 16: '0.00', 17: '0.00', 18: '0.00', 19: '0.00'}
+[2022-11-01 16:43:19,723][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-11-01 16:43:19,723][torch_points3d.trainer][INFO] - EPOCH 6 / 100
+
+  0%|          | 0/3 [00:00<?, ?it/s]_set_input call in SparseConv3dUnet forward
+  0%|          | 0/3 [00:19<?, ?it/s, [0;92mdata_loading=19.19, iteration=0.254, train_acc=34.91, train_loss_cross_entropy=2.555, train_loss_seg=2.555, train_macc=11.31, train_miou=4.391[0m)] 33%|###3      | 1/3 [00:19<00:38, 19.45s/it, [0;92mdata_loading=19.19, iteration=0.254, train_acc=34.91, train_loss_cross_entropy=2.555, train_loss_seg=2.555, train_macc=11.31, train_miou=4.391[0m)]_set_input call in SparseConv3dUnet forward
+ 33%|###3      | 1/3 [00:19<00:38, 19.45s/it, [0;92mdata_loading=0.000, iteration=0.175, train_acc=34.91, train_loss_cross_entropy=2.555, train_loss_seg=2.555, train_macc=11.31, train_miou=4.391[0m)] 67%|######6   | 2/3 [00:19<00:08,  8.11s/it, [0;92mdata_loading=0.000, iteration=0.175, train_acc=34.91, train_loss_cross_entropy=2.555, train_loss_seg=2.555, train_macc=11.31, train_miou=4.391[0m)]_set_input call in SparseConv3dUnet forward
+ 67%|######6   | 2/3 [00:19<00:08,  8.11s/it, [0;92mdata_loading=0.000, iteration=0.178, train_acc=34.91, train_loss_cross_entropy=2.555, train_loss_seg=2.555, train_macc=11.31, train_miou=4.391[0m)]100%|##########| 3/3 [00:19<00:00,  4.49s/it, [0;92mdata_loading=0.000, iteration=0.178, train_acc=34.91, train_loss_cross_entropy=2.555, train_loss_seg=2.555, train_macc=11.31, train_miou=4.391[0m)]100%|##########| 3/3 [00:19<00:00,  6.60s/it, [0;92mdata_loading=0.000, iteration=0.178, train_acc=34.91, train_loss_cross_entropy=2.555, train_loss_seg=2.555, train_macc=11.31, train_miou=4.391[0m)][2022-11-01 16:43:40,105][torch_points3d.trainer][INFO] - Learning rate = 0.075861
+[2022-11-01 16:43:40,106][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-11-01 16:43:40,106][torch_points3d.metrics.base_tracker][INFO] -     train_loss_seg = 2.555668592453003
+[2022-11-01 16:43:40,106][torch_points3d.metrics.base_tracker][INFO] -     train_loss_cross_entropy = 2.555668592453003
+[2022-11-01 16:43:40,107][torch_points3d.metrics.base_tracker][INFO] -     train_acc = 34.91640018273184
+[2022-11-01 16:43:40,107][torch_points3d.metrics.base_tracker][INFO] -     train_macc = 11.311247545105813
+[2022-11-01 16:43:40,107][torch_points3d.metrics.base_tracker][INFO] -     train_miou = 4.391664264847961
+[2022-11-01 16:43:40,107][torch_points3d.metrics.base_tracker][INFO] -     train_miou_per_class = {0: '31.11', 1: '34.77', 2: '0.00', 3: '0.00', 4: '0.00', 5: '0.00', 6: '0.00', 7: '0.00', 8: '0.00', 9: '0.00', 10: '0.00', 11: '0.00', 12: '0.00', 13: '0.00', 14: '0.00', 15: '0.00', 16: '0.00', 17: '0.00', 18: '0.00', 19: '0.00'}
+[2022-11-01 16:43:40,107][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-11-01 16:43:40,107][torch_points3d.trainer][INFO] - EPOCH 7 / 100
+
+  0%|          | 0/3 [00:00<?, ?it/s]_set_input call in SparseConv3dUnet forward
+  0%|          | 0/3 [00:19<?, ?it/s, [0;92mdata_loading=19.32, iteration=0.253, train_acc=33.48, train_loss_cross_entropy=2.325, train_loss_seg=2.325, train_macc=10.63, train_miou=4.258[0m)] 33%|###3      | 1/3 [00:19<00:39, 19.57s/it, [0;92mdata_loading=19.32, iteration=0.253, train_acc=33.48, train_loss_cross_entropy=2.325, train_loss_seg=2.325, train_macc=10.63, train_miou=4.258[0m)]_set_input call in SparseConv3dUnet forward
+ 33%|###3      | 1/3 [00:19<00:39, 19.57s/it, [0;92mdata_loading=0.000, iteration=0.173, train_acc=33.48, train_loss_cross_entropy=2.325, train_loss_seg=2.325, train_macc=10.63, train_miou=4.258[0m)] 67%|######6   | 2/3 [00:19<00:08,  8.16s/it, [0;92mdata_loading=0.000, iteration=0.173, train_acc=33.48, train_loss_cross_entropy=2.325, train_loss_seg=2.325, train_macc=10.63, train_miou=4.258[0m)]_set_input call in SparseConv3dUnet forward
+ 67%|######6   | 2/3 [00:19<00:08,  8.16s/it, [0;92mdata_loading=0.000, iteration=0.180, train_acc=33.48, train_loss_cross_entropy=2.325, train_loss_seg=2.325, train_macc=10.63, train_miou=4.258[0m)]100%|##########| 3/3 [00:19<00:00,  4.52s/it, [0;92mdata_loading=0.000, iteration=0.180, train_acc=33.48, train_loss_cross_entropy=2.325, train_loss_seg=2.325, train_macc=10.63, train_miou=4.258[0m)]100%|##########| 3/3 [00:19<00:00,  6.64s/it, [0;92mdata_loading=0.000, iteration=0.180, train_acc=33.48, train_loss_cross_entropy=2.325, train_loss_seg=2.325, train_macc=10.63, train_miou=4.258[0m)][2022-11-01 16:44:00,618][torch_points3d.trainer][INFO] - Learning rate = 0.072448
+[2022-11-01 16:44:00,619][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-11-01 16:44:00,619][torch_points3d.metrics.base_tracker][INFO] -     train_loss_seg = 2.3255443572998047
+[2022-11-01 16:44:00,620][torch_points3d.metrics.base_tracker][INFO] -     train_loss_cross_entropy = 2.3255443572998047
+[2022-11-01 16:44:00,620][torch_points3d.metrics.base_tracker][INFO] -     train_acc = 33.488991444884256
+[2022-11-01 16:44:00,620][torch_points3d.metrics.base_tracker][INFO] -     train_macc = 10.633051372132925
+[2022-11-01 16:44:00,620][torch_points3d.metrics.base_tracker][INFO] -     train_miou = 4.258322893434103
+[2022-11-01 16:44:00,620][torch_points3d.metrics.base_tracker][INFO] -     train_miou_per_class = {0: '28.51', 1: '35.36', 2: '0.00', 3: '0.00', 4: '0.00', 5: '0.00', 6: '0.00', 7: '0.00', 8: '0.00', 9: '0.00', 10: '0.00', 11: '0.00', 12: '0.00', 13: '0.00', 14: '0.00', 15: '0.00', 16: '0.00', 17: '0.00', 18: '0.00', 19: '0.00'}
+[2022-11-01 16:44:00,620][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-11-01 16:44:00,621][torch_points3d.trainer][INFO] - EPOCH 8 / 100
+
+  0%|          | 0/3 [00:00<?, ?it/s]_set_input call in SparseConv3dUnet forward
+  0%|          | 0/3 [00:12<?, ?it/s, [0;92mdata_loading=11.88, iteration=0.203, train_acc=78.10, train_loss_cross_entropy=0.85 , train_loss_seg=0.85 , train_macc=28.11, train_miou=18.78[0m)] 33%|###3      | 1/3 [00:12<00:24, 12.09s/it, [0;92mdata_loading=11.88, iteration=0.203, train_acc=78.10, train_loss_cross_entropy=0.85 , train_loss_seg=0.85 , train_macc=28.11, train_miou=18.78[0m)]_set_input call in SparseConv3dUnet forward
+ 33%|###3      | 1/3 [00:12<00:24, 12.09s/it, [0;92mdata_loading=0.000, iteration=0.255, train_acc=78.10, train_loss_cross_entropy=0.85 , train_loss_seg=0.85 , train_macc=28.11, train_miou=18.78[0m)] 67%|######6   | 2/3 [00:12<00:05,  5.13s/it, [0;92mdata_loading=0.000, iteration=0.255, train_acc=78.10, train_loss_cross_entropy=0.85 , train_loss_seg=0.85 , train_macc=28.11, train_miou=18.78[0m)]_set_input call in SparseConv3dUnet forward
+ 67%|######6   | 2/3 [00:19<00:05,  5.13s/it, [0;92mdata_loading=6.793, iteration=0.208, train_acc=78.10, train_loss_cross_entropy=0.85 , train_loss_seg=0.85 , train_macc=28.11, train_miou=18.78[0m)]100%|##########| 3/3 [00:19<00:00,  5.98s/it, [0;92mdata_loading=6.793, iteration=0.208, train_acc=78.10, train_loss_cross_entropy=0.85 , train_loss_seg=0.85 , train_macc=28.11, train_miou=18.78[0m)]100%|##########| 3/3 [00:19<00:00,  6.45s/it, [0;92mdata_loading=6.793, iteration=0.208, train_acc=78.10, train_loss_cross_entropy=0.85 , train_loss_seg=0.85 , train_macc=28.11, train_miou=18.78[0m)][2022-11-01 16:44:20,548][torch_points3d.trainer][INFO] - Learning rate = 0.069187
+[2022-11-01 16:44:20,548][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-11-01 16:44:20,549][torch_points3d.metrics.base_tracker][INFO] -     train_loss_seg = 0.8500077724456787
+[2022-11-01 16:44:20,549][torch_points3d.metrics.base_tracker][INFO] -     train_loss_cross_entropy = 0.8500077724456787
+[2022-11-01 16:44:20,549][torch_points3d.metrics.base_tracker][INFO] -     train_acc = 78.10348424786146
+[2022-11-01 16:44:20,549][torch_points3d.metrics.base_tracker][INFO] -     train_macc = 28.112003407318724
+[2022-11-01 16:44:20,549][torch_points3d.metrics.base_tracker][INFO] -     train_miou = 18.784294743031342
+[2022-11-01 16:44:20,549][torch_points3d.metrics.base_tracker][INFO] -     train_miou_per_class = {0: '66.07', 1: '83.98', 2: '0.00', 3: '0.00', 4: '0.00', 5: '0.00', 6: '0.00', 7: '0.00', 8: '0.22', 9: '0.00', 10: '0.00', 11: '0.00', 12: '0.00', 13: '0.00', 14: '0.00', 15: '0.00', 16: '0.00', 17: '0.00', 18: '0.00', 19: '0.00'}
+[2022-11-01 16:44:20,549][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-11-01 16:44:20,550][torch_points3d.trainer][INFO] - EPOCH 9 / 100
+
+  0%|          | 0/3 [00:00<?, ?it/s]_set_input call in SparseConv3dUnet forward
+  0%|          | 0/3 [00:19<?, ?it/s, [0;92mdata_loading=19.07, iteration=0.230, train_acc=37.91, train_loss_cross_entropy=2.148, train_loss_seg=2.148, train_macc=12.14, train_miou=4.726[0m)] 33%|###3      | 1/3 [00:19<00:38, 19.30s/it, [0;92mdata_loading=19.07, iteration=0.230, train_acc=37.91, train_loss_cross_entropy=2.148, train_loss_seg=2.148, train_macc=12.14, train_miou=4.726[0m)]_set_input call in SparseConv3dUnet forward
+ 33%|###3      | 1/3 [00:19<00:38, 19.30s/it, [0;92mdata_loading=0.000, iteration=0.172, train_acc=37.91, train_loss_cross_entropy=2.148, train_loss_seg=2.148, train_macc=12.14, train_miou=4.726[0m)] 67%|######6   | 2/3 [00:19<00:08,  8.05s/it, [0;92mdata_loading=0.000, iteration=0.172, train_acc=37.91, train_loss_cross_entropy=2.148, train_loss_seg=2.148, train_macc=12.14, train_miou=4.726[0m)]_set_input call in SparseConv3dUnet forward
+ 67%|######6   | 2/3 [00:19<00:08,  8.05s/it, [0;92mdata_loading=0.000, iteration=0.188, train_acc=37.91, train_loss_cross_entropy=2.148, train_loss_seg=2.148, train_macc=12.14, train_miou=4.726[0m)]100%|##########| 3/3 [00:19<00:00,  4.46s/it, [0;92mdata_loading=0.000, iteration=0.188, train_acc=37.91, train_loss_cross_entropy=2.148, train_loss_seg=2.148, train_macc=12.14, train_miou=4.726[0m)]100%|##########| 3/3 [00:19<00:00,  6.55s/it, [0;92mdata_loading=0.000, iteration=0.188, train_acc=37.91, train_loss_cross_entropy=2.148, train_loss_seg=2.148, train_macc=12.14, train_miou=4.726[0m)][2022-11-01 16:44:40,798][torch_points3d.trainer][INFO] - Learning rate = 0.066074
+[2022-11-01 16:44:40,799][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-11-01 16:44:40,799][torch_points3d.metrics.base_tracker][INFO] -     train_loss_seg = 2.148658037185669
+[2022-11-01 16:44:40,800][torch_points3d.metrics.base_tracker][INFO] -     train_loss_cross_entropy = 2.148658037185669
+[2022-11-01 16:44:40,800][torch_points3d.metrics.base_tracker][INFO] -     train_acc = 37.912811288916906
+[2022-11-01 16:44:40,800][torch_points3d.metrics.base_tracker][INFO] -     train_macc = 12.140190669131318
+[2022-11-01 16:44:40,800][torch_points3d.metrics.base_tracker][INFO] -     train_miou = 4.7260976550787746
+[2022-11-01 16:44:40,800][torch_points3d.metrics.base_tracker][INFO] -     train_miou_per_class = {0: '33.48', 1: '41.74', 2: '0.00', 3: '0.00', 4: '0.00', 5: '0.00', 6: '0.38', 7: '0.00', 8: '0.00', 9: '0.00', 10: '0.00', 11: '0.00', 12: '0.00', 13: '0.02', 14: '0.00', 15: '0.00', 16: '0.00', 17: '0.00', 18: '0.00', 19: '0.00'}
+[2022-11-01 16:44:40,800][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-11-01 16:44:40,801][torch_points3d.trainer][INFO] - EPOCH 10 / 100
+
+  0%|          | 0/3 [00:00<?, ?it/s]_set_input call in SparseConv3dUnet forward
+  0%|          | 0/3 [00:12<?, ?it/s, [0;92mdata_loading=11.88, iteration=0.281, train_acc=79.11, train_loss_cross_entropy=0.846, train_loss_seg=0.846, train_macc=28.19, train_miou=17.09[0m)] 33%|###3      | 1/3 [00:12<00:24, 12.16s/it, [0;92mdata_loading=11.88, iteration=0.281, train_acc=79.11, train_loss_cross_entropy=0.846, train_loss_seg=0.846, train_macc=28.19, train_miou=17.09[0m)]_set_input call in SparseConv3dUnet forward
+ 33%|###3      | 1/3 [00:19<00:24, 12.16s/it, [0;92mdata_loading=7.021, iteration=0.215, train_acc=79.11, train_loss_cross_entropy=0.846, train_loss_seg=0.846, train_macc=28.19, train_miou=17.09[0m)] 67%|######6   | 2/3 [00:19<00:09,  9.27s/it, [0;92mdata_loading=7.021, iteration=0.215, train_acc=79.11, train_loss_cross_entropy=0.846, train_loss_seg=0.846, train_macc=28.19, train_miou=17.09[0m)]_set_input call in SparseConv3dUnet forward
+ 67%|######6   | 2/3 [00:19<00:09,  9.27s/it, [0;92mdata_loading=0.000, iteration=0.176, train_acc=79.11, train_loss_cross_entropy=0.846, train_loss_seg=0.846, train_macc=28.19, train_miou=17.09[0m)]100%|##########| 3/3 [00:19<00:00,  5.12s/it, [0;92mdata_loading=0.000, iteration=0.176, train_acc=79.11, train_loss_cross_entropy=0.846, train_loss_seg=0.846, train_macc=28.19, train_miou=17.09[0m)]100%|##########| 3/3 [00:19<00:00,  6.53s/it, [0;92mdata_loading=0.000, iteration=0.176, train_acc=79.11, train_loss_cross_entropy=0.846, train_loss_seg=0.846, train_macc=28.19, train_miou=17.09[0m)][2022-11-01 16:45:00,956][torch_points3d.trainer][INFO] - Learning rate = 0.063101
+[2022-11-01 16:45:00,956][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-11-01 16:45:00,956][torch_points3d.metrics.base_tracker][INFO] -     train_loss_seg = 0.846291720867157
+[2022-11-01 16:45:00,957][torch_points3d.metrics.base_tracker][INFO] -     train_loss_cross_entropy = 0.846291720867157
+[2022-11-01 16:45:00,957][torch_points3d.metrics.base_tracker][INFO] -     train_acc = 79.11268855368235
+[2022-11-01 16:45:00,957][torch_points3d.metrics.base_tracker][INFO] -     train_macc = 28.199029180678686
+[2022-11-01 16:45:00,957][torch_points3d.metrics.base_tracker][INFO] -     train_miou = 17.090490469254803
+[2022-11-01 16:45:00,957][torch_points3d.metrics.base_tracker][INFO] -     train_miou_per_class = {0: '67.68', 1: '85.52', 2: '0.00', 3: '0.00', 4: '0.00', 5: '0.00', 6: '0.61', 7: '0.00', 8: '0.00', 9: '0.00', 10: '0.00', 11: '0.00', 12: '0.00', 13: '0.00', 14: '0.00', 15: '0.00', 16: '0.00', 17: '0.00', 18: '0.00', 19: '0.00'}
+[2022-11-01 16:45:00,957][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+
+  0%|          | 0/3 [00:00<?, ?it/s]_set_input call in SparseConv3dUnet forward
+  0%|          | 0/3 [00:13<?, ?it/s, [0;93mval_acc=50.19, val_loss_cross_entropy=6.529, val_loss_seg=6.529, val_macc=17.65, val_miou=7.646[0m)] 33%|###3      | 1/3 [00:13<00:26, 13.43s/it, [0;93mval_acc=50.19, val_loss_cross_entropy=6.529, val_loss_seg=6.529, val_macc=17.65, val_miou=7.646[0m)]_set_input call in SparseConv3dUnet forward
+ 33%|###3      | 1/3 [00:14<00:26, 13.43s/it, [0;93mval_acc=49.89, val_loss_cross_entropy=9.741, val_loss_seg=9.741, val_macc=17.64, val_miou=7.584[0m)] 67%|######6   | 2/3 [00:14<00:06,  6.08s/it, [0;93mval_acc=49.89, val_loss_cross_entropy=9.741, val_loss_seg=9.741, val_macc=17.64, val_miou=7.584[0m)]_set_input call in SparseConv3dUnet forward
+ 67%|######6   | 2/3 [00:14<00:06,  6.08s/it, [0;93mval_acc=54.72, val_loss_cross_entropy=6.998, val_loss_seg=6.998, val_macc=17.57, val_miou=7.975[0m)]100%|##########| 3/3 [00:14<00:00,  3.35s/it, [0;93mval_acc=54.72, val_loss_cross_entropy=6.998, val_loss_seg=6.998, val_macc=17.57, val_miou=7.975[0m)]100%|##########| 3/3 [00:14<00:00,  4.82s/it, [0;93mval_acc=54.72, val_loss_cross_entropy=6.998, val_loss_seg=6.998, val_macc=17.57, val_miou=7.975[0m)][2022-11-01 16:45:16,331][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-11-01 16:45:16,333][torch_points3d.metrics.base_tracker][INFO] -     val_loss_seg = 6.998498121897379
+[2022-11-01 16:45:16,333][torch_points3d.metrics.base_tracker][INFO] -     val_loss_cross_entropy = 6.998498121897379
+[2022-11-01 16:45:16,333][torch_points3d.metrics.base_tracker][INFO] -     val_acc = 54.723317633581814
+[2022-11-01 16:45:16,333][torch_points3d.metrics.base_tracker][INFO] -     val_macc = 17.571793778346386
+[2022-11-01 16:45:16,333][torch_points3d.metrics.base_tracker][INFO] -     val_miou = 7.975442279159798
+[2022-11-01 16:45:16,333][torch_points3d.metrics.base_tracker][INFO] -     val_miou_per_class = {0: '37.02', 1: '73.24', 2: '0.00', 3: '0.00', 4: '1.29', 5: '0.00', 6: '0.11', 7: '0.00', 8: '0.00', 9: '0.00', 10: '0.00', 11: '0.00', 12: '0.00', 13: '0.00', 14: '0.00', 15: '0.00', 16: '0.00', 17: '0.00', 18: '0.00', 19: '0.00'}
+[2022-11-01 16:45:16,333][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-11-01 16:45:16,375][torch_points3d.trainer][INFO] - EPOCH 11 / 100
+
+  0%|          | 0/3 [00:00<?, ?it/s]_set_input call in SparseConv3dUnet forward
+  0%|          | 0/3 [00:12<?, ?it/s, [0;92mdata_loading=11.74, iteration=0.315, train_acc=85.51, train_loss_cross_entropy=0.551, train_loss_seg=0.551, train_macc=28.28, train_miou=23.76[0m)] 33%|###3      | 1/3 [00:12<00:24, 12.06s/it, [0;92mdata_loading=11.74, iteration=0.315, train_acc=85.51, train_loss_cross_entropy=0.551, train_loss_seg=0.551, train_macc=28.28, train_miou=23.76[0m)]_set_input call in SparseConv3dUnet forward
+ 33%|###3      | 1/3 [00:12<00:24, 12.06s/it, [0;92mdata_loading=0.008, iteration=0.257, train_acc=85.51, train_loss_cross_entropy=0.551, train_loss_seg=0.551, train_macc=28.28, train_miou=23.76[0m)] 67%|######6   | 2/3 [00:12<00:05,  5.12s/it, [0;92mdata_loading=0.008, iteration=0.257, train_acc=85.51, train_loss_cross_entropy=0.551, train_loss_seg=0.551, train_macc=28.28, train_miou=23.76[0m)]_set_input call in SparseConv3dUnet forward
+ 67%|######6   | 2/3 [00:19<00:05,  5.12s/it, [0;92mdata_loading=7.121, iteration=0.211, train_acc=85.51, train_loss_cross_entropy=0.551, train_loss_seg=0.551, train_macc=28.28, train_miou=23.76[0m)]100%|##########| 3/3 [00:19<00:00,  6.13s/it, [0;92mdata_loading=7.121, iteration=0.211, train_acc=85.51, train_loss_cross_entropy=0.551, train_loss_seg=0.551, train_macc=28.28, train_miou=23.76[0m)]100%|##########| 3/3 [00:19<00:00,  6.56s/it, [0;92mdata_loading=7.121, iteration=0.211, train_acc=85.51, train_loss_cross_entropy=0.551, train_loss_seg=0.551, train_macc=28.28, train_miou=23.76[0m)][2022-11-01 16:45:36,908][torch_points3d.trainer][INFO] - Learning rate = 0.060261
+[2022-11-01 16:45:36,909][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-11-01 16:45:36,909][torch_points3d.metrics.base_tracker][INFO] -     train_loss_seg = 0.5514971017837524
+[2022-11-01 16:45:36,909][torch_points3d.metrics.base_tracker][INFO] -     train_loss_cross_entropy = 0.5514971017837524
+[2022-11-01 16:45:36,909][torch_points3d.metrics.base_tracker][INFO] -     train_acc = 85.51209296041075
+[2022-11-01 16:45:36,909][torch_points3d.metrics.base_tracker][INFO] -     train_macc = 28.284057325559075
+[2022-11-01 16:45:36,909][torch_points3d.metrics.base_tracker][INFO] -     train_miou = 23.7676908343773
+[2022-11-01 16:45:36,910][torch_points3d.metrics.base_tracker][INFO] -     train_miou_per_class = {0: '76.82', 1: '89.21', 2: '0.00', 3: '0.00', 4: '0.00', 5: '0.00', 6: '0.34', 7: '0.00', 8: '0.00', 9: '0.00', 10: '0.00', 11: '0.00', 12: '0.00', 13: '0.00', 14: '0.00', 15: '0.00', 16: '0.00', 17: '0.00', 18: '0.00', 19: '0.00'}
+[2022-11-01 16:45:36,910][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-11-01 16:45:36,910][torch_points3d.trainer][INFO] - EPOCH 12 / 100
+
+  0%|          | 0/3 [00:00<?, ?it/s]_set_input call in SparseConv3dUnet forward
+  0%|          | 0/3 [00:19<?, ?it/s, [0;92mdata_loading=19.35, iteration=0.241, train_acc=39.38, train_loss_cross_entropy=2.171, train_loss_seg=2.171, train_macc=12.82, train_miou=5.190[0m)] 33%|###3      | 1/3 [00:19<00:39, 19.60s/it, [0;92mdata_loading=19.35, iteration=0.241, train_acc=39.38, train_loss_cross_entropy=2.171, train_loss_seg=2.171, train_macc=12.82, train_miou=5.190[0m)]_set_input call in SparseConv3dUnet forward
+ 33%|###3      | 1/3 [00:19<00:39, 19.60s/it, [0;92mdata_loading=0.000, iteration=0.188, train_acc=39.38, train_loss_cross_entropy=2.171, train_loss_seg=2.171, train_macc=12.82, train_miou=5.190[0m)] 67%|######6   | 2/3 [00:19<00:08,  8.18s/it, [0;92mdata_loading=0.000, iteration=0.188, train_acc=39.38, train_loss_cross_entropy=2.171, train_loss_seg=2.171, train_macc=12.82, train_miou=5.190[0m)]_set_input call in SparseConv3dUnet forward
+ 67%|######6   | 2/3 [00:19<00:08,  8.18s/it, [0;92mdata_loading=0.000, iteration=0.175, train_acc=39.38, train_loss_cross_entropy=2.171, train_loss_seg=2.171, train_macc=12.82, train_miou=5.190[0m)]100%|##########| 3/3 [00:19<00:00,  4.53s/it, [0;92mdata_loading=0.000, iteration=0.175, train_acc=39.38, train_loss_cross_entropy=2.171, train_loss_seg=2.171, train_macc=12.82, train_miou=5.190[0m)]100%|##########| 3/3 [00:19<00:00,  6.65s/it, [0;92mdata_loading=0.000, iteration=0.175, train_acc=39.38, train_loss_cross_entropy=2.171, train_loss_seg=2.171, train_macc=12.82, train_miou=5.190[0m)][2022-11-01 16:45:57,725][torch_points3d.trainer][INFO] - Learning rate = 0.057549
+[2022-11-01 16:45:57,726][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-11-01 16:45:57,726][torch_points3d.metrics.base_tracker][INFO] -     train_loss_seg = 2.1718413829803467
+[2022-11-01 16:45:57,726][torch_points3d.metrics.base_tracker][INFO] -     train_loss_cross_entropy = 2.1718413829803467
+[2022-11-01 16:45:57,726][torch_points3d.metrics.base_tracker][INFO] -     train_acc = 39.38530956431689
+[2022-11-01 16:45:57,726][torch_points3d.metrics.base_tracker][INFO] -     train_macc = 12.82026984479852
+[2022-11-01 16:45:57,726][torch_points3d.metrics.base_tracker][INFO] -     train_miou = 5.190852854671785
+[2022-11-01 16:45:57,726][torch_points3d.metrics.base_tracker][INFO] -     train_miou_per_class = {0: '35.79', 1: '42.32', 2: '0.00', 3: '0.00', 4: '0.00', 5: '0.00', 6: '4.82', 7: '0.00', 8: '0.00', 9: '0.00', 10: '0.00', 11: '0.00', 12: '0.00', 13: '0.12', 14: '0.00', 15: '0.00', 16: '0.00', 17: '0.00', 18: '0.00', 19: '0.00'}
+[2022-11-01 16:45:57,727][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-11-01 16:45:57,727][torch_points3d.trainer][INFO] - EPOCH 13 / 100
+
+  0%|          | 0/3 [00:00<?, ?it/s]slurmstepd: error: *** JOB 10219175 ON r28n1 CANCELLED AT 2022-11-01T16:46:11 DUE TO TIME LIMIT ***

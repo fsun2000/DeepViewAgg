@@ -140,9 +140,7 @@ class MVFusionEncoder(MVFusionBackboneBasedModel, ABC):
 #         mode_preds = torch.stack(mode_preds, dim=0)
     
 #         out_scores = torch.nn.functional.one_hot(mode_preds.squeeze().long(), self.n_classes).float()
-        
-#         print("out_scores: ", out_scores, out_scores.shape)
-    
+            
     
         # Features from only seen point-image matches are included in 'x'
         viewing_feats = data.x[:, :, :-1]

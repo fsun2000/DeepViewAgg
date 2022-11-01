@@ -163,7 +163,8 @@ class BaseSparseConv3d(UnwrappedUnetBasedModel):
             self.xyz = data.pos
         else:
             self.xyz = data.coords
-
+            
+            
 class SparseConv3dEncoder(BaseSparseConv3d):
     def forward(self, data, *args, **kwargs):
         """
@@ -180,6 +181,7 @@ class SparseConv3dEncoder(BaseSparseConv3d):
         data:
             - x [1, output_nc]
         """
+        print("_set_input call in SparseConv3dEncoder forward", flush=True)
         self._set_input(data)
         data = self.input
         for i in range(len(self.down_modules)):
@@ -246,7 +248,7 @@ class SparseConv3dUnet(BaseSparseConv3d):
             # Discard the modalities used in the down modules, only
             # pointwise features are used in subsequent modules.
             data = data['x_3d']
-
+            
         # TODO : Manage the inner module
 
         # Recover the skip mode from the up modules

@@ -2,6 +2,7 @@
 defaults:
   - segmentation/default
 
+
 MVFusion:
     # 6.1 M params - 23.8 Mo on the GPU - ~7.2 ko/pixel at training time
     class: Feng.mvfusion.MVFusion_model

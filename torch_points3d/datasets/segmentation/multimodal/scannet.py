@@ -396,11 +396,29 @@ class ScannetMM(Scannet):
 
             # Save mapping + m2f features in x
             data.data.x = torch.cat((view_feats, m2f_feats), dim=-1)
-#             data.data.x_seen_mask = csr_idx[1:] > csr_idx[:-1]
-                                                                   
-            return data
-        
-        return MMData(data, image=images)
+        # Only cull unseen points and/or less visible ones
+        else:
+            data = MMData(data, image=images)
+            del images
+
+            # Take subset of only seen points
+            # NOTE: each point is contained multiple times if it has multiple correspondences
+            csr_idx = data.modalities['image'][0].view_csr_indexing
+            dense_idx_list = torch.arange(data.modalities['image'].num_points).repeat_interleave(csr_idx[1:] - csr_idx[:-1])
+            # take subset of only seen points without re-indexing the same point
+            data = data[dense_idx_list.unique()]
+            
+            csr_idx = data.modalities['image'][0].view_csr_indexing
+            n_seen = csr_idx[1:] - csr_idx[:-1]
+            
+            # cull least visible points
+            MAX_N_POINTS = 30000
+            if data.modalities['image'].num_points > MAX_N_POINTS:
+                sort_idx = torch.argsort(n_seen, descending=True)
+                data = data[sort_idx[:MAX_N_POINTS]]
+                csr_idx = data.modalities['image'][0].view_csr_indexing
+                n_seen = csr_idx[1:] - csr_idx[:-1]
+        return data
 
 #     def get_view_dependent_features(self, mm_data):
         

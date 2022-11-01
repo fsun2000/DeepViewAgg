@@ -4,7 +4,7 @@
 #SBATCH --gpus=1
 #SBATCH --job-name=m2f
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=5
+#SBATCH --cpus-per-task=9
 #SBATCH --time=02:00:00
 #SBATCH --mem=190000M
 #SBATCH --output=job_logs/mvfusion/eval_m2f_preds_masks_correct.out
@@ -18,4 +18,4 @@ module load CUDA/11.3.1
 
 #export C_INCLUDE_PATH="/home/fsun/DeepViewAgg/sparsehash:$CPLUS_INCLUDE_PATH"
 export HYDRA_FULL_ERROR=1
-./scripts/train_scannet_mvfusion.sh
+./scripts/eval_m2f_preds.sh

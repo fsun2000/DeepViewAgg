@@ -1,0 +1,460 @@
+MMData debug() function changed, please uncomment the 3rd assert line when doing inference without M2F features!
+[2022-11-01 17:49:43,498][torch_points3d.trainer][INFO] - DEVICE : cuda
+load_m2f_masks:  False
+initialize train dataset
+temporarily hard code N-views in get_view_dependent_features()
+initialize val dataset
+temporarily hard code N-views in get_view_dependent_features()
+task:  segmentation.multimodal
+tested_model_name:  Res16UNet34
+class_name:  APIModel
+model_module:  torch_points3d.models.segmentation.multimodal.sparseconv3d
+name, cls of chosen model_cls:  APIModel <class 'torch_points3d.models.segmentation.sparseconv3d.APIModel'>
+[2022-11-01 17:50:23,592][torch_points3d.applications.modelfactory][INFO] - The config will be used to build the model
+x feature dim:  {'FEAT': 3}
+nc_in:  3
+nc_in:  32
+nc_in:  32
+nc_in:  64
+nc_in:  128
+nc_in:  256
+nc_in:  128
+nc_in:  128
+nc_in:  96
+nc_in:  96
+[2022-11-01 17:50:24,347][torch_points3d.core.schedulers.bn_schedulers][INFO] - Setting batchnorm momentum at 0.02
+task:  segmentation.multimodal
+tested_model_name:  Res16UNet34
+[2022-11-01 17:50:24,765][torch_points3d.trainer][WARNING] - The model will not be able to be used from pretrained weights without the corresponding dataset. Current properties are {'feature_dimension': 3, 'num_classes': 20}
+[2022-11-01 17:50:24,765][torch_points3d.trainer][INFO] - APIModel(
+  (backbone): SparseConv3dUnet(
+    (inner_modules): ModuleList(
+      (0): Identity()
+    )
+    (down_modules): ModuleList(
+      (0): ResNetDown(
+        (conv_in): Seq(
+          (0): Conv3d(in_channels=3, out_channels=32, kernel_size=3, stride=1, dilation=1)
+          (1): BatchNorm(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+        )
+      )
+      (1): ResNetDown(
+        (conv_in): Seq(
+          (0): Conv3d(in_channels=32, out_channels=32, kernel_size=2, stride=2, dilation=1)
+          (1): BatchNorm(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+        )
+        (blocks): Seq(
+          (0): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=32, out_channels=32, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=32, out_channels=32, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+          )
+          (1): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=32, out_channels=32, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=32, out_channels=32, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+          )
+        )
+      )
+      (2): ResNetDown(
+        (conv_in): Seq(
+          (0): Conv3d(in_channels=32, out_channels=32, kernel_size=2, stride=2, dilation=1)
+          (1): BatchNorm(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+        )
+        (blocks): Seq(
+          (0): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=32, out_channels=64, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(64, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=64, out_channels=64, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(64, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+            (downsample): Seq(
+              (0): Conv3d(in_channels=32, out_channels=64, kernel_size=1, stride=1, dilation=1)
+              (1): BatchNorm(64, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+            )
+          )
+          (1): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=64, out_channels=64, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(64, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=64, out_channels=64, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(64, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+          )
+          (2): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=64, out_channels=64, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(64, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=64, out_channels=64, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(64, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+          )
+        )
+      )
+      (3): ResNetDown(
+        (conv_in): Seq(
+          (0): Conv3d(in_channels=64, out_channels=64, kernel_size=2, stride=2, dilation=1)
+          (1): BatchNorm(64, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+        )
+        (blocks): Seq(
+          (0): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=64, out_channels=128, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+            (downsample): Seq(
+              (0): Conv3d(in_channels=64, out_channels=128, kernel_size=1, stride=1, dilation=1)
+              (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+            )
+          )
+          (1): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+          )
+          (2): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+          )
+          (3): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+          )
+        )
+      )
+      (4): ResNetDown(
+        (conv_in): Seq(
+          (0): Conv3d(in_channels=128, out_channels=128, kernel_size=2, stride=2, dilation=1)
+          (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+        )
+        (blocks): Seq(
+          (0): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=128, out_channels=256, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+            (downsample): Seq(
+              (0): Conv3d(in_channels=128, out_channels=256, kernel_size=1, stride=1, dilation=1)
+              (1): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+            )
+          )
+          (1): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+          )
+          (2): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+          )
+          (3): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+          )
+          (4): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+          )
+          (5): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+          )
+        )
+      )
+    )
+    (up_modules): ModuleList(
+      (0): ResNetUp(
+        (conv_in): Seq(
+          (0): Conv3d(in_channels=256, out_channels=256, kernel_size=2, stride=2, dilation=1)
+          (1): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+        )
+        (blocks): Seq(
+          (0): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=384, out_channels=128, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+            (downsample): Seq(
+              (0): Conv3d(in_channels=384, out_channels=128, kernel_size=1, stride=1, dilation=1)
+              (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+            )
+          )
+        )
+      )
+      (1): ResNetUp(
+        (conv_in): Seq(
+          (0): Conv3d(in_channels=128, out_channels=128, kernel_size=2, stride=2, dilation=1)
+          (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+        )
+        (blocks): Seq(
+          (0): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=192, out_channels=128, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+            (downsample): Seq(
+              (0): Conv3d(in_channels=192, out_channels=128, kernel_size=1, stride=1, dilation=1)
+              (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+            )
+          )
+        )
+      )
+      (2): ResNetUp(
+        (conv_in): Seq(
+          (0): Conv3d(in_channels=128, out_channels=128, kernel_size=2, stride=2, dilation=1)
+          (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+        )
+        (blocks): Seq(
+          (0): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=160, out_channels=96, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(96, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=96, out_channels=96, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(96, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+            (downsample): Seq(
+              (0): Conv3d(in_channels=160, out_channels=96, kernel_size=1, stride=1, dilation=1)
+              (1): BatchNorm(96, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+            )
+          )
+        )
+      )
+      (3): ResNetUp(
+        (conv_in): Seq(
+          (0): Conv3d(in_channels=96, out_channels=96, kernel_size=2, stride=2, dilation=1)
+          (1): BatchNorm(96, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+        )
+        (blocks): Seq(
+          (0): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=128, out_channels=96, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(96, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=96, out_channels=96, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(96, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+            (downsample): Seq(
+              (0): Conv3d(in_channels=128, out_channels=96, kernel_size=1, stride=1, dilation=1)
+              (1): BatchNorm(96, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+            )
+          )
+        )
+      )
+      (4): ResNetUp(
+        (conv_in): Seq(
+          (0): Conv3d(in_channels=96, out_channels=96, kernel_size=3, stride=1, dilation=1)
+          (1): BatchNorm(96, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+        )
+        (blocks): Seq(
+          (0): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=96, out_channels=96, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(96, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=96, out_channels=96, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(96, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+          )
+        )
+      )
+    )
+  )
+  (head): Sequential(
+    (0): Linear(in_features=96, out_features=20, bias=True)
+  )
+)
+[2022-11-01 17:50:24,769][torch_points3d.utils.colors][INFO] - [0;32mOptimizer: SGD (
+Parameter Group 0
+    dampening: 0.1
+    foreach: None
+    initial_lr: 0.01
+    lr: 0.01
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 0.0001
+)[0m
+[2022-11-01 17:50:24,769][torch_points3d.utils.colors][INFO] - [0;32mLearning Rate Scheduler: ExponentialLR({'gamma': 0.955}, update_scheduler_on=on_epoch)[0m
+[2022-11-01 17:50:24,769][torch_points3d.utils.colors][INFO] - [0;32mBatchNorm Scheduler: BNMomentumScheduler(base_momentum: 0.02, update_scheduler_on=on_epoch)[0m
+[2022-11-01 17:50:24,770][torch_points3d.utils.colors][INFO] - [0;32mAccumulated gradients: None[0m
+[2022-11-01 17:50:24,771][torch_points3d.trainer][INFO] - Model size = 30456052
+[2022-11-01 17:50:24,772][torch_points3d.trainer][INFO] - Dataset: ScannetDatasetMM 
+[0;95mtrain_pre_batch_collate_transform [0m= None
+[0;95mval_pre_batch_collate_transform [0m= None
+[0;95mtest_pre_batch_collate_transform [0m= None
+[0;95mpre_transform [0m= Compose([
+    SaveOriginalPosId,
+    PCAComputePointwise(num_neighbors=50, r=None, use_full_pos=False, use_cuda=False, use_faiss=False, ncells=None, nprobes=10, chunk_size=1000000),
+    EigenFeatures(norm=True, linearity=True, planarity=True, scattering=True, temperature=None),
+    RemoveAttributes(attr_names=['eigenvalues', 'eigenvectors'], strict=False),
+])
+[0;95mtest_transform [0m= Compose([
+    GridSampling3D(grid_size=0.03, quantize_coords=True, mode=last),
+    XYZFeature(axis=['x', 'y', 'z']),
+    AddFeatsByKeys(pos_x=True, pos_y=True, pos_z=True, rgb=False, linearity=False, norm=False, planarity=False, scattering=False),
+])
+[0;95mtrain_transform [0m= Compose([
+    ElasticDistortion(apply_distorsion=True, granularity=[0.2, 0.8], magnitude=[0.4, 1.6]),
+    Random3AxisRotation(apply_rotation=True, rot_x=8, rot_y=8, rot_z=180),
+    Random symmetry of axes: x=True, y=True, z=False,
+    RandomScaleAnisotropic([0.9, 1.1]),
+    GridSampling3D(grid_size=0.03, quantize_coords=True, mode=last),
+    XYZFeature(axis=['x', 'y', 'z']),
+    AddFeatsByKeys(pos_x=True, pos_y=True, pos_z=True, rgb=False, linearity=False, norm=False, planarity=False, scattering=False),
+])
+[0;95mval_transform [0m= Compose([
+    GridSampling3D(grid_size=0.03, quantize_coords=True, mode=last),
+    XYZFeature(axis=['x', 'y', 'z']),
+    AddFeatsByKeys(pos_x=True, pos_y=True, pos_z=True, rgb=False, linearity=False, norm=False, planarity=False, scattering=False),
+])
+[0;95minference_transform [0m= Compose([
+    SaveOriginalPosId,
+    PCAComputePointwise(num_neighbors=50, r=None, use_full_pos=False, use_cuda=False, use_faiss=False, ncells=None, nprobes=10, chunk_size=1000000),
+    EigenFeatures(norm=True, linearity=True, planarity=True, scattering=True, temperature=None),
+    RemoveAttributes(attr_names=['eigenvalues', 'eigenvectors'], strict=False),
+    GridSampling3D(grid_size=0.03, quantize_coords=True, mode=last),
+    XYZFeature(axis=['x', 'y', 'z']),
+    AddFeatsByKeys(pos_x=True, pos_y=True, pos_z=True, rgb=False, linearity=False, norm=False, planarity=False, scattering=False),
+])
+[0;95mpre_transform_image [0m= ComposeMultiModal([
+    LoadImages(ref_size=[320, 240], crop_size=None, crop_offsets=None, downscale=None, show_progress=False),
+    NonStaticMask(ref_size=(320, 240), proj_upscale=1, n_sample=5),
+    MapImages(key=mapping_index, verbose=False, cylinder=False, ref_size=[320, 240], proj_upscale=1, method=SplattingVisibility, use_cuda=False, kwargs={'voxel': 0.03, 'r_max': 8, 'r_min': 0.05, 'exact': True, 'camera': 'scannet'}),
+    NeighborhoodBasedMappingFeatures(k_list=[50], voxel=0.01, compute_density=True, compute_occlusion=True, use_faiss=False, use_cuda=False, ncells=None, nprobes=10, verbose=True),
+])
+[0;95mtest_transform_image [0m= ComposeMultiModal([
+    SelectMappingFromPointId(key=mapping_index),
+    ToImageData(),
+    PickImagesFromMemoryCredit(credit=7680000, use_coverage=True, k_coverage=2),
+    ToFloatImage(),
+    Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+])
+[0;95mtrain_transform_image [0m= ComposeMultiModal([
+    SelectMappingFromPointId(key=mapping_index),
+    ToImageData(),
+    PickImagesFromMemoryCredit(credit=7680000, use_coverage=True, k_coverage=2),
+    JitterMappingFeatures(sigma=0.02, clip=0.03),
+    ColorJitter(brightness=[0.4, 1.6], contrast=[0.4, 1.6], saturation=[0.30000000000000004, 1.7], hue=None),
+    RandomHorizontalFlip(p=0.5),
+    ToFloatImage(),
+    Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+])
+[0;95mval_transform_image [0m= ComposeMultiModal([
+    SelectMappingFromPointId(key=mapping_index),
+    ToImageData(),
+    PickImagesFromMemoryCredit(credit=7680000, use_coverage=True, k_coverage=2),
+    ToFloatImage(),
+    Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+])
+[0;95minference_transform_image [0m= ComposeMultiModal([
+    LoadImages(ref_size=[320, 240], crop_size=None, crop_offsets=None, downscale=None, show_progress=False),
+    NonStaticMask(ref_size=(320, 240), proj_upscale=1, n_sample=5),
+    MapImages(key=mapping_index, verbose=False, cylinder=False, ref_size=[320, 240], proj_upscale=1, method=SplattingVisibility, use_cuda=False, kwargs={'voxel': 0.03, 'r_max': 8, 'r_min': 0.05, 'exact': True, 'camera': 'scannet'}),
+    NeighborhoodBasedMappingFeatures(k_list=[50], voxel=0.01, compute_density=True, compute_occlusion=True, use_faiss=False, use_cuda=False, ncells=None, nprobes=10, verbose=True),
+    SelectMappingFromPointId(key=mapping_index),
+    ToImageData(),
+    PickImagesFromMemoryCredit(credit=7680000, use_coverage=True, k_coverage=2),
+    ToFloatImage(),
+    Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+])
+Size of [0;95mtrain_dataset [0m= 1201
+Size of [0;95mtest_dataset [0m= 0
+Size of [0;95mval_dataset [0m= 312
+[0;95mBatch size =[0m 1
+[2022-11-01 17:50:35,685][torch_points3d.datasets.base_dataset][INFO] - Available stage selection datasets: [0;95m ['val'] [0m
+[2022-11-01 17:50:35,685][torch_points3d.datasets.base_dataset][INFO] - The models will be selected using the metrics on following dataset: [0;95m val [0m
+[2022-11-01 17:50:38,279][torch_points3d.trainer][INFO] - EPOCH 1 / 100
+  0%|          | 0/1201 [00:00<?, ?it/s]

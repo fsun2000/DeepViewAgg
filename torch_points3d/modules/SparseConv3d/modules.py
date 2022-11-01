@@ -123,6 +123,8 @@ class ResNetDown(torch.nn.Module):
         # Compute the number of channels for the ResNetDown modules
         nc_in, nc_stride_out, nc_block_in, nc_out = self._parse_conv_nn(
             down_conv_nn, stride, N)
+        
+        print("nc_in: ", nc_in, flush=True)
 
         # Recover the convolution module
         conv = getattr(snn, self.CONVOLUTION)

@@ -40,6 +40,7 @@ def instantiate_model(config, dataset) -> BaseModel:
     model_cls = None
     for name, cls in modellib.__dict__.items():
         if name.lower() == class_name.lower():
+            print("name, cls of chosen model_cls: ", name, cls)
             model_cls = cls
 
     if model_cls is None:

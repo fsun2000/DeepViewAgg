@@ -87,6 +87,8 @@ class ModelFactory:
         constants = {
             "FEAT": max(num_features, 0),
         }
+        
+        print("x feature dim: ", constants)
 
         # user defined contants to subsitute
         if "define_constants" in model_config.keys():
