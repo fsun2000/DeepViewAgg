@@ -225,6 +225,13 @@ class SparseConv3dUnet(BaseSparseConv3d):
         """
         self._set_input(data)
         data = self.input
+        
+        print("SparseConv3dUnet input data: ", data, flush=True)
+        
+        print("self.down_modules: ", self.down_modules, flush=True)
+        
+        raise ValueError
+        
         stack_down = []
         for i in range(len(self.down_modules) - 1):
             data = self.down_modules[i](data)
