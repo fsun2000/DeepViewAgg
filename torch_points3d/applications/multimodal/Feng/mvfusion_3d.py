@@ -1,34 +1,32 @@
-import logging
-import torch.nn.functional as F
-import torch.nn as nn
-
-from torch_points3d.models.base_model import BaseModel
-from torch_points3d.datasets.segmentation import IGNORE_LABEL
-from torch_points3d.applications.sparseconv3d import SparseConv3d
-import torch_points3d.modules.SparseConv3d as sp3d
-from torch_points3d.metrics.lovasz_loss import lovasz_softmax
-
-
-log = logging.getLogger(__name__)
-
 import os
-import sys
+import copy
+import importlib
+from abc import ABC
 from omegaconf import DictConfig, OmegaConf
-import logging
-import torch
-from torch_geometric.data import Batch
+from omegaconf.listconfig import ListConfig
 
+import torch
+from torch import nn
+import torch.nn.functional as F
+from torch_points3d.datasets.segmentation import IGNORE_LABEL
+from torch_points3d.metrics.lovasz_loss import lovasz_softmax
+from torch_geometric.data import Batch
 from torch_points3d.applications.modelfactory import ModelFactory
 import torch_points3d.modules.SparseConv3d as sp3d
-# from torch_points3d.core.base_conv.message_passing import *
 from torch_points3d.modules.SparseConv3d.modules import *
-# from torch_points3d.core.base_conv.partial_dense import *
-from torch_points3d.models.base_architectures.unet import \
-    UnwrappedUnetBasedModel
 from torch_points3d.core.common_modules.base_modules import MLP
+from torch_points3d.core.common_modules.base_modules import Identity
+from torch_points3d.datasets.base_dataset import BaseDataset
+from torch_points3d.core.multimodal.data import MMData, MODALITY_NAMES
+from torch_points3d.models.base_model import BaseModel
+from torch_points3d.modules.multimodal.modules import MultimodalBlockDown, \
+    MVFusionUnimodalBranch, IdentityBranch
+from torch_points3d.utils.config import is_list, get_from_kwargs, \
+    fetch_arguments_from_list, flatten_compact_options, fetch_modalities, \
+    getattr_recursive
 
 from .utils import extract_output_nc
-
+import logging
 
 CUR_FILE = os.path.realpath(__file__)
 DIR_PATH = os.path.dirname(os.path.realpath(__file__))
@@ -36,27 +34,9 @@ PATH_TO_CONFIG = os.path.join(DIR_PATH, "conf/sparseconv3d")
 
 log = logging.getLogger(__name__)
 
-import copy
-import importlib
-from abc import ABC
-from torch import nn
-from torch_points3d.core.common_modules.base_modules import Identity
-from torch_points3d.datasets.base_dataset import BaseDataset
-from torch_points3d.core.multimodal.data import MMData, MODALITY_NAMES
-from torch_points3d.models.base_model import BaseModel
-from torch_points3d.modules.multimodal.modules import MultimodalBlockDown, \
-    UnimodalBranch, IdentityBranch
-from torch_points3d.utils.config import is_list, get_from_kwargs, \
-    fetch_arguments_from_list, flatten_compact_options, fetch_modalities, \
-    getattr_recursive
-from omegaconf.listconfig import ListConfig
-import logging
-
-log = logging.getLogger(__name__)
-
 SPECIAL_NAMES = ["radius", "max_num_neighbors", "block_names"]
 
-
+### Unchanged by Feng
 class BaseFactory:
     def __init__(self, module_name_down, module_name_up, modules_lib):
         self.module_name_down = module_name_down
@@ -77,7 +57,7 @@ def get_factory(model_name, modules_lib) -> BaseFactory:
         factory_module_cls = BaseFactory
     return factory_module_cls
 
-
+### Unchanged by Feng
 class ModalityFactory:
     """Factory for building modality-specific convolutional modules and
     merge modules.
@@ -140,7 +120,7 @@ class ModalityFactory:
 
 
 # ----------------------------- UNET BASE ---------------------------- #
-
+### Unchanged by Feng
 class UnetBasedModel(BaseModel, ABC):
     """Create a Unet-based generator"""
 
@@ -315,6 +295,7 @@ class UnetBasedModel(BaseModel, ABC):
         return args_up, args_down
 
 
+### Unchanged by Feng
 class UnetSkipConnectionBlock(nn.Module, ABC):
     """Defines the Unet submodule with skip connection.
     X -------------------identity----------------------
@@ -373,8 +354,8 @@ class UnetSkipConnectionBlock(nn.Module, ABC):
 
 
 # ------------------------ UNWRAPPED UNET BASE ----------------------- #
-
-class UnwrappedUnetBasedModel(BaseModel, ABC):
+### Adapted by Feng
+class MVFusionUnwrappedUnetBasedModel(BaseModel, ABC):
     """Create a Unet unwrapped generator. Supports multimodal encoding.
     """
 
@@ -422,7 +403,7 @@ class UnwrappedUnetBasedModel(BaseModel, ABC):
                 *args
         """
         opt = copy.deepcopy(opt)
-        super(UnwrappedUnetBasedModel, self).__init__(opt)
+        super(MVFusionUnwrappedUnetBasedModel, self).__init__(opt)
         self._spatial_ops_dict = {
             "neighbour_finder": [], "sampler": [], "upsample_op": []}
 
@@ -577,7 +558,7 @@ class UnwrappedUnetBasedModel(BaseModel, ABC):
 
                     # Group modules into a UnimodalBranch and update the
                     # branches at the proper branching point
-                    branches[idx][m] = UnimodalBranch(
+                    branches[idx][m] = MVFusionUnimodalBranch(
                         conv, atomic_pool, view_pool, fusion, drop_3d=drop_3d,
                         drop_mod=drop_mod, keep_last_view=keep_last_view,
                         checkpointing=checkpointing, out_channels=out_channels,
@@ -716,7 +697,7 @@ class UnwrappedUnetBasedModel(BaseModel, ABC):
         return data
 
 
-def SparseConv3d(
+def MVFusionSparseConv3d(
     architecture: str = None,
     input_nc: int = None,
     num_layers: int = None,
@@ -759,25 +740,26 @@ def SparseConv3d(
     else:
         sp3d.nn.set_backend(backend)
     
-    factory = SparseConv3dFactory(
+    factory = MVFusionSparseConv3dFactory(
         architecture=architecture, num_layers=num_layers, input_nc=input_nc,
         config=config, **kwargs
     )
     return factory.build()
 
 
-class SparseConv3dFactory(ModelFactory):
+class MVFusionSparseConv3dFactory(ModelFactory):
     def _build_unet(self):
         if self._config:
             model_config = self._config
         else:
+            print("PATH_TO_CONFIG called!")
             path_to_model = os.path.join(PATH_TO_CONFIG, "unet_{}.yaml".format(
                 self.num_layers))
             model_config = OmegaConf.load(path_to_model)
         ModelFactory.resolve_model(model_config, self.num_features,
                                    self._kwargs)
         modules_lib = sys.modules[__name__]
-        return SparseConv3dUnet(model_config, None, None, modules_lib,
+        return MVFusionSparseConv3dUnet(model_config, None, None, modules_lib,
                                 **self.kwargs)
 
     def _build_encoder(self):
@@ -792,11 +774,11 @@ class SparseConv3dFactory(ModelFactory):
         ModelFactory.resolve_model(model_config, self.num_features,
                                    self._kwargs)
         modules_lib = sys.modules[__name__]
-        return SparseConv3dEncoder(model_config, None, None, modules_lib,
+        return MVFusionSparseConv3dEncoder(model_config, None, None, modules_lib,
                                    **self.kwargs)
 
 
-class BaseSparseConv3d(UnwrappedUnetBasedModel):
+class MVFusionBaseSparseConv3d(MVFusionUnwrappedUnetBasedModel):
     CONV_TYPE = "sparse"
 
     def __init__(self, model_config, model_type, dataset, modules, *args,
@@ -857,7 +839,7 @@ class BaseSparseConv3d(UnwrappedUnetBasedModel):
             self.xyz = data.coords
             
             
-class SparseConv3dEncoder(BaseSparseConv3d):
+class MVFusionSparseConv3dEncoder(MVFusionBaseSparseConv3d):
     def forward(self, data, *args, **kwargs):
         """
         Parameters:
@@ -873,7 +855,7 @@ class SparseConv3dEncoder(BaseSparseConv3d):
         data:
             - x [1, output_nc]
         """
-        print("_set_input call in SparseConv3dEncoder forward", flush=True)
+        print("_set_input call in MVFusionSparseConv3dEncoder forward", flush=True)
         raise NotImplementedError
         
         self._set_input(data)
@@ -895,7 +877,7 @@ class SparseConv3dEncoder(BaseSparseConv3d):
         return out
 
 
-class SparseConv3dUnet(BaseSparseConv3d):
+class MVFusionSparseConv3dUnet(MVFusionBaseSparseConv3d):
     def forward(self, data, *args, **kwargs):
         """Run forward pass.
         Input --- D1 -- D2 -- D3 -- U1 -- U2 -- output
@@ -920,7 +902,7 @@ class SparseConv3dUnet(BaseSparseConv3d):
         self._set_input(data)
         data = self.input
         
-        print("SparseConv3dUnet input data: ", data, flush=True)
+        print("MVFusionSparseConv3dUnet input data: ", data, flush=True)
         
         print("self.down_modules: ", self.down_modules, flush=True)
         
@@ -972,13 +954,13 @@ class SparseConv3dUnet(BaseSparseConv3d):
 
     
 
-class APIModel(BaseModel):
+class MVFusionAPIModel(BaseModel):
     def __init__(self, option, model_type, dataset, modules):
-        # call the initialization method of UnetBasedModel
+        # call the initialization method of MVFusionUnetBasedModel
         super().__init__(option)
         self._weight_classes = dataset.weight_classes
         
-        self.backbone = SparseConv3d(
+        self.backbone = MVFusionSparseConv3d(
             "unet", dataset.feature_dimension, config=option.backbone,
             backend=option.get("backend", "minkowski"))
         self._modalities = self.backbone._modalities
