@@ -182,6 +182,8 @@ class SparseConv3dEncoder(BaseSparseConv3d):
             - x [1, output_nc]
         """
         print("_set_input call in SparseConv3dEncoder forward", flush=True)
+        raise NotImplementedError
+        
         self._set_input(data)
         data = self.input
         for i in range(len(self.down_modules)):

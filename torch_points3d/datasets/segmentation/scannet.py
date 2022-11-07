@@ -1060,6 +1060,9 @@ class Scannet(InMemoryDataset):
                     for id, scan_name in enumerate(scan_names)
                 ]
                 if self.use_multiprocessing:
+                    print("Feng: multiprocessing while pre-processing dataset is temporarily disabled. I've had issues where one worker stops but does not give any error code. Please set num_workers to 1.", flush=True)
+                    raise NotImplementedError
+                    
                     with multiprocessing.get_context("spawn").Pool(processes=self.process_workers) as pool:
                         datas = pool.starmap(Scannet.process_func, args)
                 # Save each data item instead of first accumulating every item

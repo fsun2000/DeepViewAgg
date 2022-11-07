@@ -297,6 +297,7 @@ class ScannetMM(Scannet):
                     randomhorizontalflip = transform
                     continue
                 else:
+                    print("transform: ", transform)
                     data, images = transform(data, images)
         
             
@@ -394,8 +395,8 @@ class ScannetMM(Scannet):
             m2f_feats = torch.randint(low=0, high=self.num_classes, size=(data.modalities['image'].num_points, N_VIEWS, 1))
             m2f_feats[pixel_validity] = mapped_m2f_feats[view_feat_idx].long()
 
-            # Save mapping + m2f features in x
-            data.data.x = torch.cat((view_feats, m2f_feats), dim=-1)
+            # Save mapping + m2f features
+            data.data.mvfusion_input = torch.cat((view_feats, m2f_feats), dim=-1)
         # Only cull unseen points and/or less visible ones
         else:
             data = MMData(data, image=images)

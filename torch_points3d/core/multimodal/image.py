@@ -217,13 +217,15 @@ class SameSettingImageData:
         + _pinhole_keys + _fisheye_keys
     _map_key = 'mappings'
     _x_key = 'x'
+    _mvfusion_input_key = 'mvfusion_input'
     _m2f_pred_mask_key = 'm2f_pred_mask'
     _mask_key = 'mask'
     _visi_key = 'visibility'
     _shared_keys = [
         'ref_size', 'proj_upscale', 'downscale', 'crop_size', _mask_key,
         _visi_key]
-    _own_keys = _numpy_keys + _torch_keys + [_map_key, _x_key, _m2f_pred_mask_key]
+    _own_keys = _numpy_keys + _torch_keys + [_map_key, _x_key, _m2f_pred_mask_key,
+                                             _mvfusion_input_key]
     _keys = _shared_keys + _own_keys
 
     def __init__(
@@ -233,7 +235,7 @@ class SameSettingImageData:
             x=None, mappings=None, mask=None, visibility=None, fx=None,
             fy=None, mx=None, my=None, xi=None, k1=None, k2=None, gamma1=None,
             gamma2=None, u0=None, v0=None, extrinsic=None,
-            m2f_pred_mask=None, m2f_pred_mask_path=None, **kwargs):
+            m2f_pred_mask=None, m2f_pred_mask_path=None, mvfusion_input=None, **kwargs):
 
         # Initialize the private internal state attributes
         self._ref_size = None
@@ -245,7 +247,7 @@ class SameSettingImageData:
         self._x = None
         self._mappings = None
         self._mask = None
-
+        
         # Initialize from parameters
         self.path = np.array(path)
         self.pos = pos.double()
@@ -278,6 +280,7 @@ class SameSettingImageData:
         # Attribute for storing Mask2Former predicted masks
         self.m2f_pred_mask = m2f_pred_mask
         self.m2f_pred_mask_path = m2f_pred_mask_path
+        self.mvfusion_input = mvfusion_input
         
         # self.debug()
 
@@ -799,7 +802,7 @@ class SameSettingImageData:
         scale = max(scale_x, scale_y)
         self._downscale = self.downscale * scale
         self._x = x.to(self.device)
-
+        
     @property
     def mappings(self):
         """ImageMapping data mapping 3D points to the images.
@@ -1133,7 +1136,7 @@ class SameSettingImageData:
         assert idx.unique().numel() == idx.shape[0], \
             f"Index must not contain duplicates."
         idx_numpy = np.asarray(idx.cpu())
-
+        
         return self.__class__(
             path=self.path[idx_numpy],
             pos=self.pos[idx],
@@ -1161,7 +1164,9 @@ class SameSettingImageData:
             mask=self.mask.clone() if self.mask is not None else None,
             visibility=copy.deepcopy(self.visibility) if hasattr(self, 'visibility') else None,
             m2f_pred_mask=self.m2f_pred_mask[idx] if self.m2f_pred_mask is not None else None,
-            m2f_pred_mask_path=self.m2f_pred_mask_path[idx_numpy] if self.m2f_pred_mask_path is not None else None)
+            m2f_pred_mask_path=self.m2f_pred_mask_path[idx_numpy] if self.m2f_pred_mask_path is not None else None,
+            mvfusion_input=self.mvfusion_input[idx] if self.mvfusion_input is not None else None
+        )
 
     def __iter__(self):
         """Iteration mechanism.
@@ -1186,6 +1191,8 @@ class SameSettingImageData:
             else None
         out._mappings = self.mappings.clone() if self.mappings is not None \
             else None
+        out.mvfusion_input = self.mvfusion_input.clone() if \
+            self.mvfusion_input is not None else None
         return out
 
     def to(self, device):
@@ -1210,7 +1217,8 @@ class SameSettingImageData:
             crop_size=self.crop_size, crop_offsets=self.crop_offsets.to(device),
             visibility=self.visibility,
             m2f_pred_mask=self.m2f_pred_mask.to(device) if self.m2f_pred_mask else None,
-            m2f_pred_mask_path=self.m2f_pred_mask_path
+            m2f_pred_mask_path=self.m2f_pred_mask_path,
+            mvfusion_input=self.mvfusion_input.to(device) if self.mvfusion_input else None
             )
         out._x = self.x.to(device) if self.x is not None else None
         out._mappings = self.mappings.to(device) if self.mappings is not None \
@@ -1438,8 +1446,14 @@ class SameSettingImageBatch(SameSettingImageData):
         else:
             batch_dict[SameSettingImageData._m2f_pred_mask_key] = torch.cat(
                 batch_dict[SameSettingImageData._m2f_pred_mask_key])
-        
-        
+
+        # Concatenate MVFusion inputs, unless one of the items does not exist
+        if any(img is None for img in batch_dict[SameSettingImageData._mvfusion_input_key]):
+            batch_dict[SameSettingImageData._mvfusion_input_key] = None
+        else:
+            batch_dict[SameSettingImageData._mvfusion_input_key] = torch.cat(
+                batch_dict[SameSettingImageData._mvfusion_input_key])
+            
         # Batch mappings, unless one of the items does not have mappings
         if any(mpg is None
                for mpg in batch_dict[SameSettingImageData._map_key]):
@@ -1494,6 +1508,10 @@ class ImageData:
     @property
     def x(self):
         return [im.x for im in self]
+    
+    @property
+    def mvfusion_input(self):
+        return [im.mvfusion_input for im in self]
     
     @property
     def m2f_pred_mask(self):
