@@ -1216,9 +1216,9 @@ class SameSettingImageData:
             downscale=self.downscale, rollings=self.rollings.to(device),
             crop_size=self.crop_size, crop_offsets=self.crop_offsets.to(device),
             visibility=self.visibility,
-            m2f_pred_mask=self.m2f_pred_mask.to(device) if self.m2f_pred_mask else None,
+            m2f_pred_mask=self.m2f_pred_mask.to(device) if self.m2f_pred_mask is not None else None,
             m2f_pred_mask_path=self.m2f_pred_mask_path,
-            mvfusion_input=self.mvfusion_input.to(device) if self.mvfusion_input else None
+            mvfusion_input=self.mvfusion_input.to(device) if self.mvfusion_input is not None else None
             )
         out._x = self.x.to(device) if self.x is not None else None
         out._mappings = self.mappings.to(device) if self.mappings is not None \

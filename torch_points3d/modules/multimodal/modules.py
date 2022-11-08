@@ -19,6 +19,10 @@ try:
 except:
     ts = None
 
+### Feng
+import sys
+sys.path.append("/home/fsun/thesis/modeling")
+from compare_methods import DVA_cls_5_fusion_7
 
 class MultimodalBlockDown(nn.Module, ABC):
     """Multimodal block with downsampling that looks like:
@@ -63,8 +67,9 @@ class MultimodalBlockDown(nn.Module, ABC):
                 f"Invalid kwarg modality '{m}', expected one of " \
                 f"{MODALITY_NAMES}."
             assert isinstance(kwargs[m], (UnimodalBranch, IdentityBranch)) or \
-                   isinstance(kwargs[m], (UnimodalBranchOnlyAtomicPool, IdentityBranch)), \
-                f"Expected a UnimodalBranch or UnimodalBranchOnlyAtomicPool module for '{m}' modality " \
+                   isinstance(kwargs[m], (UnimodalBranchOnlyAtomicPool, IdentityBranch)) or \
+                   isinstance(kwargs[m], (MVFusionUnimodalBranch, IdentityBranch)), \
+                f"Expected a UnimodalBranch or UnimodalBranchOnlyAtomicPool or MVFusionUnimodalBranch module for '{m}' modality " \
                 f"but got {type(kwargs[m])} instead."
             setattr(self, m, kwargs[m])
             self._modalities.append(m)
@@ -825,7 +830,7 @@ class UnimodalBranch(nn.Module, ABC):
         return "\n".join([f'{a}={getattr(self, a)}' for a in repr_attr])
 
 
-class UnimodalBranchMVFusion(nn.Module, ABC):
+class MVFusionUnimodalBranch(nn.Module, ABC):
     """Unimodal block with downsampling that looks like:
 
     IN 3D   ------------------------------------           --  OUT 3D
@@ -842,11 +847,13 @@ class UnimodalBranchMVFusion(nn.Module, ABC):
     def __init__(
             self, conv, atomic_pool, view_pool, fusion, drop_3d=0, drop_mod=0,
             hard_drop=False, keep_last_view=False, checkpointing='',
-            out_channels=None, interpolate=False):
-        super(UnimodalBranch, self).__init__()
+            out_channels=None, interpolate=False, transformer_config=None):
+        super(MVFusionUnimodalBranch, self).__init__()
         
-        self.conv = conv
-        self.atomic_pool = atomic_pool
+        self.transformerfusion = DVA_cls_5_fusion_7(transformer_config)
+        self.n_classes = transformer_config['n_classes']
+#         self.conv = conv
+#         self.atomic_pool = atomic_pool
         self.view_pool = view_pool
         self.fusion = fusion
         drop_cls = ModalityDropout if hard_drop else nn.Dropout
@@ -974,21 +981,40 @@ class UnimodalBranchMVFusion(nn.Module, ABC):
 
             return mm_data_dict
 
-        # Forward pass with `self.conv`
-        mod_data = self.forward_conv(mod_data)
+        print("mm_data_dict before transformerfusion input: ", mm_data_dict)
+        x_mod = self.forward_transformerfusion(mm_data_dict)
+        
+#         # Forward pass with `self.conv`
+#         print("mod_data: ", mod_data)   # ImageBatch(num_settings=1, num_views=3, num_points=11819, device=cuda:0)
+#         mod_data = self.forward_conv(mod_data)
+#         print("mod_data = self.forward_conv(mod_data)")
+#         print("mod_data: ", mod_data)
 
-        # Extract mapped features from the feature maps of each input
-        # modality setting
-        x_mod = mod_data.get_mapped_features(interpolate=self.interpolate)
+#         # Extract mapped features from the feature maps of each input
+#         # modality setting
+#         x_mod = mod_data.get_mapped_features(interpolate=self.interpolate)
+#         print("x_mod = mod_data.get_mapped_features(interpolate=self.interpolate)")
+#         print("x_mod[0]: ", x_mod[0], x_mod[0].shape)
 
+        ### x_mod before and after atomic pool is the same if there is only 1 setting
+        """
         # Atomic pooling of the modality features on each separate
         # setting
         x_mod = self.forward_atomic_pool(x_3d, x_mod, mod_data.atomic_csr_indexing)
+        print("x_mod = self.forward_atomic_pool(x_3d, x_mod, mod_data.atomic_csr_indexing)")
+        print("x_mod: ", x_mod)
+        """
+        
+#         # View pooling of the modality features
+#         x_mod, mod_data, csr_idx = self.forward_view_pool(x_3d, x_mod, mod_data)
+#         print("x_mod, mod_data, csr_idx = self.forward_view_pool(x_3d, x_mod, mod_data)")
+#         print("x_mod: ", x_mod, x_mod.shape)
+#         print("mod_data: ", mod_data)
+#         print("csr_idx: ", csr_idx)
 
-        # View pooling of the modality features
-        x_mod, mod_data, csr_idx = self.forward_view_pool(x_3d, x_mod, mod_data)
-
+        
         # Compute the boolean mask of seen points
+        csr_idx = mod_data[0].view_csr_indexing
         x_seen = csr_idx[1:] > csr_idx[:-1]
 
         # Dropout 3D or modality features
@@ -1021,6 +1047,36 @@ class UnimodalBranchMVFusion(nn.Module, ABC):
 
         return mm_data_dict
 
+    def forward_transformerfusion(self, mm_data_dict, reset=True):
+        ### multi-view mapping & M2F feature fusion using Transformer 
+        
+        # Features from only seen point-image matches are included in 'x'
+        viewing_feats = mm_data_dict['transformer_input'][:, :, :-1]
+        m2f_feats = mm_data_dict['transformer_input'][:, :, -1]
+        
+        # One hot features of M2F preds
+        m2f_feats = torch.nn.functional.one_hot(m2f_feats.squeeze().long(), self.n_classes)
+    
+        ### Multi-view fusion of M2F and viewing conditions using Transformer
+        # TODO: remove assumption that pixel validity is the 1st feature
+        invalid_pixel_mask = (viewing_feats[:, :, 0] == 0)        
+                
+        if 'c' in self.checkpointing:
+            fusion_input = {
+                'invalid_pixels_mask': invalid_pixel_mask,
+                'viewing_features': viewing_feats.requires_grad_(),
+                'one_hot_mask_labels': m2f_feats
+            }
+            x_mod = checkpoint(self.transformerfusion, fusion_input)
+        else:
+            fusion_input = {
+                'invalid_pixels_mask': invalid_pixel_mask,
+                'viewing_features': viewing_feats,
+                'one_hot_mask_labels': m2f_feats
+            }
+            x_mod = self.transformerfusion(fusion_input)
+        return x_mod
+    
     def forward_conv(self, mod_data, reset=True):
         """
         Conv on the modality data. The modality data holder
@@ -1060,27 +1116,27 @@ class UnimodalBranchMVFusion(nn.Module, ABC):
 
         return mod_data
 
-    def forward_atomic_pool(self, x_3d, x_mod, csr_idx):
-        """Atomic pooling of the modality features on each separate
-        setting.
+#     def forward_atomic_pool(self, x_3d, x_mod, csr_idx):
+#         """Atomic pooling of the modality features on each separate
+#         setting.
 
-        :param x_3d:
-        :param x_mod:
-        :param csr_idx:
-        :return:
-        """
-        # If the modality carries multi-setting data, recursive scheme
-        if isinstance(x_mod, list):
-            x_mod = [
-                self.forward_atomic_pool(x_3d, x, i)
-                for x, i in zip(x_mod, csr_idx)]
-            return x_mod
+#         :param x_3d:
+#         :param x_mod:
+#         :param csr_idx:
+#         :return:
+#         """
+#         # If the modality carries multi-setting data, recursive scheme
+#         if isinstance(x_mod, list):
+#             x_mod = [
+#                 self.forward_atomic_pool(x_3d, x, i)
+#                 for x, i in zip(x_mod, csr_idx)]
+#             return x_mod
 
-        if 'a' in self.checkpointing:
-            x_mod = checkpoint(self.atomic_pool, x_3d, x_mod, None, csr_idx)
-        else:
-            x_mod = self.atomic_pool(x_3d, x_mod, None, csr_idx)
-        return x_mod
+#         if 'a' in self.checkpointing:
+#             x_mod = checkpoint(self.atomic_pool, x_3d, x_mod, None, csr_idx)
+#         else:
+#             x_mod = self.atomic_pool(x_3d, x_mod, None, csr_idx)
+#         return x_mod
 
     def forward_view_pool(self, x_3d, x_mod, mod_data):
         """View pooling of the modality features.

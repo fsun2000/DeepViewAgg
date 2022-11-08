@@ -353,13 +353,13 @@ class ScannetMM(Scannet):
             csr_idx = data.modalities['image'][0].view_csr_indexing
             n_seen = csr_idx[1:] - csr_idx[:-1]
             
-            # cull least visible points
-            MAX_N_POINTS = 30000
-            if data.modalities['image'].num_points > MAX_N_POINTS:
-                sort_idx = torch.argsort(n_seen, descending=True)
-                data = data[sort_idx[:MAX_N_POINTS]]
-                csr_idx = data.modalities['image'][0].view_csr_indexing
-                n_seen = csr_idx[1:] - csr_idx[:-1]
+#             # cull least visible points
+#             MAX_N_POINTS = 100000000
+#             if data.modalities['image'].num_points > MAX_N_POINTS:
+#                 sort_idx = torch.argsort(n_seen, descending=True)
+#                 data = data[sort_idx[:MAX_N_POINTS]]
+#                 csr_idx = data.modalities['image'][0].view_csr_indexing
+#                 n_seen = csr_idx[1:] - csr_idx[:-1]
 
             
             N_VIEWS = 9

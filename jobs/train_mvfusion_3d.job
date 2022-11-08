@@ -5,7 +5,7 @@
 #SBATCH --job-name=fusion3d
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=4
-#SBATCH --time=00:00:05
+#SBATCH --time=00:10:00
 #SBATCH --mem=64000M
 #SBATCH --output=job_logs/mvfusion_3d/debug.out
 
