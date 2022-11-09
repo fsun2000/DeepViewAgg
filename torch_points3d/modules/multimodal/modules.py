@@ -980,15 +980,8 @@ class MVFusionUnimodalBranch(nn.Module, ABC):
             mm_data_dict['modalities'][modality] = mod_data
 
             return mm_data_dict
-
-        
-
-        
-        # Compute the boolean mask of seen points
-        csr_idx = mod_data[0].view_csr_indexing
-        x_seen = csr_idx[1:] > csr_idx[:-1]
-        
-        x_mod = self.forward_transformerfusion(mm_data_dict, x_seen)
+ 
+        x_mod = self.forward_transformerfusion(mm_data_dict)
         
 #         # Forward pass with `self.conv`
 #         print("mod_data: ", mod_data)   # ImageBatch(num_settings=1, num_views=3, num_points=11819, device=cuda:0)
@@ -1030,6 +1023,11 @@ class MVFusionUnimodalBranch(nn.Module, ABC):
         if self._out_channels is None:
             self._out_channels = x_3d.shape[1]
 
+        # Boolean mask of seen points (including thoes that were not used as
+        # input to the Transformer)
+        csr_idx = mod_data[0].view_csr_indexing
+        x_seen = csr_idx[1:] > csr_idx[:-1]       
+            
         # Update the multimodal data dictionary
         # TODO: does the modality-driven sequence of updates on x_3d
         #  and x_seen affect the modality behavior ? Should the shared
@@ -1048,7 +1046,7 @@ class MVFusionUnimodalBranch(nn.Module, ABC):
 
         return mm_data_dict
 
-    def forward_transformerfusion(self, mm_data_dict, x_seen, reset=True):
+    def forward_transformerfusion(self, mm_data_dict, reset=True):
         ### multi-view mapping & M2F feature fusion using Transformer 
         
         # Features from only seen point-image matches are included in 'x'
@@ -1080,7 +1078,7 @@ class MVFusionUnimodalBranch(nn.Module, ABC):
         x_mod = torch.zeros((mm_data_dict['modalities']['image'].num_points, 
                              seen_x_mod.shape[-1]), device=seen_x_mod.device)
             
-        x_mod[x_seen] = seen_x_mod
+        x_mod[mm_data_dict['transformer_x_seen']] = seen_x_mod
         return x_mod
     
 #     def forward_conv(self, mod_data, reset=True):

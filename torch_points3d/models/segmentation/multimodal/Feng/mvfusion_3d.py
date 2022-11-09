@@ -797,6 +797,8 @@ class MVFusionBaseSparseConv3d(MVFusionUnwrappedUnetBasedModel):
             self._output_nc = kwargs["output_nc"]
             self.mlp = MLP([default_output_nc, self.output_nc],
                            activation=torch.nn.ReLU(), bias=False)
+            
+        self.MAX_SEEN_POINTS = model_config.transformer.max_n_points
 
     @property
     def has_mlp_head(self):
@@ -828,11 +830,57 @@ class MVFusionBaseSparseConv3d(MVFusionUnwrappedUnetBasedModel):
             information.
         """
         if self.is_multimodal:
+            print("3d points shape: ", data.x.shape)
+            print("transformer input: ", data.data.mvfusion_input.shape)
+            
+            if data.data.mvfusion_input.shape[0] > self.MAX_SEEN_POINTS:
+                # 1. get seen points
+                # 2. remove them from mvfusion_input
+                # 3. remove the removed points from seen points
+                csr_idx = data.modalities['image'][0].view_csr_indexing
+                seen_mask = csr_idx[1:] > csr_idx[:-1]
+                
+                print("csr_idx: ", csr_idx)
+                print("seen_mask: ", seen_mask, seen_mask.shape, seen_mask.sum())
+                                
+                keep_idx = torch.round(
+                    torch.linspace(0, seen_mask.sum()-1, self.MAX_SEEN_POINTS)).long()
+                print("keep_idx: ", keep_idx, keep_idx.shape)
+                
+#                 temp = seen_mask.clone()
+#                 seen_mask = False
+#                 seen_mask[temp][keep_idx] = True
+                
+                keep_idx_mask = torch.zeros(seen_mask.sum(), dtype=torch.bool, device=keep_idx.device)
+                keep_idx_mask[keep_idx] = True
+                print("keep_idx_mask: ", keep_idx_mask, keep_idx_mask.shape, keep_idx_mask.sum())
+                
+                seen_mask[seen_mask.clone()] = keep_idx_mask
+                
+    
+#                 print("seen_mask[seen_mask]: ", seen_mask[seen_mask], seen_mask[seen_mask].shape, seen_mask[seen_mask].sum())
+#                 seen_mask[seen_mask] = False
+#                 print("seen_mask[seen_mask]: ", seen_mask[seen_mask], seen_mask[seen_mask].shape, seen_mask[seen_mask].sum())
+#                 seen_mask[seen_mask][keep_idx] = True
+                
+#                 print("seen_mask[seen_mask][keep_idx]: ", seen_mask[seen_mask][keep_idx], seen_mask[seen_mask][keep_idx].shape, seen_mask[seen_mask][keep_idx].sum())
+               
+                
+                
+                print("processed seen_mask: ", seen_mask, seen_mask.shape, seen_mask.sum())
+                                
+                data.data.mvfusion_input = data.data.mvfusion_input[keep_idx_mask]
+                print("processed transformer_input: ", data.data.mvfusion_input.shape)
+            else:
+                csr_idx = data.modalities['image'][0].view_csr_indexing
+                seen_mask = csr_idx[1:] > csr_idx[:-1]
+            
             self.input = {
                 'x_3d': sp3d.nn.SparseTensor(data.x, data.coords, data.batch, self.device),
                 'x_seen': None,
                 'modalities': data.to(self.device).modalities,
-                'transformer_input': data.data.mvfusion_input.to(self.device)
+                'transformer_input': data.data.mvfusion_input.to(self.device),
+                'transformer_x_seen': seen_mask.to(self.device)
             }
         else:
             self.input = sp3d.nn.SparseTensor(data.x, data.coords, data.batch, self.device)
