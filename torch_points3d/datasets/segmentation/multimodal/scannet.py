@@ -297,7 +297,6 @@ class ScannetMM(Scannet):
                     randomhorizontalflip = transform
                     continue
                 else:
-                    print("transform: ", transform)
                     data, images = transform(data, images)
         
             
@@ -343,15 +342,15 @@ class ScannetMM(Scannet):
             data = MMData(data, image=images)
             del images
 
-            # Take subset of only seen points
-            # NOTE: each point is contained multiple times if it has multiple correspondences
-            csr_idx = data.modalities['image'][0].view_csr_indexing
-            dense_idx_list = torch.arange(data.modalities['image'].num_points).repeat_interleave(csr_idx[1:] - csr_idx[:-1])
-            # take subset of only seen points without re-indexing the same point
-            data = data[dense_idx_list.unique()]
+#             # Take subset of only seen points
+#             # NOTE: each point is contained multiple times if it has multiple correspondences
+#             csr_idx = data.modalities['image'][0].view_csr_indexing
+#             dense_idx_list = torch.arange(data.modalities['image'].num_points).repeat_interleave(csr_idx[1:] - csr_idx[:-1])
+#             # take subset of only seen points without re-indexing the same point
+#             data = data[dense_idx_list.unique()]
             
-            csr_idx = data.modalities['image'][0].view_csr_indexing
-            n_seen = csr_idx[1:] - csr_idx[:-1]
+#             csr_idx = data.modalities['image'][0].view_csr_indexing
+#             n_seen = csr_idx[1:] - csr_idx[:-1]
             
 #             # cull least visible points
 #             MAX_N_POINTS = 100000000
@@ -361,26 +360,34 @@ class ScannetMM(Scannet):
 #                 csr_idx = data.modalities['image'][0].view_csr_indexing
 #                 n_seen = csr_idx[1:] - csr_idx[:-1]
 
+            csr_idx = data.modalities['image'][0].view_csr_indexing
+            n_seen = csr_idx[1:] - csr_idx[:-1]
+            seen_mask = ( n_seen > 0 )
+            n_seen_points = seen_mask.sum()
+            seen_csr_idx = csr_idx[torch.cat((torch.ones(1, dtype=torch.bool), seen_mask), dim=-1)]
             
+            # Take subset of seen points because we only need points with mapping feats
+            n_seen = n_seen[seen_mask]
+                    
             N_VIEWS = 9
             mapping_feats = data.modalities['image'][0].mappings.values[2]
-            view_feats = torch.zeros((data.modalities['image'].num_points, N_VIEWS, mapping_feats.shape[-1]))
+            view_feats = torch.zeros((n_seen_points, N_VIEWS, mapping_feats.shape[-1]))
             
             
             # at most how many viewpoints each point has
             clipped_n_seen = torch.clip(n_seen, max=N_VIEWS)
             
-            pixel_validity = torch.range(1, N_VIEWS).repeat(data.modalities['image'].num_points, 1)
+            pixel_validity = torch.range(1, N_VIEWS).repeat(n_seen_points, 1)
             pixel_validity = ( pixel_validity <= clipped_n_seen.unsqueeze(-1) )
 
             # randomly select 1 >= N <= 9 mapping feature vectors for each 3d point
             view_feat_idx = []
-            for i in range(len(csr_idx) - 1):
+            for i in range(len(seen_csr_idx) - 1):
                 n = clipped_n_seen[i]
                 if n < 9:
-                    view_feat_idx.extend(list(range(csr_idx[i], csr_idx[i+1])))
+                    view_feat_idx.extend(list(range(seen_csr_idx[i], seen_csr_idx[i+1])))
                 else:
-                    view_feat_idx.extend(np.random.choice(range(csr_idx[i], csr_idx[i+1]), size=n.numpy(), replace=False))
+                    view_feat_idx.extend(np.random.choice(range(seen_csr_idx[i], seen_csr_idx[i+1]), size=n.numpy(), replace=False))
                     
             view_feat_idx = torch.LongTensor(view_feat_idx)
 
@@ -392,12 +399,15 @@ class ScannetMM(Scannet):
                         
             # same for m2f feats
             mapped_m2f_feats = data.modalities['image'][0].get_mapped_m2f_features(interpolate=True)
-            m2f_feats = torch.randint(low=0, high=self.num_classes, size=(data.modalities['image'].num_points, N_VIEWS, 1))
+            m2f_feats = torch.randint(low=0, high=self.num_classes, size=(n_seen_points, N_VIEWS, 1))
             m2f_feats[pixel_validity] = mapped_m2f_feats[view_feat_idx].long()
 
             # Save mapping + m2f features
             data.data.mvfusion_input = torch.cat((view_feats, m2f_feats), dim=-1)
-        # Only cull unseen points and/or less visible ones
+            
+            
+            
+            
         else:
             data = MMData(data, image=images)
 #             del images

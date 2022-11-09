@@ -854,7 +854,7 @@ class MVFusionUnimodalBranch(nn.Module, ABC):
         self.n_classes = transformer_config['n_classes']
 #         self.conv = conv
 #         self.atomic_pool = atomic_pool
-        self.view_pool = view_pool
+#         self.view_pool = view_pool
         self.fusion = fusion
         drop_cls = ModalityDropout if hard_drop else nn.Dropout
         self.drop_3d = drop_cls(p=drop_3d, inplace=False) \
@@ -981,8 +981,14 @@ class MVFusionUnimodalBranch(nn.Module, ABC):
 
             return mm_data_dict
 
-        print("mm_data_dict before transformerfusion input: ", mm_data_dict)
-        x_mod = self.forward_transformerfusion(mm_data_dict)
+        
+
+        
+        # Compute the boolean mask of seen points
+        csr_idx = mod_data[0].view_csr_indexing
+        x_seen = csr_idx[1:] > csr_idx[:-1]
+        
+        x_mod = self.forward_transformerfusion(mm_data_dict, x_seen)
         
 #         # Forward pass with `self.conv`
 #         print("mod_data: ", mod_data)   # ImageBatch(num_settings=1, num_views=3, num_points=11819, device=cuda:0)
@@ -1011,11 +1017,6 @@ class MVFusionUnimodalBranch(nn.Module, ABC):
 #         print("x_mod: ", x_mod, x_mod.shape)
 #         print("mod_data: ", mod_data)
 #         print("csr_idx: ", csr_idx)
-
-        
-        # Compute the boolean mask of seen points
-        csr_idx = mod_data[0].view_csr_indexing
-        x_seen = csr_idx[1:] > csr_idx[:-1]
 
         # Dropout 3D or modality features
         x_3d, x_mod, mod_data = self.forward_dropout(x_3d, x_mod, mod_data)
@@ -1047,7 +1048,7 @@ class MVFusionUnimodalBranch(nn.Module, ABC):
 
         return mm_data_dict
 
-    def forward_transformerfusion(self, mm_data_dict, reset=True):
+    def forward_transformerfusion(self, mm_data_dict, x_seen, reset=True):
         ### multi-view mapping & M2F feature fusion using Transformer 
         
         # Features from only seen point-image matches are included in 'x'
@@ -1059,62 +1060,67 @@ class MVFusionUnimodalBranch(nn.Module, ABC):
     
         ### Multi-view fusion of M2F and viewing conditions using Transformer
         # TODO: remove assumption that pixel validity is the 1st feature
-        invalid_pixel_mask = (viewing_feats[:, :, 0] == 0)        
-                
+        invalid_pixel_mask = (viewing_feats[:, :, 0] == 0)   
+                        
         if 'c' in self.checkpointing:
             fusion_input = {
                 'invalid_pixels_mask': invalid_pixel_mask,
                 'viewing_features': viewing_feats.requires_grad_(),
                 'one_hot_mask_labels': m2f_feats
             }
-            x_mod = checkpoint(self.transformerfusion, fusion_input)
+            seen_x_mod = checkpoint(self.transformerfusion, fusion_input)
         else:
             fusion_input = {
                 'invalid_pixels_mask': invalid_pixel_mask,
                 'viewing_features': viewing_feats,
                 'one_hot_mask_labels': m2f_feats
             }
-            x_mod = self.transformerfusion(fusion_input)
+            seen_x_mod = self.transformerfusion(fusion_input)
+
+        x_mod = torch.zeros((mm_data_dict['modalities']['image'].num_points, 
+                             seen_x_mod.shape[-1]), device=seen_x_mod.device)
+            
+        x_mod[x_seen] = seen_x_mod
         return x_mod
     
-    def forward_conv(self, mod_data, reset=True):
-        """
-        Conv on the modality data. The modality data holder
-        carries a feature tensor per modality settings. Hence the
-        modality features are provided as a list of tensors.
-        Update modality features and mappings wrt modality scale. If
-        `self.interpolate`, do not modify the mappings' scale, so that
-        the features can be interpolated to the input resolution.
+#     def forward_conv(self, mod_data, reset=True):
+#         """
+#         Conv on the modality data. The modality data holder
+#         carries a feature tensor per modality settings. Hence the
+#         modality features are provided as a list of tensors.
+#         Update modality features and mappings wrt modality scale. If
+#         `self.interpolate`, do not modify the mappings' scale, so that
+#         the features can be interpolated to the input resolution.
 
-        Note that convolved features are preserved in the modality
-        data holder, to be later used in potential downstream
-        modules.
+#         Note that convolved features are preserved in the modality
+#         data holder, to be later used in potential downstream
+#         modules.
 
-        :param mod_data:
-        :param reset:
-        :return:
-        """
-        if not self.conv:
-            return mod_data
+#         :param mod_data:
+#         :param reset:
+#         :return:
+#         """
+#         if not self.conv:
+#             return mod_data
 
-        # If the modality carries multi-setting data, recursive scheme
-        if isinstance(mod_data.x, list):
-            for i in range(len(mod_data)):
-                mod_data[i].x = self.forward_conv(mod_data[i], i == 0).x
-            return mod_data
+#         # If the modality carries multi-setting data, recursive scheme
+#         if isinstance(mod_data.x, list):
+#             for i in range(len(mod_data)):
+#                 mod_data[i].x = self.forward_conv(mod_data[i], i == 0).x
+#             return mod_data
 
-        # If checkpointing the conv, need to set requires_grad for input
-        # tensor because checkpointing the first layer breaks the
-        # gradients
-        if 'c' in self.checkpointing:
-            mod_x = checkpoint(
-                self.conv, mod_data.x.requires_grad_(),
-                torch.BoolTensor([reset]))
-        else:
-            mod_x = self.conv(mod_data.x, True)
-        mod_data.x = mod_x
+#         # If checkpointing the conv, need to set requires_grad for input
+#         # tensor because checkpointing the first layer breaks the
+#         # gradients
+#         if 'c' in self.checkpointing:
+#             mod_x = checkpoint(
+#                 self.conv, mod_data.x.requires_grad_(),
+#                 torch.BoolTensor([reset]))
+#         else:
+#             mod_x = self.conv(mod_data.x, True)
+#         mod_data.x = mod_x
 
-        return mod_data
+#         return mod_data
 
 #     def forward_atomic_pool(self, x_3d, x_mod, csr_idx):
 #         """Atomic pooling of the modality features on each separate
@@ -1138,44 +1144,44 @@ class MVFusionUnimodalBranch(nn.Module, ABC):
 #             x_mod = self.atomic_pool(x_3d, x_mod, None, csr_idx)
 #         return x_mod
 
-    def forward_view_pool(self, x_3d, x_mod, mod_data):
-        """View pooling of the modality features.
+#     def forward_view_pool(self, x_3d, x_mod, mod_data):
+#         """View pooling of the modality features.
 
-        :param x_3d:
-        :param x_mod:
-        :param mod_data:
-        :return:
-        """
-        is_multi_shape = isinstance(x_mod, list)
+#         :param x_3d:
+#         :param x_mod:
+#         :param mod_data:
+#         :return:
+#         """
+#         is_multi_shape = isinstance(x_mod, list)
 
-        # For multi-setting data, concatenate view-level features from
-        # each input modality setting and sort them to a CSR-friendly
-        # order wrt 3D points features
-        if is_multi_shape:
-            idx_sorting = mod_data.view_cat_sorting
-            x_mod = torch.cat(x_mod, dim=0)[idx_sorting]
-            x_map = torch.cat(mod_data.mapping_features, dim=0)[idx_sorting]
+#         # For multi-setting data, concatenate view-level features from
+#         # each input modality setting and sort them to a CSR-friendly
+#         # order wrt 3D points features
+#         if is_multi_shape:
+#             idx_sorting = mod_data.view_cat_sorting
+#             x_mod = torch.cat(x_mod, dim=0)[idx_sorting]
+#             x_map = torch.cat(mod_data.mapping_features, dim=0)[idx_sorting]
 
-        # View pooling of the atomic-pooled modality features
-        if is_multi_shape:
-            csr_idx = mod_data.view_cat_csr_indexing
-        else:
-            csr_idx = mod_data.view_csr_indexing
+#         # View pooling of the atomic-pooled modality features
+#         if is_multi_shape:
+#             csr_idx = mod_data.view_cat_csr_indexing
+#         else:
+#             csr_idx = mod_data.view_csr_indexing
 
-        # Here we keep track of the latest x_mod, x_map and csr_idx
-        # in the modality data so as to recover it at the end of a
-        # multimodal encoder or UNet. This is necessary when
-        # training on a view-level loss.
-        if self.keep_last_view:
-            mod_data.last_view_x_mod = x_mod
-            mod_data.last_view_x_map = x_map
-            mod_data.last_view_csr_idx = csr_idx
+#         # Here we keep track of the latest x_mod, x_map and csr_idx
+#         # in the modality data so as to recover it at the end of a
+#         # multimodal encoder or UNet. This is necessary when
+#         # training on a view-level loss.
+#         if self.keep_last_view:
+#             mod_data.last_view_x_mod = x_mod
+#             mod_data.last_view_x_map = x_map
+#             mod_data.last_view_csr_idx = csr_idx
 
-        if 'v' in self.checkpointing:
-            x_mod = checkpoint(self.view_pool, x_3d, x_mod, x_map, csr_idx)
-        else:
-            x_mod = self.view_pool(x_3d, x_mod, x_map, csr_idx)
-        return x_mod, mod_data, csr_idx
+#         if 'v' in self.checkpointing:
+#             x_mod = checkpoint(self.view_pool, x_3d, x_mod, x_map, csr_idx)
+#         else:
+#             x_mod = self.view_pool(x_3d, x_mod, x_map, csr_idx)
+#         return x_mod, mod_data, csr_idx
 
     def forward_fusion(self, x_3d, x_mod):
         """Fuse the modality features into the 3D points features.
