@@ -115,9 +115,9 @@ multimodal:  # Each modality must be inserted in a dedicated 'multimodal' sectio
         k_coverage: 2
 
     pre_transform:
-        - transform: LoadImages  # Read images from disk
-          params:
-            ref_size: ${data.resolution_2d}
+#         - transform: LoadImages  # Read images from disk
+#           params:
+#             ref_size: ${data.resolution_2d}
         - transform: NonStaticMask  # Compute acquisition mask
           params:
               ref_size: ${data.resolution_2d}
@@ -156,14 +156,14 @@ multimodal:  # Each modality must be inserted in a dedicated 'multimodal' sectio
           params:
               sigma: 0.02
               clip: 0.03
-        - transform: ColorJitter  # Radiometric augmentation
-          params:
-              brightness: 0.6
-              contrast: 0.6
-              saturation: 0.7
-        - transform: RandomHorizontalFlip
-        - transform: ToFloatImage  # Convert uint8 image to float
-        - transform: Normalize  # Normalize colors
+#         - transform: ColorJitter  # Radiometric augmentation
+#           params:
+#               brightness: 0.6
+#               contrast: 0.6
+#               saturation: 0.7
+#         - transform: RandomHorizontalFlip
+#         - transform: ToFloatImage  # Convert uint8 image to float
+#         - transform: Normalize  # Normalize colors
 
     test_transforms:
         - transform: SelectMappingFromPointId  # Select mappings after 3D points sampling
@@ -173,7 +173,7 @@ multimodal:  # Each modality must be inserted in a dedicated 'multimodal' sectio
               img_size: ${data.resolution_2d}
               n_img: ${data.multimodal.settings.test_pixel_credit}
               k_coverage: ${data.multimodal.settings.k_coverage}
-        - transform: ToFloatImage  # Convert uint8 image to float
-        - transform: Normalize  # Normalize colors
+#         - transform: ToFloatImage  # Convert uint8 image to float
+#         - transform: Normalize  # Normalize colors
 
     val_transforms: ${data.multimodal.test_transforms}

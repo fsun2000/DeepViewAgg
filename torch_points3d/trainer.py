@@ -41,9 +41,11 @@ class Trainer:
     It supports MC dropout - multiple voting_runs for val / test datasets
     """
 
-    def __init__(self, cfg):
+    def __init__(self, cfg, eval_m2f_preds=False):
         self._cfg = cfg
         self._initialize_trainer()
+        
+        self.eval_m2f_preds = eval_m2f_preds
 
     def _initialize_trainer(self):
         # Enable CUDNN BACKEND
@@ -148,10 +150,10 @@ class Trainer:
         for epoch in range(self._checkpoint.start_epoch, self._cfg.training.epochs):
             log.info("EPOCH %i / %i", epoch, self._cfg.training.epochs)
 
-            self._train_epoch(epoch)
-            
-            # Uncomment for M2F mode pred evaluation
-#             self.evaluate_m2f_train_set(epoch)
+            if not self.eval_m2f_preds:
+                self._train_epoch(epoch)
+            else:
+                self.evaluate_m2f_train_set(epoch)
 
             if self.profiling:
                 return 0
@@ -171,7 +173,10 @@ class Trainer:
             )
         
             if self._dataset.has_val_loader:
-                self._test_epoch(epoch, "val")
+                if not self.eval_m2f_preds:
+                    self._test_epoch(epoch, "val")
+                else:
+                    self.evaluate_m2f_val_set(epoch)
 
             if self._dataset.has_test_loaders:
                 self._test_epoch(epoch, "test")
@@ -277,9 +282,30 @@ class Trainer:
                 iter_start_time = time.time()
                 
                 with torch.no_grad():
-                    self._model.set_input(data, self._device)
-                    with torch.cuda.amp.autocast(enabled=self._model.is_mixed_precision()):
-                        self._model.forward(epoch=epoch)
+#                     self._model.set_input(data, self._device)
+#                     with torch.cuda.amp.autocast(enabled=self._model.is_mixed_precision()):
+#                         self._model.forward(epoch=epoch)
+
+                    
+                    #### Mode preds
+                    pixel_validity = data.data.mvfusion_input[:, :, 0].bool()
+                    mv_preds = data.data.mvfusion_input[:, :, -1].long()
+
+                    valid_m2f_feats = []
+                    for i in range(len(mv_preds)):
+                        valid_m2f_feats.append(mv_preds[i][pixel_validity[i]])
+
+                    mode_preds = []
+                    for m2feats_of_seen_point in valid_m2f_feats:
+                        mode_preds.append(torch.mode(m2feats_of_seen_point.squeeze(), dim=0)[0])
+                    mode_preds = torch.stack(mode_preds, dim=0)
+
+                    out_scores = torch.nn.functional.one_hot(mode_preds.squeeze().long(), self._dataset.num_classes).float()
+
+                    # Save M2F mode one-hot preds
+                    self._model.output = out_scores
+                    self._model.labels = data.y
+
                     if i % 10 == 0:
                         self._tracker.track(
                             self._model, data=data, **self.tracker_options)
@@ -298,6 +324,41 @@ class Trainer:
 
                 if self.early_break:
                     break
+
+                if self.profiling:
+                    if i > self.num_batches:
+                        return 0
+
+        self._finalize_epoch(epoch)
+        self._tracker.print_summary()
+        
+    def evaluate_m2f_val_set(self, epoch):
+        loader = self._dataset.val_dataloader
+        stage_name = loader.dataset.name
+        self._tracker.reset(stage_name)
+
+        with Ctq(loader) as tq_loader:
+            for data in tq_loader:
+                #### Mode preds
+                pixel_validity = data.data.mvfusion_input[:, :, 0].bool()
+                mv_preds = data.data.mvfusion_input[:, :, -1].long()
+
+                valid_m2f_feats = []
+                for i in range(len(mv_preds)):
+                    valid_m2f_feats.append(mv_preds[i][pixel_validity[i]])
+
+                mode_preds = []
+                for m2feats_of_seen_point in valid_m2f_feats:
+                    mode_preds.append(torch.mode(m2feats_of_seen_point.squeeze(), dim=0)[0])
+                mode_preds = torch.stack(mode_preds, dim=0)
+
+                out_scores = torch.nn.functional.one_hot(mode_preds.squeeze().long(), self._dataset.num_classes).float()                
+                
+                self._model.output = out_scores
+                self._model.labels = data.y
+                
+                self._tracker.track(self._model, data=data, **self.tracker_options)
+                tq_loader.set_postfix(**self._tracker.get_metrics(), color=COLORS.TEST_COLOR)
 
                 if self.profiling:
                     if i > self.num_batches:

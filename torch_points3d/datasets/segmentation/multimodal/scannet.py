@@ -293,6 +293,8 @@ class ScannetMM(Scannet):
             data, images = self.transform_image(data, images)
         else:
             for transform in self.transform_image.transforms:
+                # Perform transform after loading M2F masks, otherwise 
+                # those would not be flipped 
                 if isinstance(transform, RandomHorizontalFlip):
                     randomhorizontalflip = transform
                     continue
@@ -324,7 +326,7 @@ class ScannetMM(Scannet):
                 pred_mask = pred_mask.resize(self.img_ref_size, resample=Image.NEAREST) 
                 
                 # minus 1 to match DVA label classes ranging [-1, 19] instead of [0, 20]
-                m2f_masks.append(pil_to_tensor(pred_mask) - 1)   # maybe need to be saved as floats
+                m2f_masks.append(pil_to_tensor(pred_mask) - 1)
                 
                 m2f_mask_paths.append(pred_mask_path)
                                 
@@ -333,7 +335,8 @@ class ScannetMM(Scannet):
             # Store M2F pred mask in data
             images[0].m2f_pred_mask = m2f_masks
             images[0].m2f_pred_mask_path = np.array(m2f_mask_paths)
-                                
+                      
+            # Left-over transform
             try:
                 data, images = randomhorizontalflip(data, images)
             except: 

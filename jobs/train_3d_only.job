@@ -5,9 +5,9 @@
 #SBATCH --job-name=3d_largebatch
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=9
-#SBATCH --time=48:00:00
+#SBATCH --time=100:00:00
 #SBATCH --mem=190000M
-#SBATCH --output=job_logs/3d_only/train_3d_largebatch_origlrscheduler.out
+#SBATCH --output=job_logs/3d_only/train_3d_voxel_0.05.out
 
 cd $HOME/DeepViewAgg
 
