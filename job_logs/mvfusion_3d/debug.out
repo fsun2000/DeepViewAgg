@@ -1053,4 +1053,241 @@ transformer input:  torch.Size([18573, 9, 10])
 [2022-11-09 21:45:55,518][torch_points3d.metrics.base_tracker][INFO] - ==================================================
 [2022-11-09 21:45:55,519][torch_points3d.trainer][INFO] - EPOCH 17 / 301
 
-  0%|          | 0/3 [00:00<?, ?it/s]
+  0%|          | 0/3 [00:00<?, ?it/s]  0%|          | 0/3 [00:12<?, ?it/s, [0;92mdata_loading=11.48, iteration=0.677, train_acc=87.00, train_loss_cross_entropy=0.436, train_loss_seg=0.436, train_macc=52.84, train_miou=30.05[0m)] 33%|###3      | 1/3 [00:12<00:24, 12.16s/it, [0;92mdata_loading=11.48, iteration=0.677, train_acc=87.00, train_loss_cross_entropy=0.436, train_loss_seg=0.436, train_macc=52.84, train_miou=30.05[0m)] 33%|###3      | 1/3 [00:12<00:24, 12.16s/it, [0;92mdata_loading=0.000, iteration=0.519, train_acc=87.00, train_loss_cross_entropy=0.436, train_loss_seg=0.436, train_macc=52.84, train_miou=30.05[0m)] 67%|######6   | 2/3 [00:12<00:05,  5.32s/it, [0;92mdata_loading=0.000, iteration=0.519, train_acc=87.00, train_loss_cross_entropy=0.436, train_loss_seg=0.436, train_macc=52.84, train_miou=30.05[0m)] 67%|######6   | 2/3 [00:18<00:05,  5.32s/it, [0;92mdata_loading=5.145, iteration=0.420, train_acc=87.00, train_loss_cross_entropy=0.436, train_loss_seg=0.436, train_macc=52.84, train_miou=30.05[0m)]100%|##########| 3/3 [00:18<00:00,  5.43s/it, [0;92mdata_loading=5.145, iteration=0.420, train_acc=87.00, train_loss_cross_entropy=0.436, train_loss_seg=0.436, train_macc=52.84, train_miou=30.05[0m)]100%|##########| 3/3 [00:18<00:00,  6.08s/it, [0;92mdata_loading=5.145, iteration=0.420, train_acc=87.00, train_loss_cross_entropy=0.436, train_loss_seg=0.436, train_macc=52.84, train_miou=30.05[0m)]3d points shape:  torch.Size([25707, 3])
+transformer input:  torch.Size([20565, 9, 10])
+csr_idx:  tensor([     0,     13,     25,  ..., 206986, 206987, 206988])
+seen_mask:  tensor([ True,  True,  True,  ..., False,  True,  True]) torch.Size([25707]) tensor(20565)
+keep_idx:  tensor([    0,     1,     2,  ..., 20562, 20563, 20564]) torch.Size([20000])
+keep_idx_mask:  tensor([True, True, True,  ..., True, True, True]) torch.Size([20565]) tensor(20000)
+processed seen_mask:  tensor([ True,  True,  True,  ..., False,  True,  True]) torch.Size([25707]) tensor(20000)
+processed transformer_input:  torch.Size([20000, 9, 10])
+3d points shape:  torch.Size([23466, 3])
+transformer input:  torch.Size([18149, 9, 10])
+3d points shape:  torch.Size([55158, 3])
+transformer input:  torch.Size([45609, 9, 10])
+csr_idx:  tensor([     0,      3,      7,  ..., 272680, 272680, 272680])
+seen_mask:  tensor([ True,  True, False,  ..., False, False, False]) torch.Size([55158]) tensor(45609)
+keep_idx:  tensor([    0,     2,     5,  ..., 45603, 45606, 45608]) torch.Size([20000])
+keep_idx_mask:  tensor([ True, False,  True,  ...,  True, False,  True]) torch.Size([45609]) tensor(20000)
+processed seen_mask:  tensor([ True, False, False,  ..., False, False, False]) torch.Size([55158]) tensor(20000)
+processed transformer_input:  torch.Size([20000, 9, 10])
+[2022-11-09 21:46:14,688][torch_points3d.trainer][INFO] - Learning rate = 0.045715
+[2022-11-09 21:46:14,688][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-11-09 21:46:14,689][torch_points3d.metrics.base_tracker][INFO] -     train_loss_seg = 0.4362533986568451
+[2022-11-09 21:46:14,689][torch_points3d.metrics.base_tracker][INFO] -     train_loss_cross_entropy = 0.4362533986568451
+[2022-11-09 21:46:14,689][torch_points3d.metrics.base_tracker][INFO] -     train_acc = 87.0056085658096
+[2022-11-09 21:46:14,689][torch_points3d.metrics.base_tracker][INFO] -     train_macc = 52.847295626952665
+[2022-11-09 21:46:14,689][torch_points3d.metrics.base_tracker][INFO] -     train_miou = 30.052476425480666
+[2022-11-09 21:46:14,689][torch_points3d.metrics.base_tracker][INFO] -     train_miou_per_class = {0: '84.80', 1: '95.66', 2: '0.00', 3: '0.00', 4: '14.65', 5: '0.00', 6: '55.85', 7: '39.83', 8: '9.73', 9: '0.00', 10: '0.00', 11: '0.00', 12: '0.00', 13: '0.00', 14: '0.00', 15: '0.00', 16: '0.00', 17: '0.00', 18: '0.00', 19: '0.00'}
+[2022-11-09 21:46:14,689][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-11-09 21:46:14,690][torch_points3d.trainer][INFO] - EPOCH 18 / 301
+
+  0%|          | 0/3 [00:00<?, ?it/s]  0%|          | 0/3 [00:11<?, ?it/s, [0;92mdata_loading=11.27, iteration=0.552, train_acc=90.57, train_loss_cross_entropy=0.384, train_loss_seg=0.384, train_macc=53.41, train_miou=39.09[0m)] 33%|###3      | 1/3 [00:11<00:23, 11.83s/it, [0;92mdata_loading=11.27, iteration=0.552, train_acc=90.57, train_loss_cross_entropy=0.384, train_loss_seg=0.384, train_macc=53.41, train_miou=39.09[0m)] 33%|###3      | 1/3 [00:17<00:23, 11.83s/it, [0;92mdata_loading=5.511, iteration=0.486, train_acc=90.57, train_loss_cross_entropy=0.384, train_loss_seg=0.384, train_macc=53.41, train_miou=39.09[0m)] 67%|######6   | 2/3 [00:17<00:08,  8.40s/it, [0;92mdata_loading=5.511, iteration=0.486, train_acc=90.57, train_loss_cross_entropy=0.384, train_loss_seg=0.384, train_macc=53.41, train_miou=39.09[0m)] 67%|######6   | 2/3 [00:18<00:08,  8.40s/it, [0;92mdata_loading=0.000, iteration=0.367, train_acc=90.57, train_loss_cross_entropy=0.384, train_loss_seg=0.384, train_macc=53.41, train_miou=39.09[0m)]100%|##########| 3/3 [00:18<00:00,  4.73s/it, [0;92mdata_loading=0.000, iteration=0.367, train_acc=90.57, train_loss_cross_entropy=0.384, train_loss_seg=0.384, train_macc=53.41, train_miou=39.09[0m)]100%|##########| 3/3 [00:18<00:00,  6.06s/it, [0;92mdata_loading=0.000, iteration=0.367, train_acc=90.57, train_loss_cross_entropy=0.384, train_loss_seg=0.384, train_macc=53.41, train_miou=39.09[0m)]3d points shape:  torch.Size([24277, 3])
+transformer input:  torch.Size([18804, 9, 10])
+3d points shape:  torch.Size([52003, 3])
+transformer input:  torch.Size([43092, 9, 10])
+csr_idx:  tensor([     0,      0,      0,  ..., 252380, 252380, 252380])
+seen_mask:  tensor([False, False, False,  ..., False, False, False]) torch.Size([52003]) tensor(43092)
+keep_idx:  tensor([    0,     2,     4,  ..., 43087, 43089, 43091]) torch.Size([20000])
+keep_idx_mask:  tensor([ True, False,  True,  ...,  True, False,  True]) torch.Size([43092]) tensor(20000)
+processed seen_mask:  tensor([False, False, False,  ..., False, False, False]) torch.Size([52003]) tensor(20000)
+processed transformer_input:  torch.Size([20000, 9, 10])
+3d points shape:  torch.Size([27309, 3])
+transformer input:  torch.Size([21679, 9, 10])
+csr_idx:  tensor([     0,     14,     26,  ..., 214650, 214650, 214651])
+seen_mask:  tensor([ True,  True,  True,  ..., False, False,  True]) torch.Size([27309]) tensor(21679)
+keep_idx:  tensor([    0,     1,     2,  ..., 21676, 21677, 21678]) torch.Size([20000])
+keep_idx_mask:  tensor([True, True, True,  ..., True, True, True]) torch.Size([21679]) tensor(20000)
+processed seen_mask:  tensor([ True,  True,  True,  ..., False, False,  True]) torch.Size([27309]) tensor(20000)
+processed transformer_input:  torch.Size([20000, 9, 10])
+[2022-11-09 21:46:33,769][torch_points3d.trainer][INFO] - Learning rate = 0.043658
+[2022-11-09 21:46:33,770][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-11-09 21:46:33,770][torch_points3d.metrics.base_tracker][INFO] -     train_loss_seg = 0.38443776965141296
+[2022-11-09 21:46:33,770][torch_points3d.metrics.base_tracker][INFO] -     train_loss_cross_entropy = 0.38443776965141296
+[2022-11-09 21:46:33,770][torch_points3d.metrics.base_tracker][INFO] -     train_acc = 90.57045895281189
+[2022-11-09 21:46:33,770][torch_points3d.metrics.base_tracker][INFO] -     train_macc = 53.413650362277586
+[2022-11-09 21:46:33,770][torch_points3d.metrics.base_tracker][INFO] -     train_miou = 39.09617927178919
+[2022-11-09 21:46:33,770][torch_points3d.metrics.base_tracker][INFO] -     train_miou_per_class = {0: '88.10', 1: '96.22', 2: '0.00', 3: '0.00', 4: '0.45', 5: '0.00', 6: '53.92', 7: '53.75', 8: '20.34', 9: '0.00', 10: '0.00', 11: '0.00', 12: '0.00', 13: '0.00', 14: '0.00', 15: '0.00', 16: '0.00', 17: '0.00', 18: '0.00', 19: '0.00'}
+[2022-11-09 21:46:33,770][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-11-09 21:46:33,771][torch_points3d.trainer][INFO] - EPOCH 19 / 301
+
+  0%|          | 0/3 [00:00<?, ?it/s]  0%|          | 0/3 [00:11<?, ?it/s, [0;92mdata_loading=11.04, iteration=0.412, train_acc=91.67, train_loss_cross_entropy=0.337, train_loss_seg=0.337, train_macc=53.91, train_miou=32.00[0m)] 33%|###3      | 1/3 [00:11<00:22, 11.46s/it, [0;92mdata_loading=11.04, iteration=0.412, train_acc=91.67, train_loss_cross_entropy=0.337, train_loss_seg=0.337, train_macc=53.91, train_miou=32.00[0m)] 33%|###3      | 1/3 [00:11<00:22, 11.46s/it, [0;92mdata_loading=0.009, iteration=0.525, train_acc=91.67, train_loss_cross_entropy=0.337, train_loss_seg=0.337, train_macc=53.91, train_miou=32.00[0m)] 67%|######6   | 2/3 [00:11<00:05,  5.03s/it, [0;92mdata_loading=0.009, iteration=0.525, train_acc=91.67, train_loss_cross_entropy=0.337, train_loss_seg=0.337, train_macc=53.91, train_miou=32.00[0m)] 67%|######6   | 2/3 [00:18<00:05,  5.03s/it, [0;92mdata_loading=5.668, iteration=0.417, train_acc=91.67, train_loss_cross_entropy=0.337, train_loss_seg=0.337, train_macc=53.91, train_miou=32.00[0m)]100%|##########| 3/3 [00:18<00:00,  5.51s/it, [0;92mdata_loading=5.668, iteration=0.417, train_acc=91.67, train_loss_cross_entropy=0.337, train_loss_seg=0.337, train_macc=53.91, train_miou=32.00[0m)]100%|##########| 3/3 [00:18<00:00,  6.03s/it, [0;92mdata_loading=5.668, iteration=0.417, train_acc=91.67, train_loss_cross_entropy=0.337, train_loss_seg=0.337, train_macc=53.91, train_miou=32.00[0m)]3d points shape:  torch.Size([28033, 3])
+transformer input:  torch.Size([21778, 9, 10])
+csr_idx:  tensor([     0,      7,     12,  ..., 199398, 199398, 199398])
+seen_mask:  tensor([ True,  True,  True,  ..., False, False, False]) torch.Size([28033]) tensor(21778)
+keep_idx:  tensor([    0,     1,     2,  ..., 21775, 21776, 21777]) torch.Size([20000])
+keep_idx_mask:  tensor([True, True, True,  ..., True, True, True]) torch.Size([21778]) tensor(20000)
+processed seen_mask:  tensor([ True,  True,  True,  ..., False, False, False]) torch.Size([28033]) tensor(20000)
+processed transformer_input:  torch.Size([20000, 9, 10])
+3d points shape:  torch.Size([24270, 3])
+transformer input:  torch.Size([19337, 9, 10])
+3d points shape:  torch.Size([56168, 3])
+transformer input:  torch.Size([47261, 9, 10])
+csr_idx:  tensor([     0,      3,      8,  ..., 279839, 279839, 279839])
+seen_mask:  tensor([ True,  True,  True,  ..., False, False, False]) torch.Size([56168]) tensor(47261)
+keep_idx:  tensor([    0,     2,     5,  ..., 47255, 47258, 47260]) torch.Size([20000])
+keep_idx_mask:  tensor([ True, False,  True,  ...,  True, False,  True]) torch.Size([47261]) tensor(20000)
+processed seen_mask:  tensor([ True, False,  True,  ..., False, False, False]) torch.Size([56168]) tensor(20000)
+processed transformer_input:  torch.Size([20000, 9, 10])
+[2022-11-09 21:46:52,745][torch_points3d.trainer][INFO] - Learning rate = 0.041693
+[2022-11-09 21:46:52,746][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-11-09 21:46:52,746][torch_points3d.metrics.base_tracker][INFO] -     train_loss_seg = 0.33722084760665894
+[2022-11-09 21:46:52,746][torch_points3d.metrics.base_tracker][INFO] -     train_loss_cross_entropy = 0.33722084760665894
+[2022-11-09 21:46:52,746][torch_points3d.metrics.base_tracker][INFO] -     train_acc = 91.67113015532941
+[2022-11-09 21:46:52,746][torch_points3d.metrics.base_tracker][INFO] -     train_macc = 53.919771235841004
+[2022-11-09 21:46:52,746][torch_points3d.metrics.base_tracker][INFO] -     train_miou = 32.0038613918172
+[2022-11-09 21:46:52,746][torch_points3d.metrics.base_tracker][INFO] -     train_miou_per_class = {0: '89.70', 1: '97.19', 2: '0.00', 3: '0.00', 4: '1.17', 5: '0.00', 6: '58.06', 7: '52.05', 8: '21.88', 9: '0.00', 10: '0.00', 11: '0.00', 12: '0.00', 13: '0.00', 14: '0.00', 15: '0.00', 16: '0.00', 17: '0.00', 18: '0.00', 19: '0.00'}
+[2022-11-09 21:46:52,746][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-11-09 21:46:52,747][torch_points3d.trainer][INFO] - EPOCH 20 / 301
+
+  0%|          | 0/3 [00:00<?, ?it/s]  0%|          | 0/3 [00:11<?, ?it/s, [0;92mdata_loading=11.04, iteration=0.564, train_acc=86.75, train_loss_cross_entropy=0.430, train_loss_seg=0.430, train_macc=53.64, train_miou=37.64[0m)] 33%|###3      | 1/3 [00:11<00:23, 11.61s/it, [0;92mdata_loading=11.04, iteration=0.564, train_acc=86.75, train_loss_cross_entropy=0.430, train_loss_seg=0.430, train_macc=53.64, train_miou=37.64[0m)] 33%|###3      | 1/3 [00:17<00:23, 11.61s/it, [0;92mdata_loading=5.787, iteration=0.422, train_acc=86.75, train_loss_cross_entropy=0.430, train_loss_seg=0.430, train_macc=53.64, train_miou=37.64[0m)] 67%|######6   | 2/3 [00:17<00:08,  8.43s/it, [0;92mdata_loading=5.787, iteration=0.422, train_acc=86.75, train_loss_cross_entropy=0.430, train_loss_seg=0.430, train_macc=53.64, train_miou=37.64[0m)] 67%|######6   | 2/3 [00:18<00:08,  8.43s/it, [0;92mdata_loading=0.000, iteration=0.359, train_acc=86.75, train_loss_cross_entropy=0.430, train_loss_seg=0.430, train_macc=53.64, train_miou=37.64[0m)]100%|##########| 3/3 [00:18<00:00,  4.75s/it, [0;92mdata_loading=0.000, iteration=0.359, train_acc=86.75, train_loss_cross_entropy=0.430, train_loss_seg=0.430, train_macc=53.64, train_miou=37.64[0m)]100%|##########| 3/3 [00:18<00:00,  6.06s/it, [0;92mdata_loading=0.000, iteration=0.359, train_acc=86.75, train_loss_cross_entropy=0.430, train_loss_seg=0.430, train_macc=53.64, train_miou=37.64[0m)]3d points shape:  torch.Size([22763, 3])
+transformer input:  torch.Size([18189, 9, 10])
+3d points shape:  torch.Size([55937, 3])
+transformer input:  torch.Size([45115, 9, 10])
+csr_idx:  tensor([     0,      0,      0,  ..., 259502, 259502, 259502])
+seen_mask:  tensor([False, False,  True,  ..., False, False, False]) torch.Size([55937]) tensor(45115)
+keep_idx:  tensor([    0,     2,     5,  ..., 45109, 45112, 45114]) torch.Size([20000])
+keep_idx_mask:  tensor([ True, False,  True,  ...,  True, False,  True]) torch.Size([45115]) tensor(20000)
+processed seen_mask:  tensor([False, False,  True,  ..., False, False, False]) torch.Size([55937]) tensor(20000)
+processed transformer_input:  torch.Size([20000, 9, 10])
+3d points shape:  torch.Size([26015, 3])
+transformer input:  torch.Size([19754, 9, 10])
+[2022-11-09 21:47:11,848][torch_points3d.trainer][INFO] - Learning rate = 0.039817
+[2022-11-09 21:47:11,848][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-11-09 21:47:11,848][torch_points3d.metrics.base_tracker][INFO] -     train_loss_seg = 0.43033772706985474
+[2022-11-09 21:47:11,849][torch_points3d.metrics.base_tracker][INFO] -     train_loss_cross_entropy = 0.43033772706985474
+[2022-11-09 21:47:11,849][torch_points3d.metrics.base_tracker][INFO] -     train_acc = 86.7559648388447
+[2022-11-09 21:47:11,849][torch_points3d.metrics.base_tracker][INFO] -     train_macc = 53.646589000208834
+[2022-11-09 21:47:11,849][torch_points3d.metrics.base_tracker][INFO] -     train_miou = 37.644331801512145
+[2022-11-09 21:47:11,849][torch_points3d.metrics.base_tracker][INFO] -     train_miou_per_class = {0: '83.56', 1: '95.87', 2: '0.00', 3: '0.00', 4: '2.06', 5: '0.00', 6: '58.69', 7: '38.63', 8: '22.34', 9: '0.00', 10: '0.00', 11: '0.00', 12: '0.00', 13: '0.00', 14: '0.00', 15: '0.00', 16: '0.00', 17: '0.00', 18: '0.00', 19: '0.00'}
+[2022-11-09 21:47:11,849][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+
+  0%|          | 0/3 [00:00<?, ?it/s]  0%|          | 0/3 [00:08<?, ?it/s, [0;93mval_acc=60.79, val_loss_cross_entropy=1.377, val_loss_seg=1.377, val_macc=32.90, val_miou=16.28[0m)] 33%|###3      | 1/3 [00:08<00:17,  8.78s/it, [0;93mval_acc=60.79, val_loss_cross_entropy=1.377, val_loss_seg=1.377, val_macc=32.90, val_miou=16.28[0m)] 33%|###3      | 1/3 [00:09<00:17,  8.78s/it, [0;93mval_acc=59.91, val_loss_cross_entropy=1.471, val_loss_seg=1.471, val_macc=31.33, val_miou=16.06[0m)] 67%|######6   | 2/3 [00:09<00:03,  3.79s/it, [0;93mval_acc=59.91, val_loss_cross_entropy=1.471, val_loss_seg=1.471, val_macc=31.33, val_miou=16.06[0m)] 67%|######6   | 2/3 [00:09<00:03,  3.79s/it, [0;93mval_acc=65.85, val_loss_cross_entropy=1.236, val_loss_seg=1.236, val_macc=31.91, val_miou=16.89[0m)]100%|##########| 3/3 [00:09<00:00,  2.20s/it, [0;93mval_acc=65.85, val_loss_cross_entropy=1.236, val_loss_seg=1.236, val_macc=31.91, val_miou=16.89[0m)]100%|##########| 3/3 [00:09<00:00,  3.12s/it, [0;93mval_acc=65.85, val_loss_cross_entropy=1.236, val_loss_seg=1.236, val_macc=31.91, val_miou=16.89[0m)]3d points shape:  torch.Size([38321, 3])
+transformer input:  torch.Size([28650, 9, 10])
+csr_idx:  tensor([     0,      0,      0,  ..., 208815, 208816, 208816])
+seen_mask:  tensor([False, False, False,  ...,  True,  True, False]) torch.Size([38321]) tensor(28650)
+keep_idx:  tensor([    0,     1,     3,  ..., 28646, 28648, 28649]) torch.Size([20000])
+keep_idx_mask:  tensor([ True,  True, False,  ..., False,  True,  True]) torch.Size([28650]) tensor(20000)
+processed seen_mask:  tensor([False, False, False,  ...,  True,  True, False]) torch.Size([38321]) tensor(20000)
+processed transformer_input:  torch.Size([20000, 9, 10])
+3d points shape:  torch.Size([37104, 3])
+transformer input:  torch.Size([27434, 9, 10])
+csr_idx:  tensor([     0,      1,      2,  ..., 173189, 173189, 173189])
+seen_mask:  tensor([ True,  True, False,  ...,  True, False, False]) torch.Size([37104]) tensor(27434)
+keep_idx:  tensor([    0,     1,     3,  ..., 27430, 27432, 27433]) torch.Size([20000])
+keep_idx_mask:  tensor([ True,  True, False,  ..., False,  True,  True]) torch.Size([27434]) tensor(20000)
+processed seen_mask:  tensor([ True,  True, False,  ...,  True, False, False]) torch.Size([37104]) tensor(20000)
+processed transformer_input:  torch.Size([20000, 9, 10])
+3d points shape:  torch.Size([34615, 3])
+transformer input:  torch.Size([26219, 9, 10])
+csr_idx:  tensor([     0,      0,      0,  ..., 224331, 224331, 224331])
+seen_mask:  tensor([False, False, False,  ..., False, False, False]) torch.Size([34615]) tensor(26219)
+keep_idx:  tensor([    0,     1,     3,  ..., 26215, 26217, 26218]) torch.Size([20000])
+keep_idx_mask:  tensor([ True,  True, False,  ..., False,  True,  True]) torch.Size([26219]) tensor(20000)
+processed seen_mask:  tensor([False, False, False,  ..., False, False, False]) torch.Size([34615]) tensor(20000)
+processed transformer_input:  torch.Size([20000, 9, 10])
+[2022-11-09 21:47:21,313][torch_points3d.utils.colors][INFO] - [0;94macc: 54.07624511515756 -> 65.85452087557843, macc: 19.65175751884649 -> 31.91807261551281, miou: 11.261645774313312 -> 16.892119960218597[0m
+[2022-11-09 21:47:22,228][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-11-09 21:47:22,229][torch_points3d.metrics.base_tracker][INFO] -     val_loss_seg = 1.2366150816281636
+[2022-11-09 21:47:22,229][torch_points3d.metrics.base_tracker][INFO] -     val_loss_cross_entropy = 1.2366150816281636
+[2022-11-09 21:47:22,229][torch_points3d.metrics.base_tracker][INFO] -     val_acc = 65.85452087557843
+[2022-11-09 21:47:22,229][torch_points3d.metrics.base_tracker][INFO] -     val_macc = 31.91807261551281
+[2022-11-09 21:47:22,229][torch_points3d.metrics.base_tracker][INFO] -     val_miou = 16.892119960218597
+[2022-11-09 21:47:22,229][torch_points3d.metrics.base_tracker][INFO] -     val_miou_per_class = {0: '74.53', 1: '93.46', 2: '1.42', 3: '0.00', 4: '3.47', 5: '0.00', 6: '42.82', 7: '10.36', 8: '10.43', 9: '0.00', 10: '0.00', 11: '0.00', 12: '0.00', 13: '0.00', 14: '0.00', 15: '0.00', 16: '0.00', 17: '0.00', 18: '0.00', 19: '0.00'}
+[2022-11-09 21:47:22,229][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-11-09 21:47:22,290][torch_points3d.trainer][INFO] - EPOCH 21 / 301
+
+  0%|          | 0/3 [00:00<?, ?it/s]  0%|          | 0/3 [00:11<?, ?it/s, [0;92mdata_loading=11.26, iteration=0.693, train_acc=90.58, train_loss_cross_entropy=0.343, train_loss_seg=0.343, train_macc=54.01, train_miou=30.68[0m)] 33%|###3      | 1/3 [00:11<00:23, 11.96s/it, [0;92mdata_loading=11.26, iteration=0.693, train_acc=90.58, train_loss_cross_entropy=0.343, train_loss_seg=0.343, train_macc=54.01, train_miou=30.68[0m)] 33%|###3      | 1/3 [00:17<00:23, 11.96s/it, [0;92mdata_loading=5.076, iteration=0.414, train_acc=90.58, train_loss_cross_entropy=0.343, train_loss_seg=0.343, train_macc=54.01, train_miou=30.68[0m)] 67%|######6   | 2/3 [00:17<00:08,  8.15s/it, [0;92mdata_loading=5.076, iteration=0.414, train_acc=90.58, train_loss_cross_entropy=0.343, train_loss_seg=0.343, train_macc=54.01, train_miou=30.68[0m)] 67%|######6   | 2/3 [00:17<00:08,  8.15s/it, [0;92mdata_loading=0.000, iteration=0.374, train_acc=90.58, train_loss_cross_entropy=0.343, train_loss_seg=0.343, train_macc=54.01, train_miou=30.68[0m)]100%|##########| 3/3 [00:17<00:00,  4.60s/it, [0;92mdata_loading=0.000, iteration=0.374, train_acc=90.58, train_loss_cross_entropy=0.343, train_loss_seg=0.343, train_macc=54.01, train_miou=30.68[0m)]100%|##########| 3/3 [00:17<00:00,  5.94s/it, [0;92mdata_loading=0.000, iteration=0.374, train_acc=90.58, train_loss_cross_entropy=0.343, train_loss_seg=0.343, train_macc=54.01, train_miou=30.68[0m)]3d points shape:  torch.Size([27579, 3])
+transformer input:  torch.Size([21285, 9, 10])
+csr_idx:  tensor([     0,      0,      0,  ..., 196605, 196605, 196605])
+seen_mask:  tensor([False, False, False,  ..., False, False, False]) torch.Size([27579]) tensor(21285)
+keep_idx:  tensor([    0,     1,     2,  ..., 21282, 21283, 21284]) torch.Size([20000])
+keep_idx_mask:  tensor([True, True, True,  ..., True, True, True]) torch.Size([21285]) tensor(20000)
+processed seen_mask:  tensor([False, False, False,  ..., False, False, False]) torch.Size([27579]) tensor(20000)
+processed transformer_input:  torch.Size([20000, 9, 10])
+3d points shape:  torch.Size([50067, 3])
+transformer input:  torch.Size([42365, 9, 10])
+csr_idx:  tensor([     0,      0,      0,  ..., 249652, 249652, 249652])
+seen_mask:  tensor([False, False, False,  ..., False, False, False]) torch.Size([50067]) tensor(42365)
+keep_idx:  tensor([    0,     2,     4,  ..., 42360, 42362, 42364]) torch.Size([20000])
+keep_idx_mask:  tensor([ True, False,  True,  ...,  True, False,  True]) torch.Size([42365]) tensor(20000)
+processed seen_mask:  tensor([False, False, False,  ..., False, False, False]) torch.Size([50067]) tensor(20000)
+processed transformer_input:  torch.Size([20000, 9, 10])
+3d points shape:  torch.Size([26166, 3])
+transformer input:  torch.Size([20771, 9, 10])
+csr_idx:  tensor([     0,     13,     30,  ..., 212503, 212505, 212507])
+seen_mask:  tensor([ True,  True,  True,  ..., False,  True,  True]) torch.Size([26166]) tensor(20771)
+keep_idx:  tensor([    0,     1,     2,  ..., 20768, 20769, 20770]) torch.Size([20000])
+keep_idx_mask:  tensor([True, True, True,  ..., True, True, True]) torch.Size([20771]) tensor(20000)
+processed seen_mask:  tensor([ True,  True,  True,  ..., False,  True,  True]) torch.Size([26166]) tensor(20000)
+processed transformer_input:  torch.Size([20000, 9, 10])
+[2022-11-09 21:47:41,004][torch_points3d.trainer][INFO] - Learning rate = 0.038025
+[2022-11-09 21:47:41,005][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-11-09 21:47:41,005][torch_points3d.metrics.base_tracker][INFO] -     train_loss_seg = 0.34341520071029663
+[2022-11-09 21:47:41,005][torch_points3d.metrics.base_tracker][INFO] -     train_loss_cross_entropy = 0.34341520071029663
+[2022-11-09 21:47:41,005][torch_points3d.metrics.base_tracker][INFO] -     train_acc = 90.58856980381007
+[2022-11-09 21:47:41,005][torch_points3d.metrics.base_tracker][INFO] -     train_macc = 54.01672646400656
+[2022-11-09 21:47:41,006][torch_points3d.metrics.base_tracker][INFO] -     train_miou = 30.68862128204265
+[2022-11-09 21:47:41,006][torch_points3d.metrics.base_tracker][INFO] -     train_miou_per_class = {0: '87.97', 1: '96.55', 2: '0.00', 3: '0.00', 4: '1.27', 5: '0.00', 6: '52.97', 7: '47.95', 8: '20.17', 9: '0.00', 10: '0.00', 11: '0.00', 12: '0.00', 13: '0.00', 14: '0.00', 15: '0.00', 16: '0.00', 17: '0.00', 18: '0.00', 19: '0.00'}
+[2022-11-09 21:47:41,006][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-11-09 21:47:41,006][torch_points3d.trainer][INFO] - EPOCH 22 / 301
+
+  0%|          | 0/3 [00:00<?, ?it/s]  0%|          | 0/3 [00:11<?, ?it/s, [0;92mdata_loading=11.01, iteration=0.675, train_acc=88.20, train_loss_cross_entropy=0.382, train_loss_seg=0.382, train_macc=55.20, train_miou=34.87[0m)] 33%|###3      | 1/3 [00:11<00:23, 11.69s/it, [0;92mdata_loading=11.01, iteration=0.675, train_acc=88.20, train_loss_cross_entropy=0.382, train_loss_seg=0.382, train_macc=55.20, train_miou=34.87[0m)] 33%|###3      | 1/3 [00:12<00:23, 11.69s/it, [0;92mdata_loading=0.000, iteration=0.661, train_acc=88.20, train_loss_cross_entropy=0.382, train_loss_seg=0.382, train_macc=55.20, train_miou=34.87[0m)] 67%|######6   | 2/3 [00:12<00:05,  5.20s/it, [0;92mdata_loading=0.000, iteration=0.661, train_acc=88.20, train_loss_cross_entropy=0.382, train_loss_seg=0.382, train_macc=55.20, train_miou=34.87[0m)] 67%|######6   | 2/3 [00:18<00:05,  5.20s/it, [0;92mdata_loading=5.249, iteration=0.417, train_acc=88.20, train_loss_cross_entropy=0.382, train_loss_seg=0.382, train_macc=55.20, train_miou=34.87[0m)]100%|##########| 3/3 [00:18<00:00,  5.42s/it, [0;92mdata_loading=5.249, iteration=0.417, train_acc=88.20, train_loss_cross_entropy=0.382, train_loss_seg=0.382, train_macc=55.20, train_miou=34.87[0m)]100%|##########| 3/3 [00:18<00:00,  6.01s/it, [0;92mdata_loading=5.249, iteration=0.417, train_acc=88.20, train_loss_cross_entropy=0.382, train_loss_seg=0.382, train_macc=55.20, train_miou=34.87[0m)]3d points shape:  torch.Size([25245, 3])
+transformer input:  torch.Size([20140, 9, 10])
+csr_idx:  tensor([     0,      3,     10,  ..., 204841, 204842, 204842])
+seen_mask:  tensor([ True,  True,  True,  ..., False,  True, False]) torch.Size([25245]) tensor(20140)
+keep_idx:  tensor([    0,     1,     2,  ..., 20137, 20138, 20139]) torch.Size([20000])
+keep_idx_mask:  tensor([True, True, True,  ..., True, True, True]) torch.Size([20140]) tensor(20000)
+processed seen_mask:  tensor([ True,  True,  True,  ..., False,  True, False]) torch.Size([25245]) tensor(20000)
+processed transformer_input:  torch.Size([20000, 9, 10])
+3d points shape:  torch.Size([29706, 3])
+transformer input:  torch.Size([23019, 9, 10])
+csr_idx:  tensor([     0,      0,      0,  ..., 215253, 215253, 215253])
+seen_mask:  tensor([False, False,  True,  ..., False, False, False]) torch.Size([29706]) tensor(23019)
+keep_idx:  tensor([    0,     1,     2,  ..., 23016, 23017, 23018]) torch.Size([20000])
+keep_idx_mask:  tensor([True, True, True,  ..., True, True, True]) torch.Size([23019]) tensor(20000)
+processed seen_mask:  tensor([False, False,  True,  ..., False, False, False]) torch.Size([29706]) tensor(20000)
+processed transformer_input:  torch.Size([20000, 9, 10])
+3d points shape:  torch.Size([55445, 3])
+transformer input:  torch.Size([46612, 9, 10])
+csr_idx:  tensor([     0,     10,     17,  ..., 268534, 268534, 268534])
+seen_mask:  tensor([ True,  True,  True,  ..., False, False, False]) torch.Size([55445]) tensor(46612)
+keep_idx:  tensor([    0,     2,     5,  ..., 46606, 46609, 46611]) torch.Size([20000])
+keep_idx_mask:  tensor([ True, False,  True,  ...,  True, False,  True]) torch.Size([46612]) tensor(20000)
+processed seen_mask:  tensor([ True, False,  True,  ..., False, False, False]) torch.Size([55445]) tensor(20000)
+processed transformer_input:  torch.Size([20000, 9, 10])
+[2022-11-09 21:47:59,926][torch_points3d.trainer][INFO] - Learning rate = 0.036314
+[2022-11-09 21:47:59,927][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-11-09 21:47:59,927][torch_points3d.metrics.base_tracker][INFO] -     train_loss_seg = 0.38293930888175964
+[2022-11-09 21:47:59,928][torch_points3d.metrics.base_tracker][INFO] -     train_loss_cross_entropy = 0.38293930888175964
+[2022-11-09 21:47:59,928][torch_points3d.metrics.base_tracker][INFO] -     train_acc = 88.20379323168464
+[2022-11-09 21:47:59,928][torch_points3d.metrics.base_tracker][INFO] -     train_macc = 55.206931117792415
+[2022-11-09 21:47:59,928][torch_points3d.metrics.base_tracker][INFO] -     train_miou = 34.87660954262563
+[2022-11-09 21:47:59,928][torch_points3d.metrics.base_tracker][INFO] -     train_miou_per_class = {0: '85.19', 1: '97.01', 2: '0.00', 3: '0.00', 4: '1.08', 5: '0.00', 6: '59.75', 7: '42.33', 8: '28.52', 9: '0.00', 10: '0.00', 11: '0.00', 12: '0.00', 13: '0.00', 14: '0.00', 15: '0.00', 16: '0.00', 17: '0.00', 18: '0.00', 19: '0.00'}
+[2022-11-09 21:47:59,928][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-11-09 21:47:59,929][torch_points3d.trainer][INFO] - EPOCH 23 / 301
+
+  0%|          | 0/3 [00:00<?, ?it/s]  0%|          | 0/3 [00:11<?, ?it/s, [0;92mdata_loading=10.94, iteration=0.565, train_acc=87.17, train_loss_cross_entropy=0.447, train_loss_seg=0.447, train_macc=55.50, train_miou=29.25[0m)] 33%|###3      | 1/3 [00:11<00:23, 11.51s/it, [0;92mdata_loading=10.94, iteration=0.565, train_acc=87.17, train_loss_cross_entropy=0.447, train_loss_seg=0.447, train_macc=55.50, train_miou=29.25[0m)] 33%|###3      | 1/3 [00:12<00:23, 11.51s/it, [0;92mdata_loading=0.000, iteration=0.530, train_acc=87.17, train_loss_cross_entropy=0.447, train_loss_seg=0.447, train_macc=55.50, train_miou=29.25[0m)] 67%|######6   | 2/3 [00:12<00:05,  5.05s/it, [0;92mdata_loading=0.000, iteration=0.530, train_acc=87.17, train_loss_cross_entropy=0.447, train_loss_seg=0.447, train_macc=55.50, train_miou=29.25[0m)] 67%|######6   | 2/3 [00:17<00:05,  5.05s/it, [0;92mdata_loading=4.995, iteration=0.434, train_acc=87.17, train_loss_cross_entropy=0.447, train_loss_seg=0.447, train_macc=55.50, train_miou=29.25[0m)]100%|##########| 3/3 [00:17<00:00,  5.23s/it, [0;92mdata_loading=4.995, iteration=0.434, train_acc=87.17, train_loss_cross_entropy=0.447, train_loss_seg=0.447, train_macc=55.50, train_miou=29.25[0m)]100%|##########| 3/3 [00:17<00:00,  5.82s/it, [0;92mdata_loading=4.995, iteration=0.434, train_acc=87.17, train_loss_cross_entropy=0.447, train_loss_seg=0.447, train_macc=55.50, train_miou=29.25[0m)]3d points shape:  torch.Size([25154, 3])
+transformer input:  torch.Size([19791, 9, 10])
+3d points shape:  torch.Size([25693, 3])
+transformer input:  torch.Size([19677, 9, 10])
+3d points shape:  torch.Size([53306, 3])
+transformer input:  torch.Size([43757, 9, 10])
+csr_idx:  tensor([     0,      7,     14,  ..., 259336, 259336, 259336])
+seen_mask:  tensor([ True,  True,  True,  ..., False, False, False]) torch.Size([53306]) tensor(43757)
+keep_idx:  tensor([    0,     2,     4,  ..., 43752, 43754, 43756]) torch.Size([20000])
+keep_idx_mask:  tensor([ True, False,  True,  ...,  True, False,  True]) torch.Size([43757]) tensor(20000)
+processed seen_mask:  tensor([ True, False,  True,  ..., False, False, False]) torch.Size([53306]) tensor(20000)
+processed transformer_input:  torch.Size([20000, 9, 10])
+[2022-11-09 21:48:18,346][torch_points3d.trainer][INFO] - Learning rate = 0.034680
+[2022-11-09 21:48:18,347][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-11-09 21:48:18,347][torch_points3d.metrics.base_tracker][INFO] -     train_loss_seg = 0.4476727843284607
+[2022-11-09 21:48:18,347][torch_points3d.metrics.base_tracker][INFO] -     train_loss_cross_entropy = 0.4476727843284607
+[2022-11-09 21:48:18,348][torch_points3d.metrics.base_tracker][INFO] -     train_acc = 87.1790757381258
+[2022-11-09 21:48:18,348][torch_points3d.metrics.base_tracker][INFO] -     train_macc = 55.5057199095955
+[2022-11-09 21:48:18,348][torch_points3d.metrics.base_tracker][INFO] -     train_miou = 29.25299586013112
+[2022-11-09 21:48:18,348][torch_points3d.metrics.base_tracker][INFO] -     train_miou_per_class = {0: '83.14', 1: '96.49', 2: '0.00', 3: '0.00', 4: '15.15', 5: '0.00', 6: '64.53', 7: '44.56', 8: '17.91', 9: '0.00', 10: '0.00', 11: '0.00', 12: '0.00', 13: '0.00', 14: '0.00', 15: '0.00', 16: '0.00', 17: '0.00', 18: '0.00', 19: '0.00'}
+[2022-11-09 21:48:18,348][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-11-09 21:48:18,349][torch_points3d.trainer][INFO] - EPOCH 24 / 301
+
+  0%|          | 0/3 [00:00<?, ?it/s]slurmstepd: error: *** JOB 10254017 ON r28n1 CANCELLED AT 2022-11-09T21:48:20 ***
