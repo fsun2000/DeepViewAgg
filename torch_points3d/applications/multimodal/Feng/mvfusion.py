@@ -143,8 +143,8 @@ class MVFusionEncoder(MVFusionBackboneBasedModel, ABC):
             
     
         # Features from only seen point-image matches are included in 'x'
-        viewing_feats = data.x[:, :, :-1]
-        m2f_feats = data.x[:, :, -1]
+        viewing_feats = data.data.mvfusion_input[:, :, :-1]
+        m2f_feats = data.data.mvfusion_input[:, :, -1]
         
         # Mask2Former predictions per view as feature
         m2f_feats = torch.nn.functional.one_hot(m2f_feats.squeeze().long(), self.n_classes)

@@ -8,7 +8,7 @@ resolution_2d: [320, 240]  # Image resolution, other resolutions have not been t
 exact_splatting_2d: True  # Whether only exact mappings are preserved after splatting
 
 class: scannet.ScannetDatasetMM
-dataset_name: "scannet-neucon-smallres"
+dataset_name: "scannet-neucon-smallres-m2f"
 dataroot: data
 full_resolution_3d: 0.01
 version: "v2"

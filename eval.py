@@ -4,7 +4,7 @@ from omegaconf import OmegaConf
 from torch_points3d.trainer import Trainer
 
 
-@hydra.main(config_path="conf", config_name="eval")
+@hydra.main(config_path="conf", config_name="config")
 def main(cfg):
     OmegaConf.set_struct(cfg, False)  # This allows getattr and hasattr methods to function correctly
     if cfg.pretty_print:

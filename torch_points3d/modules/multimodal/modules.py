@@ -520,13 +520,7 @@ class UnimodalBranch(nn.Module, ABC):
             hard_drop=False, keep_last_view=False, checkpointing='',
             out_channels=None, interpolate=False):
         super(UnimodalBranch, self).__init__()
-        
-        
-        
-        print("Fix UnimodalBranch for mvfusion_3d or make a new class")
-        raise ImplementationError
-        
-        
+
         self.conv = conv
         self.atomic_pool = atomic_pool
         self.view_pool = view_pool
