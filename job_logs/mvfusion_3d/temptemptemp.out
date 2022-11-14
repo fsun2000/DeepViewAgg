@@ -1,0 +1,4 @@
+MMData debug() function changed, please uncomment the 3rd assert line when doing inference without M2F features!
+[2022-11-13 13:12:09,978][torch_points3d.trainer][INFO] - DEVICE : cuda
+./scripts/train_scannet_mvfusion_3d.sh: line 54: 13900 Killed                  python -W ignore train.py data=${DATASET_CONFIG} models=${MODELS_CONFIG} model_name=${MODEL_NAME} task=${TASK} training=${TRAINING} lr_scheduler=${LR_SCHEDULER} eval_frequency=${EVAL_FREQUENCY} data.dataroot=${DATA_ROOT} training.cuda=${I_GPU} training.batch_size=${BATCH_SIZE} training.epochs=${EPOCHS} training.num_workers=${WORKERS} training.optim.base_lr=${BASE_LR} training.wandb.log=${WANDB_LOGGING} training.wandb.name=${EXP_NAME} tracker_options.make_submission=${SUBMISSION} training.checkpoint_dir=${CHECKPOINT_DIR}
+slurmstepd: error: Detected 1 oom-kill event(s) in StepId=10264100.batch. Some of your processes may have been killed by the cgroup out-of-memory handler.

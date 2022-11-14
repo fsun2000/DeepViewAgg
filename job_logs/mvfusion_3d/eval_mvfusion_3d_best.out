@@ -1,0 +1,899 @@
+MMData debug() function changed, please uncomment the 3rd assert line when doing inference without M2F features!
+[2022-11-13 12:42:37,543][torch_points3d.trainer][INFO] - DEVICE : cuda
+[2022-11-13 12:42:38,206][torch_points3d.metrics.model_checkpoint][INFO] - Loading checkpoint from /home/fsun/DeepViewAgg/outputs/2022-11-11/17-18-09/MVFusion_3D.pt
+load_m2f_masks:  True
+initialize train dataset
+temporarily hard code N-views in get_view_dependent_features()
+initialize val dataset
+temporarily hard code N-views in get_view_dependent_features()
+task:  segmentation.multimodal
+tested_model_name:  MVFusion_3D
+73221
+class_name:  MVFusionAPIModel
+model_module:  torch_points3d.models.segmentation.multimodal.Feng.mvfusion_3d
+name, cls of chosen model_cls:  MVFusionAPIModel <class 'torch_points3d.models.segmentation.multimodal.Feng.mvfusion_3d.MVFusionAPIModel'>
+75397
+[2022-11-13 12:43:08,010][torch_points3d.applications.modelfactory][INFO] - The config will be used to build the model
+x feature dim:  {'FEAT': 3}
+nc_in:  259
+nc_in:  128
+nc_in:  32
+nc_in:  64
+nc_in:  128
+nc_in:  256
+nc_in:  128
+nc_in:  128
+nc_in:  96
+nc_in:  96
+[2022-11-13 12:43:08,723][torch_points3d.metrics.model_checkpoint][INFO] - Available weights : ['latest', 'acc', 'macc', 'miou']
+[2022-11-13 12:43:08,723][torch_points3d.metrics.model_checkpoint][INFO] - Model loaded from MVFusion_3D.pt:latest
+[2022-11-13 12:43:08,832][torch_points3d.core.schedulers.bn_schedulers][INFO] - Setting batchnorm momentum at 0.02
+[2022-11-13 12:43:08,857][torch_points3d.trainer][INFO] - MVFusionAPIModel(
+  (backbone): MVFusionSparseConv3dUnet(
+    (inner_modules): ModuleList(
+      (0): Identity()
+    )
+    (down_modules): ModuleList(
+      (0): MultimodalBlockDown(
+        (block_1): Identity()
+        (block_2): Identity()
+        (image): MVFusionUnimodalBranch(
+          drop_3d=None
+          drop_mod=None
+          keep_last_view=False
+          checkpointing=c
+          (transformerfusion): DVA_cls_5_fusion_7(
+            (fusion): TransformerFusion(
+              (input_layer): Linear(in_features=29, out_features=256, bias=True)
+              (transformer_layers): ModuleList(
+                (0): AttentionBlock(
+                  (norm_1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                  (norm_2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                  (attn): MultiheadAttention(
+                    (out_proj): NonDynamicallyQuantizableLinear(in_features=256, out_features=256, bias=True)
+                  )
+                  (linear): Sequential(
+                    (0): Linear(in_features=256, out_features=512, bias=True)
+                    (1): GELU(approximate=none)
+                    (2): Dropout(p=0.2, inplace=False)
+                    (3): Linear(in_features=512, out_features=256, bias=True)
+                    (4): Dropout(p=0.2, inplace=False)
+                  )
+                )
+                (1): AttentionBlock(
+                  (norm_1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                  (norm_2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                  (attn): MultiheadAttention(
+                    (out_proj): NonDynamicallyQuantizableLinear(in_features=256, out_features=256, bias=True)
+                  )
+                  (linear): Sequential(
+                    (0): Linear(in_features=256, out_features=512, bias=True)
+                    (1): GELU(approximate=none)
+                    (2): Dropout(p=0.2, inplace=False)
+                    (3): Linear(in_features=512, out_features=256, bias=True)
+                    (4): Dropout(p=0.2, inplace=False)
+                  )
+                )
+                (2): AttentionBlock(
+                  (norm_1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                  (norm_2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                  (attn): MultiheadAttention(
+                    (out_proj): NonDynamicallyQuantizableLinear(in_features=256, out_features=256, bias=True)
+                  )
+                  (linear): Sequential(
+                    (0): Linear(in_features=256, out_features=512, bias=True)
+                    (1): GELU(approximate=none)
+                    (2): Dropout(p=0.2, inplace=False)
+                    (3): Linear(in_features=512, out_features=256, bias=True)
+                    (4): Dropout(p=0.2, inplace=False)
+                  )
+                )
+                (3): AttentionBlock(
+                  (norm_1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                  (norm_2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                  (attn): MultiheadAttention(
+                    (out_proj): NonDynamicallyQuantizableLinear(in_features=256, out_features=256, bias=True)
+                  )
+                  (linear): Sequential(
+                    (0): Linear(in_features=256, out_features=512, bias=True)
+                    (1): GELU(approximate=none)
+                    (2): Dropout(p=0.2, inplace=False)
+                    (3): Linear(in_features=512, out_features=256, bias=True)
+                    (4): Dropout(p=0.2, inplace=False)
+                  )
+                )
+              )
+            )
+            (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          )
+          (fusion): BimodalFusion(mode=concatenation)
+        )
+      )
+      (1): MultimodalBlockDown(
+        (block_1): ResNetDown(
+          (conv_in): Seq(
+            (0): Conv3d(in_channels=259, out_channels=128, kernel_size=3, stride=1, dilation=1)
+            (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+            (2): ReLU(inplace=True)
+          )
+        )
+        (block_2): Identity()
+        (image): IdentityBranch()
+      )
+      (2): MultimodalBlockDown(
+        (block_1): ResNetDown(
+          (conv_in): Seq(
+            (0): Conv3d(in_channels=128, out_channels=128, kernel_size=2, stride=2, dilation=1)
+            (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+            (2): ReLU(inplace=True)
+          )
+          (blocks): Seq(
+            (0): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=128, out_channels=32, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=32, out_channels=32, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+              (downsample): Seq(
+                (0): Conv3d(in_channels=128, out_channels=32, kernel_size=1, stride=1, dilation=1)
+                (1): BatchNorm(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              )
+            )
+            (1): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=32, out_channels=32, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=32, out_channels=32, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+            )
+          )
+        )
+        (block_2): Identity()
+        (image): IdentityBranch()
+      )
+      (3): MultimodalBlockDown(
+        (block_1): ResNetDown(
+          (conv_in): Seq(
+            (0): Conv3d(in_channels=32, out_channels=32, kernel_size=2, stride=2, dilation=1)
+            (1): BatchNorm(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+            (2): ReLU(inplace=True)
+          )
+          (blocks): Seq(
+            (0): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=32, out_channels=64, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(64, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=64, out_channels=64, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(64, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+              (downsample): Seq(
+                (0): Conv3d(in_channels=32, out_channels=64, kernel_size=1, stride=1, dilation=1)
+                (1): BatchNorm(64, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              )
+            )
+            (1): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=64, out_channels=64, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(64, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=64, out_channels=64, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(64, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+            )
+            (2): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=64, out_channels=64, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(64, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=64, out_channels=64, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(64, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+            )
+          )
+        )
+        (block_2): Identity()
+        (image): IdentityBranch()
+      )
+      (4): MultimodalBlockDown(
+        (block_1): ResNetDown(
+          (conv_in): Seq(
+            (0): Conv3d(in_channels=64, out_channels=64, kernel_size=2, stride=2, dilation=1)
+            (1): BatchNorm(64, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+            (2): ReLU(inplace=True)
+          )
+          (blocks): Seq(
+            (0): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=64, out_channels=128, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+              (downsample): Seq(
+                (0): Conv3d(in_channels=64, out_channels=128, kernel_size=1, stride=1, dilation=1)
+                (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              )
+            )
+            (1): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+            )
+            (2): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+            )
+            (3): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+            )
+          )
+        )
+        (block_2): Identity()
+        (image): IdentityBranch()
+      )
+      (5): MultimodalBlockDown(
+        (block_1): ResNetDown(
+          (conv_in): Seq(
+            (0): Conv3d(in_channels=128, out_channels=128, kernel_size=2, stride=2, dilation=1)
+            (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+            (2): ReLU(inplace=True)
+          )
+          (blocks): Seq(
+            (0): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=128, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+              (downsample): Seq(
+                (0): Conv3d(in_channels=128, out_channels=256, kernel_size=1, stride=1, dilation=1)
+                (1): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              )
+            )
+            (1): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+            )
+            (2): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+            )
+            (3): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+            )
+            (4): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+            )
+            (5): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+            )
+          )
+        )
+        (block_2): Identity()
+        (image): IdentityBranch()
+      )
+    )
+    (up_modules): ModuleList(
+      (0): ResNetUp(
+        (conv_in): Seq(
+          (0): Conv3d(in_channels=256, out_channels=256, kernel_size=2, stride=2, dilation=1)
+          (1): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+        )
+        (blocks): Seq(
+          (0): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=384, out_channels=128, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+            (downsample): Seq(
+              (0): Conv3d(in_channels=384, out_channels=128, kernel_size=1, stride=1, dilation=1)
+              (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+            )
+          )
+        )
+      )
+      (1): ResNetUp(
+        (conv_in): Seq(
+          (0): Conv3d(in_channels=128, out_channels=128, kernel_size=2, stride=2, dilation=1)
+          (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+        )
+        (blocks): Seq(
+          (0): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=192, out_channels=128, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+            (downsample): Seq(
+              (0): Conv3d(in_channels=192, out_channels=128, kernel_size=1, stride=1, dilation=1)
+              (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+            )
+          )
+        )
+      )
+      (2): ResNetUp(
+        (conv_in): Seq(
+          (0): Conv3d(in_channels=128, out_channels=128, kernel_size=2, stride=2, dilation=1)
+          (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+        )
+        (blocks): Seq(
+          (0): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=160, out_channels=96, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(96, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=96, out_channels=96, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(96, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+            (downsample): Seq(
+              (0): Conv3d(in_channels=160, out_channels=96, kernel_size=1, stride=1, dilation=1)
+              (1): BatchNorm(96, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+            )
+          )
+        )
+      )
+      (3): ResNetUp(
+        (conv_in): Seq(
+          (0): Conv3d(in_channels=96, out_channels=96, kernel_size=2, stride=2, dilation=1)
+          (1): BatchNorm(96, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+        )
+        (blocks): Seq(
+          (0): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=224, out_channels=96, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(96, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=96, out_channels=96, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(96, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+            (downsample): Seq(
+              (0): Conv3d(in_channels=224, out_channels=96, kernel_size=1, stride=1, dilation=1)
+              (1): BatchNorm(96, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+            )
+          )
+        )
+      )
+      (4): ResNetUp(
+        (conv_in): Seq(
+          (0): Conv3d(in_channels=96, out_channels=96, kernel_size=3, stride=1, dilation=1)
+          (1): BatchNorm(96, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+        )
+        (blocks): Seq(
+          (0): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=96, out_channels=96, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(96, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=96, out_channels=96, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(96, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+          )
+        )
+      )
+    )
+  )
+  (head): Sequential(
+    (0): Linear(in_features=96, out_features=20, bias=True)
+  )
+)
+[2022-11-13 12:43:08,861][torch_points3d.utils.colors][INFO] - [0;32mOptimizer: SGD (
+Parameter Group 0
+    dampening: 0.1
+    foreach: None
+    initial_lr: 0.1
+    lr: 0.0002632903454363895
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 0.0001
+)[0m
+[2022-11-13 12:43:08,861][torch_points3d.utils.colors][INFO] - [0;32mLearning Rate Scheduler: ExponentialLR({'gamma': 0.955}, update_scheduler_on=on_epoch)[0m
+[2022-11-13 12:43:08,861][torch_points3d.utils.colors][INFO] - [0;32mBatchNorm Scheduler: BNMomentumScheduler(base_momentum: 0.02, update_scheduler_on=on_epoch)[0m
+[2022-11-13 12:43:08,861][torch_points3d.utils.colors][INFO] - [0;32mAccumulated gradients: None[0m
+[2022-11-13 12:43:08,862][torch_points3d.trainer][INFO] - Model size = 33933844
+[2022-11-13 12:43:08,863][torch_points3d.trainer][INFO] - Dataset: ScannetDatasetMM 
+[0;95mtrain_pre_batch_collate_transform [0m= None
+[0;95mval_pre_batch_collate_transform [0m= None
+[0;95mtest_pre_batch_collate_transform [0m= None
+[0;95mpre_transform [0m= Compose([
+    SaveOriginalPosId,
+    PCAComputePointwise(num_neighbors=50, r=None, use_full_pos=False, use_cuda=False, use_faiss=False, ncells=None, nprobes=10, chunk_size=1000000),
+    EigenFeatures(norm=True, linearity=True, planarity=True, scattering=True, temperature=None),
+    RemoveAttributes(attr_names=['eigenvalues', 'eigenvectors'], strict=False),
+])
+[0;95mtest_transform [0m= Compose([
+    GridSampling3D(grid_size=0.03, quantize_coords=True, mode=last),
+    XYZFeature(axis=['x', 'y', 'z']),
+    AddFeatsByKeys(pos_x=True, pos_y=True, pos_z=True, rgb=False, linearity=False, norm=False, planarity=False, scattering=False),
+])
+[0;95mtrain_transform [0m= Compose([
+    ElasticDistortion(apply_distorsion=True, granularity=[0.2, 0.8], magnitude=[0.4, 1.6]),
+    Random3AxisRotation(apply_rotation=True, rot_x=8, rot_y=8, rot_z=180),
+    Random symmetry of axes: x=True, y=True, z=False,
+    RandomScaleAnisotropic([0.9, 1.1]),
+    GridSampling3D(grid_size=0.03, quantize_coords=True, mode=last),
+    XYZFeature(axis=['x', 'y', 'z']),
+    AddFeatsByKeys(pos_x=True, pos_y=True, pos_z=True, rgb=False, linearity=False, norm=False, planarity=False, scattering=False),
+])
+[0;95mval_transform [0m= Compose([
+    GridSampling3D(grid_size=0.03, quantize_coords=True, mode=last),
+    XYZFeature(axis=['x', 'y', 'z']),
+    AddFeatsByKeys(pos_x=True, pos_y=True, pos_z=True, rgb=False, linearity=False, norm=False, planarity=False, scattering=False),
+])
+[0;95minference_transform [0m= Compose([
+    SaveOriginalPosId,
+    PCAComputePointwise(num_neighbors=50, r=None, use_full_pos=False, use_cuda=False, use_faiss=False, ncells=None, nprobes=10, chunk_size=1000000),
+    EigenFeatures(norm=True, linearity=True, planarity=True, scattering=True, temperature=None),
+    RemoveAttributes(attr_names=['eigenvalues', 'eigenvectors'], strict=False),
+    GridSampling3D(grid_size=0.03, quantize_coords=True, mode=last),
+    XYZFeature(axis=['x', 'y', 'z']),
+    AddFeatsByKeys(pos_x=True, pos_y=True, pos_z=True, rgb=False, linearity=False, norm=False, planarity=False, scattering=False),
+])
+[0;95mpre_transform_image [0m= ComposeMultiModal([
+    NonStaticMask(ref_size=(320, 240), proj_upscale=1, n_sample=5),
+    MapImages(key=mapping_index, verbose=False, cylinder=False, ref_size=[320, 240], proj_upscale=1, method=SplattingVisibility, use_cuda=False, kwargs={'voxel': 0.03, 'r_max': 8, 'r_min': 0.05, 'exact': True, 'camera': 'scannet'}),
+    NeighborhoodBasedMappingFeatures(k_list=[50], voxel=0.01, compute_density=True, compute_occlusion=True, use_faiss=False, use_cuda=False, ncells=None, nprobes=10, verbose=True),
+])
+[0;95mtest_transform_image [0m= ComposeMultiModal([
+    SelectMappingFromPointId(key=mapping_index),
+    ToImageData(),
+    PickImagesFromMemoryCredit(credit=7680000, use_coverage=True, k_coverage=2),
+])
+[0;95mtrain_transform_image [0m= ComposeMultiModal([
+    SelectMappingFromPointId(key=mapping_index),
+    ToImageData(),
+    PickImagesFromMemoryCredit(credit=7680000, use_coverage=True, k_coverage=2),
+    JitterMappingFeatures(sigma=0.02, clip=0.03),
+])
+[0;95mval_transform_image [0m= ComposeMultiModal([
+    SelectMappingFromPointId(key=mapping_index),
+    ToImageData(),
+    PickImagesFromMemoryCredit(credit=7680000, use_coverage=True, k_coverage=2),
+])
+[0;95minference_transform_image [0m= ComposeMultiModal([
+    NonStaticMask(ref_size=(320, 240), proj_upscale=1, n_sample=5),
+    MapImages(key=mapping_index, verbose=False, cylinder=False, ref_size=[320, 240], proj_upscale=1, method=SplattingVisibility, use_cuda=False, kwargs={'voxel': 0.03, 'r_max': 8, 'r_min': 0.05, 'exact': True, 'camera': 'scannet'}),
+    NeighborhoodBasedMappingFeatures(k_list=[50], voxel=0.01, compute_density=True, compute_occlusion=True, use_faiss=False, use_cuda=False, ncells=None, nprobes=10, verbose=True),
+    SelectMappingFromPointId(key=mapping_index),
+    ToImageData(),
+    PickImagesFromMemoryCredit(credit=7680000, use_coverage=True, k_coverage=2),
+])
+Size of [0;95mtrain_dataset [0m= 1201
+Size of [0;95mtest_dataset [0m= 0
+Size of [0;95mval_dataset [0m= 312
+[0;95mBatch size =[0m 3
+75092
+[2022-11-13 12:43:16,384][torch_points3d.datasets.base_dataset][INFO] - Available stage selection datasets: [0;95m ['val'] [0m
+[2022-11-13 12:43:16,384][torch_points3d.datasets.base_dataset][INFO] - The models will be selected using the metrics on following dataset: [0;95m val [0m
+  0%|          | 0/104 [00:00<?, ?it/s]  0%|          | 0/104 [00:58<?, ?it/s, [0;93mval_acc=92.29, val_loss_cross_entropy=0.263, val_loss_seg=0.263, val_macc=81.51, val_miou=65.24[0m)]  1%|          | 1/104 [00:58<1:40:28, 58.53s/it, [0;93mval_acc=92.29, val_loss_cross_entropy=0.263, val_loss_seg=0.263, val_macc=81.51, val_miou=65.24[0m)]  1%|          | 1/104 [00:59<1:40:28, 58.53s/it, [0;93mval_acc=91.53, val_loss_cross_entropy=0.428, val_loss_seg=0.428, val_macc=81.25, val_miou=55.85[0m)]  2%|1         | 2/104 [00:59<42:18, 24.89s/it, [0;93mval_acc=91.53, val_loss_cross_entropy=0.428, val_loss_seg=0.428, val_macc=81.25, val_miou=55.85[0m)]    2%|1         | 2/104 [01:01<42:18, 24.89s/it, [0;93mval_acc=92.68, val_loss_cross_entropy=0.333, val_loss_seg=0.333, val_macc=83.24, val_miou=56.09[0m)]  3%|2         | 3/104 [01:01<24:23, 14.49s/it, [0;93mval_acc=92.68, val_loss_cross_entropy=0.333, val_loss_seg=0.333, val_macc=83.24, val_miou=56.09[0m)]  3%|2         | 3/104 [01:04<24:23, 14.49s/it, [0;93mval_acc=93.33, val_loss_cross_entropy=0.286, val_loss_seg=0.286, val_macc=88.23, val_miou=77.38[0m)]  4%|3         | 4/104 [01:04<16:06,  9.67s/it, [0;93mval_acc=93.33, val_loss_cross_entropy=0.286, val_loss_seg=0.286, val_macc=88.23, val_miou=77.38[0m)]  4%|3         | 4/104 [01:06<16:06,  9.67s/it, [0;93mval_acc=91.75, val_loss_cross_entropy=0.336, val_loss_seg=0.336, val_macc=87.57, val_miou=74.08[0m)]  5%|4         | 5/104 [01:06<11:27,  6.94s/it, [0;93mval_acc=91.75, val_loss_cross_entropy=0.336, val_loss_seg=0.336, val_macc=87.57, val_miou=74.08[0m)]  5%|4         | 5/104 [01:09<11:27,  6.94s/it, [0;93mval_acc=91.35, val_loss_cross_entropy=0.341, val_loss_seg=0.341, val_macc=87.82, val_miou=74.27[0m)]  6%|5         | 6/104 [01:09<09:20,  5.72s/it, [0;93mval_acc=91.35, val_loss_cross_entropy=0.341, val_loss_seg=0.341, val_macc=87.82, val_miou=74.27[0m)]  6%|5         | 6/104 [01:11<09:20,  5.72s/it, [0;93mval_acc=91.78, val_loss_cross_entropy=0.321, val_loss_seg=0.321, val_macc=88.05, val_miou=74.47[0m)]  7%|6         | 7/104 [01:11<07:21,  4.55s/it, [0;93mval_acc=91.78, val_loss_cross_entropy=0.321, val_loss_seg=0.321, val_macc=88.05, val_miou=74.47[0m)]  7%|6         | 7/104 [01:13<07:21,  4.55s/it, [0;93mval_acc=92.09, val_loss_cross_entropy=0.299, val_loss_seg=0.299, val_macc=88.34, val_miou=74.94[0m)]  8%|7         | 8/104 [01:13<05:38,  3.52s/it, [0;93mval_acc=92.09, val_loss_cross_entropy=0.299, val_loss_seg=0.299, val_macc=88.34, val_miou=74.94[0m)]  8%|7         | 8/104 [01:15<05:38,  3.52s/it, [0;93mval_acc=92.54, val_loss_cross_entropy=0.276, val_loss_seg=0.276, val_macc=88.66, val_miou=75.85[0m)]  9%|8         | 9/104 [01:15<04:50,  3.06s/it, [0;93mval_acc=92.54, val_loss_cross_entropy=0.276, val_loss_seg=0.276, val_macc=88.66, val_miou=75.85[0m)]  9%|8         | 9/104 [01:16<04:50,  3.06s/it, [0;93mval_acc=92.81, val_loss_cross_entropy=0.259, val_loss_seg=0.259, val_macc=88.76, val_miou=76.46[0m)] 10%|9         | 10/104 [01:16<04:05,  2.61s/it, [0;93mval_acc=92.81, val_loss_cross_entropy=0.259, val_loss_seg=0.259, val_macc=88.76, val_miou=76.46[0m)] 10%|9         | 10/104 [01:18<04:05,  2.61s/it, [0;93mval_acc=92.93, val_loss_cross_entropy=0.256, val_loss_seg=0.256, val_macc=88.87, val_miou=76.38[0m)] 11%|#         | 11/104 [01:18<03:32,  2.28s/it, [0;93mval_acc=92.93, val_loss_cross_entropy=0.256, val_loss_seg=0.256, val_macc=88.87, val_miou=76.38[0m)] 11%|#         | 11/104 [01:20<03:32,  2.28s/it, [0;93mval_acc=92.99, val_loss_cross_entropy=0.262, val_loss_seg=0.262, val_macc=88.77, val_miou=76.20[0m)] 12%|#1        | 12/104 [01:20<03:28,  2.27s/it, [0;93mval_acc=92.99, val_loss_cross_entropy=0.262, val_loss_seg=0.262, val_macc=88.77, val_miou=76.20[0m)] 12%|#1        | 12/104 [01:21<03:28,  2.27s/it, [0;93mval_acc=93.02, val_loss_cross_entropy=0.256, val_loss_seg=0.256, val_macc=88.85, val_miou=75.93[0m)] 12%|#2        | 13/104 [01:21<02:59,  1.97s/it, [0;93mval_acc=93.02, val_loss_cross_entropy=0.256, val_loss_seg=0.256, val_macc=88.85, val_miou=75.93[0m)] 12%|#2        | 13/104 [01:23<02:59,  1.97s/it, [0;93mval_acc=93.09, val_loss_cross_entropy=0.253, val_loss_seg=0.253, val_macc=88.51, val_miou=76.11[0m)] 13%|#3        | 14/104 [01:23<02:47,  1.86s/it, [0;93mval_acc=93.09, val_loss_cross_entropy=0.253, val_loss_seg=0.253, val_macc=88.51, val_miou=76.11[0m)] 13%|#3        | 14/104 [01:25<02:47,  1.86s/it, [0;93mval_acc=93.02, val_loss_cross_entropy=0.262, val_loss_seg=0.262, val_macc=88.20, val_miou=75.79[0m)] 14%|#4        | 15/104 [01:25<02:36,  1.76s/it, [0;93mval_acc=93.02, val_loss_cross_entropy=0.262, val_loss_seg=0.262, val_macc=88.20, val_miou=75.79[0m)] 14%|#4        | 15/104 [01:26<02:36,  1.76s/it, [0;93mval_acc=93.07, val_loss_cross_entropy=0.260, val_loss_seg=0.260, val_macc=88.30, val_miou=75.88[0m)] 15%|#5        | 16/104 [01:26<02:22,  1.62s/it, [0;93mval_acc=93.07, val_loss_cross_entropy=0.260, val_loss_seg=0.260, val_macc=88.30, val_miou=75.88[0m)] 15%|#5        | 16/104 [01:27<02:22,  1.62s/it, [0;93mval_acc=93.09, val_loss_cross_entropy=0.256, val_loss_seg=0.256, val_macc=88.73, val_miou=76.56[0m)] 16%|#6        | 17/104 [01:27<02:09,  1.49s/it, [0;93mval_acc=93.09, val_loss_cross_entropy=0.256, val_loss_seg=0.256, val_macc=88.73, val_miou=76.56[0m)] 16%|#6        | 17/104 [01:28<02:09,  1.49s/it, [0;93mval_acc=93.14, val_loss_cross_entropy=0.250, val_loss_seg=0.250, val_macc=89.66, val_miou=77.98[0m)] 17%|#7        | 18/104 [01:28<01:57,  1.36s/it, [0;93mval_acc=93.14, val_loss_cross_entropy=0.250, val_loss_seg=0.250, val_macc=89.66, val_miou=77.98[0m)] 17%|#7        | 18/104 [01:30<01:57,  1.36s/it, [0;93mval_acc=92.99, val_loss_cross_entropy=0.256, val_loss_seg=0.256, val_macc=89.68, val_miou=78.77[0m)] 18%|#8        | 19/104 [01:30<02:00,  1.42s/it, [0;93mval_acc=92.99, val_loss_cross_entropy=0.256, val_loss_seg=0.256, val_macc=89.68, val_miou=78.77[0m)] 18%|#8        | 19/104 [01:37<02:00,  1.42s/it, [0;93mval_acc=92.93, val_loss_cross_entropy=0.260, val_loss_seg=0.260, val_macc=89.10, val_miou=78.25[0m)] 19%|#9        | 20/104 [01:37<04:36,  3.30s/it, [0;93mval_acc=92.93, val_loss_cross_entropy=0.260, val_loss_seg=0.260, val_macc=89.10, val_miou=78.25[0m)] 19%|#9        | 20/104 [01:39<04:36,  3.30s/it, [0;93mval_acc=92.90, val_loss_cross_entropy=0.259, val_loss_seg=0.259, val_macc=89.00, val_miou=78.14[0m)] 20%|##        | 21/104 [01:39<03:44,  2.71s/it, [0;93mval_acc=92.90, val_loss_cross_entropy=0.259, val_loss_seg=0.259, val_macc=89.00, val_miou=78.14[0m)] 20%|##        | 21/104 [01:41<03:44,  2.71s/it, [0;93mval_acc=92.48, val_loss_cross_entropy=0.272, val_loss_seg=0.272, val_macc=87.53, val_miou=77.03[0m)] 21%|##1       | 22/104 [01:41<03:34,  2.61s/it, [0;93mval_acc=92.48, val_loss_cross_entropy=0.272, val_loss_seg=0.272, val_macc=87.53, val_miou=77.03[0m)] 21%|##1       | 22/104 [01:43<03:34,  2.61s/it, [0;93mval_acc=92.36, val_loss_cross_entropy=0.275, val_loss_seg=0.275, val_macc=87.37, val_miou=76.91[0m)] 22%|##2       | 23/104 [01:43<03:17,  2.44s/it, [0;93mval_acc=92.36, val_loss_cross_entropy=0.275, val_loss_seg=0.275, val_macc=87.37, val_miou=76.91[0m)] 22%|##2       | 23/104 [01:45<03:17,  2.44s/it, [0;93mval_acc=92.12, val_loss_cross_entropy=0.286, val_loss_seg=0.286, val_macc=87.02, val_miou=76.58[0m)] 23%|##3       | 24/104 [01:45<03:11,  2.39s/it, [0;93mval_acc=92.12, val_loss_cross_entropy=0.286, val_loss_seg=0.286, val_macc=87.02, val_miou=76.58[0m)] 23%|##3       | 24/104 [01:51<03:11,  2.39s/it, [0;93mval_acc=92.11, val_loss_cross_entropy=0.285, val_loss_seg=0.285, val_macc=87.21, val_miou=77.01[0m)] 24%|##4       | 25/104 [01:51<04:25,  3.36s/it, [0;93mval_acc=92.11, val_loss_cross_entropy=0.285, val_loss_seg=0.285, val_macc=87.21, val_miou=77.01[0m)] 24%|##4       | 25/104 [02:10<04:25,  3.36s/it, [0;93mval_acc=92.03, val_loss_cross_entropy=0.286, val_loss_seg=0.286, val_macc=85.28, val_miou=76.50[0m)] 25%|##5       | 26/104 [02:10<10:23,  8.00s/it, [0;93mval_acc=92.03, val_loss_cross_entropy=0.286, val_loss_seg=0.286, val_macc=85.28, val_miou=76.50[0m)] 25%|##5       | 26/104 [02:12<10:23,  8.00s/it, [0;93mval_acc=92.13, val_loss_cross_entropy=0.283, val_loss_seg=0.283, val_macc=85.50, val_miou=76.83[0m)] 26%|##5       | 27/104 [02:12<08:00,  6.24s/it, [0;93mval_acc=92.13, val_loss_cross_entropy=0.283, val_loss_seg=0.283, val_macc=85.50, val_miou=76.83[0m)] 26%|##5       | 27/104 [02:13<08:00,  6.24s/it, [0;93mval_acc=92.17, val_loss_cross_entropy=0.281, val_loss_seg=0.281, val_macc=85.76, val_miou=77.11[0m)] 27%|##6       | 28/104 [02:13<05:52,  4.64s/it, [0;93mval_acc=92.17, val_loss_cross_entropy=0.281, val_loss_seg=0.281, val_macc=85.76, val_miou=77.11[0m)] 27%|##6       | 28/104 [02:14<05:52,  4.64s/it, [0;93mval_acc=92.18, val_loss_cross_entropy=0.282, val_loss_seg=0.282, val_macc=85.73, val_miou=77.02[0m)] 28%|##7       | 29/104 [02:14<04:36,  3.68s/it, [0;93mval_acc=92.18, val_loss_cross_entropy=0.282, val_loss_seg=0.282, val_macc=85.73, val_miou=77.02[0m)] 28%|##7       | 29/104 [02:15<04:36,  3.68s/it, [0;93mval_acc=92.16, val_loss_cross_entropy=0.285, val_loss_seg=0.285, val_macc=85.75, val_miou=76.90[0m)] 29%|##8       | 30/104 [02:15<03:37,  2.93s/it, [0;93mval_acc=92.16, val_loss_cross_entropy=0.285, val_loss_seg=0.285, val_macc=85.75, val_miou=76.90[0m)] 29%|##8       | 30/104 [02:21<03:37,  2.93s/it, [0;93mval_acc=91.89, val_loss_cross_entropy=0.299, val_loss_seg=0.299, val_macc=85.25, val_miou=76.64[0m)] 30%|##9       | 31/104 [02:21<04:31,  3.72s/it, [0;93mval_acc=91.89, val_loss_cross_entropy=0.299, val_loss_seg=0.299, val_macc=85.25, val_miou=76.64[0m)] 30%|##9       | 31/104 [02:25<04:31,  3.72s/it, [0;93mval_acc=91.41, val_loss_cross_entropy=0.310, val_loss_seg=0.310, val_macc=84.92, val_miou=76.08[0m)] 31%|###       | 32/104 [02:25<04:26,  3.71s/it, [0;93mval_acc=91.41, val_loss_cross_entropy=0.310, val_loss_seg=0.310, val_macc=84.92, val_miou=76.08[0m)] 31%|###       | 32/104 [02:26<04:26,  3.71s/it, [0;93mval_acc=91.34, val_loss_cross_entropy=0.313, val_loss_seg=0.313, val_macc=84.94, val_miou=76.05[0m)] 32%|###1      | 33/104 [02:26<03:30,  2.96s/it, [0;93mval_acc=91.34, val_loss_cross_entropy=0.313, val_loss_seg=0.313, val_macc=84.94, val_miou=76.05[0m)] 32%|###1      | 33/104 [02:28<03:30,  2.96s/it, [0;93mval_acc=91.33, val_loss_cross_entropy=0.312, val_loss_seg=0.312, val_macc=84.40, val_miou=75.52[0m)] 33%|###2      | 34/104 [02:28<03:12,  2.75s/it, [0;93mval_acc=91.33, val_loss_cross_entropy=0.312, val_loss_seg=0.312, val_macc=84.40, val_miou=75.52[0m)] 33%|###2      | 34/104 [02:30<03:12,  2.75s/it, [0;93mval_acc=91.48, val_loss_cross_entropy=0.309, val_loss_seg=0.309, val_macc=84.34, val_miou=75.48[0m)] 34%|###3      | 35/104 [02:30<02:58,  2.59s/it, [0;93mval_acc=91.48, val_loss_cross_entropy=0.309, val_loss_seg=0.309, val_macc=84.34, val_miou=75.48[0m)] 34%|###3      | 35/104 [02:32<02:58,  2.59s/it, [0;93mval_acc=91.55, val_loss_cross_entropy=0.304, val_loss_seg=0.304, val_macc=84.45, val_miou=75.67[0m)] 35%|###4      | 36/104 [02:32<02:27,  2.17s/it, [0;93mval_acc=91.55, val_loss_cross_entropy=0.304, val_loss_seg=0.304, val_macc=84.45, val_miou=75.67[0m)] 35%|###4      | 36/104 [02:33<02:27,  2.17s/it, [0;93mval_acc=91.67, val_loss_cross_entropy=0.298, val_loss_seg=0.298, val_macc=84.62, val_miou=75.90[0m)] 36%|###5      | 37/104 [02:33<02:14,  2.01s/it, [0;93mval_acc=91.67, val_loss_cross_entropy=0.298, val_loss_seg=0.298, val_macc=84.62, val_miou=75.90[0m)] 36%|###5      | 37/104 [02:35<02:14,  2.01s/it, [0;93mval_acc=91.68, val_loss_cross_entropy=0.299, val_loss_seg=0.299, val_macc=84.76, val_miou=76.02[0m)] 37%|###6      | 38/104 [02:35<02:10,  1.98s/it, [0;93mval_acc=91.68, val_loss_cross_entropy=0.299, val_loss_seg=0.299, val_macc=84.76, val_miou=76.02[0m)] 37%|###6      | 38/104 [02:37<02:10,  1.98s/it, [0;93mval_acc=91.69, val_loss_cross_entropy=0.302, val_loss_seg=0.302, val_macc=84.74, val_miou=75.89[0m)] 38%|###7      | 39/104 [02:37<02:11,  2.02s/it, [0;93mval_acc=91.69, val_loss_cross_entropy=0.302, val_loss_seg=0.302, val_macc=84.74, val_miou=75.89[0m)] 38%|###7      | 39/104 [02:38<02:11,  2.02s/it, [0;93mval_acc=91.74, val_loss_cross_entropy=0.299, val_loss_seg=0.299, val_macc=84.83, val_miou=76.00[0m)] 38%|###8      | 40/104 [02:39<01:54,  1.79s/it, [0;93mval_acc=91.74, val_loss_cross_entropy=0.299, val_loss_seg=0.299, val_macc=84.83, val_miou=76.00[0m)] 38%|###8      | 40/104 [02:40<01:54,  1.79s/it, [0;93mval_acc=91.58, val_loss_cross_entropy=0.310, val_loss_seg=0.310, val_macc=84.61, val_miou=75.72[0m)] 39%|###9      | 41/104 [02:40<01:45,  1.68s/it, [0;93mval_acc=91.58, val_loss_cross_entropy=0.310, val_loss_seg=0.310, val_macc=84.61, val_miou=75.72[0m)] 39%|###9      | 41/104 [02:41<01:45,  1.68s/it, [0;93mval_acc=91.65, val_loss_cross_entropy=0.306, val_loss_seg=0.306, val_macc=84.65, val_miou=75.76[0m)] 40%|####      | 42/104 [02:41<01:41,  1.64s/it, [0;93mval_acc=91.65, val_loss_cross_entropy=0.306, val_loss_seg=0.306, val_macc=84.65, val_miou=75.76[0m)] 40%|####      | 42/104 [02:44<01:41,  1.64s/it, [0;93mval_acc=91.73, val_loss_cross_entropy=0.302, val_loss_seg=0.302, val_macc=84.87, val_miou=76.11[0m)] 41%|####1     | 43/104 [02:44<01:48,  1.77s/it, [0;93mval_acc=91.73, val_loss_cross_entropy=0.302, val_loss_seg=0.302, val_macc=84.87, val_miou=76.11[0m)] 41%|####1     | 43/104 [02:45<01:48,  1.77s/it, [0;93mval_acc=91.76, val_loss_cross_entropy=0.300, val_loss_seg=0.300, val_macc=85.01, val_miou=76.17[0m)] 42%|####2     | 44/104 [02:45<01:42,  1.70s/it, [0;93mval_acc=91.76, val_loss_cross_entropy=0.300, val_loss_seg=0.300, val_macc=85.01, val_miou=76.17[0m)] 42%|####2     | 44/104 [02:46<01:42,  1.70s/it, [0;93mval_acc=91.78, val_loss_cross_entropy=0.297, val_loss_seg=0.297, val_macc=85.23, val_miou=76.46[0m)] 43%|####3     | 45/104 [02:46<01:27,  1.48s/it, [0;93mval_acc=91.78, val_loss_cross_entropy=0.297, val_loss_seg=0.297, val_macc=85.23, val_miou=76.46[0m)] 43%|####3     | 45/104 [02:48<01:27,  1.48s/it, [0;93mval_acc=91.68, val_loss_cross_entropy=0.304, val_loss_seg=0.304, val_macc=85.20, val_miou=76.32[0m)] 44%|####4     | 46/104 [02:48<01:36,  1.67s/it, [0;93mval_acc=91.68, val_loss_cross_entropy=0.304, val_loss_seg=0.304, val_macc=85.20, val_miou=76.32[0m)] 44%|####4     | 46/104 [02:49<01:36,  1.67s/it, [0;93mval_acc=91.75, val_loss_cross_entropy=0.298, val_loss_seg=0.298, val_macc=85.22, val_miou=76.35[0m)] 45%|####5     | 47/104 [02:49<01:24,  1.48s/it, [0;93mval_acc=91.75, val_loss_cross_entropy=0.298, val_loss_seg=0.298, val_macc=85.22, val_miou=76.35[0m)] 45%|####5     | 47/104 [02:51<01:24,  1.48s/it, [0;93mval_acc=91.81, val_loss_cross_entropy=0.295, val_loss_seg=0.295, val_macc=85.34, val_miou=76.48[0m)] 46%|####6     | 48/104 [02:51<01:25,  1.54s/it, [0;93mval_acc=91.81, val_loss_cross_entropy=0.295, val_loss_seg=0.295, val_macc=85.34, val_miou=76.48[0m)] 46%|####6     | 48/104 [02:52<01:25,  1.54s/it, [0;93mval_acc=91.91, val_loss_cross_entropy=0.290, val_loss_seg=0.290, val_macc=85.42, val_miou=76.58[0m)] 47%|####7     | 49/104 [02:52<01:25,  1.56s/it, [0;93mval_acc=91.91, val_loss_cross_entropy=0.290, val_loss_seg=0.290, val_macc=85.42, val_miou=76.58[0m)] 47%|####7     | 49/104 [02:54<01:25,  1.56s/it, [0;93mval_acc=91.93, val_loss_cross_entropy=0.288, val_loss_seg=0.288, val_macc=85.43, val_miou=76.58[0m)] 48%|####8     | 50/104 [02:54<01:16,  1.42s/it, [0;93mval_acc=91.93, val_loss_cross_entropy=0.288, val_loss_seg=0.288, val_macc=85.43, val_miou=76.58[0m)] 48%|####8     | 50/104 [03:05<01:16,  1.42s/it, [0;93mval_acc=92.02, val_loss_cross_entropy=0.285, val_loss_seg=0.285, val_macc=85.65, val_miou=76.97[0m)] 49%|####9     | 51/104 [03:05<03:53,  4.40s/it, [0;93mval_acc=92.02, val_loss_cross_entropy=0.285, val_loss_seg=0.285, val_macc=85.65, val_miou=76.97[0m)] 49%|####9     | 51/104 [03:06<03:53,  4.40s/it, [0;93mval_acc=92.08, val_loss_cross_entropy=0.282, val_loss_seg=0.282, val_macc=85.85, val_miou=77.20[0m)] 50%|#####     | 52/104 [03:06<03:02,  3.50s/it, [0;93mval_acc=92.08, val_loss_cross_entropy=0.282, val_loss_seg=0.282, val_macc=85.85, val_miou=77.20[0m)] 50%|#####     | 52/104 [03:08<03:02,  3.50s/it, [0;93mval_acc=92.09, val_loss_cross_entropy=0.283, val_loss_seg=0.283, val_macc=85.84, val_miou=77.21[0m)] 51%|#####     | 53/104 [03:08<02:23,  2.81s/it, [0;93mval_acc=92.09, val_loss_cross_entropy=0.283, val_loss_seg=0.283, val_macc=85.84, val_miou=77.21[0m)] 51%|#####     | 53/104 [03:10<02:23,  2.81s/it, [0;93mval_acc=92.14, val_loss_cross_entropy=0.281, val_loss_seg=0.281, val_macc=85.95, val_miou=77.24[0m)] 52%|#####1    | 54/104 [03:10<02:10,  2.60s/it, [0;93mval_acc=92.14, val_loss_cross_entropy=0.281, val_loss_seg=0.281, val_macc=85.95, val_miou=77.24[0m)] 52%|#####1    | 54/104 [03:12<02:10,  2.60s/it, [0;93mval_acc=92.10, val_loss_cross_entropy=0.282, val_loss_seg=0.282, val_macc=85.74, val_miou=77.14[0m)] 53%|#####2    | 55/104 [03:12<01:57,  2.41s/it, [0;93mval_acc=92.10, val_loss_cross_entropy=0.282, val_loss_seg=0.282, val_macc=85.74, val_miou=77.14[0m)] 53%|#####2    | 55/104 [03:13<01:57,  2.41s/it, [0;93mval_acc=92.15, val_loss_cross_entropy=0.279, val_loss_seg=0.279, val_macc=85.99, val_miou=77.47[0m)] 54%|#####3    | 56/104 [03:13<01:40,  2.10s/it, [0;93mval_acc=92.15, val_loss_cross_entropy=0.279, val_loss_seg=0.279, val_macc=85.99, val_miou=77.47[0m)] 54%|#####3    | 56/104 [03:15<01:40,  2.10s/it, [0;93mval_acc=92.24, val_loss_cross_entropy=0.276, val_loss_seg=0.276, val_macc=86.04, val_miou=77.54[0m)] 55%|#####4    | 57/104 [03:15<01:39,  2.11s/it, [0;93mval_acc=92.24, val_loss_cross_entropy=0.276, val_loss_seg=0.276, val_macc=86.04, val_miou=77.54[0m)] 55%|#####4    | 57/104 [03:17<01:39,  2.11s/it, [0;93mval_acc=92.20, val_loss_cross_entropy=0.279, val_loss_seg=0.279, val_macc=85.95, val_miou=77.33[0m)] 56%|#####5    | 58/104 [03:17<01:37,  2.12s/it, [0;93mval_acc=92.20, val_loss_cross_entropy=0.279, val_loss_seg=0.279, val_macc=85.95, val_miou=77.33[0m)] 56%|#####5    | 58/104 [03:19<01:37,  2.12s/it, [0;93mval_acc=92.19, val_loss_cross_entropy=0.280, val_loss_seg=0.280, val_macc=85.88, val_miou=77.25[0m)] 57%|#####6    | 59/104 [03:19<01:35,  2.12s/it, [0;93mval_acc=92.19, val_loss_cross_entropy=0.280, val_loss_seg=0.280, val_macc=85.88, val_miou=77.25[0m)] 57%|#####6    | 59/104 [03:21<01:35,  2.12s/it, [0;93mval_acc=92.22, val_loss_cross_entropy=0.278, val_loss_seg=0.278, val_macc=85.96, val_miou=77.29[0m)] 58%|#####7    | 60/104 [03:21<01:25,  1.93s/it, [0;93mval_acc=92.22, val_loss_cross_entropy=0.278, val_loss_seg=0.278, val_macc=85.96, val_miou=77.29[0m)] 58%|#####7    | 60/104 [03:22<01:25,  1.93s/it, [0;93mval_acc=92.25, val_loss_cross_entropy=0.275, val_loss_seg=0.275, val_macc=86.06, val_miou=77.43[0m)] 59%|#####8    | 61/104 [03:22<01:13,  1.71s/it, [0;93mval_acc=92.25, val_loss_cross_entropy=0.275, val_loss_seg=0.275, val_macc=86.06, val_miou=77.43[0m)] 59%|#####8    | 61/104 [03:24<01:13,  1.71s/it, [0;93mval_acc=92.28, val_loss_cross_entropy=0.275, val_loss_seg=0.275, val_macc=86.04, val_miou=77.46[0m)] 60%|#####9    | 62/104 [03:24<01:09,  1.65s/it, [0;93mval_acc=92.28, val_loss_cross_entropy=0.275, val_loss_seg=0.275, val_macc=86.04, val_miou=77.46[0m)] 60%|#####9    | 62/104 [03:25<01:09,  1.65s/it, [0;93mval_acc=92.29, val_loss_cross_entropy=0.274, val_loss_seg=0.274, val_macc=86.09, val_miou=77.50[0m)] 61%|######    | 63/104 [03:25<01:05,  1.59s/it, [0;93mval_acc=92.29, val_loss_cross_entropy=0.274, val_loss_seg=0.274, val_macc=86.09, val_miou=77.50[0m)] 61%|######    | 63/104 [03:28<01:05,  1.59s/it, [0;93mval_acc=92.33, val_loss_cross_entropy=0.273, val_loss_seg=0.273, val_macc=86.08, val_miou=77.53[0m)] 62%|######1   | 64/104 [03:28<01:21,  2.03s/it, [0;93mval_acc=92.33, val_loss_cross_entropy=0.273, val_loss_seg=0.273, val_macc=86.08, val_miou=77.53[0m)] 62%|######1   | 64/104 [03:30<01:21,  2.03s/it, [0;93mval_acc=92.35, val_loss_cross_entropy=0.271, val_loss_seg=0.271, val_macc=86.11, val_miou=77.58[0m)] 62%|######2   | 65/104 [03:30<01:12,  1.85s/it, [0;93mval_acc=92.35, val_loss_cross_entropy=0.271, val_loss_seg=0.271, val_macc=86.11, val_miou=77.58[0m)] 62%|######2   | 65/104 [03:33<01:12,  1.85s/it, [0;93mval_acc=92.39, val_loss_cross_entropy=0.270, val_loss_seg=0.270, val_macc=86.09, val_miou=77.59[0m)] 63%|######3   | 66/104 [03:33<01:33,  2.45s/it, [0;93mval_acc=92.39, val_loss_cross_entropy=0.270, val_loss_seg=0.270, val_macc=86.09, val_miou=77.59[0m)] 63%|######3   | 66/104 [03:36<01:33,  2.45s/it, [0;93mval_acc=92.43, val_loss_cross_entropy=0.268, val_loss_seg=0.268, val_macc=86.07, val_miou=77.60[0m)] 64%|######4   | 67/104 [03:36<01:28,  2.39s/it, [0;93mval_acc=92.43, val_loss_cross_entropy=0.268, val_loss_seg=0.268, val_macc=86.07, val_miou=77.60[0m)] 64%|######4   | 67/104 [03:37<01:28,  2.39s/it, [0;93mval_acc=92.37, val_loss_cross_entropy=0.271, val_loss_seg=0.271, val_macc=85.94, val_miou=77.37[0m)] 65%|######5   | 68/104 [03:37<01:17,  2.15s/it, [0;93mval_acc=92.37, val_loss_cross_entropy=0.271, val_loss_seg=0.271, val_macc=85.94, val_miou=77.37[0m)] 65%|######5   | 68/104 [03:39<01:17,  2.15s/it, [0;93mval_acc=92.33, val_loss_cross_entropy=0.273, val_loss_seg=0.273, val_macc=85.40, val_miou=76.71[0m)] 66%|######6   | 69/104 [03:39<01:07,  1.93s/it, [0;93mval_acc=92.33, val_loss_cross_entropy=0.273, val_loss_seg=0.273, val_macc=85.40, val_miou=76.71[0m)] 66%|######6   | 69/104 [03:40<01:07,  1.93s/it, [0;93mval_acc=92.32, val_loss_cross_entropy=0.273, val_loss_seg=0.273, val_macc=85.42, val_miou=76.74[0m)] 67%|######7   | 70/104 [03:40<01:02,  1.83s/it, [0;93mval_acc=92.32, val_loss_cross_entropy=0.273, val_loss_seg=0.273, val_macc=85.42, val_miou=76.74[0m)] 67%|######7   | 70/104 [03:45<01:02,  1.83s/it, [0;93mval_acc=92.29, val_loss_cross_entropy=0.275, val_loss_seg=0.275, val_macc=85.45, val_miou=76.68[0m)] 68%|######8   | 71/104 [03:45<01:24,  2.57s/it, [0;93mval_acc=92.29, val_loss_cross_entropy=0.275, val_loss_seg=0.275, val_macc=85.45, val_miou=76.68[0m)] 68%|######8   | 71/104 [03:46<01:24,  2.57s/it, [0;93mval_acc=92.28, val_loss_cross_entropy=0.274, val_loss_seg=0.274, val_macc=85.43, val_miou=76.68[0m)] 69%|######9   | 72/104 [03:46<01:10,  2.22s/it, [0;93mval_acc=92.28, val_loss_cross_entropy=0.274, val_loss_seg=0.274, val_macc=85.43, val_miou=76.68[0m)] 69%|######9   | 72/104 [03:48<01:10,  2.22s/it, [0;93mval_acc=92.33, val_loss_cross_entropy=0.272, val_loss_seg=0.272, val_macc=85.48, val_miou=76.74[0m)] 70%|#######   | 73/104 [03:48<01:04,  2.07s/it, [0;93mval_acc=92.33, val_loss_cross_entropy=0.272, val_loss_seg=0.272, val_macc=85.48, val_miou=76.74[0m)] 70%|#######   | 73/104 [03:50<01:04,  2.07s/it, [0;93mval_acc=92.21, val_loss_cross_entropy=0.278, val_loss_seg=0.278, val_macc=85.28, val_miou=76.46[0m)] 71%|#######1  | 74/104 [03:50<01:03,  2.11s/it, [0;93mval_acc=92.21, val_loss_cross_entropy=0.278, val_loss_seg=0.278, val_macc=85.28, val_miou=76.46[0m)] 71%|#######1  | 74/104 [03:51<01:03,  2.11s/it, [0;93mval_acc=92.17, val_loss_cross_entropy=0.281, val_loss_seg=0.281, val_macc=85.27, val_miou=76.43[0m)] 72%|#######2  | 75/104 [03:51<00:55,  1.93s/it, [0;93mval_acc=92.17, val_loss_cross_entropy=0.281, val_loss_seg=0.281, val_macc=85.27, val_miou=76.43[0m)] 72%|#######2  | 75/104 [03:55<00:55,  1.93s/it, [0;93mval_acc=92.01, val_loss_cross_entropy=0.290, val_loss_seg=0.290, val_macc=85.21, val_miou=76.18[0m)] 73%|#######3  | 76/104 [03:55<01:11,  2.56s/it, [0;93mval_acc=92.01, val_loss_cross_entropy=0.290, val_loss_seg=0.290, val_macc=85.21, val_miou=76.18[0m)] 73%|#######3  | 76/104 [03:57<01:11,  2.56s/it, [0;93mval_acc=92.02, val_loss_cross_entropy=0.293, val_loss_seg=0.293, val_macc=85.16, val_miou=76.09[0m)] 74%|#######4  | 77/104 [03:57<00:59,  2.22s/it, [0;93mval_acc=92.02, val_loss_cross_entropy=0.293, val_loss_seg=0.293, val_macc=85.16, val_miou=76.09[0m)] 74%|#######4  | 77/104 [04:09<00:59,  2.22s/it, [0;93mval_acc=91.83, val_loss_cross_entropy=0.299, val_loss_seg=0.299, val_macc=84.16, val_miou=75.39[0m)] 75%|#######5  | 78/104 [04:09<02:13,  5.15s/it, [0;93mval_acc=91.83, val_loss_cross_entropy=0.299, val_loss_seg=0.299, val_macc=84.16, val_miou=75.39[0m)] 75%|#######5  | 78/104 [04:11<02:13,  5.15s/it, [0;93mval_acc=91.80, val_loss_cross_entropy=0.303, val_loss_seg=0.303, val_macc=84.13, val_miou=75.28[0m)] 76%|#######5  | 79/104 [04:11<01:48,  4.35s/it, [0;93mval_acc=91.80, val_loss_cross_entropy=0.303, val_loss_seg=0.303, val_macc=84.13, val_miou=75.28[0m)] 76%|#######5  | 79/104 [04:13<01:48,  4.35s/it, [0;93mval_acc=91.67, val_loss_cross_entropy=0.314, val_loss_seg=0.314, val_macc=84.06, val_miou=75.03[0m)] 77%|#######6  | 80/104 [04:13<01:24,  3.53s/it, [0;93mval_acc=91.67, val_loss_cross_entropy=0.314, val_loss_seg=0.314, val_macc=84.06, val_miou=75.03[0m)] 77%|#######6  | 80/104 [04:22<01:24,  3.53s/it, [0;93mval_acc=91.70, val_loss_cross_entropy=0.313, val_loss_seg=0.313, val_macc=84.11, val_miou=75.11[0m)] 78%|#######7  | 81/104 [04:22<02:02,  5.33s/it, [0;93mval_acc=91.70, val_loss_cross_entropy=0.313, val_loss_seg=0.313, val_macc=84.11, val_miou=75.11[0m)] 78%|#######7  | 81/104 [04:25<02:02,  5.33s/it, [0;93mval_acc=91.71, val_loss_cross_entropy=0.312, val_loss_seg=0.312, val_macc=84.02, val_miou=75.15[0m)] 79%|#######8  | 82/104 [04:25<01:36,  4.40s/it, [0;93mval_acc=91.71, val_loss_cross_entropy=0.312, val_loss_seg=0.312, val_macc=84.02, val_miou=75.15[0m)] 79%|#######8  | 82/104 [04:27<01:36,  4.40s/it, [0;93mval_acc=91.66, val_loss_cross_entropy=0.315, val_loss_seg=0.315, val_macc=83.98, val_miou=75.12[0m)] 80%|#######9  | 83/104 [04:27<01:18,  3.72s/it, [0;93mval_acc=91.66, val_loss_cross_entropy=0.315, val_loss_seg=0.315, val_macc=83.98, val_miou=75.12[0m)] 80%|#######9  | 83/104 [04:28<01:18,  3.72s/it, [0;93mval_acc=91.69, val_loss_cross_entropy=0.313, val_loss_seg=0.313, val_macc=84.11, val_miou=75.29[0m)] 81%|########  | 84/104 [04:28<01:00,  3.01s/it, [0;93mval_acc=91.69, val_loss_cross_entropy=0.313, val_loss_seg=0.313, val_macc=84.11, val_miou=75.29[0m)] 81%|########  | 84/104 [04:30<01:00,  3.01s/it, [0;93mval_acc=91.69, val_loss_cross_entropy=0.312, val_loss_seg=0.312, val_macc=84.10, val_miou=75.33[0m)] 82%|########1 | 85/104 [04:30<00:52,  2.76s/it, [0;93mval_acc=91.69, val_loss_cross_entropy=0.312, val_loss_seg=0.312, val_macc=84.10, val_miou=75.33[0m)] 82%|########1 | 85/104 [04:32<00:52,  2.76s/it, [0;93mval_acc=91.77, val_loss_cross_entropy=0.308, val_loss_seg=0.308, val_macc=84.13, val_miou=75.37[0m)] 83%|########2 | 86/104 [04:32<00:46,  2.58s/it, [0;93mval_acc=91.77, val_loss_cross_entropy=0.308, val_loss_seg=0.308, val_macc=84.13, val_miou=75.37[0m)] 83%|########2 | 86/104 [04:34<00:46,  2.58s/it, [0;93mval_acc=91.81, val_loss_cross_entropy=0.306, val_loss_seg=0.306, val_macc=84.19, val_miou=75.44[0m)] 84%|########3 | 87/104 [04:34<00:38,  2.29s/it, [0;93mval_acc=91.81, val_loss_cross_entropy=0.306, val_loss_seg=0.306, val_macc=84.19, val_miou=75.44[0m)] 84%|########3 | 87/104 [04:36<00:38,  2.29s/it, [0;93mval_acc=91.82, val_loss_cross_entropy=0.306, val_loss_seg=0.306, val_macc=84.26, val_miou=75.51[0m)] 85%|########4 | 88/104 [04:36<00:33,  2.07s/it, [0;93mval_acc=91.82, val_loss_cross_entropy=0.306, val_loss_seg=0.306, val_macc=84.26, val_miou=75.51[0m)] 85%|########4 | 88/104 [04:37<00:33,  2.07s/it, [0;93mval_acc=91.81, val_loss_cross_entropy=0.306, val_loss_seg=0.306, val_macc=84.26, val_miou=75.58[0m)] 86%|########5 | 89/104 [04:37<00:27,  1.85s/it, [0;93mval_acc=91.81, val_loss_cross_entropy=0.306, val_loss_seg=0.306, val_macc=84.26, val_miou=75.58[0m)] 86%|########5 | 89/104 [04:39<00:27,  1.85s/it, [0;93mval_acc=91.78, val_loss_cross_entropy=0.308, val_loss_seg=0.308, val_macc=84.35, val_miou=75.66[0m)] 87%|########6 | 90/104 [04:39<00:27,  1.98s/it, [0;93mval_acc=91.78, val_loss_cross_entropy=0.308, val_loss_seg=0.308, val_macc=84.35, val_miou=75.66[0m)] 87%|########6 | 90/104 [04:45<00:27,  1.98s/it, [0;93mval_acc=91.82, val_loss_cross_entropy=0.306, val_loss_seg=0.306, val_macc=84.51, val_miou=75.85[0m)] 88%|########7 | 91/104 [04:45<00:41,  3.20s/it, [0;93mval_acc=91.82, val_loss_cross_entropy=0.306, val_loss_seg=0.306, val_macc=84.51, val_miou=75.85[0m)] 88%|########7 | 91/104 [04:57<00:41,  3.20s/it, [0;93mval_acc=91.83, val_loss_cross_entropy=0.305, val_loss_seg=0.305, val_macc=84.62, val_miou=75.94[0m)] 88%|########8 | 92/104 [04:57<01:09,  5.83s/it, [0;93mval_acc=91.83, val_loss_cross_entropy=0.305, val_loss_seg=0.305, val_macc=84.62, val_miou=75.94[0m)] 88%|########8 | 92/104 [04:58<01:09,  5.83s/it, [0;93mval_acc=91.85, val_loss_cross_entropy=0.303, val_loss_seg=0.303, val_macc=84.68, val_miou=75.99[0m)] 89%|########9 | 93/104 [04:58<00:48,  4.44s/it, [0;93mval_acc=91.85, val_loss_cross_entropy=0.303, val_loss_seg=0.303, val_macc=84.68, val_miou=75.99[0m)] 89%|########9 | 93/104 [05:00<00:48,  4.44s/it, [0;93mval_acc=91.89, val_loss_cross_entropy=0.301, val_loss_seg=0.301, val_macc=84.73, val_miou=76.06[0m)] 90%|######### | 94/104 [05:00<00:35,  3.57s/it, [0;93mval_acc=91.89, val_loss_cross_entropy=0.301, val_loss_seg=0.301, val_macc=84.73, val_miou=76.06[0m)] 90%|######### | 94/104 [05:01<00:35,  3.57s/it, [0;93mval_acc=91.92, val_loss_cross_entropy=0.299, val_loss_seg=0.299, val_macc=84.78, val_miou=76.13[0m)] 91%|#########1| 95/104 [05:01<00:26,  2.91s/it, [0;93mval_acc=91.92, val_loss_cross_entropy=0.299, val_loss_seg=0.299, val_macc=84.78, val_miou=76.13[0m)] 91%|#########1| 95/104 [05:02<00:26,  2.91s/it, [0;93mval_acc=91.94, val_loss_cross_entropy=0.297, val_loss_seg=0.297, val_macc=84.84, val_miou=76.21[0m)] 92%|#########2| 96/104 [05:02<00:18,  2.33s/it, [0;93mval_acc=91.94, val_loss_cross_entropy=0.297, val_loss_seg=0.297, val_macc=84.84, val_miou=76.21[0m)] 92%|#########2| 96/104 [05:04<00:18,  2.33s/it, [0;93mval_acc=91.93, val_loss_cross_entropy=0.299, val_loss_seg=0.299, val_macc=84.76, val_miou=76.16[0m)] 93%|#########3| 97/104 [05:04<00:14,  2.01s/it, [0;93mval_acc=91.93, val_loss_cross_entropy=0.299, val_loss_seg=0.299, val_macc=84.76, val_miou=76.16[0m)] 93%|#########3| 97/104 [05:06<00:14,  2.01s/it, [0;93mval_acc=91.89, val_loss_cross_entropy=0.301, val_loss_seg=0.301, val_macc=84.77, val_miou=76.16[0m)] 94%|#########4| 98/104 [05:06<00:12,  2.03s/it, [0;93mval_acc=91.89, val_loss_cross_entropy=0.301, val_loss_seg=0.301, val_macc=84.77, val_miou=76.16[0m)] 94%|#########4| 98/104 [05:07<00:12,  2.03s/it, [0;93mval_acc=91.77, val_loss_cross_entropy=0.308, val_loss_seg=0.308, val_macc=84.55, val_miou=75.87[0m)] 95%|#########5| 99/104 [05:07<00:09,  1.85s/it, [0;93mval_acc=91.77, val_loss_cross_entropy=0.308, val_loss_seg=0.308, val_macc=84.55, val_miou=75.87[0m)] 95%|#########5| 99/104 [05:08<00:09,  1.85s/it, [0;93mval_acc=91.70, val_loss_cross_entropy=0.312, val_loss_seg=0.312, val_macc=84.50, val_miou=75.80[0m)] 96%|#########6| 100/104 [05:08<00:06,  1.67s/it, [0;93mval_acc=91.70, val_loss_cross_entropy=0.312, val_loss_seg=0.312, val_macc=84.50, val_miou=75.80[0m)] 96%|#########6| 100/104 [05:09<00:06,  1.67s/it, [0;93mval_acc=91.51, val_loss_cross_entropy=0.325, val_loss_seg=0.325, val_macc=84.20, val_miou=75.47[0m)] 97%|#########7| 101/104 [05:09<00:04,  1.50s/it, [0;93mval_acc=91.51, val_loss_cross_entropy=0.325, val_loss_seg=0.325, val_macc=84.20, val_miou=75.47[0m)] 97%|#########7| 101/104 [05:10<00:04,  1.50s/it, [0;93mval_acc=91.51, val_loss_cross_entropy=0.324, val_loss_seg=0.324, val_macc=84.21, val_miou=75.51[0m)] 98%|#########8| 102/104 [05:10<00:02,  1.31s/it, [0;93mval_acc=91.51, val_loss_cross_entropy=0.324, val_loss_seg=0.324, val_macc=84.21, val_miou=75.51[0m)] 98%|#########8| 102/104 [05:11<00:02,  1.31s/it, [0;93mval_acc=91.50, val_loss_cross_entropy=0.325, val_loss_seg=0.325, val_macc=84.23, val_miou=75.58[0m)] 99%|#########9| 103/104 [05:11<00:01,  1.11s/it, [0;93mval_acc=91.50, val_loss_cross_entropy=0.325, val_loss_seg=0.325, val_macc=84.23, val_miou=75.58[0m)] 99%|#########9| 103/104 [05:12<00:01,  1.11s/it, [0;93mval_acc=91.44, val_loss_cross_entropy=0.329, val_loss_seg=0.329, val_macc=84.24, val_miou=75.53[0m)]100%|##########| 104/104 [05:12<00:00,  1.04s/it, [0;93mval_acc=91.44, val_loss_cross_entropy=0.329, val_loss_seg=0.329, val_macc=84.24, val_miou=75.53[0m)]100%|##########| 104/104 [05:12<00:00,  3.00s/it, [0;93mval_acc=91.44, val_loss_cross_entropy=0.329, val_loss_seg=0.329, val_macc=84.24, val_miou=75.53[0m)][2022-11-13 12:48:31,088][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-11-13 12:48:31,088][torch_points3d.metrics.base_tracker][INFO] -     val_loss_seg = 0.3292083060279348
+[2022-11-13 12:48:31,088][torch_points3d.metrics.base_tracker][INFO] -     val_loss_cross_entropy = 0.3292083060279348
+[2022-11-13 12:48:31,088][torch_points3d.metrics.base_tracker][INFO] -     val_acc = 91.44649556260835
+[2022-11-13 12:48:31,088][torch_points3d.metrics.base_tracker][INFO] -     val_macc = 84.24856404453585
+[2022-11-13 12:48:31,089][torch_points3d.metrics.base_tracker][INFO] -     val_miou = 75.53264068337707
+[2022-11-13 12:48:31,089][torch_points3d.metrics.base_tracker][INFO] -     val_miou_per_class = {0: '86.85', 1: '96.46', 2: '71.20', 3: '83.00', 4: '88.67', 5: '76.83', 6: '79.95', 7: '64.86', 8: '65.93', 9: '80.99', 10: '40.54', 11: '68.16', 12: '68.39', 13: '76.52', 14: '71.31', 15: '79.66', 16: '92.80', 17: '68.91', 18: '84.95', 19: '64.70'}
+[2022-11-13 12:48:31,089][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+113495
+113948
+76485
+63053
+50810
+46152
+113495
+113948
+76485
+63053
+50810
+46152
+21611
+71434
+69513
+37125
+35822
+94228
+165045
+52165
+76420
+73336
+33284
+34364
+140121
+141805
+141637
+78173
+44582
+55801
+40221
+40187
+80994
+52232
+30156
+86165
+72883
+87581
+101788
+37763
+66476
+82265
+69064
+95482
+97617
+60323
+40961
+38529
+67018
+62261
+67612
+100340
+100945
+99352
+35790
+32801
+49227
+19490
+20004
+102777
+88690
+37988
+38601
+116849
+120953
+57254
+13984
+72205
+58776
+67256
+70948
+120049
+37046
+21179
+73372
+67256
+70948
+120049
+37046
+21179
+73372
+83480
+22295
+22480
+21347
+38584
+35927
+121483
+107220
+138204
+43647
+45031
+37886
+35263
+32593
+44355
+66483
+84469
+82280
+64083
+79224
+65349
+57221
+57193
+52493
+27513
+24216
+61756
+142229
+52357
+27419
+37387
+34201
+46930
+52593
+63392
+64730
+58576
+61136
+50198
+119211
+113738
+93256
+78184
+67211
+69121
+104437
+44024
+20011
+16299
+54922
+56038
+61955
+78925
+90531
+43937
+21433
+23052
+54106
+65950
+68784
+90875
+78964
+38003
+54106
+65950
+68784
+90875
+78964
+38003
+69245
+55054
+86817
+27052
+62929
+20405
+84262
+84045
+98450
+80960
+133402
+90341
+147550
+162953
+160070
+36600
+67219
+66572
+45770
+53545
+46559
+22409
+17444
+25335
+81558
+33655
+26964
+25372
+79719
+159667
+37821
+57510
+70544
+79326
+60283
+47664
+57763
+35398
+72293
+46294
+55041
+28900
+133187
+109313
+77420
+52996
+43782
+75909
+147052
+130761
+17135
+21760
+54405
+56675
+60350
+29604
+31297
+97257
+94976
+86370
+80099
+79913
+31502
+97257
+94976
+86370
+80099
+79913
+31502
+50827
+68032
+56041
+47742
+25980
+24696
+41822
+38968
+59422
+167081
+173991
+142370
+57192
+69999
+64375
+42489
+35406
+35120
+35800
+56277
+54887
+71825
+54817
+75477
+104280
+108440
+82265
+43680
+44588
+51444
+25821
+26311
+29556
+27781
+76762
+79963
+87362
+72866
+57820
+76855
+93494
+32038
+67962
+119670
+142037
+56200
+63528
+54678
+33323
+21188
+143901
+44595
+18084
+21997
+62576
+66113
+62004
+82037
+80184
+85625
+40860
+51211
+50809
+82037
+80184
+85625
+40860
+51211
+50809
+57389
+29656
+52314
+88402
+71001
+59033
+71063
+94625
+94116
+34655
+32306
+34451
+79251
+92666
+84914
+28131
+34969
+40643
+19631
+19991
+17548
+51303
+16216
+15832
+79553
+70653
+52591
+50888
+49323
+36966
+94671
+24105
+22829
+70743
+76653
+77478
+44537
+31759
+76191
+91378
+41023
+40541
+40543
+116426
+132416
+81552
+72232
+103212
+35965
+49922
+43243
+60061
+66347
+65740
+

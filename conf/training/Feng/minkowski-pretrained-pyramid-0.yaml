@@ -40,7 +40,7 @@ optim:
       bn_decay: 1
       decay_step: 2000
       bn_clip: 1e-2
-weight_name: "latest" # Used during resume, select with model to load from [miou, macc, acc..., latest]
+weight_name: "best_miou" # Used during resume, select with model to load from [miou, macc, acc..., latest]
 enable_cudnn: True
 checkpoint_dir: ""
 

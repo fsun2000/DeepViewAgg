@@ -2,12 +2,12 @@
 
 #SBATCH --partition=gpu_titanrtx_shared
 #SBATCH --gpus=1
-#SBATCH --job-name=fusion3d_0.1
+#SBATCH --job-name=m6
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=9
-#SBATCH --time=100:00:00
-#SBATCH --mem=190464
-#SBATCH --output=job_logs/mvfusion_3d/train_mvfusion_3d_highlr.out
+#SBATCH --cpus-per-task=6
+#SBATCH --time=50:00:00
+#SBATCH --mem=95000MB
+#SBATCH --output=job_logs/mvfusion_3d/model_comparison/M6.out
 
 cd $HOME/DeepViewAgg
 

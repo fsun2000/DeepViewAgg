@@ -152,6 +152,9 @@ class Trainer:
 
             if not self.eval_m2f_preds:
                 self._train_epoch(epoch)
+                
+                # clear GPU cache as it might fragment a lot
+                torch.cuda.empty_cache()
             else:
                 self.evaluate_m2f_train_set(epoch)
 

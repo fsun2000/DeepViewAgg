@@ -1,0 +1,1769 @@
+MMData debug() function changed, please uncomment the 3rd assert line when doing inference without M2F features!
+[2022-11-13 13:05:35,987][torch_points3d.trainer][INFO] - DEVICE : cuda
+load_m2f_masks:  True
+initialize train dataset
+temporarily hard code N-views in get_view_dependent_features()
+initialize val dataset
+temporarily hard code N-views in get_view_dependent_features()
+task:  segmentation.multimodal
+tested_model_name:  MVFusion_3D
+71060
+class_name:  MVFusionAPIModel
+model_module:  torch_points3d.models.segmentation.multimodal.Feng.mvfusion_3d
+name, cls of chosen model_cls:  MVFusionAPIModel <class 'torch_points3d.models.segmentation.multimodal.Feng.mvfusion_3d.MVFusionAPIModel'>
+74365
+[2022-11-13 13:06:02,811][torch_points3d.applications.modelfactory][INFO] - The config will be used to build the model
+x feature dim:  {'FEAT': 3}
+nc_in:  259
+nc_in:  128
+nc_in:  32
+nc_in:  64
+nc_in:  128
+nc_in:  256
+nc_in:  128
+nc_in:  128
+nc_in:  96
+nc_in:  96
+[2022-11-13 13:06:03,542][torch_points3d.core.schedulers.bn_schedulers][INFO] - Setting batchnorm momentum at 0.02
+task:  segmentation.multimodal
+tested_model_name:  MVFusion_3D
+[2022-11-13 13:06:03,826][torch_points3d.trainer][WARNING] - The model will not be able to be used from pretrained weights without the corresponding dataset. Current properties are {'feature_dimension': 3, 'num_classes': 20}
+[2022-11-13 13:06:03,826][torch_points3d.trainer][INFO] - MVFusionAPIModel(
+  (backbone): MVFusionSparseConv3dUnet(
+    (inner_modules): ModuleList(
+      (0): Identity()
+    )
+    (down_modules): ModuleList(
+      (0): MultimodalBlockDown(
+        (block_1): Identity()
+        (block_2): Identity()
+        (image): MVFusionUnimodalBranch(
+          drop_3d=None
+          drop_mod=None
+          keep_last_view=False
+          checkpointing=c
+          (transformerfusion): DVA_cls_5_fusion_7(
+            (fusion): TransformerFusion(
+              (input_layer): Linear(in_features=29, out_features=256, bias=True)
+              (transformer_layers): ModuleList(
+                (0): AttentionBlock(
+                  (norm_1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                  (norm_2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                  (attn): MultiheadAttention(
+                    (out_proj): NonDynamicallyQuantizableLinear(in_features=256, out_features=256, bias=True)
+                  )
+                  (linear): Sequential(
+                    (0): Linear(in_features=256, out_features=512, bias=True)
+                    (1): GELU(approximate=none)
+                    (2): Dropout(p=0.2, inplace=False)
+                    (3): Linear(in_features=512, out_features=256, bias=True)
+                    (4): Dropout(p=0.2, inplace=False)
+                  )
+                )
+                (1): AttentionBlock(
+                  (norm_1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                  (norm_2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                  (attn): MultiheadAttention(
+                    (out_proj): NonDynamicallyQuantizableLinear(in_features=256, out_features=256, bias=True)
+                  )
+                  (linear): Sequential(
+                    (0): Linear(in_features=256, out_features=512, bias=True)
+                    (1): GELU(approximate=none)
+                    (2): Dropout(p=0.2, inplace=False)
+                    (3): Linear(in_features=512, out_features=256, bias=True)
+                    (4): Dropout(p=0.2, inplace=False)
+                  )
+                )
+                (2): AttentionBlock(
+                  (norm_1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                  (norm_2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                  (attn): MultiheadAttention(
+                    (out_proj): NonDynamicallyQuantizableLinear(in_features=256, out_features=256, bias=True)
+                  )
+                  (linear): Sequential(
+                    (0): Linear(in_features=256, out_features=512, bias=True)
+                    (1): GELU(approximate=none)
+                    (2): Dropout(p=0.2, inplace=False)
+                    (3): Linear(in_features=512, out_features=256, bias=True)
+                    (4): Dropout(p=0.2, inplace=False)
+                  )
+                )
+                (3): AttentionBlock(
+                  (norm_1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                  (norm_2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+                  (attn): MultiheadAttention(
+                    (out_proj): NonDynamicallyQuantizableLinear(in_features=256, out_features=256, bias=True)
+                  )
+                  (linear): Sequential(
+                    (0): Linear(in_features=256, out_features=512, bias=True)
+                    (1): GELU(approximate=none)
+                    (2): Dropout(p=0.2, inplace=False)
+                    (3): Linear(in_features=512, out_features=256, bias=True)
+                    (4): Dropout(p=0.2, inplace=False)
+                  )
+                )
+              )
+            )
+            (layer_norm): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          )
+          (fusion): BimodalFusion(mode=concatenation)
+        )
+      )
+      (1): MultimodalBlockDown(
+        (block_1): ResNetDown(
+          (conv_in): Seq(
+            (0): Conv3d(in_channels=259, out_channels=128, kernel_size=3, stride=1, dilation=1)
+            (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+            (2): ReLU(inplace=True)
+          )
+        )
+        (block_2): Identity()
+        (image): IdentityBranch()
+      )
+      (2): MultimodalBlockDown(
+        (block_1): ResNetDown(
+          (conv_in): Seq(
+            (0): Conv3d(in_channels=128, out_channels=128, kernel_size=2, stride=2, dilation=1)
+            (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+            (2): ReLU(inplace=True)
+          )
+          (blocks): Seq(
+            (0): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=128, out_channels=32, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=32, out_channels=32, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+              (downsample): Seq(
+                (0): Conv3d(in_channels=128, out_channels=32, kernel_size=1, stride=1, dilation=1)
+                (1): BatchNorm(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              )
+            )
+            (1): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=32, out_channels=32, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=32, out_channels=32, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+            )
+          )
+        )
+        (block_2): Identity()
+        (image): IdentityBranch()
+      )
+      (3): MultimodalBlockDown(
+        (block_1): ResNetDown(
+          (conv_in): Seq(
+            (0): Conv3d(in_channels=32, out_channels=32, kernel_size=2, stride=2, dilation=1)
+            (1): BatchNorm(32, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+            (2): ReLU(inplace=True)
+          )
+          (blocks): Seq(
+            (0): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=32, out_channels=64, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(64, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=64, out_channels=64, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(64, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+              (downsample): Seq(
+                (0): Conv3d(in_channels=32, out_channels=64, kernel_size=1, stride=1, dilation=1)
+                (1): BatchNorm(64, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              )
+            )
+            (1): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=64, out_channels=64, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(64, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=64, out_channels=64, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(64, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+            )
+            (2): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=64, out_channels=64, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(64, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=64, out_channels=64, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(64, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+            )
+          )
+        )
+        (block_2): Identity()
+        (image): IdentityBranch()
+      )
+      (4): MultimodalBlockDown(
+        (block_1): ResNetDown(
+          (conv_in): Seq(
+            (0): Conv3d(in_channels=64, out_channels=64, kernel_size=2, stride=2, dilation=1)
+            (1): BatchNorm(64, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+            (2): ReLU(inplace=True)
+          )
+          (blocks): Seq(
+            (0): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=64, out_channels=128, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+              (downsample): Seq(
+                (0): Conv3d(in_channels=64, out_channels=128, kernel_size=1, stride=1, dilation=1)
+                (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              )
+            )
+            (1): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+            )
+            (2): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+            )
+            (3): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+            )
+          )
+        )
+        (block_2): Identity()
+        (image): IdentityBranch()
+      )
+      (5): MultimodalBlockDown(
+        (block_1): ResNetDown(
+          (conv_in): Seq(
+            (0): Conv3d(in_channels=128, out_channels=128, kernel_size=2, stride=2, dilation=1)
+            (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+            (2): ReLU(inplace=True)
+          )
+          (blocks): Seq(
+            (0): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=128, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+              (downsample): Seq(
+                (0): Conv3d(in_channels=128, out_channels=256, kernel_size=1, stride=1, dilation=1)
+                (1): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              )
+            )
+            (1): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+            )
+            (2): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+            )
+            (3): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+            )
+            (4): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+            )
+            (5): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+            )
+          )
+        )
+        (block_2): Identity()
+        (image): IdentityBranch()
+      )
+    )
+    (up_modules): ModuleList(
+      (0): ResNetUp(
+        (conv_in): Seq(
+          (0): Conv3d(in_channels=256, out_channels=256, kernel_size=2, stride=2, dilation=1)
+          (1): BatchNorm(256, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+        )
+        (blocks): Seq(
+          (0): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=384, out_channels=128, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+            (downsample): Seq(
+              (0): Conv3d(in_channels=384, out_channels=128, kernel_size=1, stride=1, dilation=1)
+              (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+            )
+          )
+        )
+      )
+      (1): ResNetUp(
+        (conv_in): Seq(
+          (0): Conv3d(in_channels=128, out_channels=128, kernel_size=2, stride=2, dilation=1)
+          (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+        )
+        (blocks): Seq(
+          (0): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=192, out_channels=128, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+            (downsample): Seq(
+              (0): Conv3d(in_channels=192, out_channels=128, kernel_size=1, stride=1, dilation=1)
+              (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+            )
+          )
+        )
+      )
+      (2): ResNetUp(
+        (conv_in): Seq(
+          (0): Conv3d(in_channels=128, out_channels=128, kernel_size=2, stride=2, dilation=1)
+          (1): BatchNorm(128, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+        )
+        (blocks): Seq(
+          (0): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=160, out_channels=96, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(96, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=96, out_channels=96, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(96, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+            (downsample): Seq(
+              (0): Conv3d(in_channels=160, out_channels=96, kernel_size=1, stride=1, dilation=1)
+              (1): BatchNorm(96, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+            )
+          )
+        )
+      )
+      (3): ResNetUp(
+        (conv_in): Seq(
+          (0): Conv3d(in_channels=96, out_channels=96, kernel_size=2, stride=2, dilation=1)
+          (1): BatchNorm(96, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+        )
+        (blocks): Seq(
+          (0): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=224, out_channels=96, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(96, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=96, out_channels=96, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(96, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+            (downsample): Seq(
+              (0): Conv3d(in_channels=224, out_channels=96, kernel_size=1, stride=1, dilation=1)
+              (1): BatchNorm(96, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+            )
+          )
+        )
+      )
+      (4): ResNetUp(
+        (conv_in): Seq(
+          (0): Conv3d(in_channels=96, out_channels=96, kernel_size=3, stride=1, dilation=1)
+          (1): BatchNorm(96, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+        )
+        (blocks): Seq(
+          (0): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=96, out_channels=96, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(96, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=96, out_channels=96, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(96, eps=1e-05, momentum=0.02, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+          )
+        )
+      )
+    )
+  )
+  (head): Sequential(
+    (0): Linear(in_features=96, out_features=20, bias=True)
+  )
+)
+[2022-11-13 13:06:03,830][torch_points3d.utils.colors][INFO] - [0;32mOptimizer: SGD (
+Parameter Group 0
+    dampening: 0.1
+    foreach: None
+    initial_lr: 0.1
+    lr: 0.1
+    maximize: False
+    momentum: 0.9
+    nesterov: False
+    weight_decay: 0.0001
+)[0m
+[2022-11-13 13:06:03,830][torch_points3d.utils.colors][INFO] - [0;32mLearning Rate Scheduler: ExponentialLR({'gamma': 0.9885}, update_scheduler_on=on_epoch)[0m
+[2022-11-13 13:06:03,830][torch_points3d.utils.colors][INFO] - [0;32mBatchNorm Scheduler: BNMomentumScheduler(base_momentum: 0.02, update_scheduler_on=on_epoch)[0m
+[2022-11-13 13:06:03,830][torch_points3d.utils.colors][INFO] - [0;32mAccumulated gradients: None[0m
+[2022-11-13 13:06:03,831][torch_points3d.trainer][INFO] - Model size = 33933844
+[2022-11-13 13:06:03,832][torch_points3d.trainer][INFO] - Dataset: ScannetDatasetMM 
+[0;95mtrain_pre_batch_collate_transform [0m= None
+[0;95mval_pre_batch_collate_transform [0m= None
+[0;95mtest_pre_batch_collate_transform [0m= None
+[0;95mpre_transform [0m= Compose([
+    SaveOriginalPosId,
+    PCAComputePointwise(num_neighbors=50, r=None, use_full_pos=False, use_cuda=False, use_faiss=False, ncells=None, nprobes=10, chunk_size=1000000),
+    EigenFeatures(norm=True, linearity=True, planarity=True, scattering=True, temperature=None),
+    RemoveAttributes(attr_names=['eigenvalues', 'eigenvectors'], strict=False),
+])
+[0;95mtest_transform [0m= Compose([
+    GridSampling3D(grid_size=0.03, quantize_coords=True, mode=last),
+    XYZFeature(axis=['x', 'y', 'z']),
+    AddFeatsByKeys(pos_x=True, pos_y=True, pos_z=True, rgb=False, linearity=False, norm=False, planarity=False, scattering=False),
+])
+[0;95mtrain_transform [0m= Compose([
+    ElasticDistortion(apply_distorsion=True, granularity=[0.2, 0.8], magnitude=[0.4, 1.6]),
+    Random3AxisRotation(apply_rotation=True, rot_x=8, rot_y=8, rot_z=180),
+    Random symmetry of axes: x=True, y=True, z=False,
+    RandomScaleAnisotropic([0.9, 1.1]),
+    GridSampling3D(grid_size=0.03, quantize_coords=True, mode=last),
+    XYZFeature(axis=['x', 'y', 'z']),
+    AddFeatsByKeys(pos_x=True, pos_y=True, pos_z=True, rgb=False, linearity=False, norm=False, planarity=False, scattering=False),
+])
+[0;95mval_transform [0m= Compose([
+    GridSampling3D(grid_size=0.03, quantize_coords=True, mode=last),
+    XYZFeature(axis=['x', 'y', 'z']),
+    AddFeatsByKeys(pos_x=True, pos_y=True, pos_z=True, rgb=False, linearity=False, norm=False, planarity=False, scattering=False),
+])
+[0;95minference_transform [0m= Compose([
+    SaveOriginalPosId,
+    PCAComputePointwise(num_neighbors=50, r=None, use_full_pos=False, use_cuda=False, use_faiss=False, ncells=None, nprobes=10, chunk_size=1000000),
+    EigenFeatures(norm=True, linearity=True, planarity=True, scattering=True, temperature=None),
+    RemoveAttributes(attr_names=['eigenvalues', 'eigenvectors'], strict=False),
+    GridSampling3D(grid_size=0.03, quantize_coords=True, mode=last),
+    XYZFeature(axis=['x', 'y', 'z']),
+    AddFeatsByKeys(pos_x=True, pos_y=True, pos_z=True, rgb=False, linearity=False, norm=False, planarity=False, scattering=False),
+])
+[0;95mpre_transform_image [0m= ComposeMultiModal([
+    NonStaticMask(ref_size=(320, 240), proj_upscale=1, n_sample=5),
+    MapImages(key=mapping_index, verbose=False, cylinder=False, ref_size=[320, 240], proj_upscale=1, method=SplattingVisibility, use_cuda=False, kwargs={'voxel': 0.03, 'r_max': 8, 'r_min': 0.05, 'exact': True, 'camera': 'scannet'}),
+    NeighborhoodBasedMappingFeatures(k_list=[50], voxel=0.01, compute_density=True, compute_occlusion=True, use_faiss=False, use_cuda=False, ncells=None, nprobes=10, verbose=True),
+])
+[0;95mtest_transform_image [0m= ComposeMultiModal([
+    SelectMappingFromPointId(key=mapping_index),
+    ToImageData(),
+    PickImagesFromMemoryCredit(credit=7680000, use_coverage=True, k_coverage=2),
+])
+[0;95mtrain_transform_image [0m= ComposeMultiModal([
+    SelectMappingFromPointId(key=mapping_index),
+    ToImageData(),
+    PickImagesFromMemoryCredit(credit=7680000, use_coverage=True, k_coverage=2),
+    JitterMappingFeatures(sigma=0.02, clip=0.03),
+])
+[0;95mval_transform_image [0m= ComposeMultiModal([
+    SelectMappingFromPointId(key=mapping_index),
+    ToImageData(),
+    PickImagesFromMemoryCredit(credit=7680000, use_coverage=True, k_coverage=2),
+])
+[0;95minference_transform_image [0m= ComposeMultiModal([
+    NonStaticMask(ref_size=(320, 240), proj_upscale=1, n_sample=5),
+    MapImages(key=mapping_index, verbose=False, cylinder=False, ref_size=[320, 240], proj_upscale=1, method=SplattingVisibility, use_cuda=False, kwargs={'voxel': 0.03, 'r_max': 8, 'r_min': 0.05, 'exact': True, 'camera': 'scannet'}),
+    NeighborhoodBasedMappingFeatures(k_list=[50], voxel=0.01, compute_density=True, compute_occlusion=True, use_faiss=False, use_cuda=False, ncells=None, nprobes=10, verbose=True),
+    SelectMappingFromPointId(key=mapping_index),
+    ToImageData(),
+    PickImagesFromMemoryCredit(credit=7680000, use_coverage=True, k_coverage=2),
+])
+Size of [0;95mtrain_dataset [0m= 1201
+Size of [0;95mtest_dataset [0m= 0
+Size of [0;95mval_dataset [0m= 312
+[0;95mBatch size =[0m 3
+75663
+[2022-11-13 13:06:12,308][torch_points3d.datasets.base_dataset][INFO] - Available stage selection datasets: [0;95m ['val'] [0m
+[2022-11-13 13:06:12,308][torch_points3d.datasets.base_dataset][INFO] - The models will be selected using the metrics on following dataset: [0;95m val [0m
+[2022-11-13 13:06:13,898][torch_points3d.trainer][INFO] - EPOCH 1 / 301
+  0%|          | 0/401 [00:00<?, ?it/s]  0%|          | 1/401 [00:33<3:41:00, 33.15s/it]  0%|          | 2/401 [00:47<2:26:39, 22.05s/it]  1%|1         | 5/401 [01:02<1:04:29,  9.77s/it]  2%|1         | 8/401 [01:06<36:24,  5.56s/it]    3%|2         | 11/401 [01:27<39:49,  6.13s/it]  3%|3         | 14/401 [01:40<35:04,  5.44s/it]  4%|4         | 17/401 [01:47<28:10,  4.40s/it]  5%|4         | 19/401 [01:47<21:11,  3.33s/it]  5%|4         | 20/401 [01:54<24:37,  3.88s/it]  5%|5         | 22/401 [01:58<20:45,  3.29s/it]  6%|5         | 23/401 [02:05<25:05,  3.98s/it]  6%|6         | 25/401 [02:08<19:03,  3.04s/it]  6%|6         | 26/401 [02:36<49:58,  8.00s/it]  7%|7         | 29/401 [02:46<35:57,  5.80s/it]  8%|7         | 32/401 [02:52<26:43,  4.34s/it]  9%|8         | 35/401 [02:55<19:09,  3.14s/it]  9%|9         | 37/401 [03:02<19:40,  3.24s/it]  9%|9         | 38/401 [03:06<20:26,  3.38s/it] 10%|9         | 39/401 [03:13<24:02,  3.99s/it] 10%|#         | 41/401 [03:14<17:24,  2.90s/it] 10%|#         | 42/401 [03:31<33:10,  5.54s/it] 11%|#1        | 45/401 [03:47<32:25,  5.46s/it] 12%|#1        | 48/401 [03:56<26:13,  4.46s/it] 13%|#2        | 51/401 [04:04<22:46,  3.90s/it] 13%|#3        | 54/401 [04:11<19:16,  3.33s/it] 14%|#4        | 57/401 [04:20<18:39,  3.25s/it] 14%|#4        | 58/401 [04:21<16:49,  2.94s/it] 15%|#4        | 60/401 [04:31<19:44,  3.47s/it] 15%|#5        | 61/401 [04:31<16:35,  2.93s/it] 16%|#5        | 63/401 [04:49<27:40,  4.91s/it] 16%|#6        | 66/401 [05:09<31:08,  5.58s/it] 17%|#7        | 69/401 [05:16<24:30,  4.43s/it] 18%|#7        | 72/401 [05:21<18:43,  3.42s/it] 18%|#8        | 73/401 [05:23<17:43,  3.24s/it] 19%|#8        | 75/401 [05:48<32:06,  5.91s/it] 19%|#9        | 78/401 [05:57<25:23,  4.72s/it] 20%|##        | 81/401 [06:16<28:12,  5.29s/it] 21%|##        | 84/401 [06:21<21:44,  4.11s/it] 22%|##1       | 87/401 [06:36<23:19,  4.46s/it] 22%|##2       | 90/401 [06:46<20:49,  4.02s/it] 23%|##3       | 93/401 [06:53<18:04,  3.52s/it] 23%|##3       | 94/401 [06:54<16:16,  3.18s/it] 24%|##3       | 96/401 [07:01<16:47,  3.30s/it] 24%|##4       | 97/401 [07:03<15:21,  3.03s/it] 25%|##4       | 99/401 [07:13<18:23,  3.65s/it] 25%|##4       | 100/401 [07:14<16:26,  3.28s/it] 25%|##5       | 102/401 [07:28<22:41,  4.55s/it] 26%|##5       | 103/401 [07:32<22:09,  4.46s/it] 26%|##6       | 105/401 [07:47<26:55,  5.46s/it] 27%|##6       | 108/401 [07:55<21:09,  4.33s/it] 28%|##7       | 111/401 [08:07<19:59,  4.14s/it] 28%|##8       | 114/401 [08:25<23:17,  4.87s/it] 29%|##9       | 117/401 [08:36<21:03,  4.45s/it] 30%|##9       | 120/401 [08:43<17:26,  3.72s/it] 31%|###       | 123/401 [08:49<14:57,  3.23s/it] 31%|###       | 124/401 [08:50<13:12,  2.86s/it] 31%|###1      | 126/401 [09:00<16:02,  3.50s/it] 32%|###2      | 129/401 [09:07<14:00,  3.09s/it] 33%|###2      | 131/401 [09:08<10:30,  2.34s/it] 33%|###2      | 132/401 [09:18<15:55,  3.55s/it] 33%|###3      | 133/401 [09:23<16:50,  3.77s/it] 34%|###3      | 135/401 [09:35<20:35,  4.65s/it] 34%|###4      | 138/401 [09:49<20:12,  4.61s/it] 35%|###5      | 141/401 [09:56<16:22,  3.78s/it] 36%|###5      | 144/401 [10:13<18:40,  4.36s/it] 37%|###6      | 147/401 [10:29<20:08,  4.76s/it] 37%|###7      | 150/401 [10:43<19:42,  4.71s/it] 38%|###8      | 153/401 [10:49<15:46,  3.82s/it] 39%|###8      | 156/401 [11:01<16:06,  3.95s/it] 40%|###9      | 159/401 [11:11<15:02,  3.73s/it] 40%|####      | 162/401 [11:28<17:00,  4.27s/it] 41%|####      | 163/401 [11:44<23:04,  5.82s/it] 41%|####1     | 166/401 [11:54<19:21,  4.94s/it] 42%|####1     | 168/401 [11:56<15:32,  4.00s/it] 42%|####2     | 169/401 [11:59<14:29,  3.75s/it] 43%|####2     | 171/401 [12:24<24:22,  6.36s/it] 43%|####3     | 174/401 [12:32<18:58,  5.01s/it] 44%|####4     | 177/401 [12:46<18:14,  4.89s/it] 45%|####4     | 180/401 [12:54<14:54,  4.05s/it] 46%|####5     | 183/401 [13:02<13:07,  3.61s/it] 46%|####6     | 185/401 [13:02<10:05,  2.81s/it] 46%|####6     | 186/401 [13:16<15:31,  4.33s/it] 47%|####7     | 189/401 [13:31<16:22,  4.64s/it] 48%|####7     | 192/401 [13:53<19:31,  5.60s/it] 49%|####8     | 195/401 [14:05<17:19,  5.05s/it] 49%|####9     | 198/401 [14:14<14:49,  4.38s/it] 50%|#####     | 201/401 [14:28<14:54,  4.47s/it] 51%|#####     | 204/401 [14:43<15:10,  4.62s/it] 52%|#####1    | 207/401 [14:49<12:24,  3.84s/it] 52%|#####2    | 210/401 [15:00<11:55,  3.75s/it] 53%|#####3    | 213/401 [15:07<10:30,  3.35s/it] 54%|#####3    | 215/401 [15:13<10:12,  3.29s/it] 54%|#####4    | 218/401 [15:26<10:59,  3.60s/it] 55%|#####5    | 221/401 [15:43<12:56,  4.31s/it] 56%|#####5    | 224/401 [16:07<16:09,  5.48s/it] 57%|#####6    | 227/401 [16:16<13:35,  4.68s/it] 57%|#####7    | 230/401 [16:21<10:39,  3.74s/it] 58%|#####8    | 233/401 [16:34<10:58,  3.92s/it] 59%|#####8    | 236/401 [16:41<09:28,  3.44s/it] 59%|#####9    | 238/401 [16:58<12:31,  4.61s/it] 60%|#####9    | 239/401 [17:03<12:21,  4.58s/it] 60%|######    | 241/401 [17:06<09:58,  3.74s/it] 60%|######    | 242/401 [17:09<09:40,  3.65s/it] 61%|######    | 244/401 [17:16<09:33,  3.65s/it] 61%|######1   | 245/401 [17:18<08:18,  3.20s/it] 62%|######1   | 247/401 [17:23<07:30,  2.93s/it] 62%|######1   | 248/401 [17:27<08:13,  3.23s/it] 62%|######2   | 250/401 [17:30<06:39,  2.65s/it] 63%|######2   | 251/401 [18:06<23:37,  9.45s/it] 63%|######3   | 254/401 [18:11<14:10,  5.79s/it] 64%|######4   | 257/401 [18:16<09:57,  4.15s/it] 64%|######4   | 258/401 [18:22<10:29,  4.40s/it] 65%|######4   | 260/401 [18:24<07:47,  3.32s/it] 65%|######5   | 261/401 [18:37<12:05,  5.18s/it] 66%|######5   | 264/401 [18:47<10:02,  4.40s/it] 66%|######6   | 266/401 [18:49<07:41,  3.42s/it] 67%|######6   | 267/401 [18:57<09:15,  4.14s/it] 67%|######7   | 269/401 [18:58<06:37,  3.01s/it] 67%|######7   | 270/401 [19:06<08:30,  3.89s/it] 68%|######7   | 272/401 [19:31<14:46,  6.87s/it] 69%|######8   | 275/401 [19:43<12:00,  5.71s/it] 69%|######9   | 278/401 [19:57<10:51,  5.29s/it] 70%|#######   | 281/401 [20:02<08:01,  4.01s/it] 71%|#######   | 284/401 [20:06<06:01,  3.09s/it] 71%|#######1  | 286/401 [20:10<05:27,  2.85s/it] 72%|#######1  | 287/401 [20:10<04:42,  2.48s/it] 72%|#######1  | 288/401 [20:12<04:14,  2.25s/it] 72%|#######2  | 289/401 [20:26<08:53,  4.77s/it] 73%|#######2  | 292/401 [20:34<06:50,  3.76s/it] 73%|#######3  | 294/401 [20:39<05:55,  3.32s/it] 74%|#######3  | 295/401 [20:43<06:05,  3.45s/it] 74%|#######4  | 297/401 [20:44<04:16,  2.47s/it] 74%|#######4  | 298/401 [20:49<05:11,  3.03s/it] 75%|#######4  | 299/401 [20:55<06:03,  3.57s/it] 75%|#######5  | 301/401 [20:58<04:39,  2.79s/it] 75%|#######5  | 302/401 [21:08<07:20,  4.45s/it] 76%|#######6  | 305/401 [21:16<05:41,  3.56s/it] 77%|#######6  | 308/401 [21:27<05:38,  3.64s/it] 78%|#######7  | 311/401 [21:33<04:32,  3.03s/it] 78%|#######8  | 314/401 [21:38<03:43,  2.57s/it] 79%|#######8  | 315/401 [21:53<06:01,  4.20s/it] 79%|#######9  | 318/401 [22:02<05:10,  3.74s/it] 80%|########  | 321/401 [22:10<04:31,  3.39s/it] 81%|########  | 324/401 [22:16<03:51,  3.01s/it] 81%|########1 | 325/401 [22:23<04:21,  3.44s/it] 81%|########1 | 326/401 [22:25<04:07,  3.30s/it] 82%|########1 | 327/401 [22:27<03:45,  3.05s/it] 82%|########1 | 328/401 [22:36<05:11,  4.27s/it] 82%|########2 | 330/401 [22:38<03:34,  3.02s/it] 83%|########2 | 331/401 [22:52<06:21,  5.45s/it] 83%|########2 | 332/401 [22:58<06:21,  5.52s/it] 83%|########3 | 334/401 [23:08<06:00,  5.38s/it] 84%|########3 | 335/401 [23:09<04:44,  4.32s/it] 84%|########4 | 337/401 [23:20<05:07,  4.80s/it] 85%|########4 | 340/401 [23:40<05:46,  5.68s/it] 86%|########5 | 343/401 [23:51<04:41,  4.86s/it] 86%|########6 | 346/401 [23:55<03:18,  3.61s/it] 87%|########7 | 349/401 [24:00<02:32,  2.93s/it] 88%|########7 | 352/401 [24:07<02:15,  2.76s/it] 88%|########8 | 353/401 [24:22<03:29,  4.37s/it] 89%|########8 | 356/401 [24:31<02:53,  3.86s/it] 90%|########9 | 359/401 [24:40<02:30,  3.59s/it] 90%|######### | 362/401 [24:57<02:47,  4.29s/it] 91%|#########1| 365/401 [25:11<02:36,  4.35s/it] 92%|#########1| 368/401 [25:17<02:01,  3.67s/it] 93%|#########2| 371/401 [25:23<01:32,  3.07s/it] 93%|#########2| 372/401 [25:25<01:28,  3.04s/it] 93%|#########3| 374/401 [25:52<02:36,  5.80s/it] 94%|#########4| 377/401 [26:03<02:00,  5.00s/it] 95%|#########4| 380/401 [26:10<01:26,  4.13s/it] 95%|#########5| 382/401 [26:15<01:09,  3.67s/it] 96%|#########5| 383/401 [26:29<01:34,  5.24s/it] 96%|#########6| 385/401 [26:30<01:01,  3.83s/it] 96%|#########6| 386/401 [26:45<01:28,  5.88s/it] 97%|#########7| 389/401 [26:51<00:49,  4.12s/it] 97%|#########7| 390/401 [27:00<00:55,  5.01s/it] 98%|#########7| 392/401 [27:15<00:51,  5.73s/it] 99%|#########8| 395/401 [27:30<00:32,  5.49s/it] 99%|#########9| 398/401 [27:52<00:18,  6.15s/it]100%|##########| 401/401 [27:55<00:00,  4.39s/it]100%|##########| 401/401 [27:55<00:00,  4.18s/it]
+32229
+78162
+45386
+46367
+23713
+18797
+77914
+51355
+53771
+105036
+45029
+51245
+38129
+56325
+40052
+89099
+47540
+73065
+129004
+37060
+62896
+67754
+32580
+44238
+113174
+21270
+31334
+34897
+23111
+97296
+50252
+137744
+87047
+44317
+99691
+39435
+39595
+66962
+49366
+6357
+48318
+38065
+69599
+96521
+68268
+75588
+48834
+42804
+17114
+30663
+48306
+64451
+28393
+65205
+88278
+58000
+29273
+22791
+51809
+68462
+102474
+72724
+25793
+15108
+61195
+25771
+30584
+17671
+70229
+21063
+37343
+72050
+54898
+77584
+110900
+30660
+112841
+27300
+41330
+64618
+30576
+15984
+55358
+47364
+49143
+24422
+37846
+33371
+123175
+85445
+63534
+37314
+59484
+50789
+31349
+30019
+58651
+125159
+36270
+37184
+68374
+37777
+58450
+45124
+41829
+47844
+13848
+69602
+64353
+68726
+69191
+37861
+54431
+44395
+34673
+80816
+60821
+79637
+34505
+39586
+39047
+88812
+16936
+32383
+61074
+81655
+29505
+60412
+85495
+94503
+79621
+37411
+19683
+72900
+65016
+83385
+47078
+40500
+19439
+142812
+33800
+51491
+91678
+36747
+63358
+43362
+61095
+72945
+14973
+29520
+48820
+32386
+42325
+37079
+59316
+28665
+29149
+73262
+136705
+95667
+70342
+23689
+67102
+28836
+80608
+19312
+55021
+64411
+52423
+42457
+51306
+78488
+122022
+93473
+43572
+19708
+81040
+67735
+96662
+54579
+50148
+44026
+34923
+37121
+87325
+79905
+55350
+32268
+37648
+34971
+100542
+103663
+58248
+15795
+42049
+67182
+38509
+170773
+72076
+38827
+108320
+25145
+25707
+40073
+84587
+63845
+29694
+64471
+30813
+43307
+46376
+31703
+113290
+29232
+19447
+19586
+28528
+71741
+67676
+77643
+92363
+142249
+73813
+72575
+54794
+90900
+38277
+73576
+62449
+148247
+67770
+38553
+49273
+69429
+54148
+12828
+67525
+69671
+39637
+104730
+62252
+38067
+53731
+46359
+89438
+131192
+51637
+34637
+45256
+68198
+41515
+42520
+51248
+69263
+77809
+64201
+132071
+129756
+83955
+38546
+19033
+34322
+28800
+58536
+65484
+21306
+89054
+42311
+92906
+15808
+70071
+26190
+113339
+76074
+50533
+62325
+111990
+69958
+88497
+73151
+57529
+108090
+154041
+50525
+52229
+15482
+23674
+63881
+47712
+16053
+25148
+30871
+41814
+21092
+76981
+23617
+30622
+14902
+46874
+31614
+77203
+75566
+60313
+37107
+49110
+108478
+63647
+27149
+61901
+71530
+49067
+60675
+99314
+89834
+33857
+21404
+13632
+73071
+80579
+27670
+48190
+51221
+107698
+58793
+53803
+27264
+79389
+20943
+59727
+74330
+27147
+71288
+126305
+34864
+59360
+41206
+116580
+63237
+90806
+119244
+44483
+55780
+42650
+52429
+98783
+69380
+63695
+11921
+42160
+135204
+51225
+68190
+16964
+28340
+109779
+18913
+26744
+69225
+154244
+63841
+69166
+49861
+46814
+105147
+42746
+21456
+64272
+63200
+113690
+40354
+16864
+79904
+53992
+41973
+32294
+45595
+51436
+18074
+63423
+72126
+212832
+102114
+86883
+74968
+37917
+18014
+79669
+102743
+65053
+35960
+68064
+113081
+32818
+40683
+40938
+22160
+76522
+95912
+138803
+109804
+70293
+43293
+180296
+61066
+43629
+85341
+30775
+39777
+48784
+70674
+40771
+35881
+114324
+21833
+36114
+83585
+41608
+23392
+51929
+62153
+44393
+53801
+49690
+57203
+60278
+96543
+73976
+53765
+109784
+60801
+53473
+49035
+46797
+100749
+51847
+13005
+61815
+31821
+75589
+63630
+90203
+108483
+41913
+54869
+33378
+32508
+48220
+68126
+155944
+30143
+50315
+98165
+41581
+117929
+27331
+98168
+132736
+52885
+56674
+88957
+39444
+51199
+81753
+53720
+64726
+48697
+85083
+46168
+31036
+110637
+57218
+35495
+110552
+45908
+105016
+48494
+76078
+165319
+98662
+29468
+17898
+20019
+18204
+47665
+201633
+48074
+95978
+31632
+81497
+35655
+141274
+135382
+50330
+33732
+51057
+28455
+64558
+110185
+88858
+80232
+111531
+60000
+46252
+36977
+53813
+20336
+43926
+71985
+84146
+43738
+51011
+76427
+18638
+105371
+66239
+90990
+75447
+47468
+60088
+54174
+54341
+17573
+106932
+121941
+45066
+83417
+81913
+36852
+41414
+17580
+55609
+39232
+42147
+35992
+45551
+40549
+70118
+73250
+95440
+9566
+81523
+14802
+69529
+74737
+151509
+33487
+16671
+76476
+57566
+96340
+37988
+108905
+32279
+54840
+38493
+113020
+109007
+56037
+45678
+59150
+128779
+55211
+9150
+29148
+61865
+18083
+79351
+101456
+47668
+62583
+23986
+55059
+182017
+12423
+55280
+45895
+78283
+110318
+106708
+109807
+128978
+92441
+69529
+80596
+72608
+23909
+142318
+33450
+55717
+25308
+45904
+46503
+44295
+70550
+56696
+56724
+99328
+64055
+64855
+73821
+113290
+152982
+77051
+46313
+68738
+93148
+50411
+90392
+41412
+61432
+95474
+82293
+62348
+99960
+82316
+81552
+41663
+49144
+40235
+40356
+37789
+75851
+47449
+52702
+56978
+50999
+51353
+24998
+57240
+108999
+34216
+17154
+79505
+57291
+37545
+44475
+117211
+58152
+56624
+54262
+59918
+33638
+77114
+75033
+51952
+50837
+71951
+33905
+24083
+59305
+30548
+71061
+47979
+102236
+111144
+49284
+57812
+63303
+54579
+44191
+28981
+105378
+71619
+51287
+100344
+41408
+59826
+66603
+111360
+16618
+104500
+92592
+79459
+97914
+45249
+36227
+88528
+88354
+56386
+15996
+68596
+68846
+83190
+75883
+44228
+53650
+63554
+38563
+73571
+47331
+49193
+24483
+40423
+24390
+29590
+69956
+53914
+71425
+36994
+36989
+101836
+40350
+22206
+124074
+78460
+58547
+29761
+19977
+80778
+13438
+41955
+24396
+85335
+109776
+26688
+112740
+53040
+37631
+44316
+14921
+85341
+78666
+32469
+38715
+99625
+101870
+54975
+31871
+86059
+38414
+12331
+45609
+86742
+66397
+39404
+36575
+73131
+49064
+102870
+74897
+45303
+94449
+71818
+55952
+56293
+61258
+87864
+33609
+23039
+32412
+82558
+22440
+115546
+57748
+39141
+41547
+41198
+76118
+40627
+85891
+27061
+54763
+42608
+99880
+71363
+59247
+87204
+33599
+61787
+24201
+50058
+104098
+77512
+26179
+67762
+116448
+15923
+59799
+21550
+57663
+10136
+85876
+92359
+19974
+50601
+78702
+23762
+26687
+34471
+29011
+51235
+26508
+41327
+77783
+111393
+37514
+69072
+51302
+14830
+130536
+49966
+118912
+123368
+65837
+52905
+71343
+46851
+51290
+15222
+64957
+61899
+72500
+38350
+68718
+111300
+46381
+108100
+101265
+34331
+32268
+90562
+52127
+126232
+21300
+84265
+53738
+48563
+55975
+46922
+72086
+53528
+47474
+125818
+33402
+59662
+79892
+103559
+84655
+36462
+34361
+113761
+109757
+85778
+48230
+65180
+82620
+34670
+104673
+52560
+38895
+48738
+123570
+25273
+53301
+41718
+74382
+48877
+24224
+96538
+28418
+53294
+28383
+79940
+36913
+78980
+83687
+107911
+56390
+16185
+23722
+34841
+45098
+117904
+72985
+78865
+79839
+74424
+95563
+51915
+76665
+70460
+42354
+89951
+48361
+41288
+28782
+79692
+62679
+48792
+101064
+92877
+66344
+70666
+79343
+117340
+87881
+38408
+58238
+46201
+18746
+20291
+105648
+36741
+41217
+65796
+44754
+107845
+75371
+61122
+16110
+67990
+38196
+95135
+37793
+51213
+52659
+63782
+43334
+67607
+84429
+99783
+116347
+74866
+22086
+64069
+104140
+73840
+42668
+66172
+59430
+39384
+24400
+64259
+44055
+39791
+88672
+35361
+65619
+111862
+88778
+88950
+88659
+65840
+37884
+63398
+60738
+44073
+77784
+40819
+111254
+79134
+62893
+67169
+37953
+47398
+93004
+50872
+50640
+31321
+66271
+19899
+22611
+73202
+90421
+39278
+21515
+38424
+29604
+57088
+77489
+94243
+123176
+52428
+106474
+31296
+40866
+69893
+116520
+24626
+151775
+151447
+69344
+85095
+45638
+53254
+26487
+36787
+40991
+51936
+54058
+49219
+47340
+49959
+96003
+22675
+156399
+62429
+79368
+30871
+112042
+64052
+28466
+48859
+54342
+48350
+20946
+52227
+41174
+45961
+25051
+13417
+43512
+21864
+113040
+66206
+56108
+60114
+61827
+66044
+50913
+117695
+42865
+52273
+66562
+101103
+28817
+86039
+3861
+99001
+49977
+25685
+35241
+4686
+38993
+63880
+50159
+65304
+106689
+30471
+62074
+42202
+30389
+24648
+74224
+34861
+53501
+125083
+69352
+27445
+92657
+106035
+57754
+41532
+52503
+183393
+100560
+34106
+69846
+31662
+44544
+65194
+88835
+20513
+27680
+16593
+69791
+40468
+81928
+33801
+72774
+66188
+47503
+77904
+55592
+64849
+20919
+106438
+30375
+12189
+74832
+54333
+37003
+45409
+64050
+106541
+37042
+42507
+33430
+23156
+47443
+61516
+69232
+45807
+93306
+81437
+58661
+33284
+114255
+16973
+68176
+58996
+73786
+96799
+82380
+42760
+71125
+130689
+38618
+58930
+75679
+39839
+29468
+53492
+80510
+29216
+43445
+70161
+36429
+49072
+67849
+75784
+28916
+33432
+34040
+91712
+30362
+18181
+74706
+66342
+25561
+22234
+51268
+12672
+26651
+111786
+66064
+28746
+27803
+45311
+71423
+103528
+114429
+19606
+40737
+115699
+76250
+76164
+122190
+66185
+36656
+98981
+70883
+36136
+40641
+78748
+74595
+36490
+48772
+108227
+97360
+57519
+72226
+46176
+22509
+31292
+79632
+15286
+21808
+77456
+31350
+41476
+73291
+48165
+64093
+40130
+23433
+28989
+102346
+30338
+68608
+67549
+72525
+44801
+36484
+62959
+79652
+46457
+38644
+36652
+67118
+62121
+52879
+28596
+56709
+33613
+10205
+24044
+122282
+117859
+34903
+108671
+37842
+146817
+45666
+29857
+16818
+20461
+77079
+107541
+64469
+99701
+57300
+31571
+45896
+16587
+58958
+67511
+21616
+55007

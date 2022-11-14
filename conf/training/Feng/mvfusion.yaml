@@ -26,7 +26,7 @@ optim:
   lr_scheduler:
     class: ExponentialLR
     params:
-      gamma: 0.955  # in 100 epochs, LR decays by 1/100th  following 1 * (0.955)^100 where lr = 1
+      gamma: 0.9885  # in 200 epochs, LR decays by 1/100th  following 1 * (0.9885)^100 where lr = 1
   bn_scheduler:
     bn_policy: "step_decay"
     params:
@@ -34,7 +34,7 @@ optim:
       bn_decay: 1
       decay_step: 2000
       bn_clip: 1e-2
-weight_name: "latest" # Used during resume, select with model to load from [miou, macc, acc..., latest]
+weight_name: "best_miou" # Used during resume, select with model to load from [miou, macc, acc..., latest]
 enable_cudnn: True
 checkpoint_dir: ""
 
