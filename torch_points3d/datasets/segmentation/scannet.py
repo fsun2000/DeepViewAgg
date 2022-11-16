@@ -26,7 +26,8 @@ from urllib.request import urlopen
 
 from torch_points3d.datasets.base_dataset import BaseDataset
 import torch_points3d.core.data_transform as cT
-from . import IGNORE_LABEL
+# from . import IGNORE_LABEL
+IGNORE_LABEL = -1
 
 log = logging.getLogger(__name__)
 
@@ -141,7 +142,10 @@ SCANNET_COLOR_MAP = {
     40: (100.0, 85.0, 144.0),
 }
 
-SPLITS = ["train", "val"]#, "test"]
+SPLITS = ["train", "val", "test"]
+# SPLITS = ["test"]
+
+
 
 MAX_NUM_POINTS = 1200000
 
@@ -472,12 +476,6 @@ class SensorData:
         self.load(filename)
 
     def load(self, filename):
-        print("Tried to .sens into SensorData!")
-        print("exiting on line 463 in DeepViewAgg/torch_points3d/datasets/segmentation/scannet.py")
-        raise ImplementationError
-        
-        
-        
         with open(filename, 'rb') as f:
 
             # Read the sens file header
@@ -581,16 +579,12 @@ class SensorData:
 def export_sens_data(
         filename, output_path, depth_images=False, color_images=False,
         poses=False, intrinsics=False, frame_skip=1, verbose=True):
-    
-    print("Tried to export sensordata!")
-    print("exiting on line 573 in DeepViewAgg/torch_points3d/datasets/segmentation/scannet.py")
-    raise ImplementationError
-    
+        
     if not osp.exists(output_path):
         os.makedirs(output_path)
         # load the data
-    if verbose:
-        print(f'\nExporting {filename}...')
+#     if verbose:
+    print(f'\nExporting {filename}...')
     sd = SensorData(filename, frame_skip=frame_skip)
     if verbose:
         print('Loaded')
@@ -698,7 +692,9 @@ class Scannet(InMemoryDataset):
             is_test=False
     ):
 
-        assert self.SPLITS == ["train", "val"]#, "test"]
+#         assert self.SPLITS == ["train", "val", "test"]
+
+        
         assert split in self.SPLITS
         self.split = split
         if not isinstance(donotcare_class_ids, list):
@@ -745,7 +741,10 @@ class Scannet(InMemoryDataset):
             path = self.processed_paths[1]
         elif split == "test":
             print("line 720 scannet.py: split == 'test'")
-            path = self.processed_paths[2]
+            if len(self.processed_paths) == 2:
+                path = self.processed_paths[0]
+            else:
+                path = self.processed_paths[2]
         else:
             raise ValueError((f"Split {split} found, but expected either " "train, val, or test"))
         self.data, self.slices = torch.load(path)
@@ -806,11 +805,6 @@ class Scannet(InMemoryDataset):
         return len(Scannet.VALID_CLASS_IDS)
 
     def download_scans(self):
-        
-        print("Tried to download scans!")
-        print("exiting on line 804 in DeepViewAgg/torch_points3d/datasets/segmentation/scannet.py")
-        raise ImplementationError
-        
         release_file = BASE_URL + RELEASE + ".txt"
         release_scans = get_release_scans(release_file)
         # release_scans = ["scene0191_00","scene0191_01", "scene0568_00", "scene0568_01"]
@@ -892,6 +886,13 @@ class Scannet(InMemoryDataset):
                 # raise ValueError(
                 #     f"Cannot export 'sens' data to {osp.exists(sens_dir)} "
                 #     f"because folder already exists.")
+            elif frame_depth and not osp.exists(os.path.join(sens_dir, 'depth')):
+                print("exporting depth data only")
+                export_sens_data(
+                    sens_file, osp.join(scannet_dir, scan_name, 'sens'),
+                    depth_images=True, color_images=False,
+                    poses=False, intrinsics=False,
+                    frame_skip=frame_skip)
             else:
                 print("exporting sens data")
                 export_sens_data(
@@ -1035,6 +1036,10 @@ class Scannet(InMemoryDataset):
 #         print("Skip Preprocessing 3D data because it has already been processed")
 #         print("Adjust code if 3D data needs to be processed again, DeepViewAgg/torch_points3d/datasets/segmentation/scannet.py line 1035")
         for i, (scan_names, split) in enumerate(zip(self.scan_names, self.SPLITS)):
+#             if split == 'train':
+#                 print("currently, preprocessing of raw 3D train scans is skipped")
+#                 continue
+        
             if not osp.exists(self.processed_paths[i]):
                 mapping_idx_to_scan_names = getattr(self, "MAPPING_IDX_TO_SCAN_{}_NAMES".format(split.upper()))
                 scannet_dir = osp.join(self.raw_dir, "scans" if split in ["train", "val"] else "scans_test")
@@ -1061,11 +1066,15 @@ class Scannet(InMemoryDataset):
                 ]
                 if self.use_multiprocessing:
                     print("Feng: multiprocessing while pre-processing dataset is temporarily disabled. I've had issues where one worker stops but does not give any error code. Please set num_workers to 1.", flush=True)
-                    raise NotImplementedError
+#                     raise NotImplementedError
                     
                     with multiprocessing.get_context("spawn").Pool(processes=self.process_workers) as pool:
                         datas = pool.starmap(Scannet.process_func, args)
-                # Save each data item instead of first accumulating every item
+                        for data in datas:
+                            id_scan = int(data.id_scan.item())
+                            scan_name = mapping_idx_to_scan_names[id_scan]
+                            path_to_raw_scan = osp.join(self.processed_raw_paths[i], "{}.pt".format(scan_name))
+                            torch.save(data, path_to_raw_scan)
                 else:
                     for arg in args:
                         scan_name = arg[3]
@@ -1076,9 +1085,11 @@ class Scannet(InMemoryDataset):
                             id_scan = int(data.id_scan.item())
                             scan_name = mapping_idx_to_scan_names[id_scan]
                             torch.save(data, path_to_raw_scan)
-                # Load datas
-                raw_scan_paths = [osp.join(self.processed_raw_paths[i], "{}.pt".format(scan_name)) for scan_name in scan_names]
-                datas = [torch.load(path_to_raw_scan) for path_to_raw_scan in raw_scan_paths]
+
+                if not self.use_multiprocessing:
+                    # Load datas
+                    raw_scan_paths = [osp.join(self.processed_raw_paths[i], "{}.pt".format(scan_name)) for scan_name in scan_names]
+                    datas = [torch.load(path_to_raw_scan) for path_to_raw_scan in raw_scan_paths]
 #                 else:
 #                     datas = []
 #                     #############################
@@ -1100,10 +1111,18 @@ class Scannet(InMemoryDataset):
 
                 torch.save(self.collate(datas), self.processed_paths[i])
                 
-                # Remove the individually processed raw_scan files
-                for path_to_raw_scan in raw_scan_paths:
-                    if osp.exists(path_to_raw_scan):
-                        os.remove(path_to_raw_scan)
+                # Note: do not remove if you wish to evaluate data on full 0.01 voxel resolution, 
+                # or if you wish to create a Benchmark submission file
+#                 # Remove the individually processed raw_scan files
+#                 if not self.use_multiprocessing:
+#                     for path_to_raw_scan in raw_scan_paths:
+#                         if osp.exists(path_to_raw_scan):
+#                             os.remove(path_to_raw_scan)
+
+#                 print(f"finished creating raw_{split}")
+#                 if split == 'test':
+#                     print("exiting now ")
+#                     exit()
                     
 
     def _remap_labels(self, semantic_label):
@@ -1209,19 +1228,19 @@ class ScannetDataset(BaseDataset):
             is_test=is_test,
         )
 
-#         self.test_dataset = Scannet(
-#             self._data_path,
-#             split="test",
-#             transform=self.val_transform,
-#             pre_transform=self.pre_transform,
-#             version=dataset_opt.version,
-#             use_instance_labels=use_instance_labels,
-#             use_instance_bboxes=use_instance_bboxes,
-#             donotcare_class_ids=donotcare_class_ids,
-#             max_num_point=max_num_point,
-#             process_workers=process_workers,
-#             is_test=is_test,
-#         )
+        self.test_dataset = Scannet(
+            self._data_path,
+            split="test",
+            transform=self.val_transform,
+            pre_transform=self.pre_transform,
+            version=dataset_opt.version,
+            use_instance_labels=use_instance_labels,
+            use_instance_bboxes=use_instance_bboxes,
+            donotcare_class_ids=donotcare_class_ids,
+            max_num_point=max_num_point,
+            process_workers=process_workers,
+            is_test=is_test,
+        )
 
     @property
     def path_to_submission(self):
@@ -1241,3 +1260,17 @@ class ScannetDataset(BaseDataset):
         return ScannetSegmentationTracker(
             self, wandb_log=wandb_log, use_tensorboard=tensorboard_log, ignore_label=IGNORE_LABEL
         )
+
+    
+if __name__ == "__main__":
+    
+    from omegaconf import OmegaConf
+
+    # Recover dataset options
+    DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.getcwd())))
+    dataset_options = OmegaConf.load(os.path.join(DIR, 'conf/data/segmentation/multimodal/Feng/scannet-neucon-smallres-m2f.yaml'))
+    
+
+    # Download the hard-coded release scans 
+    dataset = ScannetDataset(dataset_options)
+    print(dataset)

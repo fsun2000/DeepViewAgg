@@ -181,8 +181,8 @@ class Trainer:
                 else:
                     self.evaluate_m2f_val_set(epoch)
 
-            if self._dataset.has_test_loaders:
-                self._test_epoch(epoch, "test")
+#             if self._dataset.has_test_loaders:
+#                 self._test_epoch(epoch, "test")
 
             # Create train loader and delete validation loader from system memory
             self._dataset.create_dataloaders(
@@ -205,9 +205,13 @@ class Trainer:
         self._is_training = False
 
         epoch = self._checkpoint.start_epoch
+        
         if self._dataset.has_val_loader:
             if not stage_name or stage_name == "val":
                 self._test_epoch(epoch, "val")
+
+        # Free memory
+        del self._dataset._val_loader
 
         if self._dataset.has_test_loaders:
             if not stage_name or stage_name == "test":
@@ -398,6 +402,7 @@ class Trainer:
                 with Ctq(loader) as tq_loader:
                     for data in tq_loader:
                         with torch.no_grad():
+
                             self._model.set_input(data, self._device)
                             with torch.cuda.amp.autocast(enabled=self._model.is_mixed_precision()):
                                 self._model.forward(epoch=epoch)

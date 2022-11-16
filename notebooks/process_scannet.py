@@ -59,4 +59,3 @@ if __name__ == '__main__':
     dataset = ScannetDatasetMM(cfg.data)
     print(dataset)
     print(f"Time = {time() - start:0.1f} sec.")
-    print(dataset.train_dataset[0])

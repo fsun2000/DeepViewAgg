@@ -125,8 +125,6 @@ class ScannetMM(Scannet):
         self.load_m2f_masks = load_m2f_masks
         super(ScannetMM, self).__init__(*args, **kwargs)
     
-        print("temporarily hard code N-views in get_view_dependent_features()")
-
 
     def process(self):
         if self.is_test:
@@ -567,30 +565,32 @@ class ScannetDatasetMM(BaseDatasetMM, ABC):
             load_m2f_masks=load_m2f_masks
         )
 
-#         self.test_dataset = ScannetMM(
-#             self._data_path,
-#             split="test",
-#             transform=self.val_transform,
-#             pre_transform=self.pre_transform,
-#             pre_transform_image=self.pre_transform_image,
-#             transform_image=self.test_transform_image,
-#             version=dataset_opt.version,
-#             use_instance_labels=use_instance_labels,
-#             use_instance_bboxes=use_instance_bboxes,
-#             donotcare_class_ids=donotcare_class_ids,
-#             max_num_point=max_num_point,
-#             process_workers=process_workers,
-#             is_test=is_test,
-#             types=types,
-#             frame_depth=frame_depth,
-#             frame_rgb=frame_rgb,
-#             frame_pose=frame_pose,
-#             frame_intrinsics=frame_intrinsics,
-#             frame_skip=frame_skip,
-#             neucon_frame_skip=neucon_frame_skip,
-#             neucon_metas_dir=neucon_metas_dir,
-#             m2f_preds_dirname=m2f_preds_dirname
-#         )
+        print("initialize test dataset")
+        self.test_dataset = ScannetMM(
+            self._data_path,
+            split="test",
+            transform=self.val_transform,
+            pre_transform=self.pre_transform,
+            pre_transform_image=self.pre_transform_image,
+            transform_image=self.test_transform_image,
+            version=dataset_opt.version,
+            use_instance_labels=use_instance_labels,
+            use_instance_bboxes=use_instance_bboxes,
+            donotcare_class_ids=donotcare_class_ids,
+            max_num_point=max_num_point,
+            process_workers=process_workers,
+            is_test=is_test,
+            types=types,
+            frame_depth=frame_depth,
+            frame_rgb=frame_rgb,
+            frame_pose=frame_pose,
+            frame_intrinsics=frame_intrinsics,
+            frame_skip=frame_skip,
+            neucon_frame_skip=neucon_frame_skip,
+            neucon_metas_dir=neucon_metas_dir,
+            m2f_preds_dirname=m2f_preds_dirname,
+            load_m2f_masks=load_m2f_masks
+        )
 
     @property
     def path_to_submission(self):
@@ -624,7 +624,7 @@ if __name__ == '__main__':
 
     # Recover dataset options
     DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.getcwd())))
-    dataset_options = OmegaConf.load(os.path.join(DIR, 'conf/data/multimodal/scannet.yaml'))
+    dataset_options = OmegaConf.load(os.path.join(DIR, 'conf/data/segmentation/multimodal/Feng/scannet-neucon-smallres-m2f.yaml'))
 
     # Choose download root directory
     dataset_options.data.dataroot = os.path.join(DIR, "data")
@@ -636,4 +636,3 @@ if __name__ == '__main__':
 
     # Download the hard-coded release scans 
     dataset = ScannetDatasetMM(dataset_options.data)
-    print(dataset)

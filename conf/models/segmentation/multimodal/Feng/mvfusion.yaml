@@ -216,7 +216,7 @@ MVFusion_3D: #Res16UNet34-L4-early-ade20k-interpolate:
             use_attn_mask: True          # Transformer attention masking
             use_csr_mask: True           # Transformer pixel validity masking
             has_mlp_head: False
-            max_n_points: 130000      # max. size of transformer batched input. Increase if memory allows
+            max_n_points: 999999999      # max. size of transformer batched input. Increase if memory allows #130000
             
 MVFusion_3D_M1: #Res16UNet34-L4-early-ade20k-interpolate:
     # 28.1 M params - 109.4 Mo on the GPU - ~2.7 ko/pixel at training time

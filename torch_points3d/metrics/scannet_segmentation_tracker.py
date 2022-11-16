@@ -53,7 +53,7 @@ class ScannetSegmentationTracker(SegmentationTracker):
     def finalise(self, full_res=False, make_submission=False, **kwargs):
         if not full_res and not make_submission:
             return
-
+        
         self._predict_full_res()
 
         # Compute full res metrics
@@ -69,7 +69,7 @@ class ScannetSegmentationTracker(SegmentationTracker):
             self._full_acc = 100 * self._full_confusion_matrix.get_overall_accuracy()
             self._full_macc = 100 * self._full_confusion_matrix.get_mean_class_accuracy()
             self._full_miou = 100 * self._full_confusion_matrix.get_average_intersection_union()
-
+            
         # Save files to disk
         if make_submission and self._stage == "test":
             self._make_submission()
