@@ -1,0 +1,378 @@
+ 59%|#####9    | 185/312 [06:47<03:06,  1.47s/it, [0;93mval_acc=92.31, val_loss_cross_entropy=0.281, val_loss_seg=0.281, val_macc=86.94, val_miou=77.71[0m)] 60%|#####9    | 186/312 [06:47<04:25,  2.11s/it, [0;93mval_acc=92.31, val_loss_cross_entropy=0.281, val_loss_seg=0.281, val_macc=86.94, val_miou=77.71[0m)] 60%|#####9    | 186/312 [06:50<04:25,  2.11s/it, [0;93mval_acc=92.32, val_loss_cross_entropy=0.280, val_loss_seg=0.280, val_macc=86.96, val_miou=77.73[0m)] 60%|#####9    | 187/312 [06:50<04:55,  2.37s/it, [0;93mval_acc=92.32, val_loss_cross_entropy=0.280, val_loss_seg=0.280, val_macc=86.96, val_miou=77.73[0m)] 60%|#####9    | 187/312 [06:51<04:55,  2.37s/it, [0;93mval_acc=92.31, val_loss_cross_entropy=0.281, val_loss_seg=0.281, val_macc=86.97, val_miou=77.74[0m)] 60%|######    | 188/312 [06:51<04:25,  2.14s/it, [0;93mval_acc=92.31, val_loss_cross_entropy=0.281, val_loss_seg=0.281, val_macc=86.97, val_miou=77.74[0m)] 60%|######    | 188/312 [06:52<04:25,  2.14s/it, [0;93mval_acc=92.33, val_loss_cross_entropy=0.280, val_loss_seg=0.280, val_macc=86.99, val_miou=77.76[0m)] 61%|######    | 189/312 [06:52<03:27,  1.68s/it, [0;93mval_acc=92.33, val_loss_cross_entropy=0.280, val_loss_seg=0.280, val_macc=86.99, val_miou=77.76[0m)] 61%|######    | 189/312 [06:53<03:27,  1.68s/it, [0;93mval_acc=92.30, val_loss_cross_entropy=0.282, val_loss_seg=0.282, val_macc=86.94, val_miou=77.70[0m)] 61%|######    | 190/312 [06:53<03:14,  1.59s/it, [0;93mval_acc=92.30, val_loss_cross_entropy=0.282, val_loss_seg=0.282, val_macc=86.94, val_miou=77.70[0m)]MMData debug() function changed, please uncomment the 3rd assert line when doing inference without M2F features!
+ 61%|######    | 190/312 [06:55<03:14,  1.59s/it, [0;93mval_acc=92.29, val_loss_cross_entropy=0.281, val_loss_seg=0.281, val_macc=86.90, val_miou=77.65[0m)] 61%|######1   | 191/312 [06:55<03:01,  1.50s/it, [0;93mval_acc=92.29, val_loss_cross_entropy=0.281, val_loss_seg=0.281, val_macc=86.90, val_miou=77.65[0m)][2022-11-16 13:08:50,095][torch_points3d.trainer][INFO] - DEVICE : cuda
+[2022-11-16 13:08:50,881][torch_points3d.metrics.model_checkpoint][INFO] - Loading checkpoint from /home/fsun/DeepViewAgg/outputs/2022-11-11/17-18-09/MVFusion_3D.pt
+ 61%|######1   | 191/312 [06:59<03:01,  1.50s/it, [0;93mval_acc=92.32, val_loss_cross_entropy=0.281, val_loss_seg=0.281, val_macc=86.93, val_miou=77.69[0m)] 62%|######1   | 192/312 [06:59<04:36,  2.31s/it, [0;93mval_acc=92.32, val_loss_cross_entropy=0.281, val_loss_seg=0.281, val_macc=86.93, val_miou=77.69[0m)] 62%|######1   | 192/312 [07:00<04:36,  2.31s/it, [0;93mval_acc=92.35, val_loss_cross_entropy=0.28 , val_loss_seg=0.28 , val_macc=86.96, val_miou=77.73[0m)] 62%|######1   | 193/312 [07:00<04:00,  2.02s/it, [0;93mval_acc=92.35, val_loss_cross_entropy=0.28 , val_loss_seg=0.28 , val_macc=86.96, val_miou=77.73[0m)]slurmstepd: error: *** JOB 10281505 ON r34n1 CANCELLED AT 2022-11-16T13:08:57 ***
+ 62%|######1   | 193/312 [07:03<04:00,  2.02s/it, [0;93mval_acc=92.34, val_loss_cross_entropy=0.280, val_loss_seg=0.280, val_macc=86.96, val_miou=77.73[0m)] 62%|######2   | 194/312 [07:03<04:40,  2.37s/it, [0;93mval_acc=92.34, val_loss_cross_entropy=0.280, val_loss_seg=0.280, val_macc=86.96, val_miou=77.73[0m)] 62%|######2   | 194/312 [07:06<04:40,  2.37s/it, [0;93mval_acc=92.34, val_loss_cross_entropy=0.280, val_loss_seg=0.280, val_macc=86.97, val_miou=77.74[0m)] 62%|######2   | 195/312 [07:06<04:58,  2.56s/it, [0;93mval_acc=92.34, val_loss_cross_entropy=0.280, val_loss_seg=0.280, val_macc=86.97, val_miou=77.74[0m)] 62%|######2   | 195/312 [07:09<04:58,  2.56s/it, [0;93mval_acc=92.34, val_loss_cross_entropy=0.281, val_loss_seg=0.281, val_macc=86.97, val_miou=77.74[0m)] 63%|######2   | 196/312 [07:09<04:53,  2.53s/it, [0;93mval_acc=92.34, val_loss_cross_entropy=0.281, val_loss_seg=0.281, val_macc=86.97, val_miou=77.74[0m)] 63%|######2   | 196/312 [07:12<04:53,  2.53s/it, [0;93mval_acc=92.36, val_loss_cross_entropy=0.280, val_loss_seg=0.280, val_macc=86.95, val_miou=77.74[0m)] 63%|######3   | 197/312 [07:12<05:14,  2.74s/it, [0;93mval_acc=92.36, val_loss_cross_entropy=0.280, val_loss_seg=0.280, val_macc=86.95, val_miou=77.74[0m)] 63%|######3   | 197/312 [07:15<05:14,  2.74s/it, [0;93mval_acc=92.37, val_loss_cross_entropy=0.279, val_loss_seg=0.279, val_macc=86.93, val_miou=77.73[0m)] 63%|######3   | 198/312 [07:15<05:08,  2.70s/it, [0;93mval_acc=92.37, val_loss_cross_entropy=0.279, val_loss_seg=0.279, val_macc=86.93, val_miou=77.73[0m)] 63%|######3   | 198/312 [07:16<05:08,  2.70s/it, [0;93mval_acc=92.38, val_loss_cross_entropy=0.279, val_loss_seg=0.279, val_macc=86.90, val_miou=77.72[0m)] 64%|######3   | 199/312 [07:16<04:17,  2.28s/it, [0;93mval_acc=92.38, val_loss_cross_entropy=0.279, val_loss_seg=0.279, val_macc=86.90, val_miou=77.72[0m)] 64%|######3   | 199/312 [07:18<04:17,  2.28s/it, [0;93mval_acc=92.40, val_loss_cross_entropy=0.278, val_loss_seg=0.278, val_macc=86.90, val_miou=77.73[0m)] 64%|######4   | 200/312 [07:18<04:01,  2.16s/it, [0;93mval_acc=92.40, val_loss_cross_entropy=0.278, val_loss_seg=0.278, val_macc=86.90, val_miou=77.73[0m)] 64%|######4   | 200/312 [07:19<04:01,  2.16s/it, [0;93mval_acc=92.41, val_loss_cross_entropy=0.277, val_loss_seg=0.277, val_macc=86.91, val_miou=77.74[0m)] 64%|######4   | 201/312 [07:19<03:28,  1.88s/it, [0;93mval_acc=92.41, val_loss_cross_entropy=0.277, val_loss_seg=0.277, val_macc=86.91, val_miou=77.74[0m)] 64%|######4   | 201/312 [07:22<03:28,  1.88s/it, [0;93mval_acc=92.43, val_loss_cross_entropy=0.276, val_loss_seg=0.276, val_macc=86.90, val_miou=77.74[0m)] 65%|######4   | 202/312 [07:22<04:12,  2.30s/it, [0;93mval_acc=92.43, val_loss_cross_entropy=0.276, val_loss_seg=0.276, val_macc=86.90, val_miou=77.74[0m)] 65%|######4   | 202/312 [07:25<04:12,  2.30s/it, [0;93mval_acc=92.40, val_loss_cross_entropy=0.277, val_loss_seg=0.277, val_macc=86.85, val_miou=77.66[0m)] 65%|######5   | 203/312 [07:25<04:07,  2.27s/it, [0;93mval_acc=92.40, val_loss_cross_entropy=0.277, val_loss_seg=0.277, val_macc=86.85, val_miou=77.66[0m)] 65%|######5   | 203/312 [07:28<04:07,  2.27s/it, [0;93mval_acc=92.35, val_loss_cross_entropy=0.279, val_loss_seg=0.279, val_macc=86.78, val_miou=77.53[0m)] 65%|######5   | 204/312 [07:28<04:48,  2.68s/it, [0;93mval_acc=92.35, val_loss_cross_entropy=0.279, val_loss_seg=0.279, val_macc=86.78, val_miou=77.53[0m)] 65%|######5   | 204/312 [07:30<04:48,  2.68s/it, [0;93mval_acc=92.35, val_loss_cross_entropy=0.280, val_loss_seg=0.280, val_macc=86.60, val_miou=77.33[0m)] 66%|######5   | 205/312 [07:30<04:03,  2.28s/it, [0;93mval_acc=92.35, val_loss_cross_entropy=0.280, val_loss_seg=0.280, val_macc=86.60, val_miou=77.33[0m)] 66%|######5   | 205/312 [07:31<04:03,  2.28s/it, [0;93mval_acc=92.34, val_loss_cross_entropy=0.280, val_loss_seg=0.280, val_macc=86.55, val_miou=77.24[0m)] 66%|######6   | 206/312 [07:31<03:48,  2.15s/it, [0;93mval_acc=92.34, val_loss_cross_entropy=0.280, val_loss_seg=0.280, val_macc=86.55, val_miou=77.24[0m)] 66%|######6   | 206/312 [07:34<03:48,  2.15s/it, [0;93mval_acc=92.31, val_loss_cross_entropy=0.282, val_loss_seg=0.282, val_macc=86.16, val_miou=76.81[0m)] 66%|######6   | 207/312 [07:34<04:13,  2.41s/it, [0;93mval_acc=92.31, val_loss_cross_entropy=0.282, val_loss_seg=0.282, val_macc=86.16, val_miou=76.81[0m)] 66%|######6   | 207/312 [07:36<04:13,  2.41s/it, [0;93mval_acc=92.31, val_loss_cross_entropy=0.282, val_loss_seg=0.282, val_macc=86.18, val_miou=76.83[0m)] 67%|######6   | 208/312 [07:36<03:31,  2.04s/it, [0;93mval_acc=92.31, val_loss_cross_entropy=0.282, val_loss_seg=0.282, val_macc=86.18, val_miou=76.83[0m)] 67%|######6   | 208/312 [07:37<03:31,  2.04s/it, [0;93mval_acc=92.33, val_loss_cross_entropy=0.281, val_loss_seg=0.281, val_macc=86.23, val_miou=76.90[0m)] 67%|######6   | 209/312 [07:37<03:14,  1.89s/it, [0;93mval_acc=92.33, val_loss_cross_entropy=0.281, val_loss_seg=0.281, val_macc=86.23, val_miou=76.90[0m)] 67%|######6   | 209/312 [07:39<03:14,  1.89s/it, [0;93mval_acc=92.31, val_loss_cross_entropy=0.281, val_loss_seg=0.281, val_macc=86.20, val_miou=76.86[0m)] 67%|######7   | 210/312 [07:39<03:13,  1.90s/it, [0;93mval_acc=92.31, val_loss_cross_entropy=0.281, val_loss_seg=0.281, val_macc=86.20, val_miou=76.86[0m)] 67%|######7   | 210/312 [07:41<03:13,  1.90s/it, [0;93mval_acc=92.29, val_loss_cross_entropy=0.282, val_loss_seg=0.282, val_macc=86.19, val_miou=76.82[0m)] 68%|######7   | 211/312 [07:41<03:23,  2.01s/it, [0;93mval_acc=92.29, val_loss_cross_entropy=0.282, val_loss_seg=0.282, val_macc=86.19, val_miou=76.82[0m)] 68%|######7   | 211/312 [07:43<03:23,  2.01s/it, [0;93mval_acc=92.27, val_loss_cross_entropy=0.283, val_loss_seg=0.283, val_macc=86.17, val_miou=76.76[0m)] 68%|######7   | 212/312 [07:43<03:08,  1.89s/it, [0;93mval_acc=92.27, val_loss_cross_entropy=0.283, val_loss_seg=0.283, val_macc=86.17, val_miou=76.76[0m)] 68%|######7   | 212/312 [07:46<03:08,  1.89s/it, [0;93mval_acc=92.28, val_loss_cross_entropy=0.282, val_loss_seg=0.282, val_macc=86.23, val_miou=76.79[0m)] 68%|######8   | 213/312 [07:46<03:46,  2.29s/it, [0;93mval_acc=92.28, val_loss_cross_entropy=0.282, val_loss_seg=0.282, val_macc=86.23, val_miou=76.79[0m)] 68%|######8   | 213/312 [07:48<03:46,  2.29s/it, [0;93mval_acc=92.25, val_loss_cross_entropy=0.283, val_loss_seg=0.283, val_macc=86.21, val_miou=76.76[0m)] 69%|######8   | 214/312 [07:48<03:26,  2.11s/it, [0;93mval_acc=92.25, val_loss_cross_entropy=0.283, val_loss_seg=0.283, val_macc=86.21, val_miou=76.76[0m)] 69%|######8   | 214/312 [07:52<03:26,  2.11s/it, [0;93mval_acc=92.25, val_loss_cross_entropy=0.283, val_loss_seg=0.283, val_macc=86.20, val_miou=76.75[0m)] 69%|######8   | 215/312 [07:52<04:10,  2.58s/it, [0;93mval_acc=92.25, val_loss_cross_entropy=0.283, val_loss_seg=0.283, val_macc=86.20, val_miou=76.75[0m)] 69%|######8   | 215/312 [07:54<04:10,  2.58s/it, [0;93mval_acc=92.27, val_loss_cross_entropy=0.282, val_loss_seg=0.282, val_macc=86.22, val_miou=76.79[0m)] 69%|######9   | 216/312 [07:54<03:50,  2.40s/it, [0;93mval_acc=92.27, val_loss_cross_entropy=0.282, val_loss_seg=0.282, val_macc=86.22, val_miou=76.79[0m)] 69%|######9   | 216/312 [07:56<03:50,  2.40s/it, [0;93mval_acc=92.28, val_loss_cross_entropy=0.281, val_loss_seg=0.281, val_macc=86.24, val_miou=76.80[0m)] 70%|######9   | 217/312 [07:56<03:56,  2.49s/it, [0;93mval_acc=92.28, val_loss_cross_entropy=0.281, val_loss_seg=0.281, val_macc=86.24, val_miou=76.80[0m)] 70%|######9   | 217/312 [07:57<03:56,  2.49s/it, [0;93mval_acc=92.30, val_loss_cross_entropy=0.280, val_loss_seg=0.280, val_macc=86.26, val_miou=76.83[0m)] 70%|######9   | 218/312 [07:57<03:00,  1.92s/it, [0;93mval_acc=92.30, val_loss_cross_entropy=0.280, val_loss_seg=0.280, val_macc=86.26, val_miou=76.83[0m)] 70%|######9   | 218/312 [07:59<03:00,  1.92s/it, [0;93mval_acc=92.32, val_loss_cross_entropy=0.279, val_loss_seg=0.279, val_macc=86.27, val_miou=76.86[0m)] 70%|#######   | 219/312 [07:59<03:12,  2.07s/it, [0;93mval_acc=92.32, val_loss_cross_entropy=0.279, val_loss_seg=0.279, val_macc=86.27, val_miou=76.86[0m)] 70%|#######   | 219/312 [08:02<03:12,  2.07s/it, [0;93mval_acc=92.28, val_loss_cross_entropy=0.281, val_loss_seg=0.281, val_macc=86.16, val_miou=76.74[0m)] 71%|#######   | 220/312 [08:02<03:16,  2.13s/it, [0;93mval_acc=92.28, val_loss_cross_entropy=0.281, val_loss_seg=0.281, val_macc=86.16, val_miou=76.74[0m)] 71%|#######   | 220/312 [08:05<03:16,  2.13s/it, [0;93mval_acc=92.24, val_loss_cross_entropy=0.284, val_loss_seg=0.284, val_macc=86.09, val_miou=76.64[0m)] 71%|#######   | 221/312 [08:05<03:43,  2.45s/it, [0;93mval_acc=92.24, val_loss_cross_entropy=0.284, val_loss_seg=0.284, val_macc=86.09, val_miou=76.64[0m)] 71%|#######   | 221/312 [08:06<03:43,  2.45s/it, [0;93mval_acc=92.20, val_loss_cross_entropy=0.286, val_loss_seg=0.286, val_macc=86.04, val_miou=76.56[0m)] 71%|#######1  | 222/312 [08:06<03:05,  2.07s/it, [0;93mval_acc=92.20, val_loss_cross_entropy=0.286, val_loss_seg=0.286, val_macc=86.04, val_miou=76.56[0m)] 71%|#######1  | 222/312 [08:09<03:05,  2.07s/it, [0;93mval_acc=92.21, val_loss_cross_entropy=0.285, val_loss_seg=0.285, val_macc=86.03, val_miou=76.58[0m)] 71%|#######1  | 223/312 [08:09<03:34,  2.41s/it, [0;93mval_acc=92.21, val_loss_cross_entropy=0.285, val_loss_seg=0.285, val_macc=86.03, val_miou=76.58[0m)] 71%|#######1  | 223/312 [08:10<03:34,  2.41s/it, [0;93mval_acc=92.21, val_loss_cross_entropy=0.285, val_loss_seg=0.285, val_macc=86.02, val_miou=76.60[0m)] 72%|#######1  | 224/312 [08:10<03:03,  2.08s/it, [0;93mval_acc=92.21, val_loss_cross_entropy=0.285, val_loss_seg=0.285, val_macc=86.02, val_miou=76.60[0m)] 72%|#######1  | 224/312 [08:14<03:03,  2.08s/it, [0;93mval_acc=92.16, val_loss_cross_entropy=0.288, val_loss_seg=0.288, val_macc=86.01, val_miou=76.53[0m)] 72%|#######2  | 225/312 [08:14<03:35,  2.47s/it, [0;93mval_acc=92.16, val_loss_cross_entropy=0.288, val_loss_seg=0.288, val_macc=86.01, val_miou=76.53[0m)] 72%|#######2  | 225/312 [08:15<03:35,  2.47s/it, [0;93mval_acc=92.09, val_loss_cross_entropy=0.292, val_loss_seg=0.292, val_macc=85.97, val_miou=76.42[0m)] 72%|#######2  | 226/312 [08:15<02:52,  2.01s/it, [0;93mval_acc=92.09, val_loss_cross_entropy=0.292, val_loss_seg=0.292, val_macc=85.97, val_miou=76.42[0m)] 72%|#######2  | 226/312 [08:19<02:52,  2.01s/it, [0;93mval_acc=92.02, val_loss_cross_entropy=0.294, val_loss_seg=0.294, val_macc=85.95, val_miou=76.32[0m)] 73%|#######2  | 227/312 [08:19<03:36,  2.55s/it, [0;93mval_acc=92.02, val_loss_cross_entropy=0.294, val_loss_seg=0.294, val_macc=85.95, val_miou=76.32[0m)] 73%|#######2  | 227/312 [08:22<03:36,  2.55s/it, [0;93mval_acc=91.99, val_loss_cross_entropy=0.299, val_loss_seg=0.299, val_macc=85.91, val_miou=76.24[0m)] 73%|#######3  | 228/312 [08:22<04:00,  2.86s/it, [0;93mval_acc=91.99, val_loss_cross_entropy=0.299, val_loss_seg=0.299, val_macc=85.91, val_miou=76.24[0m)] 73%|#######3  | 228/312 [08:25<04:00,  2.86s/it, [0;93mval_acc=91.98, val_loss_cross_entropy=0.302, val_loss_seg=0.302, val_macc=85.87, val_miou=76.17[0m)] 73%|#######3  | 229/312 [08:25<03:51,  2.78s/it, [0;93mval_acc=91.98, val_loss_cross_entropy=0.302, val_loss_seg=0.302, val_macc=85.87, val_miou=76.17[0m)] 73%|#######3  | 229/312 [08:29<03:51,  2.78s/it, [0;93mval_acc=91.99, val_loss_cross_entropy=0.302, val_loss_seg=0.302, val_macc=85.85, val_miou=76.14[0m)] 74%|#######3  | 230/312 [08:29<04:15,  3.12s/it, [0;93mval_acc=91.99, val_loss_cross_entropy=0.302, val_loss_seg=0.302, val_macc=85.85, val_miou=76.14[0m)] 74%|#######3  | 230/312 [08:33<04:15,  3.12s/it, [0;93mval_acc=92.00, val_loss_cross_entropy=0.301, val_loss_seg=0.301, val_macc=85.86, val_miou=76.15[0m)] 74%|#######4  | 231/312 [08:33<04:33,  3.38s/it, [0;93mval_acc=92.00, val_loss_cross_entropy=0.301, val_loss_seg=0.301, val_macc=85.86, val_miou=76.15[0m)] 74%|#######4  | 231/312 [08:33<04:33,  3.38s/it, [0;93mval_acc=91.86, val_loss_cross_entropy=0.306, val_loss_seg=0.306, val_macc=85.05, val_miou=75.65[0m)] 74%|#######4  | 232/312 [08:33<03:29,  2.61s/it, [0;93mval_acc=91.86, val_loss_cross_entropy=0.306, val_loss_seg=0.306, val_macc=85.05, val_miou=75.65[0m)] 74%|#######4  | 232/312 [08:34<03:29,  2.61s/it, [0;93mval_acc=91.80, val_loss_cross_entropy=0.308, val_loss_seg=0.308, val_macc=84.81, val_miou=75.47[0m)] 75%|#######4  | 233/312 [08:34<02:43,  2.07s/it, [0;93mval_acc=91.80, val_loss_cross_entropy=0.308, val_loss_seg=0.308, val_macc=84.81, val_miou=75.47[0m)] 75%|#######4  | 233/312 [08:37<02:43,  2.07s/it, [0;93mval_acc=91.83, val_loss_cross_entropy=0.307, val_loss_seg=0.307, val_macc=84.83, val_miou=75.50[0m)] 75%|#######5  | 234/312 [08:37<02:55,  2.25s/it, [0;93mval_acc=91.83, val_loss_cross_entropy=0.307, val_loss_seg=0.307, val_macc=84.83, val_miou=75.50[0m)] 75%|#######5  | 234/312 [08:38<02:55,  2.25s/it, [0;93mval_acc=91.86, val_loss_cross_entropy=0.306, val_loss_seg=0.306, val_macc=84.84, val_miou=75.50[0m)] 75%|#######5  | 235/312 [08:38<02:23,  1.86s/it, [0;93mval_acc=91.86, val_loss_cross_entropy=0.306, val_loss_seg=0.306, val_macc=84.84, val_miou=75.50[0m)] 75%|#######5  | 235/312 [08:40<02:23,  1.86s/it, [0;93mval_acc=91.82, val_loss_cross_entropy=0.309, val_loss_seg=0.309, val_macc=84.82, val_miou=75.43[0m)] 76%|#######5  | 236/312 [08:40<02:36,  2.06s/it, [0;93mval_acc=91.82, val_loss_cross_entropy=0.309, val_loss_seg=0.309, val_macc=84.82, val_miou=75.43[0m)] 76%|#######5  | 236/312 [08:45<02:36,  2.06s/it, [0;93mval_acc=91.79, val_loss_cross_entropy=0.313, val_loss_seg=0.313, val_macc=84.81, val_miou=75.39[0m)] 76%|#######5  | 237/312 [08:45<03:22,  2.71s/it, [0;93mval_acc=91.79, val_loss_cross_entropy=0.313, val_loss_seg=0.313, val_macc=84.81, val_miou=75.39[0m)] 76%|#######5  | 237/312 [08:45<03:22,  2.71s/it, [0;93mval_acc=91.75, val_loss_cross_entropy=0.316, val_loss_seg=0.316, val_macc=84.78, val_miou=75.32[0m)] 76%|#######6  | 238/312 [08:45<02:36,  2.12s/it, [0;93mval_acc=91.75, val_loss_cross_entropy=0.316, val_loss_seg=0.316, val_macc=84.78, val_miou=75.32[0m)] 76%|#######6  | 238/312 [08:50<02:36,  2.12s/it, [0;93mval_acc=91.71, val_loss_cross_entropy=0.320, val_loss_seg=0.320, val_macc=84.77, val_miou=75.23[0m)] 77%|#######6  | 239/312 [08:50<03:23,  2.79s/it, [0;93mval_acc=91.71, val_loss_cross_entropy=0.320, val_loss_seg=0.320, val_macc=84.77, val_miou=75.23[0m)] 77%|#######6  | 239/312 [08:54<03:23,  2.79s/it, [0;93mval_acc=91.66, val_loss_cross_entropy=0.324, val_loss_seg=0.324, val_macc=84.73, val_miou=75.14[0m)] 77%|#######6  | 240/312 [08:54<03:53,  3.25s/it, [0;93mval_acc=91.66, val_loss_cross_entropy=0.324, val_loss_seg=0.324, val_macc=84.73, val_miou=75.14[0m)] 77%|#######6  | 240/312 [08:57<03:53,  3.25s/it, [0;93mval_acc=91.65, val_loss_cross_entropy=0.324, val_loss_seg=0.324, val_macc=84.71, val_miou=75.13[0m)] 77%|#######7  | 241/312 [08:57<03:41,  3.12s/it, [0;93mval_acc=91.65, val_loss_cross_entropy=0.324, val_loss_seg=0.324, val_macc=84.71, val_miou=75.13[0m)] 77%|#######7  | 241/312 [08:59<03:41,  3.12s/it, [0;93mval_acc=91.68, val_loss_cross_entropy=0.323, val_loss_seg=0.323, val_macc=84.74, val_miou=75.16[0m)] 78%|#######7  | 242/312 [08:59<03:10,  2.72s/it, [0;93mval_acc=91.68, val_loss_cross_entropy=0.323, val_loss_seg=0.323, val_macc=84.74, val_miou=75.16[0m)] 78%|#######7  | 242/312 [09:03<03:10,  2.72s/it, [0;93mval_acc=91.70, val_loss_cross_entropy=0.323, val_loss_seg=0.323, val_macc=84.82, val_miou=75.26[0m)] 78%|#######7  | 243/312 [09:03<03:38,  3.17s/it, [0;93mval_acc=91.70, val_loss_cross_entropy=0.323, val_loss_seg=0.323, val_macc=84.82, val_miou=75.26[0m)] 78%|#######7  | 243/312 [09:07<03:38,  3.17s/it, [0;93mval_acc=91.73, val_loss_cross_entropy=0.322, val_loss_seg=0.322, val_macc=84.88, val_miou=75.33[0m)] 78%|#######8  | 244/312 [09:07<04:00,  3.54s/it, [0;93mval_acc=91.73, val_loss_cross_entropy=0.322, val_loss_seg=0.322, val_macc=84.88, val_miou=75.33[0m)] 78%|#######8  | 244/312 [09:11<04:00,  3.54s/it, [0;93mval_acc=91.75, val_loss_cross_entropy=0.322, val_loss_seg=0.322, val_macc=84.93, val_miou=75.38[0m)] 79%|#######8  | 245/312 [09:11<03:58,  3.56s/it, [0;93mval_acc=91.75, val_loss_cross_entropy=0.322, val_loss_seg=0.322, val_macc=84.93, val_miou=75.38[0m)] 79%|#######8  | 245/312 [09:15<03:58,  3.56s/it, [0;93mval_acc=91.74, val_loss_cross_entropy=0.322, val_loss_seg=0.322, val_macc=84.79, val_miou=75.32[0m)] 79%|#######8  | 246/312 [09:15<03:58,  3.61s/it, [0;93mval_acc=91.74, val_loss_cross_entropy=0.322, val_loss_seg=0.322, val_macc=84.79, val_miou=75.32[0m)] 79%|#######8  | 246/312 [09:16<03:58,  3.61s/it, [0;93mval_acc=91.76, val_loss_cross_entropy=0.322, val_loss_seg=0.322, val_macc=84.80, val_miou=75.34[0m)] 79%|#######9  | 247/312 [09:16<03:05,  2.86s/it, [0;93mval_acc=91.76, val_loss_cross_entropy=0.322, val_loss_seg=0.322, val_macc=84.80, val_miou=75.34[0m)] 79%|#######9  | 247/312 [09:19<03:05,  2.86s/it, [0;93mval_acc=91.71, val_loss_cross_entropy=0.324, val_loss_seg=0.324, val_macc=84.75, val_miou=75.30[0m)] 79%|#######9  | 248/312 [09:19<03:11,  3.00s/it, [0;93mval_acc=91.71, val_loss_cross_entropy=0.324, val_loss_seg=0.324, val_macc=84.75, val_miou=75.30[0m)] 79%|#######9  | 248/312 [09:23<03:11,  3.00s/it, [0;93mval_acc=91.69, val_loss_cross_entropy=0.325, val_loss_seg=0.325, val_macc=84.75, val_miou=75.30[0m)] 80%|#######9  | 249/312 [09:23<03:21,  3.20s/it, [0;93mval_acc=91.69, val_loss_cross_entropy=0.325, val_loss_seg=0.325, val_macc=84.75, val_miou=75.30[0m)] 80%|#######9  | 249/312 [09:27<03:21,  3.20s/it, [0;93mval_acc=91.70, val_loss_cross_entropy=0.325, val_loss_seg=0.325, val_macc=84.78, val_miou=75.34[0m)] 80%|########  | 250/312 [09:27<03:33,  3.44s/it, [0;93mval_acc=91.70, val_loss_cross_entropy=0.325, val_loss_seg=0.325, val_macc=84.78, val_miou=75.34[0m)] 80%|########  | 250/312 [09:30<03:33,  3.44s/it, [0;93mval_acc=91.71, val_loss_cross_entropy=0.324, val_loss_seg=0.324, val_macc=84.82, val_miou=75.40[0m)] 80%|########  | 251/312 [09:30<03:31,  3.48s/it, [0;93mval_acc=91.71, val_loss_cross_entropy=0.324, val_loss_seg=0.324, val_macc=84.82, val_miou=75.40[0m)] 80%|########  | 251/312 [09:34<03:31,  3.48s/it, [0;93mval_acc=91.72, val_loss_cross_entropy=0.323, val_loss_seg=0.323, val_macc=84.86, val_miou=75.46[0m)] 81%|########  | 252/312 [09:34<03:30,  3.52s/it, [0;93mval_acc=91.72, val_loss_cross_entropy=0.323, val_loss_seg=0.323, val_macc=84.86, val_miou=75.46[0m)] 81%|########  | 252/312 [09:35<03:30,  3.52s/it, [0;93mval_acc=91.70, val_loss_cross_entropy=0.324, val_loss_seg=0.324, val_macc=84.86, val_miou=75.46[0m)] 81%|########1 | 253/312 [09:35<02:43,  2.77s/it, [0;93mval_acc=91.70, val_loss_cross_entropy=0.324, val_loss_seg=0.324, val_macc=84.86, val_miou=75.46[0m)] 81%|########1 | 253/312 [09:38<02:43,  2.77s/it, [0;93mval_acc=91.71, val_loss_cross_entropy=0.323, val_loss_seg=0.323, val_macc=84.87, val_miou=75.48[0m)] 81%|########1 | 254/312 [09:38<02:40,  2.78s/it, [0;93mval_acc=91.71, val_loss_cross_entropy=0.323, val_loss_seg=0.323, val_macc=84.87, val_miou=75.48[0m)] 81%|########1 | 254/312 [09:41<02:40,  2.78s/it, [0;93mval_acc=91.73, val_loss_cross_entropy=0.322, val_loss_seg=0.322, val_macc=84.90, val_miou=75.54[0m)] 82%|########1 | 255/312 [09:41<02:53,  3.04s/it, [0;93mval_acc=91.73, val_loss_cross_entropy=0.322, val_loss_seg=0.322, val_macc=84.90, val_miou=75.54[0m)] 82%|########1 | 255/312 [09:43<02:53,  3.04s/it, [0;93mval_acc=91.76, val_loss_cross_entropy=0.321, val_loss_seg=0.321, val_macc=84.90, val_miou=75.55[0m)] 82%|########2 | 256/312 [09:43<02:18,  2.48s/it, [0;93mval_acc=91.76, val_loss_cross_entropy=0.321, val_loss_seg=0.321, val_macc=84.90, val_miou=75.55[0m)] 82%|########2 | 256/312 [09:47<02:18,  2.48s/it, [0;93mval_acc=91.78, val_loss_cross_entropy=0.320, val_loss_seg=0.320, val_macc=84.91, val_miou=75.57[0m)] 82%|########2 | 257/312 [09:47<02:45,  3.01s/it, [0;93mval_acc=91.78, val_loss_cross_entropy=0.320, val_loss_seg=0.320, val_macc=84.91, val_miou=75.57[0m)] 82%|########2 | 257/312 [09:49<02:45,  3.01s/it, [0;93mval_acc=91.81, val_loss_cross_entropy=0.319, val_loss_seg=0.319, val_macc=84.92, val_miou=75.58[0m)] 83%|########2 | 258/312 [09:49<02:29,  2.76s/it, [0;93mval_acc=91.81, val_loss_cross_entropy=0.319, val_loss_seg=0.319, val_macc=84.92, val_miou=75.58[0m)] 83%|########2 | 258/312 [09:50<02:29,  2.76s/it, [0;93mval_acc=91.82, val_loss_cross_entropy=0.318, val_loss_seg=0.318, val_macc=84.93, val_miou=75.59[0m)] 83%|########3 | 259/312 [09:50<01:51,  2.11s/it, [0;93mval_acc=91.82, val_loss_cross_entropy=0.318, val_loss_seg=0.318, val_macc=84.93, val_miou=75.59[0m)] 83%|########3 | 259/312 [09:50<01:51,  2.11s/it, [0;93mval_acc=91.84, val_loss_cross_entropy=0.317, val_loss_seg=0.317, val_macc=84.93, val_miou=75.60[0m)] 83%|########3 | 260/312 [09:50<01:26,  1.66s/it, [0;93mval_acc=91.84, val_loss_cross_entropy=0.317, val_loss_seg=0.317, val_macc=84.93, val_miou=75.60[0m)] 83%|########3 | 260/312 [09:53<01:26,  1.66s/it, [0;93mval_acc=91.86, val_loss_cross_entropy=0.317, val_loss_seg=0.317, val_macc=84.98, val_miou=75.66[0m)] 84%|########3 | 261/312 [09:53<01:40,  1.96s/it, [0;93mval_acc=91.86, val_loss_cross_entropy=0.317, val_loss_seg=0.317, val_macc=84.98, val_miou=75.66[0m)] 84%|########3 | 261/312 [09:55<01:40,  1.96s/it, [0;93mval_acc=91.86, val_loss_cross_entropy=0.316, val_loss_seg=0.316, val_macc=85.00, val_miou=75.66[0m)] 84%|########3 | 262/312 [09:55<01:41,  2.02s/it, [0;93mval_acc=91.86, val_loss_cross_entropy=0.316, val_loss_seg=0.316, val_macc=85.00, val_miou=75.66[0m)] 84%|########3 | 262/312 [09:58<01:41,  2.02s/it, [0;93mval_acc=91.85, val_loss_cross_entropy=0.317, val_loss_seg=0.317, val_macc=85.00, val_miou=75.65[0m)] 84%|########4 | 263/312 [09:58<01:57,  2.39s/it, [0;93mval_acc=91.85, val_loss_cross_entropy=0.317, val_loss_seg=0.317, val_macc=85.00, val_miou=75.65[0m)] 84%|########4 | 263/312 [10:02<01:57,  2.39s/it, [0;93mval_acc=91.86, val_loss_cross_entropy=0.316, val_loss_seg=0.316, val_macc=85.05, val_miou=75.73[0m)] 85%|########4 | 264/312 [10:02<02:11,  2.73s/it, [0;93mval_acc=91.86, val_loss_cross_entropy=0.316, val_loss_seg=0.316, val_macc=85.05, val_miou=75.73[0m)] 85%|########4 | 264/312 [10:02<02:11,  2.73s/it, [0;93mval_acc=91.86, val_loss_cross_entropy=0.316, val_loss_seg=0.316, val_macc=85.05, val_miou=75.76[0m)] 85%|########4 | 265/312 [10:02<01:37,  2.07s/it, [0;93mval_acc=91.86, val_loss_cross_entropy=0.316, val_loss_seg=0.316, val_macc=85.05, val_miou=75.76[0m)] 85%|########4 | 265/312 [10:03<01:37,  2.07s/it, [0;93mval_acc=91.86, val_loss_cross_entropy=0.316, val_loss_seg=0.316, val_macc=85.05, val_miou=75.8 [0m)] 85%|########5 | 266/312 [10:03<01:10,  1.53s/it, [0;93mval_acc=91.86, val_loss_cross_entropy=0.316, val_loss_seg=0.316, val_macc=85.05, val_miou=75.8 [0m)] 85%|########5 | 266/312 [10:04<01:10,  1.53s/it, [0;93mval_acc=91.86, val_loss_cross_entropy=0.316, val_loss_seg=0.316, val_macc=85.04, val_miou=75.80[0m)] 86%|########5 | 267/312 [10:04<01:12,  1.60s/it, [0;93mval_acc=91.86, val_loss_cross_entropy=0.316, val_loss_seg=0.316, val_macc=85.04, val_miou=75.80[0m)] 86%|########5 | 267/312 [10:07<01:12,  1.60s/it, [0;93mval_acc=91.86, val_loss_cross_entropy=0.316, val_loss_seg=0.316, val_macc=85.06, val_miou=75.81[0m)] 86%|########5 | 268/312 [10:07<01:20,  1.82s/it, [0;93mval_acc=91.86, val_loss_cross_entropy=0.316, val_loss_seg=0.316, val_macc=85.06, val_miou=75.81[0m)] 86%|########5 | 268/312 [10:08<01:20,  1.82s/it, [0;93mval_acc=91.86, val_loss_cross_entropy=0.315, val_loss_seg=0.315, val_macc=85.15, val_miou=75.88[0m)] 86%|########6 | 269/312 [10:08<01:12,  1.70s/it, [0;93mval_acc=91.86, val_loss_cross_entropy=0.315, val_loss_seg=0.315, val_macc=85.15, val_miou=75.88[0m)] 86%|########6 | 269/312 [10:13<01:12,  1.70s/it, [0;93mval_acc=91.83, val_loss_cross_entropy=0.317, val_loss_seg=0.317, val_macc=85.09, val_miou=75.86[0m)] 87%|########6 | 270/312 [10:13<01:47,  2.55s/it, [0;93mval_acc=91.83, val_loss_cross_entropy=0.317, val_loss_seg=0.317, val_macc=85.09, val_miou=75.86[0m)] 87%|########6 | 270/312 [10:16<01:47,  2.55s/it, [0;93mval_acc=91.84, val_loss_cross_entropy=0.316, val_loss_seg=0.316, val_macc=85.09, val_miou=75.87[0m)] 87%|########6 | 271/312 [10:16<01:59,  2.92s/it, [0;93mval_acc=91.84, val_loss_cross_entropy=0.316, val_loss_seg=0.316, val_macc=85.09, val_miou=75.87[0m)] 87%|########6 | 271/312 [10:19<01:59,  2.92s/it, [0;93mval_acc=91.84, val_loss_cross_entropy=0.316, val_loss_seg=0.316, val_macc=85.09, val_miou=75.86[0m)] 87%|########7 | 272/312 [10:19<01:58,  2.96s/it, [0;93mval_acc=91.84, val_loss_cross_entropy=0.316, val_loss_seg=0.316, val_macc=85.09, val_miou=75.86[0m)] 87%|########7 | 272/312 [10:23<01:58,  2.96s/it, [0;93mval_acc=91.86, val_loss_cross_entropy=0.315, val_loss_seg=0.315, val_macc=85.24, val_miou=76.04[0m)] 88%|########7 | 273/312 [10:23<02:01,  3.11s/it, [0;93mval_acc=91.86, val_loss_cross_entropy=0.315, val_loss_seg=0.315, val_macc=85.24, val_miou=76.04[0m)] 88%|########7 | 273/312 [10:24<02:01,  3.11s/it, [0;93mval_acc=91.86, val_loss_cross_entropy=0.315, val_loss_seg=0.315, val_macc=85.28, val_miou=76.03[0m)] 88%|########7 | 274/312 [10:24<01:39,  2.61s/it, [0;93mval_acc=91.86, val_loss_cross_entropy=0.315, val_loss_seg=0.315, val_macc=85.28, val_miou=76.03[0m)] 88%|########7 | 274/312 [10:29<01:39,  2.61s/it, [0;93mval_acc=91.88, val_loss_cross_entropy=0.314, val_loss_seg=0.314, val_macc=85.34, val_miou=76.11[0m)] 88%|########8 | 275/312 [10:29<01:58,  3.19s/it, [0;93mval_acc=91.88, val_loss_cross_entropy=0.314, val_loss_seg=0.314, val_macc=85.34, val_miou=76.11[0m)] 88%|########8 | 275/312 [10:29<01:58,  3.19s/it, [0;93mval_acc=91.88, val_loss_cross_entropy=0.314, val_loss_seg=0.314, val_macc=85.34, val_miou=76.10[0m)] 88%|########8 | 276/312 [10:29<01:25,  2.38s/it, [0;93mval_acc=91.88, val_loss_cross_entropy=0.314, val_loss_seg=0.314, val_macc=85.34, val_miou=76.10[0m)] 88%|########8 | 276/312 [10:30<01:25,  2.38s/it, [0;93mval_acc=91.87, val_loss_cross_entropy=0.314, val_loss_seg=0.314, val_macc=85.33, val_miou=76.09[0m)] 89%|########8 | 277/312 [10:30<01:00,  1.72s/it, [0;93mval_acc=91.87, val_loss_cross_entropy=0.314, val_loss_seg=0.314, val_macc=85.33, val_miou=76.09[0m)] 89%|########8 | 277/312 [10:33<01:00,  1.72s/it, [0;93mval_acc=91.89, val_loss_cross_entropy=0.313, val_loss_seg=0.313, val_macc=85.37, val_miou=76.12[0m)] 89%|########9 | 278/312 [10:33<01:18,  2.31s/it, [0;93mval_acc=91.89, val_loss_cross_entropy=0.313, val_loss_seg=0.313, val_macc=85.37, val_miou=76.12[0m)] 89%|########9 | 278/312 [10:34<01:18,  2.31s/it, [0;93mval_acc=91.90, val_loss_cross_entropy=0.312, val_loss_seg=0.312, val_macc=85.40, val_miou=76.15[0m)] 89%|########9 | 279/312 [10:34<01:03,  1.92s/it, [0;93mval_acc=91.90, val_loss_cross_entropy=0.312, val_loss_seg=0.312, val_macc=85.40, val_miou=76.15[0m)] 89%|########9 | 279/312 [10:37<01:03,  1.92s/it, [0;93mval_acc=91.91, val_loss_cross_entropy=0.312, val_loss_seg=0.312, val_macc=85.43, val_miou=76.17[0m)] 90%|########9 | 280/312 [10:37<01:08,  2.15s/it, [0;93mval_acc=91.91, val_loss_cross_entropy=0.312, val_loss_seg=0.312, val_macc=85.43, val_miou=76.17[0m)] 90%|########9 | 280/312 [10:37<01:08,  2.15s/it, [0;93mval_acc=91.92, val_loss_cross_entropy=0.311, val_loss_seg=0.311, val_macc=85.44, val_miou=76.20[0m)] 90%|######### | 281/312 [10:37<00:50,  1.63s/it, [0;93mval_acc=91.92, val_loss_cross_entropy=0.311, val_loss_seg=0.311, val_macc=85.44, val_miou=76.20[0m)] 90%|######### | 281/312 [10:38<00:50,  1.63s/it, [0;93mval_acc=91.93, val_loss_cross_entropy=0.310, val_loss_seg=0.310, val_macc=85.44, val_miou=76.21[0m)] 90%|######### | 282/312 [10:38<00:42,  1.41s/it, [0;93mval_acc=91.93, val_loss_cross_entropy=0.310, val_loss_seg=0.310, val_macc=85.44, val_miou=76.21[0m)] 90%|######### | 282/312 [10:39<00:42,  1.41s/it, [0;93mval_acc=91.93, val_loss_cross_entropy=0.309, val_loss_seg=0.309, val_macc=85.46, val_miou=76.22[0m)] 91%|######### | 283/312 [10:39<00:34,  1.19s/it, [0;93mval_acc=91.93, val_loss_cross_entropy=0.309, val_loss_seg=0.309, val_macc=85.46, val_miou=76.22[0m)] 91%|######### | 283/312 [10:42<00:34,  1.19s/it, [0;93mval_acc=91.94, val_loss_cross_entropy=0.309, val_loss_seg=0.309, val_macc=85.47, val_miou=76.24[0m)] 91%|#########1| 284/312 [10:42<00:50,  1.81s/it, [0;93mval_acc=91.94, val_loss_cross_entropy=0.309, val_loss_seg=0.309, val_macc=85.47, val_miou=76.24[0m)] 91%|#########1| 284/312 [10:43<00:50,  1.81s/it, [0;93mval_acc=91.96, val_loss_cross_entropy=0.308, val_loss_seg=0.308, val_macc=85.50, val_miou=76.28[0m)] 91%|#########1| 285/312 [10:43<00:41,  1.55s/it, [0;93mval_acc=91.96, val_loss_cross_entropy=0.308, val_loss_seg=0.308, val_macc=85.50, val_miou=76.28[0m)] 91%|#########1| 285/312 [10:44<00:41,  1.55s/it, [0;93mval_acc=91.97, val_loss_cross_entropy=0.307, val_loss_seg=0.307, val_macc=85.51, val_miou=76.31[0m)] 92%|#########1| 286/312 [10:44<00:34,  1.33s/it, [0;93mval_acc=91.97, val_loss_cross_entropy=0.307, val_loss_seg=0.307, val_macc=85.51, val_miou=76.31[0m)] 92%|#########1| 286/312 [10:47<00:34,  1.33s/it, [0;93mval_acc=91.97, val_loss_cross_entropy=0.307, val_loss_seg=0.307, val_macc=85.53, val_miou=76.33[0m)] 92%|#########1| 287/312 [10:47<00:46,  1.87s/it, [0;93mval_acc=91.97, val_loss_cross_entropy=0.307, val_loss_seg=0.307, val_macc=85.53, val_miou=76.33[0m)] 92%|#########1| 287/312 [10:49<00:46,  1.87s/it, [0;93mval_acc=91.98, val_loss_cross_entropy=0.306, val_loss_seg=0.306, val_macc=85.54, val_miou=76.36[0m)] 92%|#########2| 288/312 [10:49<00:44,  1.83s/it, [0;93mval_acc=91.98, val_loss_cross_entropy=0.306, val_loss_seg=0.306, val_macc=85.54, val_miou=76.36[0m)] 92%|#########2| 288/312 [10:49<00:44,  1.83s/it, [0;93mval_acc=91.98, val_loss_cross_entropy=0.306, val_loss_seg=0.306, val_macc=85.56, val_miou=76.37[0m)] 93%|#########2| 289/312 [10:49<00:31,  1.38s/it, [0;93mval_acc=91.98, val_loss_cross_entropy=0.306, val_loss_seg=0.306, val_macc=85.56, val_miou=76.37[0m)] 93%|#########2| 289/312 [10:53<00:31,  1.38s/it, [0;93mval_acc=91.96, val_loss_cross_entropy=0.308, val_loss_seg=0.308, val_macc=85.45, val_miou=76.29[0m)] 93%|#########2| 290/312 [10:53<00:46,  2.09s/it, [0;93mval_acc=91.96, val_loss_cross_entropy=0.308, val_loss_seg=0.308, val_macc=85.45, val_miou=76.29[0m)] 93%|#########2| 290/312 [10:56<00:46,  2.09s/it, [0;93mval_acc=91.97, val_loss_cross_entropy=0.307, val_loss_seg=0.307, val_macc=85.46, val_miou=76.30[0m)] 93%|#########3| 291/312 [10:56<00:53,  2.53s/it, [0;93mval_acc=91.97, val_loss_cross_entropy=0.307, val_loss_seg=0.307, val_macc=85.46, val_miou=76.30[0m)] 93%|#########3| 291/312 [10:58<00:53,  2.53s/it, [0;93mval_acc=91.97, val_loss_cross_entropy=0.307, val_loss_seg=0.307, val_macc=85.46, val_miou=76.31[0m)] 94%|#########3| 292/312 [10:58<00:41,  2.08s/it, [0;93mval_acc=91.97, val_loss_cross_entropy=0.307, val_loss_seg=0.307, val_macc=85.46, val_miou=76.31[0m)] 94%|#########3| 292/312 [11:00<00:41,  2.08s/it, [0;93mval_acc=91.96, val_loss_cross_entropy=0.307, val_loss_seg=0.307, val_macc=85.49, val_miou=76.33[0m)] 94%|#########3| 293/312 [11:00<00:40,  2.13s/it, [0;93mval_acc=91.96, val_loss_cross_entropy=0.307, val_loss_seg=0.307, val_macc=85.49, val_miou=76.33[0m)] 94%|#########3| 293/312 [11:01<00:40,  2.13s/it, [0;93mval_acc=91.93, val_loss_cross_entropy=0.310, val_loss_seg=0.310, val_macc=85.45, val_miou=76.28[0m)] 94%|#########4| 294/312 [11:01<00:34,  1.94s/it, [0;93mval_acc=91.93, val_loss_cross_entropy=0.310, val_loss_seg=0.310, val_macc=85.45, val_miou=76.28[0m)] 94%|#########4| 294/312 [11:02<00:34,  1.94s/it, [0;93mval_acc=91.88, val_loss_cross_entropy=0.312, val_loss_seg=0.312, val_macc=85.35, val_miou=76.16[0m)] 95%|#########4| 295/312 [11:02<00:27,  1.61s/it, [0;93mval_acc=91.88, val_loss_cross_entropy=0.312, val_loss_seg=0.312, val_macc=85.35, val_miou=76.16[0m)] 95%|#########4| 295/312 [11:06<00:27,  1.61s/it, [0;93mval_acc=91.85, val_loss_cross_entropy=0.314, val_loss_seg=0.314, val_macc=85.27, val_miou=76.07[0m)] 95%|#########4| 296/312 [11:06<00:35,  2.25s/it, [0;93mval_acc=91.85, val_loss_cross_entropy=0.314, val_loss_seg=0.314, val_macc=85.27, val_miou=76.07[0m)] 95%|#########4| 296/312 [11:06<00:35,  2.25s/it, [0;93mval_acc=91.81, val_loss_cross_entropy=0.317, val_loss_seg=0.317, val_macc=85.23, val_miou=76.01[0m)] 95%|#########5| 297/312 [11:06<00:26,  1.74s/it, [0;93mval_acc=91.81, val_loss_cross_entropy=0.317, val_loss_seg=0.317, val_macc=85.23, val_miou=76.01[0m)] 95%|#########5| 297/312 [11:10<00:26,  1.74s/it, [0;93mval_acc=91.78, val_loss_cross_entropy=0.319, val_loss_seg=0.319, val_macc=85.20, val_miou=75.96[0m)] 96%|#########5| 298/312 [11:10<00:34,  2.45s/it, [0;93mval_acc=91.78, val_loss_cross_entropy=0.319, val_loss_seg=0.319, val_macc=85.20, val_miou=75.96[0m)] 96%|#########5| 298/312 [11:12<00:34,  2.45s/it, [0;93mval_acc=91.76, val_loss_cross_entropy=0.319, val_loss_seg=0.319, val_macc=85.20, val_miou=75.96[0m)] 96%|#########5| 299/312 [11:12<00:28,  2.20s/it, [0;93mval_acc=91.76, val_loss_cross_entropy=0.319, val_loss_seg=0.319, val_macc=85.20, val_miou=75.96[0m)] 96%|#########5| 299/312 [11:13<00:28,  2.20s/it, [0;93mval_acc=91.73, val_loss_cross_entropy=0.321, val_loss_seg=0.321, val_macc=85.18, val_miou=75.92[0m)] 96%|#########6| 300/312 [11:13<00:23,  1.94s/it, [0;93mval_acc=91.73, val_loss_cross_entropy=0.321, val_loss_seg=0.321, val_macc=85.18, val_miou=75.92[0m)] 96%|#########6| 300/312 [11:14<00:23,  1.94s/it, [0;93mval_acc=91.69, val_loss_cross_entropy=0.322, val_loss_seg=0.322, val_macc=85.14, val_miou=75.88[0m)] 96%|#########6| 301/312 [11:14<00:16,  1.53s/it, [0;93mval_acc=91.69, val_loss_cross_entropy=0.322, val_loss_seg=0.322, val_macc=85.14, val_miou=75.88[0m)] 96%|#########6| 301/312 [11:15<00:16,  1.53s/it, [0;93mval_acc=91.63, val_loss_cross_entropy=0.325, val_loss_seg=0.325, val_macc=85.01, val_miou=75.74[0m)] 97%|#########6| 302/312 [11:15<00:12,  1.24s/it, [0;93mval_acc=91.63, val_loss_cross_entropy=0.325, val_loss_seg=0.325, val_macc=85.01, val_miou=75.74[0m)] 97%|#########6| 302/312 [11:15<00:12,  1.24s/it, [0;93mval_acc=91.55, val_loss_cross_entropy=0.332, val_loss_seg=0.332, val_macc=84.89, val_miou=75.60[0m)] 97%|#########7| 303/312 [11:15<00:09,  1.06s/it, [0;93mval_acc=91.55, val_loss_cross_entropy=0.332, val_loss_seg=0.332, val_macc=84.89, val_miou=75.60[0m)] 97%|#########7| 303/312 [11:17<00:09,  1.06s/it, [0;93mval_acc=91.52, val_loss_cross_entropy=0.333, val_loss_seg=0.333, val_macc=84.85, val_miou=75.54[0m)] 97%|#########7| 304/312 [11:17<00:09,  1.16s/it, [0;93mval_acc=91.52, val_loss_cross_entropy=0.333, val_loss_seg=0.333, val_macc=84.85, val_miou=75.54[0m)] 97%|#########7| 304/312 [11:20<00:09,  1.16s/it, [0;93mval_acc=91.53, val_loss_cross_entropy=0.332, val_loss_seg=0.332, val_macc=84.87, val_miou=75.6 [0m)] 98%|#########7| 305/312 [11:20<00:12,  1.72s/it, [0;93mval_acc=91.53, val_loss_cross_entropy=0.332, val_loss_seg=0.332, val_macc=84.87, val_miou=75.6 [0m)] 98%|#########7| 305/312 [11:22<00:12,  1.72s/it, [0;93mval_acc=91.54, val_loss_cross_entropy=0.331, val_loss_seg=0.331, val_macc=84.90, val_miou=75.64[0m)] 98%|#########8| 306/312 [11:22<00:11,  1.85s/it, [0;93mval_acc=91.54, val_loss_cross_entropy=0.331, val_loss_seg=0.331, val_macc=84.90, val_miou=75.64[0m)] 98%|#########8| 306/312 [11:22<00:11,  1.85s/it, [0;93mval_acc=91.55, val_loss_cross_entropy=0.331, val_loss_seg=0.331, val_macc=84.92, val_miou=75.68[0m)] 98%|#########8| 307/312 [11:22<00:07,  1.50s/it, [0;93mval_acc=91.55, val_loss_cross_entropy=0.331, val_loss_seg=0.331, val_macc=84.92, val_miou=75.68[0m)] 98%|#########8| 307/312 [11:23<00:07,  1.50s/it, [0;93mval_acc=91.55, val_loss_cross_entropy=0.331, val_loss_seg=0.331, val_macc=84.93, val_miou=75.71[0m)] 99%|#########8| 308/312 [11:23<00:04,  1.12s/it, [0;93mval_acc=91.55, val_loss_cross_entropy=0.331, val_loss_seg=0.331, val_macc=84.93, val_miou=75.71[0m)] 99%|#########8| 308/312 [11:23<00:04,  1.12s/it, [0;93mval_acc=91.53, val_loss_cross_entropy=0.332, val_loss_seg=0.332, val_macc=84.91, val_miou=75.70[0m)] 99%|#########9| 309/312 [11:23<00:02,  1.18it/s, [0;93mval_acc=91.53, val_loss_cross_entropy=0.332, val_loss_seg=0.332, val_macc=84.91, val_miou=75.70[0m)] 99%|#########9| 309/312 [11:23<00:02,  1.18it/s, [0;93mval_acc=91.53, val_loss_cross_entropy=0.332, val_loss_seg=0.332, val_macc=84.91, val_miou=75.67[0m)] 99%|#########9| 310/312 [11:23<00:01,  1.50it/s, [0;93mval_acc=91.53, val_loss_cross_entropy=0.332, val_loss_seg=0.332, val_macc=84.91, val_miou=75.67[0m)] 99%|#########9| 310/312 [11:24<00:01,  1.50it/s, [0;93mval_acc=91.48, val_loss_cross_entropy=0.336, val_loss_seg=0.336, val_macc=84.91, val_miou=75.63[0m)]100%|#########9| 311/312 [11:24<00:00,  1.64it/s, [0;93mval_acc=91.48, val_loss_cross_entropy=0.336, val_loss_seg=0.336, val_macc=84.91, val_miou=75.63[0m)]100%|#########9| 311/312 [11:24<00:00,  1.64it/s, [0;93mval_acc=91.48, val_loss_cross_entropy=0.335, val_loss_seg=0.335, val_macc=84.91, val_miou=75.64[0m)]100%|##########| 312/312 [11:24<00:00,  1.79it/s, [0;93mval_acc=91.48, val_loss_cross_entropy=0.335, val_loss_seg=0.335, val_macc=84.91, val_miou=75.64[0m)]100%|##########| 312/312 [11:24<00:00,  2.19s/it, [0;93mval_acc=91.48, val_loss_cross_entropy=0.335, val_loss_seg=0.335, val_macc=84.91, val_miou=75.64[0m)]Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+Always upsample prediction and KNN-interpolate for now 
+finalise(self, full_res=False, make_submission=False, **kwargs)
+full_res False, make_submission True, **kwargs {'track_boxes': False}
+self._stage:  val
+self._dataset.has_labels(self._stage) True
+self._full_preds:  {}
+[2022-11-16 13:13:18,453][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+[2022-11-16 13:13:18,453][torch_points3d.metrics.base_tracker][INFO] -     val_loss_seg = 0.33565946116458406
+[2022-11-16 13:13:18,453][torch_points3d.metrics.base_tracker][INFO] -     val_loss_cross_entropy = 0.33565946116458406
+[2022-11-16 13:13:18,453][torch_points3d.metrics.base_tracker][INFO] -     val_acc = 91.48036573331031
+[2022-11-16 13:13:18,453][torch_points3d.metrics.base_tracker][INFO] -     val_macc = 84.91323172143235
+[2022-11-16 13:13:18,453][torch_points3d.metrics.base_tracker][INFO] -     val_miou = 75.64894586049112
+[2022-11-16 13:13:18,453][torch_points3d.metrics.base_tracker][INFO] -     val_miou_per_class = {0: '86.94', 1: '96.49', 2: '70.14', 3: '82.90', 4: '88.79', 5: '77.32', 6: '80.23', 7: '65.16', 8: '65.58', 9: '80.95', 10: '41.33', 11: '68.18', 12: '69.11', 13: '78.53', 14: '69.93', 15: '79.23', 16: '92.64', 17: '68.96', 18: '85.27', 19: '65.28'}
+[2022-11-16 13:13:18,454][torch_points3d.metrics.base_tracker][INFO] - ==================================================
+
+  0%|          | 0/100 [00:00<?, ?it/s]Error executing job with overrides: ['data=segmentation/multimodal/Feng/scannet-neucon-smallres-m2f', 'models=segmentation/multimodal/Feng/mvfusion', 'model_name=MVFusion_3D', 'task=segmentation', 'training=Feng/mvfusion', 'lr_scheduler=exponential', 'eval_frequency=1', 'data.dataroot=/project/fsun/dvata', 'training.cuda=0', 'training.batch_size=1', 'training.epochs=1', 'training.num_workers=3', 'training.optim.base_lr=0.1', 'training.wandb.log=False', 'training.wandb.name=MVFusion_3D', 'tracker_options.make_submission=True', 'training.checkpoint_dir=/home/fsun/DeepViewAgg/outputs/2022-11-11/17-18-09']
+Traceback (most recent call last):
+  File "eval.py", line 22, in <module>
+    main()
+  File "/home/fsun/.conda/envs/pytorch3d/lib/python3.7/site-packages/hydra/main.py", line 95, in decorated_main
+    config_name=config_name,
+  File "/home/fsun/.conda/envs/pytorch3d/lib/python3.7/site-packages/hydra/_internal/utils.py", line 396, in _run_hydra
+    overrides=overrides,
+  File "/home/fsun/.conda/envs/pytorch3d/lib/python3.7/site-packages/hydra/_internal/utils.py", line 453, in _run_app
+    lambda: hydra.run(
+  File "/home/fsun/.conda/envs/pytorch3d/lib/python3.7/site-packages/hydra/_internal/utils.py", line 216, in run_and_report
+    raise ex
+  File "/home/fsun/.conda/envs/pytorch3d/lib/python3.7/site-packages/hydra/_internal/utils.py", line 213, in run_and_report
+    return func()
+  File "/home/fsun/.conda/envs/pytorch3d/lib/python3.7/site-packages/hydra/_internal/utils.py", line 456, in <lambda>
+    overrides=overrides,
+  File "/home/fsun/.conda/envs/pytorch3d/lib/python3.7/site-packages/hydra/_internal/hydra.py", line 132, in run
+    _ = ret.return_value
+  File "/home/fsun/.conda/envs/pytorch3d/lib/python3.7/site-packages/hydra/core/utils.py", line 260, in return_value
+    raise self._return_value
+  File "/home/fsun/.conda/envs/pytorch3d/lib/python3.7/site-packages/hydra/core/utils.py", line 186, in run_job
+    ret.return_value = task_function(task_cfg)
+  File "eval.py", line 14, in main
+    trainer.eval()
+  File "/home/fsun/DeepViewAgg/torch_points3d/trainer.py", line 216, in eval
+    self._test_epoch(epoch, "test")
+  File "/home/fsun/DeepViewAgg/torch_points3d/trainer.py", line 400, in _test_epoch
+    with Ctq(loader) as tq_loader:
+  File "/home/fsun/.conda/envs/pytorch3d/lib/python3.7/site-packages/tqdm/asyncio.py", line 33, in __init__
+    self.iterable_iterator = iter(iterable)
+  File "/home/fsun/.conda/envs/pytorch3d/lib/python3.7/site-packages/torch/utils/data/dataloader.py", line 439, in __iter__
+    self._iterator = self._get_iterator()
+  File "/home/fsun/.conda/envs/pytorch3d/lib/python3.7/site-packages/torch/utils/data/dataloader.py", line 390, in _get_iterator
+    return _MultiProcessingDataLoaderIter(self)
+  File "/home/fsun/.conda/envs/pytorch3d/lib/python3.7/site-packages/torch/utils/data/dataloader.py", line 1077, in __init__
+    w.start()
+  File "/home/fsun/.conda/envs/pytorch3d/lib/python3.7/multiprocessing/process.py", line 112, in start
+    self._popen = self._Popen(self)
+  File "/home/fsun/.conda/envs/pytorch3d/lib/python3.7/multiprocessing/context.py", line 223, in _Popen
+    return _default_context.get_context().Process._Popen(process_obj)
+  File "/home/fsun/.conda/envs/pytorch3d/lib/python3.7/multiprocessing/context.py", line 277, in _Popen
+    return Popen(process_obj)
+  File "/home/fsun/.conda/envs/pytorch3d/lib/python3.7/multiprocessing/popen_fork.py", line 20, in __init__
+    self._launch(process_obj)
+  File "/home/fsun/.conda/envs/pytorch3d/lib/python3.7/multiprocessing/popen_fork.py", line 70, in _launch
+    self.pid = os.fork()
+OSError: [Errno 12] Cannot allocate memory
+  0%|          | 0/100 [00:00<?, ?it/s]
