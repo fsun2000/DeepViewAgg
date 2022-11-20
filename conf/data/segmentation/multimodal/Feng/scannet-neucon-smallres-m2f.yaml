@@ -27,6 +27,10 @@ frame_skip: 1
 neucon_metas_dir: /project/fsun/data/scannet/axis_aligned_metas  # link to dir containing Neucon processed meta file, used to grab image_ids
 m2f_preds_dirname: m2f_masks   # directory of Mask2Former predicted masks located inside each scan's directory
 load_m2f_masks: True    # load M2F features
+undo_axis_align: True    # undo axis alignment of train/val data. Necessary if Mix3D augmentation is enabled
+center_xy: True     # center point cloud around 0
+center_z: True
+train_with_mix3d: True
 
 pre_transform:
     - transform: SaveOriginalPosId    # Required so that one can recover the multimodal mappings after the transforms

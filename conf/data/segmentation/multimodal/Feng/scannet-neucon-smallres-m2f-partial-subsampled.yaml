@@ -115,9 +115,9 @@ multimodal:  # Each modality must be inserted in a dedicated 'multimodal' sectio
         k_coverage: 2
 
     pre_transform:
-#         - transform: LoadImages  # Read images from disk
-#           params:
-#             ref_size: ${data.resolution_2d}
+        - transform: LoadImages  # Read images from disk
+          params:
+            ref_size: ${data.resolution_2d}
         - transform: NonStaticMask  # Compute acquisition mask
           params:
               ref_size: ${data.resolution_2d}

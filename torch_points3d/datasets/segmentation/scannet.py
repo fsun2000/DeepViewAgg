@@ -142,7 +142,7 @@ SCANNET_COLOR_MAP = {
     40: (100.0, 85.0, 144.0),
 }
 
-SPLITS = ["train", "val", "test"]
+SPLITS = ["train", "val"]#, "test"]
 # SPLITS = ["test"]
 
 
@@ -1228,19 +1228,19 @@ class ScannetDataset(BaseDataset):
             is_test=is_test,
         )
 
-        self.test_dataset = Scannet(
-            self._data_path,
-            split="test",
-            transform=self.val_transform,
-            pre_transform=self.pre_transform,
-            version=dataset_opt.version,
-            use_instance_labels=use_instance_labels,
-            use_instance_bboxes=use_instance_bboxes,
-            donotcare_class_ids=donotcare_class_ids,
-            max_num_point=max_num_point,
-            process_workers=process_workers,
-            is_test=is_test,
-        )
+#         self.test_dataset = Scannet(
+#             self._data_path,
+#             split="test",
+#             transform=self.val_transform,
+#             pre_transform=self.pre_transform,
+#             version=dataset_opt.version,
+#             use_instance_labels=use_instance_labels,
+#             use_instance_bboxes=use_instance_bboxes,
+#             donotcare_class_ids=donotcare_class_ids,
+#             max_num_point=max_num_point,
+#             process_workers=process_workers,
+#             is_test=is_test,
+#         )
 
     @property
     def path_to_submission(self):

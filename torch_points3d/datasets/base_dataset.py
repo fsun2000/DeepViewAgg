@@ -239,6 +239,7 @@ class BaseDataset:
                 shuffle=shuffle and not self.train_sampler,
                 num_workers=num_workers,
                 sampler=self.train_sampler,
+                drop_last=True
             )
             if train_only:
                 # Delete validation loader from system memory

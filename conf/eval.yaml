@@ -14,7 +14,7 @@ enable_dropout: False
 voting_runs: 1
 
 tracker_options: # Extra options for the tracker
-  full_res: False
+  full_res: z
   make_submission: True
 
 hydra:

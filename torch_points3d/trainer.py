@@ -27,6 +27,7 @@ from torch_points3d.utils.colors import COLORS
 from torch_points3d.utils.wandb_utils import Wandb
 from torch_points3d.utils.config import getattr_recursive
 from torch_points3d.visualization import Visualizer
+from torch_points3d.core.data_transform.transforms import PointcloudMerge
 
 log = logging.getLogger(__name__)
 
@@ -238,6 +239,9 @@ class Trainer:
         iter_data_time = time.time()
         with Ctq(train_loader) as tq_train_loader:
             for i, data in enumerate(tq_train_loader):
+                
+                if self._dataset.dataset_opt.train_with_mix3d:
+                    data = PointcloudMerge(data, n_merge=2)
                 
                 t_data = time.time() - iter_data_time
                 iter_start_time = time.time()

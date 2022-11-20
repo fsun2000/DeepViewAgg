@@ -2,8 +2,7 @@
 defaults:
   - segmentation/default
 
-MVFusion_3D_small: #Res16UNet34-L4-early-ade20k-interpolate:
-    # 28.1 M params - 109.4 Mo on the GPU - ~2.7 ko/pixel at training time
+MVFusion_3D_small:
     class: Feng.mvfusion_3d.MVFusionAPIModel
     conv_type: "SPARSE"
     backend: "torchsparse"
@@ -14,7 +13,7 @@ MVFusion_3D_small: #Res16UNet34-L4-early-ade20k-interpolate:
             in_feat_map: 8
             in_feat_attention: 4
             block: ResBlock # Can be any of the blocks in modules/MinkowskiEngine/api_modules.py
-            out_mv_feat_dim: 128  # out dim of multi-view fused feature
+            out_mv_feat_dim: 64  # out dim of multi-view fused feature
 
         down_conv:
             module_name: ResNetDown
@@ -25,9 +24,9 @@ MVFusion_3D_small: #Res16UNet34-L4-early-ade20k-interpolate:
             stride: [ 1, 2, 2, 2, 2 ]
             down_conv_nn:
               [
-                  [ FEAT + out_mv_feat_dim, 2*in_feat ],  # Perhaps lower hid_dim of 
-                  [ 2*in_feat, in_feat ],                 # first two layers according to
-                  [ in_feat, 2*in_feat ],                 # transformer output dim?
+                  [ FEAT + out_mv_feat_dim, 2*in_feat ],
+                  [ 2*in_feat, in_feat ],               
+                  [ in_feat, 2*in_feat ],              
                   [ 2*in_feat, 4*in_feat ],
                   [ 4*in_feat, 8*in_feat ],
               ]
@@ -51,7 +50,7 @@ MVFusion_3D_small: #Res16UNet34-L4-early-ade20k-interpolate:
                     module_name: BimodalFusion
                     mode: concatenation
                 branching_index: 0
-#                 checkpointing:  c   # maxmem without ~19.1/23.3 G . with ~6.4 G
+                checkpointing:  c 
                 interpolate: True
 
         up_conv:
@@ -65,26 +64,26 @@ MVFusion_3D_small: #Res16UNet34-L4-early-ade20k-interpolate:
                   [ 8*in_feat, 4*in_feat, 4*in_feat ],
                   [ 4*in_feat, 2*in_feat, 4*in_feat ],
                   [ 4*in_feat, in_feat, 3*in_feat ],
-                  [ 3*in_feat, 4*in_feat, 3*in_feat ],
+                  [ 3*in_feat, 2*in_feat, 3*in_feat ],
                   [ 3*in_feat, 0, 3*in_feat ],
                 ]
         transformer:   # config for multi-view fusion transformer
-            n_views: 9
+            n_views: 6
             in_map: 9                    # mapping feature size
             in_m2f: 20                   # M2F one-hot encoded label size
-            embed_dim: 128
+            embed_dim: 64
             hidden_dim: 256
-            num_heads: 4
-            num_layers: 8
+            num_heads: 2
+            num_layers: 4
             use_batch_norm: False        # layer norm by default
-            feat_downproj_dim: # 16
+            feat_downproj_dim:
             remove_first_dropout: True   # remove first dropout layer before the Transformer block
             dropout: 0.2
             mlp_dropout: 0.0             # final layer dropout
             use_attn_mask: True          # Transformer attention masking
             use_csr_mask: True           # Transformer pixel validity masking
             has_mlp_head: False
-            max_n_points: 9999999        # max. size of transformer batched input. Increase if memory allows
+            max_n_points: 200000      # max. size of transformer batched input. Increase if memory allows
 
 
 MVFusion:
@@ -300,7 +299,7 @@ MVFusion_3D_M1: #Res16UNet34-L4-early-ade20k-interpolate:
             use_attn_mask: True          # Transformer attention masking
             use_csr_mask: True           # Transformer pixel validity masking
             has_mlp_head: False
-            max_n_points: 130000      # max. size of transformer batched input. Increase if memory allows
+            max_n_points: 99999999      # max. size of transformer batched input. Increase if memory allows
             
 MVFusion_3D_M2: #Res16UNet34-L4-early-ade20k-interpolate:
     # 28.1 M params - 109.4 Mo on the GPU - ~2.7 ko/pixel at training time

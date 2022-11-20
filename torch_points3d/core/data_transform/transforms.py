@@ -28,6 +28,50 @@ from .features import Random3AxisRotation
 KDTREE_KEY = "kd_tree"
 
 
+# Feng additional transform
+def PointcloudMerge(new_batch, n_merge=2):
+    """ 
+    Merges two consecutive point clouds in a batch into one sample as data augmentation.
+    If batch size is uneven, last point cloud stays equal.
+    However, the 'origin_id' is not updated appropriately. Maybe this does not have any impact.
+    """
+    batch_size = new_batch.ptr.shape[0] - 1
+    new_ptr = [0]
+
+    # Merge two individual point clouds to one MMData inside MMBatch. Uneven batches will leave the last sample untouched.
+    # NOTE: only N_MERGE == 2 is supported.
+    assert n_merge == 2
+    for i in range(0, len(new_batch.ptr)-2, n_merge):
+        b1, e1 = new_batch.ptr[i], new_batch.ptr[i+1]
+        b2, e2 = new_batch.ptr[i+1], new_batch.ptr[i+2]
+
+        coords = new_batch.pos[b2:e2]
+        r1 = coords.min(0)[0]
+        r2 = coords.max(0)[0]
+        offset = ( (r1 - r2) * torch.rand(1, 3) + r2 ) / 2
+
+        # Slightly translate one of two point clouds
+        new_batch.pos[b2:e2] = new_batch.pos[b2:e2] + offset
+        new_batch.x[b2:e2] = new_batch.x[b2:e2] + offset
+
+        new_ptr.append(new_batch.ptr[i+2])
+
+    # Add last pointer for uneven batches
+    if batch_size % n_merge == 1:
+        new_ptr.append(new_batch.ptr[-1])
+    new_ptr = torch.LongTensor(new_ptr)
+
+    # Update batch identifiers
+    new_batch.ptr = new_ptr 
+    new_batch.batch = new_batch.batch // n_merge
+    new_batch.data.batch = new_batch.batch
+
+    # What is origin_id and do we need to adjust it when merging batches?
+    return new_batch
+
+
+
+
 class RemoveAttributes(object):
     """This transform allows to remove unnecessary attributes from data for optimization purposes
 

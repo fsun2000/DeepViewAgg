@@ -2,19 +2,19 @@
 
 #SBATCH --partition=gpu_titanrtx_shared
 #SBATCH --gpus=1
-#SBATCH --job-name=m6
+#SBATCH --job-name=train_3d
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=6
-#SBATCH --time=50:00:00
-#SBATCH --mem=95000MB
-#SBATCH --output=job_logs/mvfusion_3d/model_comparison/M6.out
+#SBATCH --cpus-per-task=14
+#SBATCH --time=120:00:00
+#SBATCH --mem=190000MB
+#SBATCH --output=job_logs/mvfusion_3d_submission/batchsize6_nviews6_maxpoints200000.out
 
 cd $HOME/DeepViewAgg
 
 module purge
 
-module load 2021
-module load CUDA/11.3.1
+#module load 2021
+#module load CUDA/11.3.1
 
 #export C_INCLUDE_PATH="/home/fsun/DeepViewAgg/sparsehash:$CPLUS_INCLUDE_PATH"
 export HYDRA_FULL_ERROR=1
