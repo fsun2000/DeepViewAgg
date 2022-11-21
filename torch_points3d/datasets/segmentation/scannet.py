@@ -725,12 +725,19 @@ class Scannet(InMemoryDataset):
         if split != "test":
             if not use_instance_bboxes:
                 delattr(self.data, "instance_bboxes")
+            else:
+                raise ValueError("This dataset class has been adjusted to handle only 3D semantic segmentation!")
             if not use_instance_labels:
                 delattr(self.data, "instance_labels")
+            else:
+                raise ValueError("This dataset class has been adjusted to handle only 3D semantic segmentation!")
             self.data.y = self._remap_labels(self.data.y)
             self.has_labels = True
         else:
             self.has_labels = False
+            
+#         self.unpack_and_save_inmemorydata(split)
+#         self.remove_inmemorydata(split) 
 
         self.read_from_metadata()
 
@@ -748,6 +755,17 @@ class Scannet(InMemoryDataset):
         else:
             raise ValueError((f"Split {split} found, but expected either " "train, val, or test"))
         self.data, self.slices = torch.load(path)
+        
+#     def unpack_and_save_inmemorydata(self, split):
+#         print(self.data)
+#         print(self.slices)
+        
+#         print("unpack_and_save_inmemorydata called")
+
+#     def remove_inmemorydata(self, split):
+#         del self.data, self.slices
+#         return
+        
 
     def get_raw_data(self, id_scan, remap_labels=True) -> Data:
         """Grabs the raw data associated with a scan index

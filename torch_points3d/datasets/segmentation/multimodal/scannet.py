@@ -133,9 +133,28 @@ class ScannetMM(Scannet):
         self.center_xy = center_xy
         self.center_z = center_z
         super(ScannetMM, self).__init__(*args, **kwargs)
-    
-
-    def process(self):
+        
+        
+        # Instead of saving all 3D pre-transformed scans in CPU memory, save each
+        # individually processed scan in processed_3d_'split' directory and load 
+        # individual scans in the __getitem__ method. This saves tremendous amounts
+        # of memory when many dataloader workers are created, but is slightly slower.
+        scan_id_to_name = getattr(
+            self, f"MAPPING_IDX_TO_SCAN_{self.split.upper()}_NAMES")
+        data_dict = self.uncollate(self.data, self.slices, scan_id_to_name)
+        del self.data, self.slices
+        
+        # Export individual 3D Data to .pt files in processed_3d_'split' directory
+        out_dir = osp.join(self.processed_dir, f'processed_3d_{self.split}')
+        if not osp.exists(out_dir):
+            os.makedirs(out_dir)
+        for scan_name, data in data_dict.items():
+            processed_3d_scan_path = osp.join(out_dir, f'{scan_name}.pt')
+            torch.save(data, processed_3d_scan_path)
+        del data_dict
+            
+        
+    def process(self):        
         if self.is_test:
             return
 
@@ -282,17 +301,23 @@ class ScannetMM(Scannet):
             f"Indexing with {type(idx)} is not supported, only " \
             f"{int} are accepted."
         
-        # Get the 3D point sample and apply transforms
-        data = self.get(idx)
+        #### Outdated method
+#         # Get the 3D point sample and apply transforms
+#         data = self.get(idx)
+
+        # Load individual scan from preprocessed_3d_'split' directory
+        scan_id_to_name = getattr(
+            self, f"MAPPING_IDX_TO_SCAN_{self.split.upper()}_NAMES")
+        scan_name = scan_id_to_name[idx]        
+        processed_3d_scan_path = osp.join(self.processed_dir, 
+                                          f'processed_3d_{self.split}', f'{scan_name}.pt')
+        data = torch.load(processed_3d_scan_path)
+
         
         #### FENG: first undo alignment  
         if self.undo_axis_align and self.split != 'test':
             path = osp.join(self.root, 'raw', 'scans')
-               
-            scan_id_to_name = getattr(
-                self, f"MAPPING_IDX_TO_SCAN_{self.split.upper()}_NAMES")
-            scene_id = scan_id_to_name[int(data['id_scan'][0])]
-            axis_align_matrix_path = osp.join(path, scene_id, scene_id + '.txt')
+            axis_align_matrix_path = osp.join(path, scan_name, scan_name + '.txt')
             axis_align_matrix = read_axis_align_matrix(axis_align_matrix_path)
             
             inv = torch.linalg.inv(axis_align_matrix.T)
@@ -312,11 +337,6 @@ class ScannetMM(Scannet):
             data.x = data.pos
         
         
-        # Recover the scan name
-        mapping_idx_to_scan = getattr(
-            self, f"MAPPING_IDX_TO_SCAN_{self.split.upper()}_NAMES")
-        scan_name = mapping_idx_to_scan[int(data.id_scan.item())]
-        
         # Load the corresponding 2D data and mappings
         i_split = self.SPLITS.index(self.split)
         images = torch.load(osp.join(
@@ -335,8 +355,7 @@ class ScannetMM(Scannet):
                 else:
                     data, images = transform(data, images)
                     
-                    
-                    
+
 #         # Adjust camera positions for visualization purposes
 #         if self.undo_axis_align and self.split != 'test':
 #             images[0].pos = (torch.concat((images[0].pos, torch.ones((len(images[0].pos), 1))), axis=-1) @ inv.double())[:, :3] 
@@ -387,24 +406,7 @@ class ScannetMM(Scannet):
                 
             data = MMData(data, image=images)
             del images
-
-#             # Take subset of only seen points
-#             # NOTE: each point is contained multiple times if it has multiple correspondences
-#             csr_idx = data.modalities['image'][0].view_csr_indexing
-#             dense_idx_list = torch.arange(data.modalities['image'].num_points).repeat_interleave(csr_idx[1:] - csr_idx[:-1])
-#             # take subset of only seen points without re-indexing the same point
-#             data = data[dense_idx_list.unique()]
             
-#             csr_idx = data.modalities['image'][0].view_csr_indexing
-#             n_seen = csr_idx[1:] - csr_idx[:-1]
-            
-#             # cull least visible points
-#             MAX_N_POINTS = 100000000
-#             if data.modalities['image'].num_points > MAX_N_POINTS:
-#                 sort_idx = torch.argsort(n_seen, descending=True)
-#                 data = data[sort_idx[:MAX_N_POINTS]]
-#                 csr_idx = data.modalities['image'][0].view_csr_indexing
-#                 n_seen = csr_idx[1:] - csr_idx[:-1]
 
             csr_idx = data.modalities['image'][0].view_csr_indexing
             n_seen = csr_idx[1:] - csr_idx[:-1]
@@ -451,30 +453,9 @@ class ScannetMM(Scannet):
             # Save mapping + m2f features
             data.data.mvfusion_input = torch.cat((view_feats, m2f_feats), dim=-1)
             
-            
-            
-            
         else:
             data = MMData(data, image=images)
-#             del images
 
-#             # Take subset of only seen points
-#             # NOTE: each point is contained multiple times if it has multiple correspondences
-#             csr_idx = data.modalities['image'][0].view_csr_indexing
-#             dense_idx_list = torch.arange(data.modalities['image'].num_points).repeat_interleave(csr_idx[1:] - csr_idx[:-1])
-#             # take subset of only seen points without re-indexing the same point
-#             data = data[dense_idx_list.unique()]
-            
-#             csr_idx = data.modalities['image'][0].view_csr_indexing
-#             n_seen = csr_idx[1:] - csr_idx[:-1]
-            
-#             # cull least visible points
-#             MAX_N_POINTS = 30000
-#             if data.modalities['image'].num_points > MAX_N_POINTS:
-#                 sort_idx = torch.argsort(n_seen, descending=True)
-#                 data = data[sort_idx[:MAX_N_POINTS]]
-#                 csr_idx = data.modalities['image'][0].view_csr_indexing
-#                 n_seen = csr_idx[1:] - csr_idx[:-1]
         return data
 
     

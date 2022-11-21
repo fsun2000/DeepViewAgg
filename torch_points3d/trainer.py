@@ -152,7 +152,11 @@ class Trainer:
             log.info("EPOCH %i / %i", epoch, self._cfg.training.epochs)
 
             if not self.eval_m2f_preds:
-                self._train_epoch(epoch)
+                if self.lr_range_test:
+                    print("Executing lr range test", flush=True)
+                    self._do_lr_test()
+                else:
+                    self._train_epoch(epoch)
                 
                 # clear GPU cache as it might fragment a lot
                 torch.cuda.empty_cache()
@@ -493,3 +497,127 @@ class Trainer:
     @property
     def eval_frequency(self):
         return self._cfg.get("eval_frequency", 1)
+    @property
+    def lr_range_test(self):
+        return self._cfg.get("lr_range_test", False)
+
+    def _do_lr_test(self, epoch=1):
+        self._model.train()
+        self._tracker.reset("train")
+        self._visualizer.reset(epoch, "train")
+        train_loader = self._dataset.train_dataloader
+
+        iter_data_time = time.time()
+        
+        running_loss = 0.
+        avg_beta = 0.98
+        clr = CLR(self._model._optimizer, len(train_loader),
+                 base_lr=self._model.learning_rate, max_lr=10)
+        log.info("Initial learning rate = %f" % self._model.learning_rate)
+
+        with Ctq(train_loader) as tq_train_loader:
+            for i, data in enumerate(tq_train_loader):
+                
+                if self._dataset.dataset_opt.train_with_mix3d:
+                    data = PointcloudMerge(data, n_merge=2)
+                
+                t_data = time.time() - iter_data_time
+                iter_start_time = time.time()
+                self._model.set_input(data, self._device)
+                self._model.optimize_parameters(epoch, self._dataset.batch_size)
+                
+                loss = self._model.loss_seg
+                
+                running_loss = avg_beta * running_loss + (1-avg_beta) * loss.item()
+                smoothed_loss = running_loss / (1 - avg_beta**(i+1))
+                
+                with torch.no_grad():
+                    self._tracker.track(
+                        self._model, data=data, **self.tracker_options)
+                
+                iter_data_time = time.time()
+                tq_train_loader.set_postfix(
+                    **self._tracker.get_metrics(),
+                    data_loading=float(t_data),
+                    iteration=float(time.time() - iter_start_time),
+                    train_loss_smooth=smoothed_loss,
+                    learning_rate=self._model.learning_rate,
+                    color=COLORS.TRAIN_COLOR
+                )
+                
+                lr = clr.calc_lr(smoothed_loss)
+                if lr == -1 :
+                    break
+                update_lr(self._model._optimizer, lr)  
+
+#         self._finalize_epoch(epoch)
+        clr.plot()
+        self._tracker.finalise(**self.tracker_options)
+        self._tracker.print_summary()
+        
+    
+def update_lr(optimizer, lr):
+    for g in optimizer.param_groups:
+        g['lr'] = lr
+
+def update_mom(optimizer, mom):
+    for g in optimizer.param_groups:
+        g['momentum'] = mom
+        
+import math
+import matplotlib.pyplot as plt
+
+class CLR(object):
+    """
+    The method is described in paper : https://arxiv.org/abs/1506.01186 to find out optimum 
+    learning rate. The learning rate is increased from lower value to higher per iteration 
+    for some iterations till loss starts exploding.The learning rate one power lower than 
+    the one where loss is minimum is chosen as optimum learning rate for training.
+    Args:
+        optim   Optimizer used in training.
+        bn      Total number of iterations used for this test run.
+                The learning rate increasing factor is calculated based on this 
+                iteration number.
+        base_lr The lower boundary for learning rate which will be used as
+                initial learning rate during test run. It is adviced to start from
+                small learning rate value like 1e-4.
+                Default value is 1e-5
+        max_lr  The upper boundary for learning rate. This value defines amplitude
+                for learning rate increase(max_lr-base_lr). max_lr value may not be 
+                reached in test run as loss may explode before reaching max_lr.
+                It is adviced to use higher value like 10, 100.
+                Default value is 100.
+    """
+    def __init__(self, optim, bn, base_lr=1e-5, max_lr=100):
+        self.base_lr = base_lr
+        self.max_lr = max_lr
+        self.optim = optim
+        self.bn = bn - 1
+        ratio = self.max_lr/self.base_lr
+        self.mult = ratio ** (1/self.bn)
+        self.best_loss = 1e9
+        self.iteration = 0
+        self.lrs = []
+        self.losses = []
+        
+    def calc_lr(self, loss):
+        self.iteration +=1
+        if math.isnan(loss) or loss > 4 * self.best_loss:
+            return -1
+        if loss < self.best_loss and self.iteration > 1:
+            self.best_loss = loss
+            
+        mult = self.mult ** self.iteration
+        lr = self.base_lr * mult
+        
+        self.lrs.append(lr)
+        self.losses.append(loss)
+        
+        return lr
+        
+    def plot(self, start=10, end=-5):
+        plt.xlabel("Learning Rate")
+        plt.ylabel("Losses")
+        plt.plot(self.lrs[start:end], self.losses[start:end])
+        plt.xscale('log')
+        plt.savefig("learning_rate_test.png")
