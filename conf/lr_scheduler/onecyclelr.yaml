@@ -1,0 +1,15 @@
+# @package _group_
+class: OneCycleLR
+params:
+  max_lr: 3.0
+#   total_steps:  None # epochs * steps_per_epoch
+  epochs: 100
+  steps_per_epoch: 200
+#   pct_start: 0.3    # I think this isn't used when three_phase=False
+  anneal_strategy: 'cos'
+  cycle_momentum: True
+  base_momentum: 0.85
+  max_momentum: 0.95
+#   div_factor: 25
+#   final_div_factor: 1e4
+  three_phase: False   # Set True to mimic original paper

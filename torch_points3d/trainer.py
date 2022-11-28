@@ -244,10 +244,14 @@ class Trainer:
         with Ctq(train_loader) as tq_train_loader:
             for i, data in enumerate(tq_train_loader):
                 
-                if self._dataset.dataset_opt.train_with_mix3d:
-                    data = PointcloudMerge(data, n_merge=2)
-                
                 t_data = time.time() - iter_data_time
+
+                
+                if self._dataset.dataset_opt.train_with_mix3d:
+                    mix3d_time = time.time()
+                    data = PointcloudMerge(data, n_merge=2)
+                    mix3d_time = time.time() - mix3d_time
+                
                 iter_start_time = time.time()
                 self._model.set_input(data, self._device)
                 self._model.optimize_parameters(epoch, self._dataset.batch_size)
@@ -259,7 +263,9 @@ class Trainer:
                 tq_train_loader.set_postfix(
                     **self._tracker.get_metrics(),
                     data_loading=float(t_data),
+                    mix_3d=float(mix3d_time),
                     iteration=float(time.time() - iter_start_time),
+                    learning_rate=self._model.learning_rate,
                     color=COLORS.TRAIN_COLOR
                 )
 
@@ -512,8 +518,9 @@ class Trainer:
         running_loss = 0.
         avg_beta = 0.98
         clr = CLR(self._model._optimizer, len(train_loader),
-                 base_lr=self._model.learning_rate, max_lr=10)
-        log.info("Initial learning rate = %f" % self._model.learning_rate)
+                 base_lr=0.0001, max_lr=100)
+        update_lr(self._model._optimizer, lr=0.0001)  
+
 
         with Ctq(train_loader) as tq_train_loader:
             for i, data in enumerate(tq_train_loader):
@@ -524,6 +531,7 @@ class Trainer:
                 t_data = time.time() - iter_data_time
                 iter_start_time = time.time()
                 self._model.set_input(data, self._device)
+                cur_lr = self._model.learning_rate
                 self._model.optimize_parameters(epoch, self._dataset.batch_size)
                 
                 loss = self._model.loss_seg
@@ -541,7 +549,7 @@ class Trainer:
                     data_loading=float(t_data),
                     iteration=float(time.time() - iter_start_time),
                     train_loss_smooth=smoothed_loss,
-                    learning_rate=self._model.learning_rate,
+                    learning_rate=cur_lr,
                     color=COLORS.TRAIN_COLOR
                 )
                 

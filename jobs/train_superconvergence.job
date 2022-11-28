@@ -1,0 +1,17 @@
+#!/bin/bash
+
+#SBATCH --partition=gpu_titanrtx_shared
+#SBATCH --job-name=spc
+#SBATCH --gpus=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=12
+#SBATCH --time=36:00:00
+#SBATCH --mem=80000MB
+#SBATCH --output=job_logs/superconvergence/MVFusion_3D_large/train_sgd_wd1e-4_lr0.3.out
+
+cd $HOME/DeepViewAgg
+
+module purge
+export HYDRA_FULL_ERROR=1
+
+./scripts/train_superconvergence.sh

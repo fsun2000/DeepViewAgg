@@ -135,23 +135,25 @@ class ScannetMM(Scannet):
         super(ScannetMM, self).__init__(*args, **kwargs)
         
         
-        # Instead of saving all 3D pre-transformed scans in CPU memory, save each
-        # individually processed scan in processed_3d_'split' directory and load 
-        # individual scans in the __getitem__ method. This saves tremendous amounts
-        # of memory when many dataloader workers are created, but is slightly slower.
-        scan_id_to_name = getattr(
-            self, f"MAPPING_IDX_TO_SCAN_{self.split.upper()}_NAMES")
-        data_dict = self.uncollate(self.data, self.slices, scan_id_to_name)
-        del self.data, self.slices
-        
-        # Export individual 3D Data to .pt files in processed_3d_'split' directory
-        out_dir = osp.join(self.processed_dir, f'processed_3d_{self.split}')
-        if not osp.exists(out_dir):
-            os.makedirs(out_dir)
-        for scan_name, data in data_dict.items():
-            processed_3d_scan_path = osp.join(out_dir, f'{scan_name}.pt')
-            torch.save(data, processed_3d_scan_path)
-        del data_dict
+        if self.split == 'train':
+            # Instead of saving all 3D pre-transformed scans in CPU memory, save each
+            # individually processed scan in processed_3d_'split' directory and load 
+            # individual scans in the __getitem__ method. This saves tremendous amounts
+            # of memory when many dataloader workers are created, but is slightly slower.
+            scan_id_to_name = getattr(
+                self, f"MAPPING_IDX_TO_SCAN_{self.split.upper()}_NAMES")
+            data_dict = self.uncollate(self.data, self.slices, scan_id_to_name)
+            del self.data   # Keep self.slices for dataset functionality
+
+            # Export individual 3D Data to .pt files in processed_3d_'split' directory
+            out_dir = osp.join(self.processed_dir, f'processed_3d_{self.split}')
+            if not osp.exists(out_dir):
+                os.makedirs(out_dir)
+            for scan_name, data in data_dict.items():
+                processed_3d_scan_path = osp.join(out_dir, f'{scan_name}.pt')
+                if not osp.exists(processed_3d_scan_path):
+                    torch.save(data.clone(), processed_3d_scan_path)
+            del data_dict
             
         
     def process(self):        
@@ -301,18 +303,18 @@ class ScannetMM(Scannet):
             f"Indexing with {type(idx)} is not supported, only " \
             f"{int} are accepted."
         
-        #### Outdated method
-#         # Get the 3D point sample and apply transforms
-#         data = self.get(idx)
-
-        # Load individual scan from preprocessed_3d_'split' directory
         scan_id_to_name = getattr(
             self, f"MAPPING_IDX_TO_SCAN_{self.split.upper()}_NAMES")
-        scan_name = scan_id_to_name[idx]        
-        processed_3d_scan_path = osp.join(self.processed_dir, 
-                                          f'processed_3d_{self.split}', f'{scan_name}.pt')
-        data = torch.load(processed_3d_scan_path)
-
+        scan_name = scan_id_to_name[idx]     
+        
+        if self.split == 'train':
+            # Load individual scan from preprocessed_3d_'split' directory   
+            processed_3d_scan_path = osp.join(self.processed_dir, 
+                                              f'processed_3d_{self.split}', f'{scan_name}.pt')
+            data = torch.load(processed_3d_scan_path)
+        else:
+            # Get the 3D point sample
+            data = self.get(idx)
         
         #### FENG: first undo alignment  
         if self.undo_axis_align and self.split != 'test':
@@ -455,6 +457,13 @@ class ScannetMM(Scannet):
             
         else:
             data = MMData(data, image=images)
+
+#         # Take subset of only seen points
+#         # NOTE: each point is contained multiple times if it has multiple correspondences
+#         csr_idx = data.modalities['image'][0].view_csr_indexing
+#         dense_idx_list = torch.arange(data.modalities['image'].num_points).repeat_interleave(csr_idx[1:] - csr_idx[:-1])
+#         # take subset of only seen points without re-indexing the same point
+#         data = data[dense_idx_list.unique()]
 
         return data
 

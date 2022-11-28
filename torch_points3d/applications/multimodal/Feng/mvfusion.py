@@ -9,6 +9,7 @@ from torch_points3d.applications.utils import extract_output_nc
 from torch_points3d.core.common_modules.base_modules import MLP
 from torch_points3d.core.multimodal.data import MMData
 from torch_geometric.data import Batch
+from torch.utils.checkpoint import checkpoint
 
 ### Feng
 from torch_points3d.modules.multimodal.pooling import BimodalCSRPool
@@ -35,7 +36,7 @@ class MVFusionEncoder(MVFusionBackboneBasedModel, ABC):
         # UnwrappedUnetBasedModel init
         super(MVFusionEncoder, self).__init__(
             model_config, model_type, dataset, modules)
-
+        
         # Make sure the model is multimodal and has no 3D. Note that
         # the BackboneBasedModel.__init__ carries most of the required
         # initialization.
@@ -55,16 +56,18 @@ class MVFusionEncoder(MVFusionBackboneBasedModel, ABC):
             default_output_nc = mod_out_nc_list[0]
             
         self._output_nc = default_output_nc
+        self._checkpointing = model_config['transformer']['checkpointing']
 
         # Set the MLP head if any
-        self._has_mlp_head = False
-        if "output_nc" in kwargs:
-            self._has_mlp_head = True
-            print("self._has_mlp_head is true in applications/.../mvfusion.py")
-            self._output_nc = kwargs["output_nc"]
-            self.mlp = MLP(
-                [default_output_nc, self.output_nc], activation=torch.nn.ReLU(),
-                bias=False)
+        self._has_mlp_head = True
+#         if "output_nc" in kwargs:
+#             self._has_mlp_head = True
+        print("self._has_mlp_head is true by default in applications/.../mvfusion.py")
+#             self._output_nc = kwargs["output_nc"]
+        # Manually adjusted MLP size because the MVFusion config without 3d does not have output_nc 
+        self.mlp = MLP(
+            [model_config['transformer']['embed_dim'], model_config['transformer']['n_classes']], activation=torch.nn.ReLU(),
+            bias=False)
             
         # modules
         self.fusion = DVA_cls_5_fusion_7(model_config['transformer'])
@@ -160,7 +163,10 @@ class MVFusionEncoder(MVFusionBackboneBasedModel, ABC):
         }
         
         # get logits
-        out_scores = self.fusion(fusion_input)
+        print("checkpointing enabled for fusion forward")
+        out_scores = checkpoint(self.fusion, fusion_input)
+        
+#         out_scores = self.fusion(fusion_input)
                 
         
         csr_idx = data.modalities['image'][0].view_csr_indexing
@@ -204,9 +210,9 @@ class MVFusionEncoder(MVFusionBackboneBasedModel, ABC):
             # Apply to the 3D features
             out.x = self.mlp(out.x)
 
-            # Apply to the last modality-based view-level features
-            for m in [mod for mod in self.modalities if mod in out.keys]:
-                out[m].last_view_x_mod = self.mlp(out[m].last_view_x_mod)
+#             # Apply to the last modality-based view-level features
+#             for m in [mod for mod in self.modalities if mod in out.keys]:
+#                 out[m].last_view_x_mod = self.mlp(out[m].last_view_x_mod)
 
         return out
 

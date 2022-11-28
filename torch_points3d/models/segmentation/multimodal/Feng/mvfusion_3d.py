@@ -841,25 +841,12 @@ class MVFusionBaseSparseConv3d(MVFusionUnwrappedUnetBasedModel):
                                 
                 keep_idx = torch.round(
                     torch.linspace(0, seen_mask.sum()-1, self.MAX_SEEN_POINTS)).long()
-                
-#                 temp = seen_mask.clone()
-#                 seen_mask = False
-#                 seen_mask[temp][keep_idx] = True
+
                 
                 keep_idx_mask = torch.zeros(seen_mask.sum(), dtype=torch.bool, device=keep_idx.device)
                 keep_idx_mask[keep_idx] = True
                 
                 seen_mask[seen_mask.clone()] = keep_idx_mask
-                
-    
-#                 print("seen_mask[seen_mask]: ", seen_mask[seen_mask], seen_mask[seen_mask].shape, seen_mask[seen_mask].sum())
-#                 seen_mask[seen_mask] = False
-#                 print("seen_mask[seen_mask]: ", seen_mask[seen_mask], seen_mask[seen_mask].shape, seen_mask[seen_mask].sum())
-#                 seen_mask[seen_mask][keep_idx] = True
-                
-#                 print("seen_mask[seen_mask][keep_idx]: ", seen_mask[seen_mask][keep_idx], seen_mask[seen_mask][keep_idx].shape, seen_mask[seen_mask][keep_idx].sum())
-               
-                
                 
                                 
                 data.data.mvfusion_input = data.data.mvfusion_input[keep_idx_mask]

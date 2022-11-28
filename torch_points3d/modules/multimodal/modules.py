@@ -271,7 +271,7 @@ class UnimodalBranchOnlyAtomicPool(nn.Module, ABC):
             hard_drop=False, keep_last_view=False, checkpointing='',
             out_channels=None, interpolate=False):
         super(UnimodalBranchOnlyAtomicPool, self).__init__()
-        self.atomic_pool = atomic_pool
+#         self.atomic_pool = atomic_pool
         drop_cls = ModalityDropout if hard_drop else nn.Dropout
         self.drop_3d = drop_cls(p=drop_3d, inplace=False) \
             if drop_3d is not None and drop_3d > 0 \
@@ -400,17 +400,17 @@ class UnimodalBranchOnlyAtomicPool(nn.Module, ABC):
 
         # Extract mapped features from the feature maps of each input
         # modality setting
-        ########## NOTE: only Mask2Former feature map!
-        x_mod_m2f = mod_data.get_mapped_m2f_features(interpolate=self.interpolate)
+#         ########## NOTE: only Mask2Former feature map!
+#         x_mod_m2f = mod_data.get_mapped_m2f_features(interpolate=self.interpolate)
         
         
         
         
         
 
-        # Atomic pooling of the modality features on each separate
-        # setting
-        x_mod_m2f = self.forward_atomic_pool(x_3d, x_mod_m2f, mod_data.atomic_csr_indexing)
+#         # Atomic pooling of the modality features on each separate
+#         # setting
+#         x_mod_m2f = self.forward_atomic_pool(x_3d, x_mod_m2f, mod_data.atomic_csr_indexing)
 
 #         # View pooling of the modality features
 #         x_mod, mod_data, csr_idx = self.forward_view_pool(x_3d, x_mod, mod_data)
@@ -425,10 +425,10 @@ class UnimodalBranchOnlyAtomicPool(nn.Module, ABC):
         x_seen = csr_idx[1:] > csr_idx[:-1]
 
         
-        if isinstance(x_mod_m2f, list):
-            if len(x_mod_m2f) > 1:
-                print("x_mod_m2f should only contain one tensor, but currently has more than one!")
-            x_mod_m2f = x_mod_m2f[0]
+#         if isinstance(x_mod_m2f, list):
+#             if len(x_mod_m2f) > 1:
+#                 print("x_mod_m2f should only contain one tensor, but currently has more than one!")
+#             x_mod_m2f = x_mod_m2f[0]
               
         ### Feng: disable M2F feature dropout because it has no practical use
 #         # Dropout 3D or modality features
@@ -464,36 +464,36 @@ class UnimodalBranchOnlyAtomicPool(nn.Module, ABC):
 
         return mm_data_dict
 
-    def forward_atomic_pool(self, x_3d, x_mod, csr_idx):
-        """Atomic pooling of the modality features on each separate
-        setting.
+#     def forward_atomic_pool(self, x_3d, x_mod, csr_idx):
+#         """Atomic pooling of the modality features on each separate
+#         setting.
 
-        :param x_3d:
-        :param x_mod:
-        :param csr_idx:
-        :return:
-        """
-        # If the modality carries multi-setting data, recursive scheme
-        if isinstance(x_mod, list):
-            x_mod = [
-                self.forward_atomic_pool(x_3d, x, i)
-                for x, i in zip(x_mod, csr_idx)]
-            return x_mod
+#         :param x_3d:
+#         :param x_mod:
+#         :param csr_idx:
+#         :return:
+#         """
+#         # If the modality carries multi-setting data, recursive scheme
+#         if isinstance(x_mod, list):
+#             x_mod = [
+#                 self.forward_atomic_pool(x_3d, x, i)
+#                 for x, i in zip(x_mod, csr_idx)]
+#             return x_mod
 
-        if 'a' in self.checkpointing:
-            x_mod = checkpoint(self.atomic_pool, x_3d, x_mod, None, csr_idx)
-        else:
-            x_mod = self.atomic_pool(x_3d, x_mod, None, csr_idx)
-        return x_mod
+#         if 'a' in self.checkpointing:
+#             x_mod = checkpoint(self.atomic_pool, x_3d, x_mod, None, csr_idx)
+#         else:
+#             x_mod = self.atomic_pool(x_3d, x_mod, None, csr_idx)
+#         return x_mod
 
-    def forward_dropout(self, x_3d, x_mod, mod_data):
-        if self.drop_3d:
-            x_3d = self.drop_3d(x_3d)
-        if self.drop_mod:
-            x_mod = self.drop_mod(x_mod)
-            if self.keep_last_view:
-                mod_data.last_view_x_mod = self.drop_mod(mod_data.last_view_x_mod)
-        return x_3d, x_mod, mod_data
+#     def forward_dropout(self, x_3d, x_mod, mod_data):
+#         if self.drop_3d:
+#             x_3d = self.drop_3d(x_3d)
+#         if self.drop_mod:
+#             x_mod = self.drop_mod(x_mod)
+#             if self.keep_last_view:
+#                 mod_data.last_view_x_mod = self.drop_mod(mod_data.last_view_x_mod)
+#         return x_3d, x_mod, mod_data
 
     def extra_repr(self) -> str:
         repr_attr = ['drop_3d', 'drop_mod', 'keep_last_view', 'checkpointing']
