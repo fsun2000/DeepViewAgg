@@ -39,13 +39,9 @@ MVFusion_3D_small:
                     module_name: BimodalCSRPool
                     mode: max
                 view_pooling:
-                    module_name: GroupBimodalCSRPool
-                    in_map: 8
-                    in_mod: out_mv_feat_dim
+                    module_name: Feng_GroupGating
+                    in_mod: 64
                     num_groups: 4
-                    use_mod: False
-                    map_encoder: DeepSetFeat
-                    use_num: True
                 fusion:
                     module_name: BimodalFusion
                     mode: concatenation
@@ -84,6 +80,7 @@ MVFusion_3D_small:
             use_csr_mask: True           # Transformer pixel validity masking
             has_mlp_head: False          # False by default
             max_n_points: 200000      # max. size of transformer batched input. Increase if memory allows
+            gating: True                 # Enable gating of less informative features
             
 MVFusion_3D_medium:
     class: Feng.mvfusion_3d.MVFusionAPIModel

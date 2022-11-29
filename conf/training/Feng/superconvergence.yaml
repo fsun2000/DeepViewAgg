@@ -7,7 +7,7 @@ shuffle: True
 cuda: 0
 precompute_multi_scale: False # Compute multiscate features on cpu for faster training / inference
 optim:
-  base_lr: 0.1
+  base_lr: ${training.optim.lr_scheduler.params.max_lr}
 #   accumulated_gradient: -1 # Accumulate gradient accumulated_gradient * batch_size
   grad_clip: -1
   optimizer:
@@ -62,8 +62,8 @@ wandb:
   entity: ""
   project: scannet-benchmark
   log: True
-  notes: "Minkowski baseline"
-  name: "Res16UNet34"
+  notes: "MVFusion_3D with superconvergence"
+  name: ${model_name}
   id:
   public: True # It will be display the model within wandb log, else not.
   config:

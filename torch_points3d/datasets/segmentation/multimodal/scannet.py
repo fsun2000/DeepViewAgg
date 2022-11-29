@@ -120,6 +120,7 @@ class ScannetMM(Scannet):
             undo_axis_align=False,
             center_xy=False,
             center_z=False, 
+            n_views=None,
         **kwargs):
         
         self.pre_transform_image = pre_transform_image
@@ -132,6 +133,7 @@ class ScannetMM(Scannet):
         self.undo_axis_align = undo_axis_align
         self.center_xy = center_xy
         self.center_z = center_z
+        self.n_views = n_views
         super(ScannetMM, self).__init__(*args, **kwargs)
         
         
@@ -298,7 +300,6 @@ class ScannetMM(Scannet):
         indexing. 2D data, however, is too heavy to be entirely kept in
         memory, so it is loaded on the fly from preprocessing files.
         """
-        
         assert isinstance(idx, int), \
             f"Indexing with {type(idx)} is not supported, only " \
             f"{int} are accepted."
@@ -389,8 +390,8 @@ class ScannetMM(Scannet):
                 pred_mask = Image.open(pred_mask_path)
                 pred_mask = pred_mask.resize(self.img_ref_size, resample=Image.NEAREST) 
                 
-                # minus 1 to match DVA label classes ranging [-1, 19] instead of [0, 20]
-                m2f_masks.append(pil_to_tensor(pred_mask) - 1)
+                # minus 1 to match DVA label classes ranging [0, 19] instead of [1, 20]
+                m2f_masks.append(pil_to_tensor(pred_mask))# - 1)
                 
                 m2f_mask_paths.append(pred_mask_path)
                                 
@@ -419,7 +420,7 @@ class ScannetMM(Scannet):
             # Take subset of seen points because we only need points with mapping feats
             n_seen = n_seen[seen_mask]
                     
-            N_VIEWS = 9
+            N_VIEWS = self.n_views
             mapping_feats = data.modalities['image'][0].mappings.values[2]
             view_feats = torch.zeros((n_seen_points, N_VIEWS, mapping_feats.shape[-1]))
             
@@ -430,11 +431,11 @@ class ScannetMM(Scannet):
             pixel_validity = torch.range(1, N_VIEWS).repeat(n_seen_points, 1)
             pixel_validity = ( pixel_validity <= clipped_n_seen.unsqueeze(-1) )
 
-            # randomly select 1 >= N <= 9 mapping feature vectors for each 3d point
+            # select mapping feature vectors for each 3d point
             view_feat_idx = []
             for i in range(len(seen_csr_idx) - 1):
                 n = clipped_n_seen[i]
-                if n < 9:
+                if n < N_VIEWS:
                     view_feat_idx.extend(list(range(seen_csr_idx[i], seen_csr_idx[i+1])))
                 else:
                     view_feat_idx.extend(np.random.choice(range(seen_csr_idx[i], seen_csr_idx[i+1]), size=n.numpy(), replace=False))
@@ -549,6 +550,7 @@ class ScannetDatasetMM(BaseDatasetMM, ABC):
         undo_axis_align: bool = dataset_opt.get('undo_axis_align', False)
         center_xy: bool = dataset_opt.get('center_xy', False)
         center_z: bool = dataset_opt.get('center_z', False)
+        n_views: int = dataset_opt.get('n_views', 0)
             
         print("initialize train dataset")
         self.train_dataset = ScannetMM(
@@ -578,6 +580,7 @@ class ScannetDatasetMM(BaseDatasetMM, ABC):
             undo_axis_align=undo_axis_align,
             center_xy=center_xy,
             center_z=center_z, 
+            n_views=n_views,
         )
 
         print("initialize val dataset")
@@ -608,6 +611,7 @@ class ScannetDatasetMM(BaseDatasetMM, ABC):
             undo_axis_align=undo_axis_align,
             center_xy=center_xy,
             center_z=center_z, 
+            n_views=n_views,
         )
 
 #         print("initialize test dataset")
@@ -638,6 +642,7 @@ class ScannetDatasetMM(BaseDatasetMM, ABC):
 #             undo_axis_align=undo_axis_align,
 #             center_xy=center_xy,
 #             center_z=center_z, 
+#             n_views=n_views,
 #         )
 
     @property

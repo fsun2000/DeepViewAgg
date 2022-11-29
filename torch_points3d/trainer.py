@@ -86,6 +86,10 @@ class Trainer:
         # Recover the merged config from Checkpoint
         self._cfg = self._checkpoint.run_config
 
+        # Update dataset config with number of views for the MVFusion Transformer
+        model_config = getattr(self._cfg.models, self._cfg.model_name, None)
+        self._cfg.data.n_views = model_config.backbone.transformer.n_views
+                
         # Create model and datasets
         if not self._checkpoint.is_empty:
             self._dataset: BaseDataset = instantiate_dataset(self._cfg.data)
@@ -95,8 +99,6 @@ class Trainer:
             self._dataset: BaseDataset = instantiate_dataset(self._cfg.data)
             self._model: BaseModel = instantiate_model(
                 copy.deepcopy(self._cfg), self._dataset)
-#             print("skipped self._model.instantiate_optimizers(self._cfg, 'cuda' in device)")
-#             print("skipped self._model.set_pretrained_weights()")
             self._model.instantiate_optimizers(self._cfg, "cuda" in device)
             self._model.set_pretrained_weights()
             if not self._checkpoint.validate(self._dataset.used_properties):
@@ -104,7 +106,7 @@ class Trainer:
                     "The model will not be able to be used from pretrained "
                     "weights without the corresponding dataset. Current "
                     "properties are {}".format(self._dataset.used_properties))
-
+                
         self._checkpoint.dataset_properties = self._dataset.used_properties
 
         log.info(self._model)

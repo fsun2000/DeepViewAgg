@@ -849,7 +849,9 @@ class MVFusionUnimodalBranch(nn.Module, ABC):
 #         self.conv = conv
 #         self.atomic_pool = atomic_pool
 #         self.view_pool = view_pool
+        self.gating = view_pool if transformer_config['gating'] is True else None
         self.fusion = fusion
+    
         drop_cls = ModalityDropout if hard_drop else nn.Dropout
         self.drop_3d = drop_cls(p=drop_3d, inplace=False) \
             if drop_3d is not None and drop_3d > 0 \
@@ -976,7 +978,7 @@ class MVFusionUnimodalBranch(nn.Module, ABC):
             return mm_data_dict
  
         x_mod = self.forward_transformerfusion(mm_data_dict)
-        
+            
 #         # Forward pass with `self.conv`
 #         print("mod_data: ", mod_data)   # ImageBatch(num_settings=1, num_views=3, num_points=11819, device=cuda:0)
 #         mod_data = self.forward_conv(mod_data)
@@ -1053,6 +1055,7 @@ class MVFusionUnimodalBranch(nn.Module, ABC):
         ### Multi-view fusion of M2F and viewing conditions using Transformer
         # TODO: remove assumption that pixel validity is the 1st feature
         invalid_pixel_mask = (viewing_feats[:, :, 0] == 0)   
+        
                         
         if 'c' in self.checkpointing:
             fusion_input = {
@@ -1068,12 +1071,22 @@ class MVFusionUnimodalBranch(nn.Module, ABC):
                 'one_hot_mask_labels': m2f_feats
             }
             seen_x_mod = self.transformerfusion(fusion_input)
+            
+            
+        ### Gating mechanism
+        # Remove multi-view predicted masks and/or
+        # geometric information if these provided no beneficial information 
+        # for the 3D point.
+        if self.gating is not None:
+            seen_x_mod = self.gating(seen_x_mod)
 
+
+        # Assign fused features back to points that were seen 
         x_mod = torch.zeros((mm_data_dict['modalities']['image'].num_points, 
                              seen_x_mod.shape[-1]), device=seen_x_mod.device)
-            
         x_mod[mm_data_dict['transformer_x_seen']] = seen_x_mod
         return x_mod
+            
     
 #     def forward_conv(self, mod_data, reset=True):
 #         """

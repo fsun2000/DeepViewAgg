@@ -11,6 +11,49 @@ import math
 _local_modules = sys.modules[__name__]
 
 
+class Feng_GroupGating(nn.Module, ABC):
+    """
+    Scores the multi-view fused features.
+    These features are divided into K blocks, and the features of each block 
+    can be gated if the computed scores are too low. 
+    This prevents the propagation of less informative features to the 3D module.
+    """
+
+    def __init__(
+            self, in_map=None, in_mod=None, out_mod=None, num_groups=1,
+            use_mod=False, gating=True, group_scaling=True, save_last=False,
+            nc_inner=32, map_encoder='DeepSetFeat', **kwargs):
+        super(Feng_GroupGating, self).__init__()
+
+        # Group and channel arguments
+        assert 1 <= num_groups <= 8, \
+            f"Number of groups must not be too large."
+        self.num_groups = num_groups
+        self.in_mod = in_mod
+        self.MLP = MLP([in_mod, in_mod//2, num_groups], activation=nn.LeakyReLU(0.2, inplace=False))
+        
+        self.G = Gating(num_groups, bias=True)
+
+    def forward(self, fused_features):
+        """
+        inputs:
+            fused_features (B, feat_dim) -  the multi-view fused features coming from the Transformer module 
+        """
+        # Compute pointwise gating for each group : P x num_groups
+        scores_per_group = self.MLP(fused_features)
+        gating = self.G(scores_per_group)
+
+        # Apply gating to the features : P x F_mod
+        fused_features = fused_features * expand_group_feat(
+            gating, self.num_groups, fused_features.shape[-1])
+
+        return fused_features
+
+    def extra_repr(self) -> str:
+        repr_attr = ['num_groups', 'in_mod']
+        return "\n".join([f'{a}={getattr(self, a)}' for a in repr_attr])
+    
+    
 class BimodalCSRPool(nn.Module, ABC):
     """Bimodal pooling modules select and combine information from a
     modality to prepare its fusion into the main modality.
