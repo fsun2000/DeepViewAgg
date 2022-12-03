@@ -391,7 +391,7 @@ class ScannetMM(Scannet):
                 pred_mask = pred_mask.resize(self.img_ref_size, resample=Image.NEAREST) 
                 
                 # minus 1 to match DVA label classes ranging [0, 19] instead of [1, 20]
-                m2f_masks.append(pil_to_tensor(pred_mask))# - 1)
+                m2f_masks.append(pil_to_tensor(pred_mask) - 1)
                 
                 m2f_mask_paths.append(pred_mask_path)
                                 

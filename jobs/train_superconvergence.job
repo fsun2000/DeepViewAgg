@@ -5,9 +5,9 @@
 #SBATCH --gpus=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=12
-#SBATCH --time=01:00:00
-#SBATCH --mem=80000MB
-#SBATCH --output=job_logs/superconvergence/temp.out
+#SBATCH --time=25:00:00
+#SBATCH --mem=95000MB
+#SBATCH --output=job_logs/superconvergence/MVFusion_3D_small/no_m2f_labels.out
 
 cd $HOME/DeepViewAgg
 

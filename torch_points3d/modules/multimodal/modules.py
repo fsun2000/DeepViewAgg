@@ -22,7 +22,7 @@ except:
 ### Feng
 import sys
 sys.path.append("/home/fsun/thesis/modeling")
-from compare_methods import DVA_cls_5_fusion_7
+from compare_methods import DVA_attention_weighted_M2F_preds
 
 class MultimodalBlockDown(nn.Module, ABC):
     """Multimodal block with downsampling that looks like:
@@ -68,7 +68,8 @@ class MultimodalBlockDown(nn.Module, ABC):
                 f"{MODALITY_NAMES}."
             assert isinstance(kwargs[m], (UnimodalBranch, IdentityBranch)) or \
                    isinstance(kwargs[m], (UnimodalBranchOnlyAtomicPool, IdentityBranch)) or \
-                   isinstance(kwargs[m], (MVFusionUnimodalBranch, IdentityBranch)), \
+                   isinstance(kwargs[m], (MVFusionUnimodalBranch, IdentityBranch)) or \
+                   isinstance(kwargs[m], (MVAttentionUnimodalBranch, IdentityBranch)), \
                 f"Expected a UnimodalBranch or UnimodalBranchOnlyAtomicPool or MVFusionUnimodalBranch module for '{m}' modality " \
                 f"but got {type(kwargs[m])} instead."
             setattr(self, m, kwargs[m])
@@ -1222,3 +1223,251 @@ class IdentityBranch(BaseModule):
 
     def forward(self, mm_data_dict, modality):
         return mm_data_dict
+    
+class MVAttentionUnimodalBranch(nn.Module, ABC):
+    def __init__(
+            self, conv, atomic_pool, view_pool, fusion, drop_3d=0, drop_mod=0,
+            hard_drop=False, keep_last_view=False, checkpointing='',
+            out_channels=None, interpolate=False, transformer_config=None):
+        super(MVAttentionUnimodalBranch, self).__init__()
+        
+        self.attn_fusion = DVA_attention_weighted_M2F_preds(transformer_config)
+        self.n_classes = transformer_config['n_classes']
+        self.gating = view_pool if transformer_config['gating'] is True else None
+        self.fusion = fusion
+    
+        drop_cls = ModalityDropout if hard_drop else nn.Dropout
+        self.drop_3d = drop_cls(p=drop_3d, inplace=False) \
+            if drop_3d is not None and drop_3d > 0 \
+            else None
+        self.drop_mod = drop_cls(p=drop_mod, inplace=True) \
+            if drop_mod is not None and drop_mod > 0 \
+            else None
+        self.keep_last_view = keep_last_view
+        self._out_channels = out_channels
+        self.interpolate = interpolate
+
+        # Optional checkpointing to alleviate memory at train time.
+        # Character rules:
+        #     c: convolution
+        #     a: atomic pooling
+        #     v: view pooling
+        #     f: fusion
+        assert not checkpointing or isinstance(checkpointing, str),\
+            f'Expected checkpointing to be of type str but received ' \
+            f'{type(checkpointing)} instead.'
+        self.checkpointing = ''.join(set('cavf').intersection(set(checkpointing)))
+
+    @property
+    def out_channels(self):
+        if self._out_channels is None:
+            raise ValueError(
+                f'{self.__class__.__name__}.out_channels has not been '
+                f'set. Please set it to allow inference even when the '
+                f'modality has no data.')
+        return self._out_channels
+
+    def forward(self, mm_data_dict, modality):
+        # Unpack the multimodal data dictionary. Specific treatment for
+        # MinkowskiEngine and TorchSparse SparseTensors
+        is_sparse_3d = not isinstance(
+            mm_data_dict['x_3d'], (torch.Tensor, type(None)))
+        x_3d = mm_data_dict['x_3d'].F if is_sparse_3d else mm_data_dict['x_3d']
+        mod_data = mm_data_dict['modalities'][modality]
+        
+
+
+        # Check whether the modality carries multi-setting data
+        is_multi_shape = isinstance(mod_data.x, list)
+
+        # If the modality has no data mapped to the current 3D points,
+        # ignore the branch forward. `self.out_channels` will guide us
+        # on how to replace expected modality features
+        if is_multi_shape and all([e.x.shape[0] == 0 for e in mod_data]) \
+                or is_multi_shape and len(mod_data) == 0 \
+                or not is_multi_shape and mod_data.x.shape[0] == 0:
+
+            # Prepare the channel sizes
+            nc_out = self.out_channels
+            nc_3d = x_3d.shape[1]
+            nc_2d = nc_out - nc_3d if nc_out > nc_3d else nc_3d
+
+            # Make sure we have a valid `self.out_channels` so we can
+            # simulate the forward without any modality data
+            if nc_out < nc_3d:
+                raise ValueError(
+                    f'{self.__class__.__name__}.out_channels is smaller than '
+                    f'number of features in x_3d: {nc_out} < {nc_3d}')
+
+            # No points are seen
+            # x_seen = torch.zeros(nc_3d, dtype=torch.bool)
+
+            # Modify the feature dimension of mod_data to simulate
+            # convolutions too
+            if not is_multi_shape:
+                mod_data.x = mod_data.x[:, [0]].repeat_interleave(nc_2d, dim=1)
+            elif len(mod_data) > 0:
+                mod_data.x = [
+                    x[:, [0]].repeat_interleave(nc_2d, dim=1)
+                    for x in mod_data.x]
+
+            # For concatenation fusion, create zero features to
+            # 'simulate' concatenation of modality features to x_3d
+            if nc_out > nc_3d:
+                zeros = torch.zeros_like(x_3d[:, [0]])
+                zeros = zeros.repeat_interleave(nc_2d, dim=1)
+                x_3d = torch.cat((x_3d, zeros), dim=1)
+
+            # Return the modified multimodal data dictionary despite the
+            # absence of modality features
+            if is_sparse_3d:
+                mm_data_dict['x_3d'].F = x_3d
+            else:
+                mm_data_dict['x_3d'] = x_3d
+            mm_data_dict['modalities'][modality] = mod_data
+            # if mm_data_dict['x_seen'] is None:
+            #     mm_data_dict['x_seen'] = x_seen
+            # else:
+            #     mm_data_dict['x_seen'] = torch.logical_or(
+            #         x_seen, mm_data_dict['x_seen'])
+
+            return mm_data_dict
+
+        # If the modality has a data list format and that one of the
+        # items is an empty feature map, run a recursive forward on the
+        # mm_data_dict with these problematic items discarded. This is
+        # necessary whenever an element of the batch has no mappings to
+        # the modality
+        if is_multi_shape and any([e.x.shape[0] == 0 for e in mod_data]):
+
+            # Remove problematic elements from mod_data
+            num = len(mod_data)
+            removed = {
+                i: e for i, e in enumerate(mod_data) if e.x.shape[0] == 0}
+            indices = [i for i in range(num) if i not in removed.keys()]
+            mm_data_dict['modalities'][modality] = mod_data[indices]
+
+            # Run forward recursively
+            mm_data_dict = self.forward(mm_data_dict, modality)
+
+            # Restore problematic elements. This is necessary if we need
+            # to restore the initial batch elements with methods such as
+            # `MMBatch.to_mm_data_list`
+            mod_data = mm_data_dict['modalities'][modality]
+            kept = {k: e for k, e in zip(indices, mod_data)}
+            joined = {**kept, **removed}
+            mod_data = mod_data.__class__([joined[i] for i in range(num)])
+            mm_data_dict['modalities'][modality] = mod_data
+
+            return mm_data_dict
+ 
+        x_mod = self.forward_transformerfusion(mm_data_dict)
+            
+       
+
+        # Dropout 3D or modality features
+        x_3d, x_mod, mod_data = self.forward_dropout(x_3d, x_mod, mod_data)
+
+        # Fuse the modality features into the 3D points features
+        x_3d = self.forward_fusion(x_3d, x_mod)
+
+        # In case it has not been provided at initialization, save the
+        # output channel size. This is useful for when a batch has no
+        # modality data
+        if self._out_channels is None:
+            self._out_channels = x_3d.shape[1]
+
+        # Boolean mask of seen points (including thoes that were not used as
+        # input to the Transformer)
+        csr_idx = mod_data[0].view_csr_indexing
+        x_seen = csr_idx[1:] > csr_idx[:-1]       
+            
+        # Update the multimodal data dictionary
+        # TODO: does the modality-driven sequence of updates on x_3d
+        #  and x_seen affect the modality behavior ? Should the shared
+        #  3D information only be updated once all modality branches
+        #  have been run on the same input ?
+        if is_sparse_3d:
+            mm_data_dict['x_3d'].F = x_3d
+        else:
+            mm_data_dict['x_3d'] = x_3d
+        mm_data_dict['modalities'][modality] = mod_data
+        if mm_data_dict['x_seen'] is None:
+            mm_data_dict['x_seen'] = x_seen
+        else:
+            mm_data_dict['x_seen'] = torch.logical_or(
+                x_seen, mm_data_dict['x_seen'])
+
+        return mm_data_dict
+
+    def forward_transformerfusion(self, mm_data_dict, reset=True):
+        ### multi-view mapping & M2F feature fusion using Transformer 
+        
+        # Features from only seen point-image matches are included in 'x'
+        viewing_feats = mm_data_dict['transformer_input'][:, :, :-1]
+        m2f_feats = mm_data_dict['transformer_input'][:, :, -1]
+        
+        # One hot features of M2F preds
+        m2f_feats = torch.nn.functional.one_hot(m2f_feats.squeeze().long(), self.n_classes)
+    
+        ### Multi-view fusion of M2F and viewing conditions using Transformer
+        # TODO: remove assumption that pixel validity is the 1st feature
+        invalid_pixel_mask = (viewing_feats[:, :, 0] == 0)   
+        
+                        
+        if 'c' in self.checkpointing:
+            fusion_input = {
+                'invalid_pixels_mask': invalid_pixel_mask,
+                'viewing_features': viewing_feats.requires_grad_(),
+                'one_hot_mask_labels': m2f_feats
+            }
+            seen_x_mod = checkpoint(self.attn_fusion, fusion_input)
+        else:
+            fusion_input = {
+                'invalid_pixels_mask': invalid_pixel_mask,
+                'viewing_features': viewing_feats,
+                'one_hot_mask_labels': m2f_feats
+            }
+            seen_x_mod = self.attn_fusion(fusion_input)
+            
+            
+        ### Gating mechanism
+        # Remove multi-view predicted masks and/or
+        # geometric information if these provided no beneficial information 
+        # for the 3D point.
+        if self.gating is not None:
+            seen_x_mod = self.gating(seen_x_mod)
+
+
+        # Assign fused features back to points that were seen 
+        x_mod = torch.zeros((mm_data_dict['modalities']['image'].num_points, 
+                             seen_x_mod.shape[-1]), device=seen_x_mod.device)
+        x_mod[mm_data_dict['transformer_x_seen']] = seen_x_mod
+        return x_mod
+
+
+    def forward_fusion(self, x_3d, x_mod):
+        """Fuse the modality features into the 3D points features.
+
+        :param x_3d:
+        :param x_mod:
+        :return:
+        """
+        if 'f' in self.checkpointing:
+            x_3d = checkpoint(self.fusion, x_3d, x_mod)
+        else:
+            x_3d = self.fusion(x_3d, x_mod)
+        return x_3d
+
+    def forward_dropout(self, x_3d, x_mod, mod_data):
+        if self.drop_3d:
+            x_3d = self.drop_3d(x_3d)
+        if self.drop_mod:
+            x_mod = self.drop_mod(x_mod)
+            if self.keep_last_view:
+                mod_data.last_view_x_mod = self.drop_mod(mod_data.last_view_x_mod)
+        return x_3d, x_mod, mod_data
+
+    def extra_repr(self) -> str:
+        repr_attr = ['drop_3d', 'drop_mod', 'keep_last_view', 'checkpointing']
+        return "\n".join([f'{a}={getattr(self, a)}' for a in repr_attr])

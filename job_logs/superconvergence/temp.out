@@ -1,0 +1,28 @@
+MMData debug() function changed, please uncomment the 3rd assert line when doing inference without M2F features!
+[2022-11-29 11:33:43,150][torch_points3d.trainer][INFO] - DEVICE : cuda
+wandb: Tracking run with wandb version 0.8.36
+wandb: Wandb version 0.13.5 is available!  To upgrade, please run:
+wandb:  $ pip install wandb --upgrade
+wandb: Run data is saved locally in wandb/run-20221129_103343-2fdp1fw7
+wandb: Syncing run MVFusion_3D_small
+wandb: \u2b50\ufe0f View project at https://app.wandb.ai/fsun2000/scannet-benchmark
+wandb: \U0001f680 View run at https://app.wandb.ai/fsun2000/scannet-benchmark/runs/2fdp1fw7
+wandb: Run `wandb off` to turn off syncing.
+
+load_m2f_masks:  True
+initialize train dataset
+initialize val dataset
+task:  segmentation.multimodal
+tested_model_name:  MVFusion_3D_small
+n_views:  6
+
+wandb: Waiting for W&B process to finish, PID 30041
+wandb: Program ended successfully.
+wandb: Syncing files in wandb/run-20221129_103343-2fdp1fw7:
+wandb:   change.patch
+wandb:   hydra-config.yaml
+wandb:   overrides.yaml
+wandb: plus 6 W&B file(s) and 0 media file(s)
+wandb: - 0.01MB of 0.01MB uploadedwandb: \ 0.01MB of 0.01MB uploadedwandb: | 0.01MB of 0.01MB uploadedwandb: / 0.01MB of 0.01MB uploadedwandb: - 0.01MB of 0.01MB uploadedwandb: \ 0.01MB of 0.01MB uploadedwandb:                                                                                
+wandb: Synced MVFusion_3D_small: https://app.wandb.ai/fsun2000/scannet-benchmark/runs/2fdp1fw7
+./scripts/train_superconvergence.sh: line 55: training.wandb.log=True: command not found
