@@ -213,6 +213,9 @@ class Trainer:
 
         epoch = self._checkpoint.start_epoch
         
+#         print()
+#         print(" Evaluation of validation set is disabled in trainer.py at line 217 ")
+#         print()
         if self._dataset.has_val_loader:
             if not stage_name or stage_name == "val":
                 self._test_epoch(epoch, "val")

@@ -142,7 +142,7 @@ SCANNET_COLOR_MAP = {
     40: (100.0, 85.0, 144.0),
 }
 
-SPLITS = ["train", "val"]#, "test"]
+SPLITS = ["train", "val", "test"]
 # SPLITS = ["test"]
 
 
@@ -724,20 +724,28 @@ class Scannet(InMemoryDataset):
 
         if split != "test":
             if not use_instance_bboxes:
-                delattr(self.data, "instance_bboxes")
+                try:
+                    delattr(self.data, "instance_bboxes")
+                except AttributeError:
+                    pass
             else:
                 raise ValueError("This dataset class has been adjusted to handle only 3D semantic segmentation!")
             if not use_instance_labels:
-                delattr(self.data, "instance_labels")
+                try:
+                    delattr(self.data, "instance_labels")
+                except AttributeError:
+                    pass
             else:
                 raise ValueError("This dataset class has been adjusted to handle only 3D semantic segmentation!")
-            self.data.y = self._remap_labels(self.data.y)
+            
+            if self.data.y.max() > 19:
+                self.data.y = self._remap_labels(self.data.y)
+            else:
+                print("dataset has already been remapped! skipping this step...")
             self.has_labels = True
         else:
             self.has_labels = False
-            
-#         self.unpack_and_save_inmemorydata(split)
-#         self.remove_inmemorydata(split) 
+
 
         self.read_from_metadata()
 
@@ -756,15 +764,6 @@ class Scannet(InMemoryDataset):
             raise ValueError((f"Split {split} found, but expected either " "train, val, or test"))
         self.data, self.slices = torch.load(path)
         
-#     def unpack_and_save_inmemorydata(self, split):
-#         print(self.data)
-#         print(self.slices)
-        
-#         print("unpack_and_save_inmemorydata called")
-
-#     def remove_inmemorydata(self, split):
-#         del self.data, self.slices
-#         return
         
 
     def get_raw_data(self, id_scan, remap_labels=True) -> Data:
@@ -994,7 +993,7 @@ class Scannet(InMemoryDataset):
             f.close()
 
         for idx_split, split in enumerate(Scannet.SPLITS):
-            # self.scan_names[idx_split] = self.scan_names[idx_split][:5]  # to test on mini dataset
+#             self.scan_names[idx_split] = self.scan_names[idx_split][:1]  # to test on mini dataset
             idx_mapping = {idx: scan_name for idx, scan_name in enumerate(self.scan_names[idx_split])}
             setattr(self, "MAPPING_IDX_TO_SCAN_{}_NAMES".format(split.upper()), idx_mapping)
 
@@ -1046,6 +1045,48 @@ class Scannet(InMemoryDataset):
         data["id_scan"] = torch.tensor([id_scan])
         return cT.SaveOriginalPosId()(data)
 
+
+    def do_pre_transform_and_save(
+                id_scan,
+                total,
+                scannet_dir,
+                scan_name,
+                label_map_file,
+                donotcare_class_ids,
+                max_num_point,
+                obj_class_ids,
+                normalize_rgb,
+                split,
+                frame_depth,
+                frame_rgb,
+                frame_pose,
+                frame_intrinsics,
+                frame_skip,
+                processed_raw_path,
+                pre_transform
+        ):
+        
+        # Get filepath to store pre-transformed data
+        pre_transformed_data_dir = processed_raw_path.split("/")[:-1]
+        pre_transformed_data_dir += [f'pre_transformed_{split}']
+        pre_transformed_data_dir = "/".join(pre_transformed_data_dir)
+        
+        os.makedirs(pre_transformed_data_dir, exist_ok=True)
+        
+        pre_transformed_data_path = osp.join(pre_transformed_data_dir, "{}.pt".format(scan_name))
+                
+        if not osp.exists(pre_transformed_data_path):
+            raw_scan_path = osp.join(processed_raw_path, "{}.pt".format(scan_name))
+            data = torch.load(raw_scan_path)
+            data = pre_transform(data)
+            print("{}/{}| scan_name: {}, pre_transformed data: {}".format(id_scan, total, scan_name, data), flush=True)
+            print("Save in pre_transformed_data_path: ", pre_transformed_data_path, flush=True)
+            torch.save(data, pre_transformed_data_path)
+        else:
+            print(f"{scan_name} already pre-transformed and saved!", flush=True)
+                
+        return
+    
     def process(self):
         if self.is_test:
             return
@@ -1058,7 +1099,27 @@ class Scannet(InMemoryDataset):
 #                 print("currently, preprocessing of raw 3D train scans is skipped")
 #                 continue
         
+          
             if not osp.exists(self.processed_paths[i]):
+            
+#                 print("Speedrunning split: ", split)
+#                 print("scan names of split: ", scan_names)
+                
+#                 source_3d_dir = '/project/fsun/dvata/scannet-trainval-test/processed/processed_3d_train'
+#                 datas = [torch.load(os.path.join(source_3d_dir, scene_id + '.pt')) for scene_id in scan_names]
+#                 print(datas)
+                
+#                 collated_data = self.collate(datas)
+#                 torch.save(collated_data, self.processed_paths[i])
+                
+#                 break
+            
+            
+            
+            
+            
+            
+            
                 mapping_idx_to_scan_names = getattr(self, "MAPPING_IDX_TO_SCAN_{}_NAMES".format(split.upper()))
                 scannet_dir = osp.join(self.raw_dir, "scans" if split in ["train", "val"] else "scans_test")
                 total = len(scan_names)
@@ -1103,6 +1164,8 @@ class Scannet(InMemoryDataset):
                             id_scan = int(data.id_scan.item())
                             scan_name = mapping_idx_to_scan_names[id_scan]
                             torch.save(data, path_to_raw_scan)
+                        else:
+                            print(f"{scan_name} already pre-processed into raw")
 
                 if not self.use_multiprocessing:
                     # Load datas
@@ -1121,8 +1184,35 @@ class Scannet(InMemoryDataset):
 #                     path_to_raw_scan = osp.join(self.processed_raw_paths[i], "{}.pt".format(scan_name))
 #                     torch.save(data, path_to_raw_scan)
 
+
+                ### Feng modification: speed up pre-transform time using mutli-processing
                 if self.pre_transform:
                     datas = [self.pre_transform(data) for data in datas]
+            
+#                     n_processes = multiprocessing.cpu_count()
+#                     print("NUMBER OF CORES USED IN APPLYING PRE_TRANSFORM: ", n_processes, flush=True)
+#                     with multiprocessing.get_context("spawn").Pool(processes=n_processes) as pool:
+                        
+#                         args = [arg + (self.processed_raw_paths[i], self.pre_transform) for arg in args]
+                        
+#                         pool.starmap(Scannet.do_pre_transform_and_save, args)
+# #                         for data in datas:
+# #                             id_scan = int(data.id_scan.item())
+# #                             scan_name = mapping_idx_to_scan_names[id_scan]
+# #                             path_to_raw_scan = osp.join(self.processed_raw_paths[i], "{}.pt".format(scan_name))
+# #                             torch.save(data, path_to_raw_scan)
+# #                     datas = [self.pre_transform(data) for data in datas]
+
+#                 pre_transformed_data_dir = self.processed_raw_paths[i].split("/")[:-1]
+#                 pre_transformed_data_dir += [f'pre_transformed_{split}']
+#                 pre_transformed_data_dir = "/".join(pre_transformed_data_dir)
+    
+#                 pre_transformed_data_paths = [osp.join(pre_transformed_data_dir, "{}.pt".format(scan_name)) for scan_name in scan_names]
+        
+#                 print("pre_transformed_data_paths: ", pre_transformed_data_paths)
+        
+#                 datas = [torch.load(p) for p in pre_transformed_data_paths]
+#                 print("datas: ", datas)
 
                 log.info("SAVING TO {}".format(self.processed_paths[i]))
                 print("SAVING TO {}".format(self.processed_paths[i]), flush=True)
@@ -1246,19 +1336,19 @@ class ScannetDataset(BaseDataset):
             is_test=is_test,
         )
 
-#         self.test_dataset = Scannet(
-#             self._data_path,
-#             split="test",
-#             transform=self.val_transform,
-#             pre_transform=self.pre_transform,
-#             version=dataset_opt.version,
-#             use_instance_labels=use_instance_labels,
-#             use_instance_bboxes=use_instance_bboxes,
-#             donotcare_class_ids=donotcare_class_ids,
-#             max_num_point=max_num_point,
-#             process_workers=process_workers,
-#             is_test=is_test,
-#         )
+        self.test_dataset = Scannet(
+            self._data_path,
+            split="test",
+            transform=self.val_transform,
+            pre_transform=self.pre_transform,
+            version=dataset_opt.version,
+            use_instance_labels=use_instance_labels,
+            use_instance_bboxes=use_instance_bboxes,
+            donotcare_class_ids=donotcare_class_ids,
+            max_num_point=max_num_point,
+            process_workers=process_workers,
+            is_test=is_test,
+        )
 
     @property
     def path_to_submission(self):
@@ -1278,7 +1368,6 @@ class ScannetDataset(BaseDataset):
         return ScannetSegmentationTracker(
             self, wandb_log=wandb_log, use_tensorboard=tensorboard_log, ignore_label=IGNORE_LABEL
         )
-
     
 if __name__ == "__main__":
     

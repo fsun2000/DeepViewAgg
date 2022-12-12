@@ -831,7 +831,9 @@ class MVFusionBaseSparseConv3d(MVFusionUnwrappedUnetBasedModel):
         """
         if self.is_multimodal:
             
-            if data.data.mvfusion_input.shape[0] > self.MAX_SEEN_POINTS:
+            if data.data.mvfusion_input.shape[0] > self.MAX_SEEN_POINTS \
+                and self.training is True:
+                print("self.training is True -> culling max n seen points", flush=True)
                 # 1. get seen points
                 # 2. remove them from mvfusion_input
                 # 3. remove the removed points from seen points

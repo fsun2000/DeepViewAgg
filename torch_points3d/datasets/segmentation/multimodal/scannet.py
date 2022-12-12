@@ -121,6 +121,7 @@ class ScannetMM(Scannet):
             center_xy=False,
             center_z=False, 
             n_views=None,
+            n_views_ablation=None,
         **kwargs):
         
         self.pre_transform_image = pre_transform_image
@@ -134,8 +135,14 @@ class ScannetMM(Scannet):
         self.center_xy = center_xy
         self.center_z = center_z
         self.n_views = n_views
-        super(ScannetMM, self).__init__(*args, **kwargs)
+        self.n_views_ablation = n_views_ablation
         
+        if self.n_views_ablation is not None:
+            print("Currently running ablation studies on the number of points!")
+            print("self.n_views_ablation ", self.n_views_ablation)
+
+        super(ScannetMM, self).__init__(*args, **kwargs)
+    
         
         if self.split == 'train':
             # Instead of saving all 3D pre-transformed scans in CPU memory, save each
@@ -167,8 +174,6 @@ class ScannetMM(Scannet):
         # Download, pre_transform and pre_filter raw 3D data
         # Output will be saved to <SPLIT>.pt
         # --------------------------------------------------------------
-#         print("do not Preprocess 3D data")
-#         print("torch_points3d/datasets/segmentation/multimodal/scannet.py line 123")
         print("pre-processing 3D data")
         super(ScannetMM, self).process()
 
@@ -203,7 +208,7 @@ class ScannetMM(Scannet):
             scannet_dir = osp.join(self.raw_dir, "scans" if split in ["train", "val"] else "scans_test")
 
             for scan_name in tq(scan_names):
-                print("current scan name: ", scan_name)
+                print("current scan name: ", scan_name, flush=True)
 
                 scan_sens_dir = osp.join(scannet_dir, scan_name, 'sens')
                 meta_file = osp.join(scannet_dir, scan_name, scan_name + ".txt")
@@ -275,6 +280,7 @@ class ScannetMM(Scannet):
 
                 # Save scan 2D data to a file that will be loaded when
                 # __get_item__ is called
+                print("Saving image data in : ", processed_2d_scan_path, flush=True)
                 torch.save(image_data, processed_2d_scan_path)
 
     @property
@@ -453,9 +459,16 @@ class ScannetMM(Scannet):
             m2f_feats = torch.randint(low=0, high=self.num_classes, size=(n_seen_points, N_VIEWS, 1))
             m2f_feats[pixel_validity] = mapped_m2f_feats[view_feat_idx].long()
 
+            
+            # Limit number of views for ablation studies
+            if self.n_views_ablation is not None and self.n_views_ablation < 9:
+                view_feats[:, self.n_views_ablation:, :] = 0
+                m2f_feats[~view_feats[:, :, 0].bool()] = torch.randint(low=0, high=self.num_classes, size=(n_seen_points, N_VIEWS, 1))[~view_feats[:, :, 0].bool()]
+                
+            
             # Save mapping + m2f features
             data.data.mvfusion_input = torch.cat((view_feats, m2f_feats), dim=-1)
-            
+                
         else:
             data = MMData(data, image=images)
 
@@ -546,11 +559,13 @@ class ScannetDatasetMM(BaseDatasetMM, ABC):
         neucon_frame_skip: int = dataset_opt.get('neucon_frame_skip', 1)
         m2f_preds_dirname: str = dataset_opt.get('m2f_preds_dirname', '')
         load_m2f_masks: bool = dataset_opt.get('load_m2f_masks', False)
-        print("load_m2f_masks: ", load_m2f_masks)
+        print("Load predicted 2D semantic segmentation labels from directory ", dataset_opt.get('m2f_preds_dirname', None))
         undo_axis_align: bool = dataset_opt.get('undo_axis_align', False)
         center_xy: bool = dataset_opt.get('center_xy', False)
         center_z: bool = dataset_opt.get('center_z', False)
         n_views: int = dataset_opt.get('n_views', 0)
+        n_views_ablation = dataset_opt.get('n_views_ablation', None)
+
             
         print("initialize train dataset")
         self.train_dataset = ScannetMM(
@@ -581,6 +596,7 @@ class ScannetDatasetMM(BaseDatasetMM, ABC):
             center_xy=center_xy,
             center_z=center_z, 
             n_views=n_views,
+            n_views_ablation=n_views_ablation,
         )
 
         print("initialize val dataset")
@@ -612,38 +628,40 @@ class ScannetDatasetMM(BaseDatasetMM, ABC):
             center_xy=center_xy,
             center_z=center_z, 
             n_views=n_views,
+            n_views_ablation=n_views_ablation,
         )
 
-#         print("initialize test dataset")
-#         self.test_dataset = ScannetMM(
-#             self._data_path,
-#             split="test",
-#             transform=self.val_transform,
-#             pre_transform=self.pre_transform,
-#             pre_transform_image=self.pre_transform_image,
-#             transform_image=self.test_transform_image,
-#             version=dataset_opt.version,
-#             use_instance_labels=use_instance_labels,
-#             use_instance_bboxes=use_instance_bboxes,
-#             donotcare_class_ids=donotcare_class_ids,
-#             max_num_point=max_num_point,
-#             process_workers=process_workers,
-#             is_test=is_test,
-#             types=types,
-#             frame_depth=frame_depth,
-#             frame_rgb=frame_rgb,
-#             frame_pose=frame_pose,
-#             frame_intrinsics=frame_intrinsics,
-#             frame_skip=frame_skip,
-#             neucon_frame_skip=neucon_frame_skip,
-#             neucon_metas_dir=neucon_metas_dir,
-#             m2f_preds_dirname=m2f_preds_dirname,
-#             load_m2f_masks=load_m2f_masks,
-#             undo_axis_align=undo_axis_align,
-#             center_xy=center_xy,
-#             center_z=center_z, 
-#             n_views=n_views,
-#         )
+        print("initialize test dataset")
+        self.test_dataset = ScannetMM(
+            self._data_path,
+            split="test",
+            transform=self.val_transform,
+            pre_transform=self.pre_transform,
+            pre_transform_image=self.pre_transform_image,
+            transform_image=self.test_transform_image,
+            version=dataset_opt.version,
+            use_instance_labels=use_instance_labels,
+            use_instance_bboxes=use_instance_bboxes,
+            donotcare_class_ids=donotcare_class_ids,
+            max_num_point=max_num_point,
+            process_workers=process_workers,
+            is_test=is_test,
+            types=types,
+            frame_depth=frame_depth,
+            frame_rgb=frame_rgb,
+            frame_pose=frame_pose,
+            frame_intrinsics=frame_intrinsics,
+            frame_skip=frame_skip,
+            neucon_frame_skip=neucon_frame_skip,
+            neucon_metas_dir=neucon_metas_dir,
+            m2f_preds_dirname=m2f_preds_dirname,
+            load_m2f_masks=load_m2f_masks,
+            undo_axis_align=undo_axis_align,
+            center_xy=center_xy,
+            center_z=center_z, 
+            n_views=n_views,
+            n_views_ablation=n_views_ablation,
+        )
 
     @property
     def path_to_submission(self):

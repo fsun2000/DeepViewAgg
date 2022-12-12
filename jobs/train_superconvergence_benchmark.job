@@ -1,0 +1,17 @@
+#!/bin/bash
+
+#SBATCH --partition=gpu_titanrtx_shared
+#SBATCH --job-name=benchmark
+#SBATCH --ntasks=1
+#SBATCH --gpus=1
+#SBATCH --cpus-per-task=12
+#SBATCH --time=30:00:00
+#SBATCH --mem=90000MB
+#SBATCH --output=job_logs/benchmark/MVFusion_3D_small_6views_50epochs.out
+
+cd $HOME/DeepViewAgg
+
+module purge
+export HYDRA_FULL_ERROR=1
+
+./scripts/train_superconvergence_benchmark_50epochs.sh

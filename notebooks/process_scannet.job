@@ -1,13 +1,13 @@
 #!/bin/bash
 
-#SBATCH --partition=gpu_titanrtx_shared
+#SBATCH --partition=gpu_shared
 #SBATCH --gpus=1
 #SBATCH --job-name=process
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=6
-#SBATCH --time=02:00:00
-#SBATCH --mem=47000MB
-#SBATCH --output=process_scannet_temp.out
+#SBATCH --cpus-per-task=12
+#SBATCH --time=01:30:00
+#SBATCH --mem=100000MB
+#SBATCH --output=process_scannet_3.out
 
 module purge
 module load 2021

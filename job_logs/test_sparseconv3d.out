@@ -1,0 +1,13 @@
+[2022-10-13 13:49:10,746][torch_points3d.trainer][INFO] - DEVICE : cuda
+self._cfg.training.checkpoint_dir:  
+initialize train dataset
+initialize val dataset
+ DeepViewAgg/torch_points3d/datasets/segmentation/scannet.py,
+        line 1118:
+        (Feng) on my conda installation, this block causes a max 
+        depth recursion error. Return super().indices() for now as it 
+        results in no problems on my torch_geometric=1.7.2 and 
+        pytorch=1.12.1 installation.
+(320, 240)
+<PIL.PngImagePlugin.PngImageFile image mode=L size=640x480 at 0x14C8DD576B90>
+<PIL.Image.Image image mode=L size=320x240 at 0x14C8E108A6D0>

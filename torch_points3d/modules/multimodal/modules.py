@@ -22,7 +22,7 @@ except:
 ### Feng
 import sys
 sys.path.append("/home/fsun/thesis/modeling")
-from compare_methods import DVA_attention_weighted_M2F_preds
+from compare_methods import DVA_cls_5_fusion_7, DVA_attention_weighted_M2F_preds
 
 class MultimodalBlockDown(nn.Module, ABC):
     """Multimodal block with downsampling that looks like:
@@ -1052,6 +1052,9 @@ class MVFusionUnimodalBranch(nn.Module, ABC):
         
         # One hot features of M2F preds
         m2f_feats = torch.nn.functional.one_hot(m2f_feats.squeeze().long(), self.n_classes)
+        
+        # Uncomment to run without M2F labels (all labels are set to 0)
+#         m2f_feats = torch.zeros((m2f_feats.shape[0], m2f_feats.shape[1], self.n_classes), device=m2f_feats.device)
     
         ### Multi-view fusion of M2F and viewing conditions using Transformer
         # TODO: remove assumption that pixel validity is the 1st feature

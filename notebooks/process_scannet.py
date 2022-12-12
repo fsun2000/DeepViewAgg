@@ -31,14 +31,15 @@ from torch_points3d.datasets.segmentation.scannet import CLASS_COLORS, CLASS_NAM
 
 import pykeops
 
+
 if __name__ == '__main__':
-    # Uncomment to clean previous pykeops builds with CUDA
-    pykeops.clean_pykeops()
+#     # Uncomment to clean previous pykeops builds with CUDA
+#     pykeops.clean_pykeops()
     
     # Set your dataset root directory, where the data was/will be downloaded
     DATA_ROOT = '/project/fsun/dvata'
 
-    dataset_config = 'segmentation/multimodal/Feng/scannet-neucon-smallres-m2f.yaml'   
+    dataset_config = 'segmentation/multimodal/Feng/scannet_trainval_test.yaml'   
     models_config = 'segmentation/multimodal/sparseconv3d'    # model family
     model_name = 'Res16UNet34-L4-early'                       # specific model
 
