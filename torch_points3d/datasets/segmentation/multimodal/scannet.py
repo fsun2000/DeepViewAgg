@@ -365,9 +365,10 @@ class ScannetMM(Scannet):
                     data, images = transform(data, images)
                     
 
-#         # Adjust camera positions for visualization purposes
-#         if self.undo_axis_align and self.split != 'test':
-#             images[0].pos = (torch.concat((images[0].pos, torch.ones((len(images[0].pos), 1))), axis=-1) @ inv.double())[:, :3] 
+        # Adjust camera positions for visualization purposes
+        if self.undo_axis_align and self.split != 'test':
+            images[0].pos = (torch.concat((images[0].pos, torch.ones((len(images[0].pos), 1))), axis=-1) @ inv.double())[:, :3] 
+            
         if self.center_xy:
             images[0].pos -= data_mean
         

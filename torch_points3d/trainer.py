@@ -5,6 +5,13 @@ import hydra
 import time
 import logging
 
+# Feng: extra imports for 2D evaluation
+from torch_points3d.utils.multimodal import lexargsort
+from torch_points3d.core.multimodal.csr import CSRData
+import scipy.ndimage
+from PIL import Image
+import numpy as np
+
 from tqdm.auto import tqdm
 import wandb
 from omegaconf import OmegaConf
@@ -210,6 +217,11 @@ class Trainer:
 
     def eval(self, stage_name=""):
         self._is_training = False
+        
+        self._tracker_2d_model_pred_masks: BaseTracker = self._dataset.get_tracker(
+            self.wandb_log, self.tensorboard_log)
+        self._tracker_2d_mvfusion_pred_masks: BaseTracker = self._dataset.get_tracker(
+            self.wandb_log, self.tensorboard_log)
 
         epoch = self._checkpoint.start_epoch
         
@@ -252,7 +264,7 @@ class Trainer:
                 t_data = time.time() - iter_data_time
 
                 
-                if self._dataset.dataset_opt.train_with_mix3d:
+                if self._dataset.dataset_opt.train_with_mix3d and self._dataset.batch_size > 1:
                     mix3d_time = time.time()
                     data = PointcloudMerge(data, n_merge=2)
                     mix3d_time = time.time() - mix3d_time
@@ -393,6 +405,80 @@ class Trainer:
         self._finalize_epoch(epoch)
         self._tracker.print_summary()
         
+    def _track_2d_results(self, model, mm_data):
+        """ Track 2D scores for input semantic segmentation masks and output Multi-View Fusion refined 2D masks using simple nearest-neighbor interpolation and projected 3D point predictions.
+        """
+        mm_data.data.pred = model.output.detach().cpu().argmax(1)
+        
+        mappings = mm_data.modalities['image'][0].mappings
+        point_ids = torch.arange(
+                        mappings.num_groups, device=mappings.device).repeat_interleave(
+                        mappings.pointers[1:] - mappings.pointers[:-1])
+        image_ids = mappings.images.repeat_interleave(
+                        mappings.values[1].pointers[1:] - mappings.values[1].pointers[:-1])    
+        pixels_full = mappings.pixels
+
+        # Sort point and image ids based on image_id
+        idx_sort = lexargsort(image_ids, point_ids)
+        image_ids = image_ids[idx_sort]
+        point_ids = point_ids[idx_sort]
+        pixels_full = pixels_full[idx_sort].long()
+
+        # Get pointers for easy indexing
+        pointers = CSRData._sorted_indices_to_pointers(image_ids)
+
+        # Loop over all N views
+        for i, x in enumerate(mm_data.modalities['image'][0]):
+
+            # Grab the 3D points corresponding to ith view
+            start, end = pointers[i], pointers[i+1]    
+            points = point_ids[start:end]
+            pixels = pixels_full[start:end]
+            # Image (x, y) pixel index
+            w, h = pixels[:, 0], pixels[:, 1]
+
+            # Grab set of points visible in current view
+            mm_data_of_view = mm_data[points]
+
+            # Get nearest neighbor interpolated projection image filled with 3D labels
+            pred_mask_2d = -1 * torch.ones((240, 320), dtype=torch.long, device=mm_data_of_view.device)    
+            pred_mask_2d[h, w] = mm_data_of_view.data.pred.squeeze()
+            
+            nearest_neighbor = scipy.ndimage.morphology.distance_transform_edt(
+                pred_mask_2d==-1, return_distances=False, return_indices=True)    
+            pred_mask_2d = pred_mask_2d[nearest_neighbor].numpy().astype(np.uint8)
+            pred_mask_2d = Image.fromarray(pred_mask_2d, 'L')            
+            pred_mask_2d = np.asarray(pred_mask_2d.resize((640, 480), resample=0))
+            
+            # 2D mIoU calculation for M2F labels per view
+            # Get gt 2d image
+            gt_img_path = x.m2f_pred_mask_path[0].split("/")
+            gt_img_path[-2] = 'label-filt-scannet20'
+            gt_img_path = "/".join(gt_img_path)
+            gt_img = Image.open(gt_img_path)
+            
+            
+            gt_img = np.asarray(gt_img.resize((640, 480), resample=0)).astype(int) - 1   # -1 label offset
+
+            # Input mask and refined mask for current view
+            refined_2d_pred = pred_mask_2d
+            
+            # Get gt 2d image
+            orig_2d_pred = np.asarray(Image.open(x.m2f_pred_mask_path[0])).astype(int)  # x.m2f_pred_mask[0][0]
+            
+            print("unique gt_img labels: ", np.unique(gt_img))
+
+            print("unique pred labels: ", np.unique(orig_2d_pred))
+            
+            # 2D segmentation network mIoU
+            self._tracker_2d_model_pred_masks.track(
+                pred_labels=orig_2d_pred, gt_labels=gt_img, model=None)
+                            
+            # 2D MVFusion mIoU
+            self._tracker_2d_mvfusion_pred_masks.track(
+                pred_labels=refined_2d_pred, gt_labels=gt_img, model=None)
+
+        return
         
     def _test_epoch(self, epoch, stage_name: str):
         
@@ -409,6 +495,11 @@ class Trainer:
         for loader in loaders:
             stage_name = loader.dataset.name
             self._tracker.reset(stage_name)
+            
+            if self._tracker_2d_mvfusion_pred_masks is not None:
+                self._tracker_2d_mvfusion_pred_masks.reset(stage_name)
+                self._tracker_2d_model_pred_masks.reset(stage_name)
+            
             if self.has_visualization:
                 self._visualizer.reset(epoch, stage_name)
             if not self._dataset.has_labels(stage_name) and not self.tracker_options.get(
@@ -425,7 +516,13 @@ class Trainer:
                             self._model.set_input(data, self._device)
                             with torch.cuda.amp.autocast(enabled=self._model.is_mixed_precision()):
                                 self._model.forward(epoch=epoch)
+                            # 3D mIoU
                             self._tracker.track(self._model, data=data, **self.tracker_options)
+                            
+                            # 2D mIoU of both original and refined semantic label masks
+                            if self._tracker_2d_mvfusion_pred_masks is not None:
+                                self._track_2d_results(self._model, data)
+                            
                         tq_loader.set_postfix(**self._tracker.get_metrics(), color=COLORS.TEST_COLOR)
 
                         if self.has_visualization and self._visualizer.is_active:
@@ -437,9 +534,19 @@ class Trainer:
                         if self.profiling:
                             if i > self.num_batches:
                                 return 0
-
+            log.info("Evaluated scores for 3D semantic segmentation: ")
             self._finalize_epoch(epoch)
             self._tracker.print_summary()
+            
+            # Finalise 2D evaluation
+            if self._tracker_2d_mvfusion_pred_masks is not None:
+                log.info("Evaluated scores for 2D refined masks: ")
+                self._tracker_2d_mvfusion_pred_masks.finalise(**self.tracker_options)
+                self._tracker_2d_mvfusion_pred_masks.print_summary()
+                
+                log.info("Evaluated scores for 2D input masks: ")
+                self._tracker_2d_model_pred_masks.finalise(**self.tracker_options)
+                self._tracker_2d_model_pred_masks.print_summary()
 
     @property
     def early_break(self):

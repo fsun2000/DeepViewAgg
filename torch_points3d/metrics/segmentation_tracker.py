@@ -56,16 +56,21 @@ class SegmentationTracker(BaseTracker):
     def confusion_matrix(self):
         return self._confusion_matrix.confusion_matrix
 
-    def track(self, model: model_interface.TrackerInterface, **kwargs):
+    def track(self, model: model_interface.TrackerInterface, pred_labels=None, gt_labels=None, **kwargs):
         """ Add current model predictions (usually the result of a batch) to the tracking
         """
         if not self._dataset.has_labels(self._stage):
             return
 
-        super().track(model)
-
-        outputs = model.get_output()
-        targets = model.get_labels()
+        # Feng: to evaluate M2F/2D predictions instead of model logits
+        if pred_labels is not None and gt_labels is not None:
+            outputs = pred_labels
+            targets = gt_labels
+        else:
+            super().track(model)
+            
+            outputs = model.get_output()
+            targets = model.get_labels()
         self._compute_metrics(outputs, targets)
 
     def _compute_metrics(self, outputs, labels):
@@ -80,8 +85,14 @@ class SegmentationTracker(BaseTracker):
             return
 
         assert outputs.shape[0] == len(labels)
-        self._confusion_matrix.count_predicted_batch(labels, np.argmax(outputs, 1))
-
+        
+        # Check if output is predicted label or logits
+        if len(outputs.shape) > 1:
+            self._confusion_matrix.count_predicted_batch(labels, np.argmax(outputs, 1))
+        else:
+            
+            self._confusion_matrix.count_predicted_batch(labels, outputs)
+            
         self._acc = 100 * self._confusion_matrix.get_overall_accuracy()
         self._macc = 100 * self._confusion_matrix.get_mean_class_accuracy()
         self._miou = 100 * self._confusion_matrix.get_average_intersection_union()

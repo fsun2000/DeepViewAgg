@@ -8,7 +8,7 @@ resolution_2d: [320, 240]  # Image resolution
 exact_splatting_2d: True  # Whether only exact mappings are preserved after splatting
 
 class: scannet.ScannetDatasetMM
-dataset_name: "scannet-sparse-smallres"
+dataset_name: scannet-neucon-smallres-partial-subsampled #   "scannet-sparse-smallres"
 dataroot: data
 full_resolution_3d: 0.01
 version: "v2"
@@ -77,7 +77,7 @@ train_transform:
       params:
           feat_names: [ pos_z, rgb, linearity, norm, planarity, scattering ]
           list_add_to_x: [ True, False, False, False, False, False ]
-          delete_feats: [ True, True, True, True, True, True ]
+          delete_feats: [ True, False, True, True, True, True ]
 
 val_transform:
     - transform: GridSampling3D
@@ -94,7 +94,7 @@ val_transform:
       params:
           feat_names: [ pos_z, rgb, linearity, norm, planarity, scattering ]
           list_add_to_x: [ True, False, False, False, False, False ]
-          delete_feats: [ True, True, True, True, True, True ]
+          delete_feats: [ True, False, True, True, True, True ]
 
 test_transform: ${data.val_transform}
 

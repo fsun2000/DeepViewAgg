@@ -52,8 +52,10 @@ class BaseTracker:
     def track(self, model: model_interface.TrackerInterface, **kwargs):
         if self._finalised:
             raise RuntimeError("Cannot track new values with a finalised tracker, you need to reset it first")
-        losses = self._convert(model.get_current_losses())
-        self._append_losses(losses)
+
+        if model is not None:
+            losses = self._convert(model.get_current_losses())
+            self._append_losses(losses)
 
     def finalise(self, *args, **kwargs):
         """ Lifcycle method that is called at the end of an epoch. Use this to compute
