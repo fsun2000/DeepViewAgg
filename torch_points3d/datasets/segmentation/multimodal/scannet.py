@@ -385,7 +385,7 @@ class ScannetMM(Scannet):
             first_img_path = images[0].path[0]
             m2f_dir = first_img_path.split(os.sep)[:-3]
             m2f_dir = os.sep.join([*m2f_dir, self.m2f_preds_dirname])
-                        
+                                    
             m2f_masks = []
             m2f_mask_paths = []
             for rgb_path in images[0].path:
