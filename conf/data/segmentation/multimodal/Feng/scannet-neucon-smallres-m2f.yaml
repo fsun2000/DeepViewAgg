@@ -32,6 +32,7 @@ center_xy: True     # center point cloud around 0
 center_z: True
 train_with_mix3d: True
 n_views_ablation:
+pixel_credits: 100
 
 pre_transform:
     - transform: SaveOriginalPosId    # Required so that one can recover the multimodal mappings after the transforms
@@ -115,8 +116,8 @@ multimodal:  # Each modality must be inserted in a dedicated 'multimodal' sectio
         proj_upscale: 1
         r_max: 8
         r_min: 0.05
-        train_pixel_credit: 100  # Choose based on GPU capacity, model ko/pixel cost and 3D batch_size
-        test_pixel_credit: 100
+        train_pixel_credit: ${data.pixel_credits}  # Choose based on GPU capacity, model ko/pixel cost and 3D batch_size
+        test_pixel_credit: ${data.pixel_credits}
         k_coverage: 2
 
     pre_transform:

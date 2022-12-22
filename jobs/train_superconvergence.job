@@ -1,17 +1,19 @@
 #!/bin/bash
 
-#SBATCH --partition=gpu_shared
+#SBATCH --partition=gpu_titanrtx_shared
 #SBATCH --job-name=spc
 #SBATCH --gpus=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=12
-#SBATCH --time=1:00:00
+#SBATCH --time=24:00:00
 #SBATCH --mem=80000MB
-#SBATCH --output=job_logs/superconvergence/MVFusion_3D_small/eval/ablation_viewing_conditions.out
+#SBATCH --output=job_logs/superconvergence/MVFusion_3D_small/default_pixel_credits_50.out
 
 cd $HOME/DeepViewAgg
 
 module purge
+source activate pytorch3d
+
 export HYDRA_FULL_ERROR=1
 
 ./scripts/train_superconvergence.sh

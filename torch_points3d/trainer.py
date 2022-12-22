@@ -143,6 +143,9 @@ class Trainer:
             selection_stage)
         self._tracker: BaseTracker = self._dataset.get_tracker(
             self.wandb_log, self.tensorboard_log)
+        # 2D evaluation
+        self._tracker_2d_mvfusion_pred_masks = None
+        self._tracker_2d_model_pred_masks = None
 
         if self.wandb_log:
             Wandb.launch(self._cfg, not self._cfg.training.wandb.public and self.wandb_log)
@@ -218,6 +221,7 @@ class Trainer:
     def eval(self, stage_name=""):
         self._is_training = False
         
+        print("trainer.py: Tracking 2D mask and 2D refined mask scores!")
         self._tracker_2d_model_pred_masks: BaseTracker = self._dataset.get_tracker(
             self.wandb_log, self.tensorboard_log)
         self._tracker_2d_mvfusion_pred_masks: BaseTracker = self._dataset.get_tracker(
@@ -464,11 +468,7 @@ class Trainer:
             refined_2d_pred = pred_mask_2d
             
             # Get gt 2d image
-            orig_2d_pred = np.asarray(Image.open(x.m2f_pred_mask_path[0])).astype(int)  # x.m2f_pred_mask[0][0]
-            
-            print("unique gt_img labels: ", np.unique(gt_img))
-
-            print("unique pred labels: ", np.unique(orig_2d_pred))
+            orig_2d_pred = np.asarray(Image.open(x.m2f_pred_mask_path[0])).astype(int) - 1 # x.m2f_pred_mask[0][0]
             
             # 2D segmentation network mIoU
             self._tracker_2d_model_pred_masks.track(
