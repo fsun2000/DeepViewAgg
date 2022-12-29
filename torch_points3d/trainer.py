@@ -457,6 +457,8 @@ class Trainer:
             # 2D mIoU calculation for M2F labels per view
             # Get gt 2d image
             gt_img_path = x.m2f_pred_mask_path[0].split("/")
+            # Adjust filepath after Snellius migration
+            gt_img_path[1] = 'scratch-shared'
             gt_img_path[-2] = 'label-filt-scannet20'
             gt_img_path = "/".join(gt_img_path)
             gt_img = Image.open(gt_img_path)

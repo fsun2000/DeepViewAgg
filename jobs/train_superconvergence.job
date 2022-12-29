@@ -1,13 +1,13 @@
 #!/bin/bash
 
-#SBATCH --partition=gpu_titanrtx_shared
-#SBATCH --job-name=spc
+#SBATCH --partition=gpu
+#SBATCH --job-name=spc3
 #SBATCH --gpus=1
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=12
-#SBATCH --time=24:00:00
-#SBATCH --mem=80000MB
-#SBATCH --output=job_logs/superconvergence/MVFusion_3D_small/default_pixel_credits_50.out
+#SBATCH --cpus-per-task=18
+#SBATCH --time=18:00:00
+#SBATCH --mem=120000MB
+#SBATCH --output=job_logs/superconvergence/MVFusion_3D_small/ViT_masks_run3.out
 
 cd $HOME/DeepViewAgg
 
