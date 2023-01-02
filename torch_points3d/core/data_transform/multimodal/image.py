@@ -509,12 +509,15 @@ class NeighborhoodBasedMappingFeatures(ImageTransform):
             if self.verbose:
                 print(f"        KNN search with KeOps...")
             if xyz.shape[0] > 1.6e7:
-                xyz_query_keops = LazyTensor(xyz[:, None, :].double())
-                xyz_search_keops = LazyTensor(xyz[None, :, :].double())
+                xyz_query_keops = LazyTensor(xyz[:, None, :].double().contiguous())
+                xyz_search_keops = LazyTensor(xyz[None, :, :].double().contiguous())
             else:
-                xyz_query_keops = LazyTensor(xyz[:, None, :])
-                xyz_search_keops = LazyTensor(xyz[None, :, :])
+                xyz_query_keops = LazyTensor(xyz[:, None, :].contiguous())
+                xyz_search_keops = LazyTensor(xyz[None, :, :].contiguous())
             d_keops = ((xyz_query_keops - xyz_search_keops) ** 2).sum(dim=2)
+            
+            print("self.k_list: ", self.k_list)
+            print("d_keops: ", d_keops)
             neighbors = d_keops.argKmin(self.k_list[-1], dim=1)
             del xyz_query_keops, xyz_search_keops, d_keops
 

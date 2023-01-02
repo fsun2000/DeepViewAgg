@@ -1,7 +1,7 @@
 from abc import ABC
 
 from ..scannet import *
-from .utils import read_image_pose_pairs
+from .utils import read_image_pose_pairs, read_image_pose_pairs_without_frameskip
 from torch_points3d.core.multimodal.image import SameSettingImageData
 from torch_points3d.datasets.base_dataset_multimodal import BaseDatasetMM
 from torch_points3d.core.multimodal.data import MMData
@@ -183,6 +183,11 @@ class ScannetMM(Scannet):
         # Output is saved to processed_2d_<SPLIT>/<SCAN_NAME>.pt
         # ----------------------------------------------------------
         for i, (scan_names, split) in enumerate(zip(self.scan_names, self.SPLITS)):
+            
+            if split in ['train', 'val']:
+                
+                print(f"Skipping 2D preprocessing for {split} split!")
+                continue
 
             print(f'\nStarting preprocessing 2d for {split} split')
 
@@ -218,14 +223,22 @@ class ScannetMM(Scannet):
                     continue
 
                     
-                # Recover the image-pose pairs
+#                 # Recover the image-pose pairs
+#                 image_info_list = [
+#                     {'path': i_file, 'extrinsic': load_pose(p_file)}
+#                     for i_file, p_file in read_image_pose_pairs(
+#                         osp.join(scan_sens_dir, 'color'),
+#                         osp.join(scan_sens_dir, 'pose'),
+#                         image_suffix='.jpg', pose_suffix='.txt', skip_freq=self.frame_skip,
+#                         neucon_metas_dir=self.neucon_metas_dir)]
+                
+                # TEMPORARY ADJUSTMENT TO PROCESS NEUCON META IDS AND TEST BENCHMARK IDS SIMULTANEOUSLY
                 image_info_list = [
                     {'path': i_file, 'extrinsic': load_pose(p_file)}
-                    for i_file, p_file in read_image_pose_pairs(
-                        osp.join(scan_sens_dir, 'color'),
+                    for i_file, p_file in read_image_pose_pairs_without_frameskip(
+                        osp.join(scannet_dir, scan_name, 'color_resized'),
                         osp.join(scan_sens_dir, 'pose'),
-                        image_suffix='.jpg', pose_suffix='.txt', skip_freq=self.frame_skip,
-                        neucon_metas_dir=self.neucon_metas_dir)]
+                        image_suffix='.png', pose_suffix='.txt')]
 
                 # Aggregate all RGB image paths
                 path = np.array([info['path'] for info in image_info_list])
@@ -368,6 +381,8 @@ class ScannetMM(Scannet):
         # Adjust camera positions for visualization purposes
         if self.undo_axis_align and self.split != 'test':
             images[0].pos = (torch.concat((images[0].pos, torch.ones((len(images[0].pos), 1))), axis=-1) @ inv.double())[:, :3] 
+            images[0].extrinsic = inv @ images[0].extrinsic 
+
             
         if self.center_xy:
             images[0].pos -= data_mean
@@ -572,78 +587,14 @@ class ScannetDatasetMM(BaseDatasetMM, ABC):
         n_views_ablation = dataset_opt.get('n_views_ablation', None)
 
             
-        print("initialize train dataset")
-        self.train_dataset = ScannetMM(
-            self._data_path,
-            split="train",
-            pre_transform=self.pre_transform,
-            transform=self.train_transform,
-            pre_transform_image=self.pre_transform_image,
-            transform_image=self.train_transform_image,
-            version=dataset_opt.version,
-            use_instance_labels=use_instance_labels,
-            use_instance_bboxes=use_instance_bboxes,
-            donotcare_class_ids=donotcare_class_ids,
-            max_num_point=max_num_point,
-            process_workers=process_workers,
-            is_test=is_test,
-            types=types,
-            frame_depth=frame_depth,
-            frame_rgb=frame_rgb,
-            frame_pose=frame_pose,
-            frame_intrinsics=frame_intrinsics,
-            frame_skip=frame_skip,
-            neucon_metas_dir=neucon_metas_dir,
-            neucon_frame_skip=neucon_frame_skip,
-            m2f_preds_dirname=m2f_preds_dirname,
-            load_m2f_masks=load_m2f_masks,
-            undo_axis_align=undo_axis_align,
-            center_xy=center_xy,
-            center_z=center_z, 
-            n_views=n_views,
-            n_views_ablation=n_views_ablation,
-        )
-
-        print("initialize val dataset")
-        self.val_dataset = ScannetMM(
-            self._data_path,
-            split="val",
-            transform=self.val_transform,
-            pre_transform=self.pre_transform,
-            pre_transform_image=self.pre_transform_image,
-            transform_image=self.val_transform_image,
-            version=dataset_opt.version,
-            use_instance_labels=use_instance_labels,
-            use_instance_bboxes=use_instance_bboxes,
-            donotcare_class_ids=donotcare_class_ids,
-            max_num_point=max_num_point,
-            process_workers=process_workers,
-            is_test=is_test,
-            types=types,
-            frame_depth=frame_depth,
-            frame_rgb=frame_rgb,
-            frame_pose=frame_pose,
-            frame_intrinsics=frame_intrinsics,
-            frame_skip=frame_skip,
-            neucon_metas_dir=neucon_metas_dir,
-            neucon_frame_skip=neucon_frame_skip,
-            m2f_preds_dirname=m2f_preds_dirname,
-            load_m2f_masks=load_m2f_masks,
-            undo_axis_align=undo_axis_align,
-            center_xy=center_xy,
-            center_z=center_z, 
-            n_views=n_views,
-            n_views_ablation=n_views_ablation,
-        )
-
-#         print("initialize test dataset")
-#         self.test_dataset = ScannetMM(
+#         print("initialize train dataset")
+#         self.train_dataset = ScannetMM(
 #             self._data_path,
-#             split="test",
-#             transform=self.val_transform,
+#             split="train",
 #             pre_transform=self.pre_transform,
+#             transform=self.train_transform,
 #             pre_transform_image=self.pre_transform_image,
-#             transform_image=self.test_transform_image,
+#             transform_image=self.train_transform_image,
 #             version=dataset_opt.version,
 #             use_instance_labels=use_instance_labels,
 #             use_instance_bboxes=use_instance_bboxes,
@@ -657,8 +608,8 @@ class ScannetDatasetMM(BaseDatasetMM, ABC):
 #             frame_pose=frame_pose,
 #             frame_intrinsics=frame_intrinsics,
 #             frame_skip=frame_skip,
-#             neucon_frame_skip=neucon_frame_skip,
 #             neucon_metas_dir=neucon_metas_dir,
+#             neucon_frame_skip=neucon_frame_skip,
 #             m2f_preds_dirname=m2f_preds_dirname,
 #             load_m2f_masks=load_m2f_masks,
 #             undo_axis_align=undo_axis_align,
@@ -667,6 +618,70 @@ class ScannetDatasetMM(BaseDatasetMM, ABC):
 #             n_views=n_views,
 #             n_views_ablation=n_views_ablation,
 #         )
+
+#         print("initialize val dataset")
+#         self.val_dataset = ScannetMM(
+#             self._data_path,
+#             split="val",
+#             transform=self.val_transform,
+#             pre_transform=self.pre_transform,
+#             pre_transform_image=self.pre_transform_image,
+#             transform_image=self.val_transform_image,
+#             version=dataset_opt.version,
+#             use_instance_labels=use_instance_labels,
+#             use_instance_bboxes=use_instance_bboxes,
+#             donotcare_class_ids=donotcare_class_ids,
+#             max_num_point=max_num_point,
+#             process_workers=process_workers,
+#             is_test=is_test,
+#             types=types,
+#             frame_depth=frame_depth,
+#             frame_rgb=frame_rgb,
+#             frame_pose=frame_pose,
+#             frame_intrinsics=frame_intrinsics,
+#             frame_skip=frame_skip,
+#             neucon_metas_dir=neucon_metas_dir,
+#             neucon_frame_skip=neucon_frame_skip,
+#             m2f_preds_dirname=m2f_preds_dirname,
+#             load_m2f_masks=load_m2f_masks,
+#             undo_axis_align=undo_axis_align,
+#             center_xy=center_xy,
+#             center_z=center_z, 
+#             n_views=n_views,
+#             n_views_ablation=n_views_ablation,
+#         )
+
+        print("initialize test dataset")
+        self.test_dataset = ScannetMM(
+            self._data_path,
+            split="test",
+            transform=self.val_transform,
+            pre_transform=self.pre_transform,
+            pre_transform_image=self.pre_transform_image,
+            transform_image=self.test_transform_image,
+            version=dataset_opt.version,
+            use_instance_labels=use_instance_labels,
+            use_instance_bboxes=use_instance_bboxes,
+            donotcare_class_ids=donotcare_class_ids,
+            max_num_point=max_num_point,
+            process_workers=process_workers,
+            is_test=is_test,
+            types=types,
+            frame_depth=frame_depth,
+            frame_rgb=frame_rgb,
+            frame_pose=frame_pose,
+            frame_intrinsics=frame_intrinsics,
+            frame_skip=frame_skip,
+            neucon_frame_skip=neucon_frame_skip,
+            neucon_metas_dir=neucon_metas_dir,
+            m2f_preds_dirname=m2f_preds_dirname,
+            load_m2f_masks=load_m2f_masks,
+            undo_axis_align=undo_axis_align,
+            center_xy=center_xy,
+            center_z=center_z, 
+            n_views=n_views,
+            n_views_ablation=n_views_ablation,
+        )
 
     @property
     def path_to_submission(self):

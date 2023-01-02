@@ -17,10 +17,16 @@ def get_dataset_class(dataset_config):
     except Exception:
         log.error("This should happen only during testing")
     dataset_class = getattr(dataset_config, "class")
+    
+    print("dataset_class: ", dataset_class)
     dataset_paths = dataset_class.split(".")
+    print("dataset_paths: ", dataset_paths)
     module = ".".join(dataset_paths[:-1])
+    print("module: ", module)
     class_name = dataset_paths[-1]
+    print("class_name: ", class_name)
     dataset_module = ".".join(["torch_points3d.datasets", task, module])
+    print("dataset_module: ", dataset_module)
     datasetlib = importlib.import_module(dataset_module)
 
     target_dataset_name = class_name

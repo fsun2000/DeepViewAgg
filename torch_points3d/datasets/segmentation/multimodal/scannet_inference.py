@@ -1,6 +1,6 @@
 from abc import ABC
 
-from ..scannet import *
+from ..scannet_inference import *
 from .utils import read_image_pose_pairs
 from torch_points3d.core.multimodal.image import SameSettingImageData
 from torch_points3d.datasets.base_dataset_multimodal import BaseDatasetMM
@@ -29,13 +29,27 @@ log = logging.getLogger(__name__)
 ########################################################################################
 
 def load_pose(filename):
-    """Read ScanNet pose file.
+    """Read Custom pose file.
     Credit: https://github.com/angeladai/3DMV/blob/f889b531f8813d409253fe065fb9b18c5ca2b495/3dmv/data_util.py
     """
     lines = open(filename).read().splitlines()
-    assert len(lines) == 4
-    lines = [[x[0], x[1], x[2], x[3]] for x in (x.split(" ") for x in lines)]
-    out = torch.from_numpy(np.asarray(lines).astype(np.float32))
+    
+    if len(lines) == 3:
+        lines = [[x[0], x[1], x[2]] for x in (x.split(" ") for x in lines)]
+        R = torch.from_numpy(np.asarray(lines).astype(np.float32))   
+        out = torch.zeros((4, 4)).float()
+        out[3, 3] = 1
+        out[:3, :3] = R
+    elif len(lines) == 16:
+        entries = [float(x) for x in lines]
+        out = torch.from_numpy(np.asarray(entries).astype(np.float32).reshape(4, 4))
+    elif len(lines) == 17:
+        entries = [float(x) for x in lines[:16]]
+        out = torch.from_numpy(np.asarray(entries).astype(np.float32).reshape(4, 4))
+    else:
+        raise ValueError(f"pose file incorrect, len of lines was: {len(lines)}. Has to be either 3 or 16")
+    
+    print("loaded pose = ", out)
     return out
 
 
@@ -46,7 +60,7 @@ def load_pose(filename):
 #                                                                                      #
 ########################################################################################
 
-class ScannetMM(Scannet):
+class ScannetMM_Inference(Scannet_Inference):
     """Scannet dataset for multimodal learning on 3D points and 2D images, you
     will have to agree to terms and conditions by hitting enter so that it
     downloads the dataset.
@@ -112,10 +126,8 @@ class ScannetMM(Scannet):
         Image transforms
     """
 
-    DEPTH_IMG_SIZE = (640, 480)
-
     def __init__(
-            self, *args, img_ref_size=(320, 240), pre_transform_image=None,
+            self, *args, img_ref_size=None, pre_transform_image=None,
             transform_image=None, neucon_metas_dir='', neucon_frame_skip=1, m2f_preds_dirname='', load_m2f_masks=False,
             undo_axis_align=False,
             center_xy=False,
@@ -141,7 +153,7 @@ class ScannetMM(Scannet):
             print("Currently running ablation studies on the number of points!")
             print("self.n_views_ablation ", self.n_views_ablation)
 
-        super(ScannetMM, self).__init__(*args, **kwargs)
+        super(ScannetMM_Inference, self).__init__(*args, **kwargs)
     
         
         if self.split == 'train':
@@ -175,7 +187,7 @@ class ScannetMM(Scannet):
         # Output will be saved to <SPLIT>.pt
         # --------------------------------------------------------------
         print("pre-processing 3D data")
-        super(ScannetMM, self).process()
+        super(ScannetMM_Inference, self).process()
 
         # ----------------------------------------------------------
         # Recover image data and run image pre-transforms
@@ -185,6 +197,7 @@ class ScannetMM(Scannet):
         for i, (scan_names, split) in enumerate(zip(self.scan_names, self.SPLITS)):
 
             print(f'\nStarting preprocessing 2d for {split} split')
+            print(f'scan_names = {scan_names}')
 
             # Prepare the processed_2d_<SPLIT> directory where per-scan
             # images and mappings will be saved
@@ -224,26 +237,16 @@ class ScannetMM(Scannet):
                     for i_file, p_file in read_image_pose_pairs(
                         osp.join(scan_sens_dir, 'color'),
                         osp.join(scan_sens_dir, 'pose'),
-                        image_suffix='.jpg', pose_suffix='.txt', skip_freq=self.frame_skip,
-                        neucon_metas_dir=self.neucon_metas_dir)]
+                        image_suffix='.png', pose_suffix='.txt', skip_freq=self.frame_skip)#, neucon_metas_dir=self.neucon_metas_dir)
+                        ]
 
                 # Aggregate all RGB image paths
                 path = np.array([info['path'] for info in image_info_list])
 
                 # Aggregate all extrinsic 4x4 matrices
-                # Train and val scans have undergone axis alignment
-                # transformations. Need to recover and apply those
-                # to camera poses too. Test scans have no axis
-                # alignment
-                axis_align_matrix = read_axis_align_matrix(meta_file)
-                if axis_align_matrix is not None:
-                    extrinsic = torch.cat([
-                        axis_align_matrix.mm(info['extrinsic']).unsqueeze(0)
-                        for info in image_info_list], dim=0)
-                else:
-                    extrinsic = torch.cat([
-                        info['extrinsic'].unsqueeze(0)
-                        for info in image_info_list], dim=0)
+                extrinsic = torch.cat([
+                    info['extrinsic'].unsqueeze(0)
+                    for info in image_info_list], dim=0)
 
                 # For easier image handling, extract the images
                 # position from the extrinsic matrices
@@ -255,20 +258,15 @@ class ScannetMM(Scannet):
                 # with the pose does not produce the expected
                 # projection
                 intrinsic = load_pose(osp.join(
-                    scan_sens_dir, 'intrinsic/intrinsic_depth.txt'))
+                    scan_sens_dir, 'intrinsics.txt')) # use RGB camera intrinsics
                 fx = intrinsic[0][0].repeat(len(image_info_list))
                 fy = intrinsic[1][1].repeat(len(image_info_list))
                 mx = intrinsic[0][2].repeat(len(image_info_list))
                 my = intrinsic[1][2].repeat(len(image_info_list))
 
                 # Save scan images as SameSettingImageData
-                # NB: the image is first initialized to
-                # DEPTH_IMG_SIZE because the intrinsic parameters
-                # are defined accordingly. Setting ref_size
-                # afterwards calls the @adjust_intrinsic method to
-                # rectify the intrinsics consequently
                 image_data = SameSettingImageData(
-                    ref_size=self.DEPTH_IMG_SIZE, proj_upscale=1,
+                    ref_size=self.img_ref_size, proj_upscale=1,
                     path=path, pos=xyz, fx=fx, fy=fy, mx=mx, my=my,
                     extrinsic=extrinsic)
                 image_data.ref_size = self.img_ref_size
@@ -285,11 +283,11 @@ class ScannetMM(Scannet):
 
     @property
     def processed_file_names(self):
-        return [f"{s}.pt" for s in Scannet.SPLITS] + self.processed_2d_paths
+        return [f"{s}.pt" for s in Scannet_Inference.SPLITS] + self.processed_2d_paths
 
     @property
     def processed_2d_paths(self):
-        return [osp.join(self.processed_dir, f"processed_2d_{s}") for s in Scannet.SPLITS]
+        return [osp.join(self.processed_dir, f"processed_2d_{s}") for s in Scannet_Inference.SPLITS]
 
     def __getitem__(self, idx):
         """
@@ -387,7 +385,7 @@ class ScannetMM(Scannet):
             
             # Change directory name following migration from Lisa to Snellius
             m2f_dir[1] = 'scratch-shared'
-            m2f_dir = ['', 'home', 'fsun', 'data', 'scannet', 'scans', m2f_dir[-1]]
+            m2f_dir = ['', 'home', 'fsun', 'data', 'inference_data', 'scans_test', m2f_dir[-1]]
             m2f_dir = os.sep.join([*m2f_dir, self.m2f_preds_dirname])
                                     
             m2f_masks = []
@@ -400,7 +398,7 @@ class ScannetMM(Scannet):
                 pred_mask_path = osp.join(m2f_dir, m2f_filename)
                 pred_mask = Image.open(pred_mask_path)
                 pred_mask = pred_mask.resize(self.img_ref_size, resample=Image.NEAREST) 
-                
+                print("pred_mask: ", pred_mask)
                 # minus 1 to match DVA label classes ranging [0, 19] instead of [1, 20]
                 m2f_masks.append(pil_to_tensor(pred_mask) - 1)
                 
@@ -521,7 +519,7 @@ class ScannetMM(Scannet):
 
 
 
-class ScannetDatasetMM(BaseDatasetMM, ABC):
+class ScannetDatasetMM_Inference(BaseDatasetMM, ABC):
     """ Wrapper around Scannet that creates train and test datasets.
     Parameters
     ----------
@@ -570,80 +568,17 @@ class ScannetDatasetMM(BaseDatasetMM, ABC):
         center_z: bool = dataset_opt.get('center_z', False)
         n_views: int = dataset_opt.get('n_views', 0)
         n_views_ablation = dataset_opt.get('n_views_ablation', None)
+        img_ref_size = dataset_opt.get('resolution_2d', None)
 
             
-        print("initialize train dataset")
-        self.train_dataset = ScannetMM(
-            self._data_path,
-            split="train",
-            pre_transform=self.pre_transform,
-            transform=self.train_transform,
-            pre_transform_image=self.pre_transform_image,
-            transform_image=self.train_transform_image,
-            version=dataset_opt.version,
-            use_instance_labels=use_instance_labels,
-            use_instance_bboxes=use_instance_bboxes,
-            donotcare_class_ids=donotcare_class_ids,
-            max_num_point=max_num_point,
-            process_workers=process_workers,
-            is_test=is_test,
-            types=types,
-            frame_depth=frame_depth,
-            frame_rgb=frame_rgb,
-            frame_pose=frame_pose,
-            frame_intrinsics=frame_intrinsics,
-            frame_skip=frame_skip,
-            neucon_metas_dir=neucon_metas_dir,
-            neucon_frame_skip=neucon_frame_skip,
-            m2f_preds_dirname=m2f_preds_dirname,
-            load_m2f_masks=load_m2f_masks,
-            undo_axis_align=undo_axis_align,
-            center_xy=center_xy,
-            center_z=center_z, 
-            n_views=n_views,
-            n_views_ablation=n_views_ablation,
-        )
-
-        print("initialize val dataset")
-        self.val_dataset = ScannetMM(
-            self._data_path,
-            split="val",
-            transform=self.val_transform,
-            pre_transform=self.pre_transform,
-            pre_transform_image=self.pre_transform_image,
-            transform_image=self.val_transform_image,
-            version=dataset_opt.version,
-            use_instance_labels=use_instance_labels,
-            use_instance_bboxes=use_instance_bboxes,
-            donotcare_class_ids=donotcare_class_ids,
-            max_num_point=max_num_point,
-            process_workers=process_workers,
-            is_test=is_test,
-            types=types,
-            frame_depth=frame_depth,
-            frame_rgb=frame_rgb,
-            frame_pose=frame_pose,
-            frame_intrinsics=frame_intrinsics,
-            frame_skip=frame_skip,
-            neucon_metas_dir=neucon_metas_dir,
-            neucon_frame_skip=neucon_frame_skip,
-            m2f_preds_dirname=m2f_preds_dirname,
-            load_m2f_masks=load_m2f_masks,
-            undo_axis_align=undo_axis_align,
-            center_xy=center_xy,
-            center_z=center_z, 
-            n_views=n_views,
-            n_views_ablation=n_views_ablation,
-        )
-
-#         print("initialize test dataset")
-#         self.test_dataset = ScannetMM(
+#         print("initialize train dataset")
+#         self.train_dataset = ScannetMM_Inference(
 #             self._data_path,
-#             split="test",
-#             transform=self.val_transform,
+#             split="train",
 #             pre_transform=self.pre_transform,
+#             transform=self.train_transform,
 #             pre_transform_image=self.pre_transform_image,
-#             transform_image=self.test_transform_image,
+#             transform_image=self.train_transform_image,
 #             version=dataset_opt.version,
 #             use_instance_labels=use_instance_labels,
 #             use_instance_bboxes=use_instance_bboxes,
@@ -657,8 +592,8 @@ class ScannetDatasetMM(BaseDatasetMM, ABC):
 #             frame_pose=frame_pose,
 #             frame_intrinsics=frame_intrinsics,
 #             frame_skip=frame_skip,
-#             neucon_frame_skip=neucon_frame_skip,
 #             neucon_metas_dir=neucon_metas_dir,
+#             neucon_frame_skip=neucon_frame_skip,
 #             m2f_preds_dirname=m2f_preds_dirname,
 #             load_m2f_masks=load_m2f_masks,
 #             undo_axis_align=undo_axis_align,
@@ -667,6 +602,71 @@ class ScannetDatasetMM(BaseDatasetMM, ABC):
 #             n_views=n_views,
 #             n_views_ablation=n_views_ablation,
 #         )
+
+#         print("initialize val dataset")
+#         self.val_dataset = ScannetMM_Inference(
+#             self._data_path,
+#             split="val",
+#             transform=self.val_transform,
+#             pre_transform=self.pre_transform,
+#             pre_transform_image=self.pre_transform_image,
+#             transform_image=self.val_transform_image,
+#             version=dataset_opt.version,
+#             use_instance_labels=use_instance_labels,
+#             use_instance_bboxes=use_instance_bboxes,
+#             donotcare_class_ids=donotcare_class_ids,
+#             max_num_point=max_num_point,
+#             process_workers=process_workers,
+#             is_test=is_test,
+#             types=types,
+#             frame_depth=frame_depth,
+#             frame_rgb=frame_rgb,
+#             frame_pose=frame_pose,
+#             frame_intrinsics=frame_intrinsics,
+#             frame_skip=frame_skip,
+#             neucon_metas_dir=neucon_metas_dir,
+#             neucon_frame_skip=neucon_frame_skip,
+#             m2f_preds_dirname=m2f_preds_dirname,
+#             load_m2f_masks=load_m2f_masks,
+#             undo_axis_align=undo_axis_align,
+#             center_xy=center_xy,
+#             center_z=center_z, 
+#             n_views=n_views,
+#             n_views_ablation=n_views_ablation,
+#         )
+
+        print("initialize test dataset")
+        self.test_dataset = ScannetMM_Inference(
+            self._data_path,
+            split="test",
+            transform=self.val_transform,
+            pre_transform=self.pre_transform,
+            pre_transform_image=self.pre_transform_image,
+            transform_image=self.test_transform_image,
+            version=dataset_opt.version,
+            use_instance_labels=use_instance_labels,
+            use_instance_bboxes=use_instance_bboxes,
+            donotcare_class_ids=donotcare_class_ids,
+            max_num_point=max_num_point,
+            process_workers=process_workers,
+            is_test=is_test,
+            types=types,
+            frame_depth=frame_depth,
+            frame_rgb=frame_rgb,
+            frame_pose=frame_pose,
+            frame_intrinsics=frame_intrinsics,
+            frame_skip=frame_skip,
+            neucon_frame_skip=neucon_frame_skip,
+            neucon_metas_dir=neucon_metas_dir,
+            m2f_preds_dirname=m2f_preds_dirname,
+            load_m2f_masks=load_m2f_masks,
+            undo_axis_align=undo_axis_align,
+            center_xy=center_xy,
+            center_z=center_z, 
+            n_views=n_views,
+            n_views_ablation=n_views_ablation,
+            img_ref_size=img_ref_size
+        )
 
     @property
     def path_to_submission(self):

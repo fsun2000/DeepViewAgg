@@ -1,15 +1,18 @@
 #!/bin/bash
 
-#SBATCH --partition=gpu_shared
+#SBATCH --partition=gpu
 #SBATCH --gpus=1
 #SBATCH --job-name=process
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=12
+#SBATCH --cpus-per-task=18
 #SBATCH --time=01:30:00
-#SBATCH --mem=100000MB
-#SBATCH --output=process_scannet_3.out
+#SBATCH --mem=120000MB
+#SBATCH --output=process_scannet.out
 
 module purge
+
+source activate pytorch3d
+
 module load 2021
 module load CUDA/11.3.1
 

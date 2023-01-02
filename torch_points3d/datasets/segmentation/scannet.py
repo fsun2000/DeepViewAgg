@@ -142,7 +142,7 @@ SCANNET_COLOR_MAP = {
     40: (100.0, 85.0, 144.0),
 }
 
-SPLITS = ["train", "val"]#, "test"]
+SPLITS = ["train", "val", "test"]
 # SPLITS = ["test"]
 
 
@@ -1095,9 +1095,9 @@ class Scannet(InMemoryDataset):
 #         print("Skip Preprocessing 3D data because it has already been processed")
 #         print("Adjust code if 3D data needs to be processed again, DeepViewAgg/torch_points3d/datasets/segmentation/scannet.py line 1035")
         for i, (scan_names, split) in enumerate(zip(self.scan_names, self.SPLITS)):
-#             if split == 'train':
-#                 print("currently, preprocessing of raw 3D train scans is skipped")
-#                 continue
+            if split in ['train', 'val']:
+                print(f"Skip {split} 3D preprocessing!")
+                continue
         
           
             if not osp.exists(self.processed_paths[i]):

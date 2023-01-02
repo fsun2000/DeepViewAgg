@@ -103,7 +103,7 @@ val_transform:
       params:
           feat_names: [ pos_x, pos_y, pos_z, rgb, linearity, norm, planarity, scattering ]
           list_add_to_x: [ True, True, True, False, False, False, False, False ]
-          delete_feats: [ True, True, True, True, True, True, True, True ]
+          delete_feats: [ True, True, True, False, True, True, True, True ]
 
 test_transform: ${data.val_transform}
 

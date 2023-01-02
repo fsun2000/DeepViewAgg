@@ -142,8 +142,8 @@ SCANNET_COLOR_MAP = {
     40: (100.0, 85.0, 144.0),
 }
 
-SPLITS = ["train", "val"]#, "test"]
-# SPLITS = ["test"]
+# SPLITS = ["train", "val"]#, "test"]
+SPLITS = ["test"]
 
 
 
@@ -291,6 +291,7 @@ def read_mesh_vertices_rgb(filename):
         vertices[:, 3] = plydata["vertex"].data["red"]
         vertices[:, 4] = plydata["vertex"].data["green"]
         vertices[:, 5] = plydata["vertex"].data["blue"]
+    print("Read vertices: ", vertices)
     return vertices
 
 
@@ -612,7 +613,7 @@ def is_corrupted(x):
 ########################################################################################
 
 
-class Scannet(InMemoryDataset):
+class Scannet_Inference(InMemoryDataset):
     """Scannet dataset, you will have to agree to terms and conditions by hitting enter
     so that it downloads the dataset.
 
@@ -799,11 +800,11 @@ class Scannet(InMemoryDataset):
 
     @property
     def processed_file_names(self):
-        return [f"{s}.pt" for s in Scannet.SPLITS]
+        return [f"{s}.pt" for s in Scannet_Inference.SPLITS]
 
     @property
     def processed_raw_paths(self):
-        processed_raw_paths = [osp.join(self.processed_dir, "raw_{}".format(s)) for s in Scannet.SPLITS]
+        processed_raw_paths = [osp.join(self.processed_dir, "raw_{}".format(s)) for s in Scannet_Inference.SPLITS]
         for p in processed_raw_paths:
             if not osp.exists(p):
                 os.makedirs(p)
@@ -819,7 +820,7 @@ class Scannet(InMemoryDataset):
 
     @property
     def num_classes(self):
-        return len(Scannet.VALID_CLASS_IDS)
+        return len(Scannet_Inference.VALID_CLASS_IDS)
 
     def download_scans(self):
         release_file = BASE_URL + RELEASE + ".txt"
@@ -885,7 +886,7 @@ class Scannet(InMemoryDataset):
             scannet_dir, scan_name, normalize_rgb, frame_depth=False,
             frame_rgb=False, frame_pose=False, frame_intrinsics=False,
             frame_skip=1):
-        mesh_file = osp.join(scannet_dir, scan_name, scan_name + "_vh_clean_2.ply")
+        mesh_file = osp.join(scannet_dir, scan_name, scan_name + ".ply")
         mesh_vertices = read_mesh_vertices_rgb(mesh_file)
         sens_file = osp.join(scannet_dir, scan_name, scan_name + ".sens")
         sens_dir = osp.join(scannet_dir, scan_name, 'sens')
@@ -985,14 +986,14 @@ class Scannet(InMemoryDataset):
     def read_from_metadata(self):
         metadata_path = osp.join(self.raw_dir, "metadata")
         self.label_map_file = osp.join(metadata_path, LABEL_MAP_FILE)
-        split_files = ["scannetv2_{}.txt".format(s) for s in Scannet.SPLITS]
+        split_files = ["scannetv2_{}.txt".format(s) for s in Scannet_Inference.SPLITS]
         self.scan_names = []
         for sf in split_files:
             f = open(osp.join(metadata_path, sf))
             self.scan_names.append(sorted([line.rstrip() for line in f]))
             f.close()
 
-        for idx_split, split in enumerate(Scannet.SPLITS):
+        for idx_split, split in enumerate(Scannet_Inference.SPLITS):
 #             self.scan_names[idx_split] = self.scan_names[idx_split][:1]  # to test on mini dataset
             idx_mapping = {idx: scan_name for idx, scan_name in enumerate(self.scan_names[idx_split])}
             setattr(self, "MAPPING_IDX_TO_SCAN_{}_NAMES".format(split.upper()), idx_mapping)
@@ -1016,7 +1017,7 @@ class Scannet(InMemoryDataset):
             frame_skip,
     ):
         if split == "test":
-            data = Scannet.read_one_test_scan(
+            data = Scannet_Inference.read_one_test_scan(
                 scannet_dir,
                 scan_name,
                 normalize_rgb,
@@ -1026,7 +1027,7 @@ class Scannet(InMemoryDataset):
                 frame_intrinsics,
                 frame_skip)
         else:
-            data = Scannet.read_one_scan(
+            data = Scannet_Inference.read_one_scan(
                 scannet_dir,
                 scan_name,
                 label_map_file,
@@ -1148,7 +1149,7 @@ class Scannet(InMemoryDataset):
 #                     raise NotImplementedError
                     
                     with multiprocessing.get_context("spawn").Pool(processes=self.process_workers) as pool:
-                        datas = pool.starmap(Scannet.process_func, args)
+                        datas = pool.starmap(Scannet_Inference.process_func, args)
                         for data in datas:
                             id_scan = int(data.id_scan.item())
                             scan_name = mapping_idx_to_scan_names[id_scan]
@@ -1160,7 +1161,7 @@ class Scannet(InMemoryDataset):
                         print("scan_name: ", scan_name)
                         path_to_raw_scan = osp.join(self.processed_raw_paths[i], "{}.pt".format(scan_name))
                         if not osp.exists(path_to_raw_scan):
-                            data = Scannet.process_func(*arg)
+                            data = Scannet_Inference.process_func(*arg)
                             id_scan = int(data.id_scan.item())
                             scan_name = mapping_idx_to_scan_names[id_scan]
                             torch.save(data, path_to_raw_scan)
@@ -1175,7 +1176,7 @@ class Scannet(InMemoryDataset):
 #                     datas = []
 #                     #############################
 #                     for arg in args:
-#                         data = Scannet.process_func(*arg)
+#                         data = Scannet_Inference.process_func(*arg)
 #                         datas.append(data)
 
 #                 for data in datas:
@@ -1195,7 +1196,7 @@ class Scannet(InMemoryDataset):
                         
 #                         args = [arg + (self.processed_raw_paths[i], self.pre_transform) for arg in args]
                         
-#                         pool.starmap(Scannet.do_pre_transform_and_save, args)
+#                         pool.starmap(Scannet_Inference.do_pre_transform_and_save, args)
 # #                         for data in datas:
 # #                             id_scan = int(data.id_scan.item())
 # #                             scan_name = mapping_idx_to_scan_names[id_scan]
@@ -1277,7 +1278,7 @@ class Scannet(InMemoryDataset):
         return super().indices()
 
 
-class ScannetDataset(BaseDataset):
+class ScannetDataset_Inference(BaseDataset):
     """Wrapper around Scannet that creates train and test datasets.
 
     Parameters
@@ -1308,35 +1309,35 @@ class ScannetDataset(BaseDataset):
         process_workers: int = dataset_opt.process_workers if hasattr(dataset_opt, 'process_workers') else 0
         is_test: bool = dataset_opt.get('is_test', False)
 
-        self.train_dataset = Scannet(
-            self._data_path,
-            split="train",
-            pre_transform=self.pre_transform,
-            transform=self.train_transform,
-            version=dataset_opt.version,
-            use_instance_labels=use_instance_labels,
-            use_instance_bboxes=use_instance_bboxes,
-            donotcare_class_ids=donotcare_class_ids,
-            max_num_point=max_num_point,
-            process_workers=process_workers,
-            is_test=is_test,
-        )
+#         self.train_dataset = Scannet_Inference(
+#             self._data_path,
+#             split="train",
+#             pre_transform=self.pre_transform,
+#             transform=self.train_transform,
+#             version=dataset_opt.version,
+#             use_instance_labels=use_instance_labels,
+#             use_instance_bboxes=use_instance_bboxes,
+#             donotcare_class_ids=donotcare_class_ids,
+#             max_num_point=max_num_point,
+#             process_workers=process_workers,
+#             is_test=is_test,
+#         )
 
-        self.val_dataset = Scannet(
-            self._data_path,
-            split="val",
-            transform=self.val_transform,
-            pre_transform=self.pre_transform,
-            version=dataset_opt.version,
-            use_instance_labels=use_instance_labels,
-            use_instance_bboxes=use_instance_bboxes,
-            donotcare_class_ids=donotcare_class_ids,
-            max_num_point=max_num_point,
-            process_workers=process_workers,
-            is_test=is_test,
-        )
+#         self.val_dataset = Scannet_Inference(
+#             self._data_path,
+#             split="val",
+#             transform=self.val_transform,
+#             pre_transform=self.pre_transform,
+#             version=dataset_opt.version,
+#             use_instance_labels=use_instance_labels,
+#             use_instance_bboxes=use_instance_bboxes,
+#             donotcare_class_ids=donotcare_class_ids,
+#             max_num_point=max_num_point,
+#             process_workers=process_workers,
+#             is_test=is_test,
+#         )
 
-        self.test_dataset = Scannet(
+        self.test_dataset = Scannet_Inference(
             self._data_path,
             split="test",
             transform=self.val_transform,

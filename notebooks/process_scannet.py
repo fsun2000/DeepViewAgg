@@ -33,13 +33,13 @@ import pykeops
 
 
 if __name__ == '__main__':
-#     # Uncomment to clean previous pykeops builds with CUDA
-#     pykeops.clean_pykeops()
+    # Uncomment to clean previous pykeops builds with CUDA
+    pykeops.clean_pykeops()
     
     # Set your dataset root directory, where the data was/will be downloaded
-    DATA_ROOT = '/project/fsun/dvata'
+    DATA_ROOT = '/scratch-shared/fsun/dvata'
 
-    dataset_config = 'segmentation/multimodal/Feng/scannet_trainval_test.yaml'   
+    dataset_config = 'segmentation/multimodal/Feng/scannet-neucon-smallres-m2f-test.yaml'   
     models_config = 'segmentation/multimodal/sparseconv3d'    # model family
     model_name = 'Res16UNet34-L4-early'                       # specific model
 
