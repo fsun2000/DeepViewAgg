@@ -21,7 +21,13 @@ from torch_points3d.core.data_transform.multimodal.image import RandomHorizontal
 
 log = logging.getLogger(__name__)
 
-
+def get_Rx(deg):
+    deg = deg * np.pi / 180.
+    return torch.from_numpy(np.array([[1, 0, 0, 0],
+                     [0, np.cos(deg), -np.sin(deg), 0],
+                     [0, np.sin(deg), np.cos(deg), 0],
+                     [0, 0, 0, 1]])).float()
+        
 ########################################################################################
 #                                                                                      #
 #                            ScanNet image processing utils                            #
@@ -49,7 +55,6 @@ def load_pose(filename):
     else:
         raise ValueError(f"pose file incorrect, len of lines was: {len(lines)}. Has to be either 3 or 16")
     
-    print("loaded pose = ", out)
     return out
 
 
@@ -330,6 +335,10 @@ class ScannetMM_Inference(Scannet_Inference):
             inv = torch.linalg.inv(axis_align_matrix.T)
             data.pos = (torch.concat((data.pos, torch.ones((len(data.pos), 1))), axis=-1) @ inv)[:, :3]
         
+        #### Rotate mesh
+        print("Rotating PCD with get_Rx(270)")
+        data.pos = data.pos @ get_Rx(270)[:3, :3]
+        
         # apply 3D transforms
         data = data if self.transform is None else self.transform(data)
         
@@ -366,8 +375,10 @@ class ScannetMM_Inference(Scannet_Inference):
         # Adjust camera positions for visualization purposes
         if self.undo_axis_align and self.split != 'test':
             images[0].pos = (torch.concat((images[0].pos, torch.ones((len(images[0].pos), 1))), axis=-1) @ inv.double())[:, :3] 
-            
+            images[0].extrinsic = inv @ images[0].extrinsic 
+
         if self.center_xy:
+            images[0].pos = images[0].pos @ get_Rx(270)[:3, :3].double()
             images[0].pos -= data_mean
         
         

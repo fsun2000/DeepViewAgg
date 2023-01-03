@@ -142,7 +142,7 @@ SCANNET_COLOR_MAP = {
     40: (100.0, 85.0, 144.0),
 }
 
-SPLITS = ["train", "val", "test"]
+SPLITS = ["train", "val"]#, "test"]
 # SPLITS = ["test"]
 
 

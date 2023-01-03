@@ -1,0 +1,21 @@
+#!/bin/bash
+
+#SBATCH --partition=gpu
+#SBATCH --job-name=infer
+#SBATCH --gpus=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=18
+#SBATCH --time=01:00:00
+#SBATCH --mem=60000MB
+#SBATCH --output=job_logs/inference/initial.out
+
+cd $HOME/DeepViewAgg
+
+module purge
+source activate pytorch3d
+module load 2021
+module load CUDA/11.3.1
+
+export HYDRA_FULL_ERROR=1
+
+./scripts/inference.sh

@@ -995,11 +995,14 @@ class MVFusionAPIModel(BaseModel):
         self.head = nn.Sequential(nn.Linear(self.backbone.output_nc, dataset.num_classes))
         self._use_cross_entropy = option.get('use_cross_entropy', True)
         self._use_lovasz = option.get('use_lovasz', False)
+        self._use_2d_cross_entropy = option.get('use_2d_cross_entropy', False)
+        self._2d_loss_weight = option.get('2d_loss_weight', 0.)
         assert self._use_cross_entropy or self._use_lovasz, \
             "Choose at least one between Cross-Entropy loss and Lovasz loss."
         self.loss_names = ['loss_seg'] \
                           + self._use_cross_entropy * ['loss_cross_entropy'] \
-                          + self._use_lovasz * ['loss_lovasz']
+                          + self._use_lovasz * ['loss_lovasz'] \
+                          + self._use_2d_cross_entropy * ['loss_2d_cross_entropy']
 
     def set_input(self, data, device):
         self.batch_idx = data.batch.squeeze()
@@ -1019,10 +1022,31 @@ class MVFusionAPIModel(BaseModel):
             self.loss_seg = 0
             if self._use_cross_entropy:
                 self.loss_cross_entropy = F.nll_loss(self.output, self.labels, ignore_index=IGNORE_LABEL, weight=self._weight_classes)
-                self.loss_seg += self.loss_cross_entropy
+                self.loss_seg += (1 - self._2d_loss_weight) * self.loss_cross_entropy
+            if self._use_2d_cross_entropy:
+                """
+                Think about:
+                How to average losses over views.
+                
+                - First approach: simple sum over all views (loop over all views, concatenate all labels to Tensor).
+                - Then take mean over classes using nll_loss (default = mean aggregation)
+                """
+                print("Calculating 2d cross entropy over views...")
+                # Get the number of views in which each point is visible
+                csr_idx = self.input.modalities['image'][0].view_csr_indexing
+                n_seen = (csr_idx[1:] - csr_idx[:-1]).cuda()
+                
+                # Grab 2D labels of each 3D point from all seen views
+                labels_2d = self.input.modalities['image'][0].get_mapped_gt_labels().flatten().cuda()
+                # Repeat logits of each 3D point to the number of views it is visible in
+                output_2d = self.output.repeat_interleave(n_seen, dim=0)
+                
+                
+                self.loss_2d_cross_entropy = F.nll_loss(output_2d, labels_2d, ignore_index=IGNORE_LABEL, weight=self._weight_classes)
+                self.loss_seg += self._2d_loss_weight * self.loss_2d_cross_entropy
             if self._use_lovasz:
                 self.loss_lovasz = lovasz_softmax(self.output.exp(), self.labels, ignore=IGNORE_LABEL)
                 self.loss_seg += self.loss_lovasz
-
+                
     def backward(self):
         self.loss_seg.backward()

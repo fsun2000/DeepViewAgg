@@ -154,6 +154,135 @@ def img_info_to_img_data(info_ld, img_size):
     return image_data
 
 
+# def read_image_pose_pairs_without_frameskip(
+#         image_dir, pose_dir, image_suffix='_rgb.png',
+#         pose_suffix='_pose.json', skip_names=None, verbose=False):
+#     """
+#     Search for all image-pose correspondences in the directories.
+#     Return the list of image-pose pairs. Orphans are ignored.
+#     """    
+#     # Search for poses
+#     pose_names = sorted([
+#         int(osp.basename(x).replace(pose_suffix, ''))
+#         for x in glob.glob(osp.join(pose_dir, '*' + pose_suffix))])
+    
+#     print(pose_names)
+    
+    
+#     # Remove invalid poses and data
+#     for i, pose_id in enumerate(pose_names):        
+#         extr = np.loadtxt(os.path.join(pose_dir, str(pose_id) + pose_suffix))
+#         if (np.isinf(extr) + np.isnan(extr)).any():
+#             corrupt_pose_path = os.path.join(pose_dir, str(pose_id) + pose_suffix)
+#             print('corrupt_pose_path', corrupt_pose_path)
+#             corrupt_color_path = os.path.join(image_dir, str(pose_id) + image_suffix)            
+#             print('corrupt_color_path', corrupt_color_path)
+
+#             # Remove image, pose of corrupt poses
+#             print("However, corrupt images are not removed. Check torch_points3d/datasets/segmentation/multimodal/utils.py")
+# #             for path in [corrupt_pose_path, corrupt_color_path]:#, corrupt_depth_path]:
+# #                 if os.path.exists(path):
+# #                     os.remove(path)
+
+#     # Search for images and poses
+#     image_names = sorted([
+#         int(osp.basename(x).replace(image_suffix, ''))
+#         for x in glob.glob(osp.join(image_dir, '*' + image_suffix))])
+#     pose_names = sorted([
+#         int(osp.basename(x).replace(pose_suffix, ''))
+#         for x in glob.glob(osp.join(pose_dir, '*' + pose_suffix))])
+
+     
+#     pose_names_subset = [str(pose_names[i]) for i in range(len(pose_names))]    
+    
+
+#     #skip_names = skip_names if skip_names is not None else []
+#     #image_names = [x for x in image_names if x not in skip_names]
+#     #pose_names = [x for x in pose_names if x not in skip_names]
+    
+#     image_names = pose_names_subset
+#     pose_names = pose_names_subset
+    
+#     # Check if all files exist
+#     idx_to_pop = [] 
+#     for i, image_id in enumerate(image_names):
+#         file = os.path.join(image_dir, image_id + image_suffix)
+#         if os.path.exists(file):
+#             continue
+#         else:
+#             print(f"file {file} does not exist! ")
+#             raise ValueError
+
+# #             offset = 0
+# #             while True and offset <= 10:
+# #                 offset += 1
+# #                 new_file = os.path.join(image_dir, str(int(image_id) + offset) + image_suffix)
+# #                 if os.path.exists(new_file):
+# #                     break
+# #             image_names[i] = str(int(image_id) + offset)
+# #             pose_names[i] = str(int(image_id) + offset)
+            
+# #             if offset == 10:
+# #                 idx_to_pop.append(i)
+# #     # Remove entries for which no existing color image was found (within 10 tries)
+# #     for idx in idx_to_pop:
+# #         image_names.pop(idx)
+# #         pose_names.pop(idx)
+                
+#     # Print orphans
+#     if not image_names == pose_names:
+#         image_orphan = [
+#             osp.join(image_dir, x + image_suffix)
+#             for x in set(image_names) - set(pose_names)]
+#         pose_orphan = [
+#             osp.join(pose_dir, x + pose_suffix)
+#             for x in set(pose_names) - set(image_names)]
+#         print("Could not recover all image-pose correspondences.")
+#         print(f"  Orphan images : {len(image_orphan)}/{len(image_names)}")
+#         if verbose:
+#             for x in image_orphan:
+#                 print(4 * ' ' + '/'.join(x.split('/')[-4:]))
+#         print(f"  Orphan poses  : {len(pose_orphan)}/{len(pose_names)}")
+#         if verbose:
+#             for x in pose_orphan:
+#                 print(4 * ' ' + '/'.join(x.split('/')[-4:]))
+
+#     # Only return the recovered pairs
+#     correspondences = sorted(list(set(image_names).intersection(
+#         set(pose_names))))
+#     pairs = [(
+#         osp.join(image_dir, x + image_suffix),
+#         osp.join(pose_dir, x + pose_suffix))
+#         for x in correspondences]
+    
+#     return pairs
+
+
+
+def load_pose(filename):
+    """Read Custom pose file.
+    Credit: https://github.com/angeladai/3DMV/blob/f889b531f8813d409253fe065fb9b18c5ca2b495/3dmv/data_util.py
+    """
+    lines = open(filename).read().splitlines()
+    
+    if len(lines) == 3:
+        lines = [[x[0], x[1], x[2]] for x in (x.split(" ") for x in lines)]
+        R = np.asarray(lines).astype(np.float32)
+        out = np.zeros((4, 4))
+        out[3, 3] = 1
+        out[:3, :3] = R
+    elif len(lines) == 16:
+        entries = [float(x) for x in lines]
+        out = np.asarray(entries).astype(np.float32).reshape(4, 4)
+    elif len(lines) == 17:
+        entries = [float(x) for x in lines[:16]]
+        out = np.asarray(entries).astype(np.float32).reshape(4, 4)
+    else:
+        raise ValueError(f"pose file incorrect, len of lines was: {len(lines)}. Has to be either 3 or 16")
+    
+    return out
+
+
 def read_image_pose_pairs_without_frameskip(
         image_dir, pose_dir, image_suffix='_rgb.png',
         pose_suffix='_pose.json', skip_names=None, verbose=False):
@@ -166,7 +295,7 @@ def read_image_pose_pairs_without_frameskip(
         int(osp.basename(x).replace(pose_suffix, ''))
         for x in glob.glob(osp.join(pose_dir, '*' + pose_suffix))])
     
-    print(pose_names)
+    print("sorted pose names: ", pose_names)
     
     
     # Remove invalid poses and data
@@ -180,26 +309,42 @@ def read_image_pose_pairs_without_frameskip(
 
             # Remove image, pose of corrupt poses
             print("However, corrupt images are not removed. Check torch_points3d/datasets/segmentation/multimodal/utils.py")
-#             for path in [corrupt_pose_path, corrupt_color_path]:#, corrupt_depth_path]:
-#                 if os.path.exists(path):
-#                     os.remove(path)
 
+    # Select views based on camera extrinsics
+    ids = []
+    count = 0
+    for i, pose_id in enumerate(pose_names): 
+        cam_pose = load_pose(os.path.join(pose_dir, str(pose_id) + pose_suffix))
+        if count == 0:
+            ids.append(i)
+            last_pose = cam_pose
+        else:
+            angle = np.arccos(
+                ((np.linalg.inv(cam_pose[:3, :3]) @ last_pose[:3, :3] @ np.array([0, 0, 1]).T) * np.array(
+                    [0, 0, 1])).sum())
+            dis = np.linalg.norm(cam_pose[:3, 3] - last_pose[:3, 3])
+
+            if np.isnan(angle).any():
+                continue
+
+            if angle > (args.min_angle / 180) * np.pi or dis > args.min_distance:
+                ids.append(i)
+                last_pose = cam_pose
+                # Compute camera view frustum and extend convex hull
+
+            
     # Search for images and poses
-    image_names = sorted([
-        int(osp.basename(x).replace(image_suffix, ''))
-        for x in glob.glob(osp.join(image_dir, '*' + image_suffix))])
-    pose_names = sorted([
-        int(osp.basename(x).replace(pose_suffix, ''))
-        for x in glob.glob(osp.join(pose_dir, '*' + pose_suffix))])
+#     image_names = sorted([
+#         int(osp.basename(x).replace(image_suffix, ''))
+#         for x in glob.glob(osp.join(image_dir, '*' + image_suffix))])
+#     pose_names = sorted([
+#         int(osp.basename(x).replace(pose_suffix, ''))
+#         for x in glob.glob(osp.join(pose_dir, '*' + pose_suffix))])
 
      
     pose_names_subset = [str(pose_names[i]) for i in range(len(pose_names))]    
     
 
-    #skip_names = skip_names if skip_names is not None else []
-    #image_names = [x for x in image_names if x not in skip_names]
-    #pose_names = [x for x in pose_names if x not in skip_names]
-    
     image_names = pose_names_subset
     pose_names = pose_names_subset
     
@@ -213,21 +358,6 @@ def read_image_pose_pairs_without_frameskip(
             print(f"file {file} does not exist! ")
             raise ValueError
 
-#             offset = 0
-#             while True and offset <= 10:
-#                 offset += 1
-#                 new_file = os.path.join(image_dir, str(int(image_id) + offset) + image_suffix)
-#                 if os.path.exists(new_file):
-#                     break
-#             image_names[i] = str(int(image_id) + offset)
-#             pose_names[i] = str(int(image_id) + offset)
-            
-#             if offset == 10:
-#                 idx_to_pop.append(i)
-#     # Remove entries for which no existing color image was found (within 10 tries)
-#     for idx in idx_to_pop:
-#         image_names.pop(idx)
-#         pose_names.pop(idx)
                 
     # Print orphans
     if not image_names == pose_names:

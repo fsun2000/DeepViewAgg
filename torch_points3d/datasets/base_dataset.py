@@ -465,7 +465,11 @@ class BaseDataset:
     @property  # type: ignore
     @save_used_properties
     def num_classes(self):
-        return self.train_dataset.num_classes
+        try:
+            return self.train_dataset.num_classes
+        except AttributeError:
+            print("Manually set number of classes for model initialization in DeepViewAgg/torch_points3d/datasets/base_dataset.py, line 471")
+            return self.test_dataset[0].num_classes 
 
     @property
     def weight_classes(self):
