@@ -209,8 +209,10 @@ class SameSettingImageData:
         
         m2f_pred_mask:Tensor        tensor of M2F predicted labels. labels range from [0,20]
         m2f_pred_mask_path:numpy.ndarray [N] paths
+        gt_mask:Tensor        tensor of GT predicted labels. labels range from [0,20]
+        gt_mask_path:numpy.ndarray [N] paths
     """
-    _numpy_keys = ['path', 'm2f_pred_mask_path']
+    _numpy_keys = ['path', 'm2f_pred_mask_path', 'gt_mask_path']
     _pinhole_keys = ['fx', 'fy', 'mx', 'my']
     _fisheye_keys = ['xi', 'k1', 'k2', 'gamma1', 'gamma2', 'u0', 'v0']
     _torch_keys = ['pos', 'opk', 'extrinsic', 'crop_offsets', 'rollings'] \
@@ -219,12 +221,13 @@ class SameSettingImageData:
     _x_key = 'x'
     _mvfusion_input_key = 'mvfusion_input'
     _m2f_pred_mask_key = 'm2f_pred_mask'
+    _gt_mask_key = 'gt_mask'
     _mask_key = 'mask'
     _visi_key = 'visibility'
     _shared_keys = [
         'ref_size', 'proj_upscale', 'downscale', 'crop_size', _mask_key,
         _visi_key]
-    _own_keys = _numpy_keys + _torch_keys + [_map_key, _x_key, _m2f_pred_mask_key,
+    _own_keys = _numpy_keys + _torch_keys + [_map_key, _x_key, _m2f_pred_mask_key, _gt_mask_key,
                                              _mvfusion_input_key]
     _keys = _shared_keys + _own_keys
 
@@ -235,7 +238,7 @@ class SameSettingImageData:
             x=None, mappings=None, mask=None, visibility=None, fx=None,
             fy=None, mx=None, my=None, xi=None, k1=None, k2=None, gamma1=None,
             gamma2=None, u0=None, v0=None, extrinsic=None,
-            m2f_pred_mask=None, m2f_pred_mask_path=None, mvfusion_input=None, **kwargs):
+            m2f_pred_mask=None, m2f_pred_mask_path=None, gt_mask=None, gt_mask_path=None, mvfusion_input=None, **kwargs):
 
         # Initialize the private internal state attributes
         self._ref_size = None
@@ -280,6 +283,8 @@ class SameSettingImageData:
         # Attribute for storing Mask2Former predicted masks
         self.m2f_pred_mask = m2f_pred_mask
         self.m2f_pred_mask_path = m2f_pred_mask_path
+        self.gt_mask = gt_mask
+        self.gt_mask_path = gt_mask_path
         self.mvfusion_input = mvfusion_input
         
         # self.debug()
@@ -728,7 +733,9 @@ class SameSettingImageData:
             self.x = x
             
         if self.m2f_pred_mask is not None:
-            print("update_cropping has been called, but Mask2Former pred masks are not cropped properly!")
+            raise NotImplementedError("update_cropping has been called, but pred masks are not cropped properly!")
+        if self.gt_mask is not None:
+            raise NotImplementedError("update_cropping has been called, but gt masks are not cropped properly!")
 
         # Update the mappings
         if self.mappings is not None:
@@ -1165,6 +1172,8 @@ class SameSettingImageData:
             visibility=copy.deepcopy(self.visibility) if hasattr(self, 'visibility') else None,
             m2f_pred_mask=self.m2f_pred_mask[idx] if self.m2f_pred_mask is not None else None,
             m2f_pred_mask_path=self.m2f_pred_mask_path[idx_numpy] if self.m2f_pred_mask_path is not None else None,
+            gt_mask=self.gt_mask[idx] if self.gt_mask is not None else None,
+            gt_mask_path=self.gt_mask_path[idx_numpy] if self.gt_mask_path is not None else None,
             mvfusion_input=self.mvfusion_input[idx] if self.mvfusion_input is not None else None
         )
 
@@ -1218,6 +1227,8 @@ class SameSettingImageData:
             visibility=self.visibility,
             m2f_pred_mask=self.m2f_pred_mask.to(device) if self.m2f_pred_mask is not None else None,
             m2f_pred_mask_path=self.m2f_pred_mask_path,
+            gt_mask=self.gt_mask.to(device) if self.gt_mask is not None else None,
+            gt_mask_path=self.gt_mask_path,
             mvfusion_input=self.mvfusion_input.to(device) if self.mvfusion_input is not None else None
             )
         out._x = self.x.to(device) if self.x is not None else None
@@ -1349,6 +1360,40 @@ class SameSettingImageData:
 
         return x
 
+    def get_mapped_gt_labels(self, interpolate=False):
+        """Return the mapped gt labels, with optional interpolation. If
+        `interpolate=False`, the mappings will be adjusted to
+        `self.img_size`: the current size of the label map `self.x`.
+        """
+        # Compute the feature map's sampling ratio between the input
+        # `mapping_size` and the current `img_size`
+        # TODO: treat scales independently. Careful with min or max
+        #  depending on upscale and downscale
+        scale = 1 / self.downscale
+
+        print("self.ref_size: ", self.ref_size)
+
+        # If not interpolating, set the mapping to the proper scale
+        if interpolate:
+            mappings = self.mappings
+        else:
+            mappings = self.mappings.rescale_images(scale)
+            if scale < 1.:
+                print(
+                    "Warning: pixel coordinates are being rescaled with ratio < 1. This functionality has not been checked before")
+
+        # Index the features with/without interpolation
+        if interpolate and scale != 1:
+            resolution = torch.Tensor([self.mapping_size]).to(self.device)
+            coords = mappings.pixels / (resolution - 1)
+            coords = coords[:, [1, 0]]  # pixel mappings are in (W, H) format
+            batch = mappings.feature_map_indexing[0]
+            x = sparse_interpolation(self.gt_mask, coords, batch)
+        else:
+            print("self.gt_mask.shape: ", self.gt_mask.shape)
+            x = self.gt_mask[mappings.feature_map_indexing]
+
+        return x
 
 class SameSettingImageBatch(SameSettingImageData):
     """Wrapper class of SameSettingImageData to build a batch from a
@@ -1451,6 +1496,13 @@ class SameSettingImageBatch(SameSettingImageData):
             batch_dict[SameSettingImageData._m2f_pred_mask_key] = torch.cat(
                 batch_dict[SameSettingImageData._m2f_pred_mask_key])
 
+        # Concatenate GT masks, unless one of the items does not have GT masks
+        if any(img is None for img in batch_dict[SameSettingImageData._gt_mask_key]):
+            batch_dict[SameSettingImageData._gt_mask_key] = None
+        else:
+            batch_dict[SameSettingImageData._gt_mask_key] = torch.cat(
+                batch_dict[SameSettingImageData._gt_mask_key])
+
         # Concatenate MVFusion inputs, unless one of the items does not exist
         if any(img is None for img in batch_dict[SameSettingImageData._mvfusion_input_key]):
             batch_dict[SameSettingImageData._mvfusion_input_key] = None
@@ -1520,6 +1572,10 @@ class ImageData:
     @property
     def m2f_pred_mask(self):
         return [im.m2f_pred_mask for im in self]
+
+    @property
+    def gt_mask(self):
+        return [im.gt_mask for im in self]
 
     @x.setter
     def x(self, x_list):
