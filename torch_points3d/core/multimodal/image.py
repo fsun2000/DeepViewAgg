@@ -1335,9 +1335,6 @@ class SameSettingImageData:
         # TODO: treat scales independently. Careful with min or max
         #  depending on upscale and downscale
         scale = 1 / self.downscale
-
-        print("self.ref_size: ", self.ref_size)
-
             
         # If not interpolating, set the mapping to the proper scale
         if interpolate:
@@ -1355,7 +1352,6 @@ class SameSettingImageData:
             batch = mappings.feature_map_indexing[0]
             x = sparse_interpolation(self.m2f_pred_mask, coords, batch)
         else:
-            print("self.m2f_pred_mask.shape: ", self.m2f_pred_mask.shape)
             x = self.m2f_pred_mask[mappings.feature_map_indexing]
 
         return x
@@ -1370,8 +1366,6 @@ class SameSettingImageData:
         # TODO: treat scales independently. Careful with min or max
         #  depending on upscale and downscale
         scale = 1 / self.downscale
-
-        print("self.ref_size: ", self.ref_size)
 
         # If not interpolating, set the mapping to the proper scale
         if interpolate:
@@ -1390,7 +1384,6 @@ class SameSettingImageData:
             batch = mappings.feature_map_indexing[0]
             x = sparse_interpolation(self.gt_mask, coords, batch)
         else:
-            print("self.gt_mask.shape: ", self.gt_mask.shape)
             x = self.gt_mask[mappings.feature_map_indexing]
 
         return x

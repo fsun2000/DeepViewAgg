@@ -357,6 +357,9 @@ class ScannetMM_Inference(Scannet_Inference):
         i_split = self.SPLITS.index(self.split)
         images = torch.load(osp.join(
             self.processed_2d_paths[i_split], scan_name + '.pt'))
+        
+        images.gt_mask = None
+        images.gt_mask_path = None
                 
         # Run image transforms
         if self.transform_image is not None and self.load_m2f_masks is False:
@@ -378,7 +381,9 @@ class ScannetMM_Inference(Scannet_Inference):
             images[0].extrinsic = inv @ images[0].extrinsic 
 
         if self.center_xy:
+            print("rotating pos and extr of camera views")
             images[0].pos = images[0].pos @ get_Rx(270)[:3, :3].double()
+            images[0].extrinsic = get_Rx(270) @ images[0].extrinsic
             images[0].pos -= data_mean
         
         

@@ -1217,6 +1217,9 @@ class RandomHorizontalFlip(ImageTransform):
             
             if images.m2f_pred_mask is not None:
                 images.m2f_pred_mask = images.m2f_pred_mask[..., flip_index]
+                
+            if images.gt_mask is not None:
+                images.gt_mask = images.gt_mask[..., flip_index]
             
             _, _, _, width = images.x.shape
             images.mappings.pixels[:, 0] = \

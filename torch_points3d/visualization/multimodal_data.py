@@ -711,6 +711,8 @@ def visualize_2d(
 
             # Get the mapping of all points in the sample
             idx = im.mappings.feature_map_indexing
+            
+            print("idx: ", idx)
 
             # Init the visualizations
             im.visualizations = []

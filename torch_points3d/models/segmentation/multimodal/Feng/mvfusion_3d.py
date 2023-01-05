@@ -1031,7 +1031,6 @@ class MVFusionAPIModel(BaseModel):
                 - First approach: simple sum over all views (loop over all views, concatenate all labels to Tensor).
                 - Then take mean over classes using nll_loss (default = mean aggregation)
                 """
-                print("Calculating 2d cross entropy over views...")
                 # Get the number of views in which each point is visible
                 csr_idx = self.input.modalities['image'][0].view_csr_indexing
                 n_seen = (csr_idx[1:] - csr_idx[:-1]).cuda()

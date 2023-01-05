@@ -363,6 +363,11 @@ class ScannetMM(Scannet):
         i_split = self.SPLITS.index(self.split)
         images = torch.load(osp.join(
             self.processed_2d_paths[i_split], scan_name + '.pt'))
+        
+        # Initialize internal attributes because these were not implemented in the originally preprocessed data
+        images.gt_mask = None
+        images.gt_mask_path = None
+        
                 
         # Run image transforms
         if self.transform_image is not None and self.load_m2f_masks is False:
@@ -398,34 +403,51 @@ class ScannetMM(Scannet):
                     print(images[i].path)
             
             first_img_path = images[0].path[0]
-            m2f_dir = first_img_path.split(os.sep)[:-3]
+            scan_dir = first_img_path.split(os.sep)[:-3]
             
             # Change directory name following migration from Lisa to Snellius
-            m2f_dir[1] = 'scratch-shared'
-            m2f_dir = ['', 'home', 'fsun', 'data', 'scannet', 'scans', m2f_dir[-1]]
+            scan_dir[1] = 'scratch-shared'
+            m2f_dir = ['', 'home', 'fsun', 'data', 'scannet', 'scans', scan_dir[-1]]
             m2f_dir = os.sep.join([*m2f_dir, self.m2f_preds_dirname])
-                                    
-            m2f_masks = []
-            m2f_mask_paths = []
+            
+            gt_dir = os.path.join('/scratch-shared/fsun/data/scannet/scans',scan_dir[-1], 'label-filt-scannet20')
+                                                
+            m2f_masks, m2f_mask_paths, gt_masks, gt_mask_paths = [], [], [], []
             for rgb_path in images[0].path:
-
+                # Pred masks
                 m2f_filename, ext = osp.splitext(rgb_path.split(os.sep)[-1])
                 m2f_filename += '.png'
-                
                 pred_mask_path = osp.join(m2f_dir, m2f_filename)
                 pred_mask = Image.open(pred_mask_path)
                 pred_mask = pred_mask.resize(self.img_ref_size, resample=Image.NEAREST) 
-                
                 # minus 1 to match DVA label classes ranging [0, 19] instead of [1, 20]
                 m2f_masks.append(pil_to_tensor(pred_mask) - 1)
-                
                 m2f_mask_paths.append(pred_mask_path)
+                
+                # GT masks
+                gt_filename, ext = osp.splitext(rgb_path.split(os.sep)[-1])
+                gt_filename += '.png'
+                gt_mask_path = osp.join(gt_dir, gt_filename)
+                gt_mask = Image.open(gt_mask_path)
+                gt_mask = gt_mask.resize(self.img_ref_size, resample=Image.NEAREST) 
+                # minus 1 to match DVA label classes ranging [-1, 19] instead of [0, 20]
+                gt_masks.append(pil_to_tensor(gt_mask).long() - 1)
+                gt_mask_paths.append(gt_mask_path)
+                
                                 
             m2f_masks = torch.stack(m2f_masks)
+            gt_masks = torch.stack(gt_masks)
                 
             # Store M2F pred mask in data
             images[0].m2f_pred_mask = m2f_masks
             images[0].m2f_pred_mask_path = np.array(m2f_mask_paths)
+            
+            # Store GT mask in data
+            images[0].gt_mask = gt_masks
+            images[0].gt_mask_path = np.array(gt_mask_paths)
+            
+            
+            
                       
             # Left-over transform
             try:
