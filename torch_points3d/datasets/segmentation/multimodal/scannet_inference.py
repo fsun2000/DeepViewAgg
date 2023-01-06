@@ -241,7 +241,7 @@ class ScannetMM_Inference(Scannet_Inference):
                     {'path': i_file, 'extrinsic': load_pose(p_file)}
                     for i_file, p_file in read_image_pose_pairs(
                         osp.join(scan_sens_dir, 'color'),
-                        osp.join(scan_sens_dir, 'pose'),
+                        osp.join(scan_sens_dir, 'pose_rotated'),
                         image_suffix='.png', pose_suffix='.txt', skip_freq=self.frame_skip)#, neucon_metas_dir=self.neucon_metas_dir)
                         ]
 
@@ -335,9 +335,9 @@ class ScannetMM_Inference(Scannet_Inference):
             inv = torch.linalg.inv(axis_align_matrix.T)
             data.pos = (torch.concat((data.pos, torch.ones((len(data.pos), 1))), axis=-1) @ inv)[:, :3]
         
-        #### Rotate mesh
-        print("Rotating PCD with get_Rx(270)")
-        data.pos = data.pos @ get_Rx(270)[:3, :3]
+#         #### Rotate mesh
+#         print("Rotating PCD with get_Rx(270)")
+#         data.pos = data.pos @ get_Rx(270)[:3, :3].T
         
         # apply 3D transforms
         data = data if self.transform is None else self.transform(data)
@@ -381,9 +381,9 @@ class ScannetMM_Inference(Scannet_Inference):
             images[0].extrinsic = inv @ images[0].extrinsic 
 
         if self.center_xy:
-            print("rotating pos and extr of camera views")
-            images[0].pos = images[0].pos @ get_Rx(270)[:3, :3].double()
-            images[0].extrinsic = get_Rx(270) @ images[0].extrinsic
+#             print("rotating pos and extr of camera views")
+#             images[0].pos = images[0].pos @ get_Rx(270)[:3, :3].T.double()
+#             images[0].extrinsic = images[0].extrinsic @ get_Rx(270).T
             images[0].pos -= data_mean
         
         
@@ -414,7 +414,6 @@ class ScannetMM_Inference(Scannet_Inference):
                 pred_mask_path = osp.join(m2f_dir, m2f_filename)
                 pred_mask = Image.open(pred_mask_path)
                 pred_mask = pred_mask.resize(self.img_ref_size, resample=Image.NEAREST) 
-                print("pred_mask: ", pred_mask)
                 # minus 1 to match DVA label classes ranging [0, 19] instead of [1, 20]
                 m2f_masks.append(pil_to_tensor(pred_mask) - 1)
                 

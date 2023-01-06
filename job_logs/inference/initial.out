@@ -1,0 +1,86 @@
+MMData debug() function changed, please uncomment the 3rd assert line when doing inference without M2F features!
+[2023-01-02 20:37:35,096][torch_points3d.trainer][INFO] - DEVICE : cuda
+wandb: W&B is a tool that helps track and visualize machine learning experiments
+wandb: No credentials found.  Run "wandb login" to visualize your metrics
+wandb: Tracking run with wandb version 0.8.36
+wandb: Wandb version 0.13.7 is available!  To upgrade, please run:
+wandb:  $ pip install wandb --upgrade
+wandb: Run data is saved locally in wandb/run-20230102_193735-19104nb4
+
+dataset_class:  scannet_inference.ScannetDatasetMM_Inference
+dataset_paths:  ['scannet_inference', 'ScannetDatasetMM_Inference']
+module:  scannet_inference
+class_name:  ScannetDatasetMM_Inference
+dataset_module:  torch_points3d.datasets.segmentation.multimodal.scannet_inference
+Load predicted 2D semantic segmentation labels from directory  ViT_masks
+initialize test dataset
+line 720 scannet.py: split == 'test'
+task:  segmentation.multimodal
+tested_model_name:  MVFusion_3D_small_6views
+Error executing job with overrides: ['data=segmentation/multimodal/Feng/inference.yaml', 'models=segmentation/multimodal/Feng/mvfusion', 'model_name=MVFusion_3D_small_6views', 'task=segmentation', 'training=Feng/superconvergence.yaml', 'lr_scheduler=onecyclelr', 'eval_frequency=5', 'lr_range_test=False', 'update_lr_scheduler_on=on_num_batch', 'data.dataroot=/home/fsun/data/inference_data/dva_processed', 'data.m2f_preds_dirname=ViT_masks', 'data.pixel_credits=100', 'training.cuda=0', 'training.batch_size=1', 'training.epochs=61', 'training.num_workers=1']
+
+Traceback (most recent call last):
+  File "train.py", line 23, in <module>
+    main()
+  File "/home/fsun/.conda/envs/pytorch3d/lib/python3.7/site-packages/hydra/main.py", line 53, in decorated_main
+    config_name=config_name,
+  File "/home/fsun/.conda/envs/pytorch3d/lib/python3.7/site-packages/hydra/_internal/utils.py", line 368, in _run_hydra
+    lambda: hydra.run(
+  File "/home/fsun/.conda/envs/pytorch3d/lib/python3.7/site-packages/hydra/_internal/utils.py", line 214, in run_and_report
+    raise ex
+  File "/home/fsun/.conda/envs/pytorch3d/lib/python3.7/site-packages/hydra/_internal/utils.py", line 211, in run_and_report
+    return func()
+  File "/home/fsun/.conda/envs/pytorch3d/lib/python3.7/site-packages/hydra/_internal/utils.py", line 371, in <lambda>
+    overrides=args.overrides,
+  File "/home/fsun/.conda/envs/pytorch3d/lib/python3.7/site-packages/hydra/_internal/hydra.py", line 110, in run
+    _ = ret.return_value
+  File "/home/fsun/.conda/envs/pytorch3d/lib/python3.7/site-packages/hydra/core/utils.py"wandb: Waiting for W&B process to finish, PID 1480905
+, line 233, in return_value
+    raise self._return_value
+  File "/home/fsun/.conda/envs/pytorch3d/lib/python3.7/site-packages/hydra/core/utils.py", line 160, in run_job
+    ret.return_value = task_function(task_cfg)
+  File "train.py", line 13, in main
+    trainer = Trainer(cfg)
+  File "/gpfs/home3/fsun/DeepViewAgg/torch_points3d/trainer.py", line 54, in __init__
+    self._initialize_trainer()
+  File "/gpfs/home3/fsun/DeepViewAgg/torch_points3d/trainer.py", line 108, in _initialize_trainer
+    copy.deepcopy(self._cfg), self._dataset)
+  File "/gpfs/home3/fsun/DeepViewAgg/torch_points3d/models/model_factory.py", line 28, in instantiate_model
+    resolve_model(model_config, dataset, task)
+  File "/gpfs/home3/fsun/DeepViewAgg/torch_points3d/utils/model_building_utils/model_definition_resolver.py", line 10, in resolve_model
+    "FEAT": max(dataset.feature_dimension, 0),
+  File "/gpfs/home3/fsun/DeepViewAgg/torch_points3d/datasets/base_dataset.py", line 53, in wrapper
+    result = func(self, *args, **kwargs)
+  File "/gpfs/home3/fsun/DeepViewAgg/torch_points3d/datasets/base_dataset.py", line 481, in feature_dimension
+    return self.test_dataset[0].num_features
+  File "/home/fsun/.conda/envs/pytorch3d/lib/python3.7/site-packages/torch_geometric/data/dataset.py", line 111, in num_features
+    return self.num_node_features
+  File "/home/fsun/.conda/envs/pytorch3d/lib/python3.7/site-packages/torch_geometric/data/dataset.py", line 102, in num_node_features
+    data = self[0]
+  File "/gpfs/home3/fsun/DeepViewAgg/torch_points3d/datasets/segmentation/multimodal/scannet_inference.py", line 367, in __getitem__
+    self.processed_2d_paths[i_split], scan_name + '.pt'))
+  File "/home/fsun/.conda/envs/pytorch3d/lib/python3.7/site-packages/torch/serialization.py", line 699, in load
+    with _open_file_like(f, 'rb') as opened_file:
+  File "/home/fsun/.conda/envs/pytorch3d/lib/python3.7/site-packages/torch/serialization.py", line 230, in _open_file_like
+    return _open_file(name_or_buffer, mode)
+  File "/home/fsun/.conda/envs/pytorch3dwandb: Program failed with code 1. Press ctrl-c to abort syncing.
+/lib/python3.7/site-packages/torch/serialization.py", line 211, in __init__
+    super(_open_file, self).__init__(open(name, mode))
+FileNotFoundError: [Errno 2] No such file or directory: '/home/fsun/data/inference_data/dva_processed/inference/processed/processed_2d_test/see_current_morning_724.pt'
+wandb: You can sync this run to the cloud by running: 
+wandb: wandb sync wandb/run-20230102_193735-19104nb4
+./scripts/inference.sh: line 61: training.wandb.log=False: command not found
+
+JOB STATISTICS
+==============
+Job ID: 2007687
+Cluster: snellius
+User/Group: fsun/fsun
+State: FAILED (exit code 127)
+Nodes: 1
+Cores per node: 18
+CPU Utilized: 00:00:08
+CPU Efficiency: 1.39% of 00:09:36 core-walltime
+Job Wall-clock time: 00:00:32
+Memory Utilized: 1.35 MB
+Memory Efficiency: 0.00% of 58.59 GB
