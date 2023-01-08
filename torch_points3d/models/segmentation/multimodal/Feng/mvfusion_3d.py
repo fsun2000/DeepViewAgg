@@ -1030,6 +1030,16 @@ class MVFusionAPIModel(BaseModel):
                 
                 - First approach: simple sum over all views (loop over all views, concatenate all labels to Tensor).
                 - Then take mean over classes using nll_loss (default = mean aggregation)
+                
+                
+                --------------
+                Subsampling method
+                Out of all seen points in a batch:
+                - Take N points per class
+                - Take the labels from points with >= 2 views, and sample a max of K views/labels from these.
+                - Calculate 2d loss from these points and views
+                
+                Set K = 3
                 """
                 # Get the number of views in which each point is visible
                 csr_idx = self.input.modalities['image'][0].view_csr_indexing

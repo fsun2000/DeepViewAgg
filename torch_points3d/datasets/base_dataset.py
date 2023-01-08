@@ -216,7 +216,8 @@ class BaseDataset:
         num_workers: int,
         precompute_multi_scale: bool,
         train_only: bool = False,
-        val_only: bool = False
+        val_only: bool = False,
+        test_batch_size: int = 1
     ):
         """ Creates the data loaders. Must be called in order to
         complete the setup of the Dataset.
@@ -250,14 +251,13 @@ class BaseDataset:
 
         if self.test_dataset:
             print("creating test loader")
-            print("NOTE: this flag has not been tested by Feng ")
             self._test_loaders = [
                 self._dataloader(
                     dataset,
                     self.test_pre_batch_collate_transform,
                     conv_type,
                     precompute_multi_scale,
-                    batch_size=batch_size,
+                    batch_size=test_batch_size,
                     shuffle=False,
                     num_workers=num_workers,
                     sampler=self.test_sampler,
@@ -271,7 +271,7 @@ class BaseDataset:
                 self.val_pre_batch_collate_transform,
                 conv_type,
                 precompute_multi_scale,
-                batch_size=batch_size,
+                batch_size=test_batch_size,
                 shuffle=False,
                 num_workers=num_workers,
                 sampler=self.val_sampler,

@@ -129,7 +129,8 @@ class Trainer:
             self._cfg.training.num_workers,
             self.precompute_multi_scale,
             train_only=False,
-            val_only=False
+            val_only=False,
+            test_batch_size=self._cfg.training.test_batch_size
         )
         
         log.info(self._dataset)
@@ -189,7 +190,8 @@ class Trainer:
                 self._cfg.training.num_workers,
                 self.precompute_multi_scale,
                 train_only=False,
-                val_only=True
+                val_only=True,
+                test_batch_size=self._cfg.training.test_batch_size
             )
         
             if self._dataset.has_val_loader:
@@ -226,7 +228,17 @@ class Trainer:
             self.wandb_log, self.tensorboard_log)
         self._tracker_2d_mvfusion_pred_masks: BaseTracker = self._dataset.get_tracker(
             self.wandb_log, self.tensorboard_log)
-
+            
+        print("trainer.py: Tracking view entropy scores for Input Masks, Refined Prediction and GT Masks!")
+        self._tracker_m2f_entropy: BaseTracker = self._dataset.get_tracker(
+            self.wandb_log, self.tensorboard_log)
+        self._tracker_mvfusion_entropy: BaseTracker = self._dataset.get_tracker(
+            self.wandb_log, self.tensorboard_log)
+        self._tracker_gt_entropy: BaseTracker = self._dataset.get_tracker(
+            self.wandb_log, self.tensorboard_log)
+            
+            
+            
         epoch = self._checkpoint.start_epoch
         
 #         print()
@@ -443,9 +455,11 @@ class Trainer:
 
             # Grab set of points visible in current view
             mm_data_of_view = mm_data[points]
+            
+            im_ref_w, im_ref_h = x.ref_size
 
             # Get nearest neighbor interpolated projection image filled with 3D labels
-            pred_mask_2d = -1 * torch.ones((240, 320), dtype=torch.long, device=mm_data_of_view.device)    
+            pred_mask_2d = -1 * torch.ones((im_ref_h, im_ref_w), dtype=torch.long, device=mm_data_of_view.device)    
             pred_mask_2d[h, w] = mm_data_of_view.data.pred.squeeze()
             
             nearest_neighbor = scipy.ndimage.morphology.distance_transform_edt(
@@ -479,9 +493,42 @@ class Trainer:
             # 2D MVFusion mIoU
             self._tracker_2d_mvfusion_pred_masks.track(
                 pred_labels=refined_2d_pred, gt_labels=gt_img, model=None)
+            
+            # View Entropy Scores (using 2D view gt labels and 3d projected predictions)
+            # NOTE: M2F case uses 2D interpolated predictions and 2D gt labels
+            # M2F predicted mask for current view
+            m2f_labels_2d = x.get_mapped_m2f_features().squeeze()
+            
+            upscaled_indexing = tuple([2*coor for coor in x.mappings.feature_map_indexing[2:]])
+            gt_labels_2d = torch.LongTensor(gt_img[upscaled_indexing])
+            
+            self._tracker_m2f_entropy.track(pred_labels=m2f_labels_2d, gt_labels=gt_labels_2d, model=None)
+            self._tracker_mvfusion_entropy.track(pred_labels=mm_data_of_view.data.pred, gt_labels=gt_labels_2d, model=None)
+
+            mm_data_of_view.data.y[mm_data_of_view.data.y == -1] = 0        # Replace ignored labels in 3D gt
+            self._tracker_gt_entropy.track(pred_labels=mm_data_of_view.data.y, gt_labels=gt_labels_2d, model=None)
+
 
         return
         
+    def get_multiview_entropy_scores(self, tracker):
+        confusion_mat = tracker._confusion_matrix.get_confusion_matrix()
+
+        per_class_normalized_entropy = []
+        for i in range(len(confusion_mat)):
+            nonzero_entries = confusion_mat[:, i][confusion_mat[:, i] > 0]
+
+            # normalized entropy using log2 base
+            pk = nonzero_entries / nonzero_entries.sum()
+
+            if len(pk) <= 1:
+                per_class_normalized_entropy.append(0.)
+            else:
+                normalized_entropy = -sum(pk * np.log2(pk)) / np.log2(len(pk))
+                per_class_normalized_entropy.append(normalized_entropy)
+
+        return np.mean(np.round(np.array(per_class_normalized_entropy), 4)), np.round(per_class_normalized_entropy, 4)
+
     def _test_epoch(self, epoch, stage_name: str):
         
         voting_runs = self._cfg.get("voting_runs", 1)
@@ -501,6 +548,10 @@ class Trainer:
             if self._tracker_2d_mvfusion_pred_masks is not None:
                 self._tracker_2d_mvfusion_pred_masks.reset(stage_name)
                 self._tracker_2d_model_pred_masks.reset(stage_name)
+                
+                self._tracker_m2f_entropy.reset(stage_name)
+                self._tracker_mvfusion_entropy.reset(stage_name)
+                self._tracker_gt_entropy.reset(stage_name)
             
             if self.has_visualization:
                 self._visualizer.reset(epoch, stage_name)
@@ -522,6 +573,7 @@ class Trainer:
                             self._tracker.track(self._model, data=data, **self.tracker_options)
                             
                             # 2D mIoU of both original and refined semantic label masks
+                            # also tracks view entropy metric
                             if self._tracker_2d_mvfusion_pred_masks is not None:
                                 self._track_2d_results(self._model, data)
                             
@@ -549,7 +601,30 @@ class Trainer:
                 log.info("Evaluated scores for 2D input masks: ")
                 self._tracker_2d_model_pred_masks.finalise(**self.tracker_options)
                 self._tracker_2d_model_pred_masks.print_summary()
+                
+                log.info("Evaluated view entropy scores for input masks (using 2D-3D correspondences and 3D GT): ")
+                self._tracker_m2f_entropy.finalise(**self.tracker_options)
+                self._tracker_m2f_entropy.print_summary()
+                mean_view_entropy, per_class_view_entropy = self.get_multiview_entropy_scores(self._tracker_m2f_entropy)
+                log.info(f"mean_view_entropy: {mean_view_entropy}")
+                log.info(f"per_class_view_entropy: {per_class_view_entropy}")
 
+                    
+                log.info("Evaluated view entropy scores for refined predictions (using 2D-3D correspondences and 3D GT): ")
+                self._tracker_mvfusion_entropy.finalise(**self.tracker_options)
+                self._tracker_mvfusion_entropy.print_summary()
+                mean_view_entropy, per_class_view_entropy = self.get_multiview_entropy_scores(self._tracker_mvfusion_entropy)
+                log.info(f"mean_view_entropy: {mean_view_entropy}")
+                log.info(f"per_class_view_entropy: {per_class_view_entropy}")
+
+                
+                log.info("Evaluated view entropy scores for gt masks (using 2D-3D correspondences and 3D GT): ")
+                self._tracker_gt_entropy.finalise(**self.tracker_options)
+                self._tracker_gt_entropy.print_summary()
+                mean_view_entropy, per_class_view_entropy = self.get_multiview_entropy_scores(self._tracker_gt_entropy)
+                log.info(f"mean_view_entropy: {mean_view_entropy}")
+                log.info(f"per_class_view_entropy: {per_class_view_entropy}")
+                
     @property
     def early_break(self):
         if not hasattr(self._cfg, "debugging"):

@@ -756,6 +756,92 @@ MVFusion_3D_large:
             max_n_points: 100000         # max. size of transformer batched input. Increase if memory allows
             gating: False
 
+MVFusion_3D_large_6views:
+    class: Feng.mvfusion_3d.MVFusionAPIModel
+    conv_type: "SPARSE"
+    backend: "torchsparse"
+    use_cross_entropy: True
+    backbone: # backbone offset specific for Sparse conv application builder
+        define_constants:
+            in_feat: 32
+            in_feat_img: 4
+            in_feat_map: 8
+            in_feat_attention: 4
+            block: ResBlock # Can be any of the blocks in modules/MinkowskiEngine/api_modules.py
+            out_mv_feat_dim: 256  # out dim of multi-view fused feature
+
+        down_conv:
+            module_name: ResNetDown
+            block: block
+            conv3d_after_fusion: False
+            N: [ 0, 2, 3, 4, 6 ]
+            kernel_size: [ 3, 2, 2, 2, 2 ]
+            stride: [ 1, 2, 2, 2, 2 ]
+            down_conv_nn:
+              [
+                  [ FEAT + out_mv_feat_dim, 4*in_feat ],  # Perhaps lower hid_dim of 
+                  [ 4*in_feat, in_feat ],                 # first two layers according to
+                  [ in_feat, 2*in_feat ],                 # transformer output dim?
+                  [ 2*in_feat, 4*in_feat ],
+                  [ 4*in_feat, 8*in_feat ],
+              ]
+
+            image:
+                down_conv:
+                    module_name: ADE20KResNet18TruncatedLayer4
+                    frozen: False
+                atomic_pooling:
+                    module_name: BimodalCSRPool
+                    mode: max
+                view_pooling:
+                    module_name: GroupBimodalCSRPool
+                    in_map: 8
+                    in_mod: out_mv_feat_dim
+                    num_groups: 4
+                    use_mod: False
+                    map_encoder: DeepSetFeat
+                    use_num: True
+                fusion:
+                    module_name: BimodalFusion
+                    mode: concatenation
+                branching_index: 0
+                checkpointing:  c 
+                interpolate: True
+
+        up_conv:
+            block: block
+            module_name: ResNetUp
+            N: [ 1, 1, 1, 1, 1 ]
+            kernel_size: [ 2, 2, 2, 2, 3 ]
+            stride: [ 2, 2, 2, 2, 1 ]
+            up_conv_nn:
+                [
+                  [ 8*in_feat, 4*in_feat, 4*in_feat ],
+                  [ 4*in_feat, 2*in_feat, 4*in_feat ],
+                  [ 4*in_feat, in_feat, 3*in_feat ],
+                  [ 3*in_feat, 4*in_feat, 3*in_feat ],
+                  [ 3*in_feat, 0, 3*in_feat ],
+                ]
+        transformer:   # config for multi-view fusion transformer
+            n_views: 6
+            in_map: 9                    # mapping feature size
+            in_m2f: 20                   # M2F one-hot encoded label size
+            embed_dim: 256
+            hidden_dim: 512
+            num_heads: 4
+            num_layers: 4
+            use_batch_norm: False        # layer norm by default
+            feat_downproj_dim: # 16
+            remove_first_dropout: True   # remove first dropout layer before the Transformer block
+            dropout: 0.2
+            mlp_dropout: 0.0             # final layer dropout
+            use_attn_mask: True          # Transformer attention masking
+            use_csr_mask: True           # Transformer pixel validity masking
+            has_mlp_head: False
+            max_n_points: 200000         # max. size of transformer batched input. Increase if memory allows
+            gating: False
+
+
 MVFusion_3D_large_6views_2d_supervision:
     class: Feng.mvfusion_3d.MVFusionAPIModel
     conv_type: "SPARSE"
@@ -825,7 +911,7 @@ MVFusion_3D_large_6views_2d_supervision:
                   [ 3*in_feat, 0, 3*in_feat ],
                 ]
         transformer:   # config for multi-view fusion transformer
-            n_views: 9
+            n_views: 6
             in_map: 9                    # mapping feature size
             in_m2f: 20                   # M2F one-hot encoded label size
             embed_dim: 256
