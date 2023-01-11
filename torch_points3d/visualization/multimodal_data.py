@@ -109,7 +109,7 @@ def identity_PCA(x, dim=3):
 def visualize_3d(
         mm_data, figsize=800, width=None, height=None, class_names=None,
         class_colors=None, class_opacities=None, voxel=0.1, max_points=100000,
-        pointsize=5, error_color=None, show_image_number=True, **kwargs):
+        pointsize=5, error_color=None, show_image_number=True, draw_image_positions=True, **kwargs):
     """3D data interactive visualization.
 
     :param mm_data: MMData object holding 3d points, images and mappings
@@ -356,7 +356,7 @@ def visualize_3d(
         modes['num_traces'].append(1)
 
     # Draw image positions
-    if has_2d:
+    if has_2d and draw_image_positions:
 
         img_traces = []
         if images.num_settings > 1:
@@ -501,7 +501,8 @@ def visualize_3d(
 
     if has_2d:
         output['images'] = images
-        output['img_traces'] = img_traces
+        if draw_image_positions:
+            output['img_traces'] = img_traces
 
     return output
 
@@ -577,9 +578,6 @@ def visualize_2d(
             'data': data,
             'front': front,
             'back': back}
-    
-    print("DFD")
-    print("bacl: ", back)
 
     # Set the image background with a fallback to 'x' attribute.
     # The background must be an image attribute carrying a tensor of
@@ -589,25 +587,20 @@ def visualize_2d(
         print("back :", back)
         for im in images:
             print(im.__dict__.keys())
-        print([getattr(im, back, None) is None for im in images])
         back = 'x'
     elif any([not isinstance(getattr(im, back), torch.Tensor) for im in images]) \
             or any([getattr(im, back).shape[0] != im.num_views for im in images]) \
             or any([getattr(im, back).shape[-2:] != im.img_size[::-1] for im in images]):
-        print([getattr(im, back).shape for im in images])
-        print(any([getattr(im, back).shape[0] != im.num_views for im in images]))
         raise ValueError(f"Background attribute '{back}' cannot be treated as an image tensor.")
     elif back != 'pred' and any([len(getattr(im, back).shape) != 4 for im in images]):
         raise ValueError(f"Background attribute '{back}' must have shape (Num_Views, C, H, W).")
 
     # Load images, if need be
     if back == 'x':
-        print("back is x")
         images = ImageData([im.load() if im.x is None else im for im in images])
         
     # Convert 2D predicted labels to RGB colors
     if back == 'pred':
-        print("back is pred")
         for im in images:
             # Convert logits to labels if need be
             if len(im.pred.shape) == 4 and im.pred.is_floating_point():
@@ -616,24 +609,13 @@ def visualize_2d(
                 raise ValueError("Image predictions must be int labels or float logits.")
             im.background = torch.ByteTensor(class_colors)[im.pred.long()].permute(0, 3, 1, 2)
     
-    print("LOLKEK")
     if back == 'm2f_pred_mask':
-        print("back is m2f_pred_mask")
         for im in images:
-            print(im.m2f_pred_mask.shape)
             if len(im.m2f_pred_mask.shape) != 4:
                 raise ValueError("M2F predictions must be image masks.")
             im.pred = im.m2f_pred_mask.long().squeeze()
-            print('class_colors: ', class_colors)
-            print('torch.ByteTensor(class_colors)', torch.ByteTensor(class_colors).shape)
-            print('im.pred', im.pred.shape)
-
             im.background = torch.ByteTensor(class_colors)[im.pred].permute(0, 3, 1, 2)
-            print(' im.background ',  im.background.shape)
-            
-        print("images[-1].background", images[-1].background.shape)
-        print("im pred: ", images[-1].pred.shape)
-            
+                        
         back = 'pred'   # Following code can be handled using 'pred' processing
             
     # Convert the background to RGB, if need be. All images are handled
@@ -656,8 +638,6 @@ def visualize_2d(
     else:
         for im in images:
             im.background = getattr(im, back).byte()
-
-    print(back)
 
             
     # Set the error visualization parameters
@@ -712,8 +692,6 @@ def visualize_2d(
             # Get the mapping of all points in the sample
             idx = im.mappings.feature_map_indexing
             
-            print("idx: ", idx)
-
             # Init the visualizations
             im.visualizations = []
             im.front = []

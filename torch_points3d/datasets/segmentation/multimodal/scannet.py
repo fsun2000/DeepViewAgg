@@ -144,25 +144,25 @@ class ScannetMM(Scannet):
         super(ScannetMM, self).__init__(*args, **kwargs)
     
         
-        if self.split == 'train':
-            # Instead of saving all 3D pre-transformed scans in CPU memory, save each
-            # individually processed scan in processed_3d_'split' directory and load 
-            # individual scans in the __getitem__ method. This saves tremendous amounts
-            # of memory when many dataloader workers are created, but is slightly slower.
-            scan_id_to_name = getattr(
-                self, f"MAPPING_IDX_TO_SCAN_{self.split.upper()}_NAMES")
-            data_dict = self.uncollate(self.data, self.slices, scan_id_to_name)
-            del self.data   # Keep self.slices for dataset functionality
+#         if self.split == 'train':
+#             # Instead of saving all 3D pre-transformed scans in CPU memory, save each
+#             # individually processed scan in processed_3d_'split' directory and load 
+#             # individual scans in the __getitem__ method. This saves tremendous amounts
+#             # of memory when many dataloader workers are created, but is slightly slower.
+#             scan_id_to_name = getattr(
+#                 self, f"MAPPING_IDX_TO_SCAN_{self.split.upper()}_NAMES")
+#             data_dict = self.uncollate(self.data, self.slices, scan_id_to_name)
+#             del self.data   # Keep self.slices for dataset functionality
 
-            # Export individual 3D Data to .pt files in processed_3d_'split' directory
-            out_dir = osp.join(self.processed_dir, f'processed_3d_{self.split}')
-            if not osp.exists(out_dir):
-                os.makedirs(out_dir)
-            for scan_name, data in data_dict.items():
-                processed_3d_scan_path = osp.join(out_dir, f'{scan_name}.pt')
-                if not osp.exists(processed_3d_scan_path):
-                    torch.save(data.clone(), processed_3d_scan_path)
-            del data_dict
+#             # Export individual 3D Data to .pt files in processed_3d_'split' directory
+#             out_dir = osp.join(self.processed_dir, f'processed_3d_{self.split}')
+#             if not osp.exists(out_dir):
+#                 os.makedirs(out_dir)
+#             for scan_name, data in data_dict.items():
+#                 processed_3d_scan_path = osp.join(out_dir, f'{scan_name}.pt')
+#                 if not osp.exists(processed_3d_scan_path):
+#                     torch.save(data.clone(), processed_3d_scan_path)
+#             del data_dict
             
         
     def process(self):        
@@ -327,38 +327,18 @@ class ScannetMM(Scannet):
             self, f"MAPPING_IDX_TO_SCAN_{self.split.upper()}_NAMES")
         scan_name = scan_id_to_name[idx]     
         
-        if self.split == 'train':
-            # Load individual scan from preprocessed_3d_'split' directory   
-            processed_3d_scan_path = osp.join(self.processed_dir, 
-                                              f'processed_3d_{self.split}', f'{scan_name}.pt')
-            data = torch.load(processed_3d_scan_path)
-        else:
-            # Get the 3D point sample
-            data = self.get(idx)
+#         if self.split == 'train':
+#             # Load individual scan from preprocessed_3d_'split' directory   
+#             processed_3d_scan_path = osp.join(self.processed_dir, 
+#                                               f'processed_3d_{self.split}', f'{scan_name}.pt')
+#             data = torch.load(processed_3d_scan_path)
+#         else:
+#             # Get the 3D point sample
+#             data = self.get(idx)
         
-        #### FENG: first undo alignment  
-        if self.undo_axis_align and self.split != 'test':
-            path = osp.join(self.root, 'raw', 'scans')
-            axis_align_matrix_path = osp.join(path, scan_name, scan_name + '.txt')
-            axis_align_matrix = read_axis_align_matrix(axis_align_matrix_path)
-            
-            inv = torch.linalg.inv(axis_align_matrix.T)
-            data.pos = (torch.concat((data.pos, torch.ones((len(data.pos), 1))), axis=-1) @ inv)[:, :3]
-        
-        # apply 3D transforms
-        data = data if self.transform is None else self.transform(data)
-        
-        #### FENG: then center pcd on X and Y after augmenting
-        if self.center_xy:
-            if self.center_z:
-                data_mean = data.pos.mean(0)
-            else:
-                # Z is not centered because originally, Z ranged from 0 to ~3 and centering would break this
-                data_mean = torch.concat((data.pos[:, :2].mean(0), torch.zeros((1))), axis=-1)
-            data.pos -= data_mean
-            data.x = data.pos
-        
-        
+        # Get the 3D point sample
+        data = self.get(idx)
+
         # Load the corresponding 2D data and mappings
         i_split = self.SPLITS.index(self.split)
         images = torch.load(osp.join(
@@ -368,6 +348,32 @@ class ScannetMM(Scannet):
         images.gt_mask = None
         images.gt_mask_path = None
         
+        #### FENG: first undo alignment  
+        if self.undo_axis_align and self.split != 'test':
+            path = osp.join(self.root, 'raw', 'scans')
+            axis_align_matrix_path = osp.join(path, scan_name, scan_name + '.txt')
+            axis_align_matrix = read_axis_align_matrix(axis_align_matrix_path)
+            
+            inv = torch.linalg.inv(axis_align_matrix.T)
+            data.pos = (torch.concat((data.pos, torch.ones((len(data.pos), 1))), axis=-1) @ inv)[:, :3]
+    
+            # Transform camera positions for visualization purposes
+            images.pos = (torch.concat((images.pos, torch.ones((len(images.pos), 1))), axis=-1) @ inv.double())[:, :3] 
+            images.extrinsic = inv.T  @ images.extrinsic    
+ 
+        # apply 3D transforms
+        data = data if self.transform is None else self.transform(data)
+        
+        #### FENG: then center pcd on X and Y after augmenting
+        if self.center_xy:
+            if self.center_z:
+                data_mean = data.pos[:, :3].mean(0)
+            else:
+                # Z is not centered because originally, Z ranged from 0 to ~3 and centering would break this
+                data_mean = torch.concat((data.pos[:, :2].mean(0), torch.zeros((1))), axis=-1)
+            data.pos -= data_mean
+            data.x[:, :3] = data.pos
+            images.pos -= data_mean        
                 
         # Run image transforms
         if self.transform_image is not None and self.load_m2f_masks is False:
@@ -381,17 +387,7 @@ class ScannetMM(Scannet):
                     continue
                 else:
                     data, images = transform(data, images)
-                    
-
-        # Adjust camera positions for visualization purposes
-        if self.undo_axis_align and self.split != 'test':
-            images[0].pos = (torch.concat((images[0].pos, torch.ones((len(images[0].pos), 1))), axis=-1) @ inv.double())[:, :3] 
-            images[0].extrinsic = inv @ images[0].extrinsic 
-
-            
-        if self.center_xy:
-            images[0].pos -= data_mean
-        
+                                
         
             
         # Load Mask2Former predicted masks if dirname is given in dataset config       
@@ -607,7 +603,7 @@ class ScannetDatasetMM(BaseDatasetMM, ABC):
         center_z: bool = dataset_opt.get('center_z', False)
         n_views: int = dataset_opt.get('n_views', 0)
         n_views_ablation = dataset_opt.get('n_views_ablation', None)
-
+        
             
         print("initialize train dataset")
         self.train_dataset = ScannetMM(
@@ -704,6 +700,10 @@ class ScannetDatasetMM(BaseDatasetMM, ABC):
 #             n_views=n_views,
 #             n_views_ablation=n_views_ablation,
 #         )
+
+        if dataset_opt.class_weight_method:
+            self.add_weights(
+                class_weight_method=dataset_opt.class_weight_method)
 
     @property
     def path_to_submission(self):

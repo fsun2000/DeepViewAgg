@@ -172,6 +172,7 @@ class AddFeatsByKeys(object):
             AddFeatByKey(add_to_x, feat_name, input_nc_feat=input_nc_feat, strict=strict)
             for add_to_x, feat_name, input_nc_feat, strict in zip(list_add_to_x, feat_names, input_nc_feats, stricts)
         ]
+        
 
         self.transform = Compose(transforms)
 

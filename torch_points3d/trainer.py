@@ -11,6 +11,9 @@ from torch_points3d.core.multimodal.csr import CSRData
 import scipy.ndimage
 from PIL import Image
 import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+
 
 from tqdm.auto import tqdm
 import wandb
@@ -35,8 +38,43 @@ from torch_points3d.utils.wandb_utils import Wandb
 from torch_points3d.utils.config import getattr_recursive
 from torch_points3d.visualization import Visualizer
 from torch_points3d.core.data_transform.transforms import PointcloudMerge
+from torch_points3d.datasets.segmentation.scannet import CLASS_COLORS, CLASS_NAMES, CLASS_LABELS
+
 
 log = logging.getLogger(__name__)
+
+def save_confusion_matrix(cm, path2save, ordered_names):
+    sns.set(font_scale=5)
+
+    template_path = os.path.join(path2save, "{}.png")
+    # PRECISION
+    cmn = cm.astype("float") / cm.sum(axis=-1)[:, np.newaxis]
+    cmn[np.isnan(cmn) | np.isinf(cmn)] = 0
+    fig, ax = plt.subplots(figsize=(31, 31))
+    sns.heatmap(
+        cmn, annot=True, fmt=".2f", xticklabels=ordered_names, yticklabels=ordered_names, annot_kws={"size": 20}
+    )
+    # g.set_xticklabels(g.get_xticklabels(), rotation = 35, fontsize = 20)
+    plt.ylabel("Actual")
+    plt.xlabel("Predicted")
+    path_precision = template_path.format("precision")
+    plt.tight_layout()
+    plt.savefig(path_precision, format="png")
+
+    # RECALL
+    cmn = cm.astype("float") / cm.sum(axis=0)[np.newaxis, :]
+    cmn[np.isnan(cmn) | np.isinf(cmn)] = 0
+    fig, ax = plt.subplots(figsize=(31, 31))
+    sns.heatmap(
+        cmn, annot=True, fmt=".2f", xticklabels=ordered_names, yticklabels=ordered_names, annot_kws={"size": 20}
+    )
+    # g.set_xticklabels(g.get_xticklabels(), rotation = 35, fontsize = 20)
+    plt.ylabel("Actual")
+    plt.xlabel("Predicted")
+    path_recall = template_path.format("recall")
+    plt.tight_layout()
+    plt.savefig(path_recall, format="png")
+
 
 
 class Trainer:
@@ -229,13 +267,13 @@ class Trainer:
         self._tracker_2d_mvfusion_pred_masks: BaseTracker = self._dataset.get_tracker(
             self.wandb_log, self.tensorboard_log)
             
-        print("trainer.py: Tracking view entropy scores for Input Masks, Refined Prediction and GT Masks!")
-        self._tracker_m2f_entropy: BaseTracker = self._dataset.get_tracker(
-            self.wandb_log, self.tensorboard_log)
-        self._tracker_mvfusion_entropy: BaseTracker = self._dataset.get_tracker(
-            self.wandb_log, self.tensorboard_log)
-        self._tracker_gt_entropy: BaseTracker = self._dataset.get_tracker(
-            self.wandb_log, self.tensorboard_log)
+#         print("trainer.py: Tracking view entropy scores for Input Masks, Refined Prediction and GT Masks!")
+#         self._tracker_m2f_entropy: BaseTracker = self._dataset.get_tracker(
+#             self.wandb_log, self.tensorboard_log)
+#         self._tracker_mvfusion_entropy: BaseTracker = self._dataset.get_tracker(
+#             self.wandb_log, self.tensorboard_log)
+#         self._tracker_gt_entropy: BaseTracker = self._dataset.get_tracker(
+#             self.wandb_log, self.tensorboard_log)
             
             
             
@@ -591,39 +629,53 @@ class Trainer:
             log.info("Evaluated scores for 3D semantic segmentation: ")
             self._finalize_epoch(epoch)
             self._tracker.print_summary()
+            cm = self._tracker._confusion_matrix.confusion_matrix
+            confusion_m_dir = "/home/fsun/DeepViewAgg/notebooks/confusion_matrix/mvfusion_3d"
+            os.makedirs(confusion_m_dir, exist_ok=True)
+            save_confusion_matrix(cm, path2save=confusion_m_dir, ordered_names=CLASS_LABELS)
             
             # Finalise 2D evaluation
             if self._tracker_2d_mvfusion_pred_masks is not None:
                 log.info("Evaluated scores for 2D refined masks: ")
                 self._tracker_2d_mvfusion_pred_masks.finalise(**self.tracker_options)
                 self._tracker_2d_mvfusion_pred_masks.print_summary()
+                cm = self._tracker_2d_mvfusion_pred_masks._confusion_matrix.confusion_matrix
+                confusion_m_dir = "/home/fsun/DeepViewAgg/notebooks/confusion_matrix/mvfusion_2d"
+                os.makedirs(confusion_m_dir, exist_ok=True)
+                save_confusion_matrix(cm, path2save=confusion_m_dir, ordered_names=CLASS_LABELS)
                 
                 log.info("Evaluated scores for 2D input masks: ")
                 self._tracker_2d_model_pred_masks.finalise(**self.tracker_options)
                 self._tracker_2d_model_pred_masks.print_summary()
+                cm = self._tracker_2d_model_pred_masks._confusion_matrix.confusion_matrix
+                confusion_m_dir = "/home/fsun/DeepViewAgg/notebooks/confusion_matrix/baseline_ViT_2d"
+                os.makedirs(confusion_m_dir, exist_ok=True)
+                save_confusion_matrix(cm, path2save=confusion_m_dir, ordered_names=CLASS_LABELS)
                 
-                log.info("Evaluated view entropy scores for input masks (using 2D-3D correspondences and 3D GT): ")
-                self._tracker_m2f_entropy.finalise(**self.tracker_options)
-                self._tracker_m2f_entropy.print_summary()
-                mean_view_entropy, per_class_view_entropy = self.get_multiview_entropy_scores(self._tracker_m2f_entropy)
-                log.info(f"mean_view_entropy: {mean_view_entropy}")
-                log.info(f"per_class_view_entropy: {per_class_view_entropy}")
+                
+                # Incorrect view entropy metric
+#                 log.info("Evaluated view entropy scores for input masks (using 2D-3D correspondences and 3D GT): ")
+#                 self._tracker_m2f_entropy.finalise(**self.tracker_options)
+#                 self._tracker_m2f_entropy.print_summary()
+#                 mean_view_entropy, per_class_view_entropy = self.get_multiview_entropy_scores(self._tracker_m2f_entropy)
+#                 log.info(f"mean_view_entropy: {mean_view_entropy}")
+#                 log.info(f"per_class_view_entropy: {per_class_view_entropy}")
 
                     
-                log.info("Evaluated view entropy scores for refined predictions (using 2D-3D correspondences and 3D GT): ")
-                self._tracker_mvfusion_entropy.finalise(**self.tracker_options)
-                self._tracker_mvfusion_entropy.print_summary()
-                mean_view_entropy, per_class_view_entropy = self.get_multiview_entropy_scores(self._tracker_mvfusion_entropy)
-                log.info(f"mean_view_entropy: {mean_view_entropy}")
-                log.info(f"per_class_view_entropy: {per_class_view_entropy}")
+#                 log.info("Evaluated view entropy scores for refined predictions (using 2D-3D correspondences and 3D GT): ")
+#                 self._tracker_mvfusion_entropy.finalise(**self.tracker_options)
+#                 self._tracker_mvfusion_entropy.print_summary()
+#                 mean_view_entropy, per_class_view_entropy = self.get_multiview_entropy_scores(self._tracker_mvfusion_entropy)
+#                 log.info(f"mean_view_entropy: {mean_view_entropy}")
+#                 log.info(f"per_class_view_entropy: {per_class_view_entropy}")
 
                 
-                log.info("Evaluated view entropy scores for gt masks (using 2D-3D correspondences and 3D GT): ")
-                self._tracker_gt_entropy.finalise(**self.tracker_options)
-                self._tracker_gt_entropy.print_summary()
-                mean_view_entropy, per_class_view_entropy = self.get_multiview_entropy_scores(self._tracker_gt_entropy)
-                log.info(f"mean_view_entropy: {mean_view_entropy}")
-                log.info(f"per_class_view_entropy: {per_class_view_entropy}")
+#                 log.info("Evaluated view entropy scores for gt masks (using 2D-3D correspondences and 3D GT): ")
+#                 self._tracker_gt_entropy.finalise(**self.tracker_options)
+#                 self._tracker_gt_entropy.print_summary()
+#                 mean_view_entropy, per_class_view_entropy = self.get_multiview_entropy_scores(self._tracker_gt_entropy)
+#                 log.info(f"mean_view_entropy: {mean_view_entropy}")
+#                 log.info(f"per_class_view_entropy: {per_class_view_entropy}")
                 
     @property
     def early_break(self):

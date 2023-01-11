@@ -41,6 +41,10 @@ def PointcloudMerge(new_batch, n_merge=2):
     # Merge two individual point clouds to one MMData inside MMBatch. Uneven batches will leave the last sample untouched.
     # NOTE: only N_MERGE == 2 is supported.
     assert n_merge == 2
+    
+    # NOTE: code only supports using XYZ or XYZ+RGB feats.
+    assert new_batch.x.shape[1] in [3, 6]
+    
     for i in range(0, len(new_batch.ptr)-2, n_merge):
         b1, e1 = new_batch.ptr[i], new_batch.ptr[i+1]
         b2, e2 = new_batch.ptr[i+1], new_batch.ptr[i+2]
@@ -52,7 +56,7 @@ def PointcloudMerge(new_batch, n_merge=2):
 
         # Slightly translate one of two point clouds
         new_batch.pos[b2:e2] = new_batch.pos[b2:e2] + offset
-        new_batch.x[b2:e2] = new_batch.x[b2:e2] + offset
+        new_batch.x[b2:e2, :3] = new_batch.x[b2:e2, :3] + offset
 
         new_ptr.append(new_batch.ptr[i+2])
 
@@ -66,7 +70,7 @@ def PointcloudMerge(new_batch, n_merge=2):
     new_batch.batch = new_batch.batch // n_merge
     new_batch.data.batch = new_batch.batch
 
-    # What is origin_id and do we need to adjust it when merging batches?
+    # What is origin_id and do we need to adjust it when merging batches? I think not
     return new_batch
 
 

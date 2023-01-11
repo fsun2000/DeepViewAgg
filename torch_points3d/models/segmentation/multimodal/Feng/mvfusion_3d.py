@@ -984,6 +984,7 @@ class MVFusionAPIModel(BaseModel):
     def __init__(self, option, model_type, dataset, modules):
         # call the initialization method of MVFusionUnetBasedModel
         super().__init__(option)
+        
         self._weight_classes = dataset.weight_classes
         
         option['backbone']['transformer']['n_classes'] = dataset.num_classes
@@ -1033,17 +1034,24 @@ class MVFusionAPIModel(BaseModel):
                 
                 
                 --------------
-                Subsampling method
+                2nd approach: subsampling points
                 Out of all seen points in a batch:
                 - Take N points per class
-                - Take the labels from points with >= 2 views, and sample a max of K views/labels from these.
                 - Calculate 2d loss from these points and views
                 
-                Set K = 3
+                # Thinking about it, this subsampling of points would not even changes to model performance
                 """
                 # Get the number of views in which each point is visible
                 csr_idx = self.input.modalities['image'][0].view_csr_indexing
                 n_seen = (csr_idx[1:] - csr_idx[:-1]).cuda()
+                
+                # Thinking about it, this subsampling of points would not even changes to model performance
+#                 min_seen_mask = n_seen >= 2
+#                 seen_mm_data = self.input[min_seen_mask]
+#                 n_seen = n_seen[min_seen_mask]
+                
+#                 seen_mm_data[
+                
                 
                 # Grab 2D labels of each 3D point from all seen views
                 labels_2d = self.input.modalities['image'][0].get_mapped_gt_labels().flatten().cuda()
