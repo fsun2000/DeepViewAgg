@@ -402,11 +402,16 @@ class ScannetMM(Scannet):
             scan_dir = first_img_path.split(os.sep)[:-3]
             
             # Change directory name following migration from Lisa to Snellius
-            scan_dir[1] = 'scratch-shared'
-            m2f_dir = ['', 'home', 'fsun', 'data', 'scannet', 'scans', scan_dir[-1]]
-            m2f_dir = os.sep.join([*m2f_dir, self.m2f_preds_dirname])
+            if self.m2f_preds_dirname == 'ViT_masks':
+                scan_dir[1] = 'scratch-shared'
+                m2f_dir = ['', 'home', 'fsun', 'data', 'scannet', 'scans', scan_dir[-1]]
+                m2f_dir = os.sep.join([*m2f_dir, self.m2f_preds_dirname])
+            elif self.m2f_preds_dirname == 'm2f_masks':
+                scan_dir[1] = 'scratch-shared'
+                m2f_dir = ['', 'scratch-shared', 'fsun', 'data', 'scannet', 'scans', scan_dir[-1]]
+                m2f_dir = os.sep.join([*m2f_dir, self.m2f_preds_dirname])                
             
-            gt_dir = os.path.join('/scratch-shared/fsun/data/scannet/scans',scan_dir[-1], 'label-filt-scannet20')
+            gt_dir = os.path.join('/scratch-shared/fsun/data/scannet/scans', scan_dir[-1], 'label-filt-scannet20')
                                                 
             m2f_masks, m2f_mask_paths, gt_masks, gt_mask_paths = [], [], [], []
             for rgb_path in images[0].path:

@@ -1,4 +1,5 @@
 import os
+import os.path as osp
 import copy
 import torch
 import hydra
@@ -292,17 +293,23 @@ class Trainer:
         if self._dataset.has_test_loaders:
             if not stage_name or stage_name == "test":
                 self._test_epoch(epoch, "test")
+                
+    def eval_3d_seen_points(self, stage_name=""):
+        self._is_training = False
+        
+        self._tracker_baseline: BaseTracker = self._dataset.get_tracker(
+            self.wandb_log, self.tensorboard_log)
+        self._tracker_mvfusion: BaseTracker = self._dataset.get_tracker(
+            self.wandb_log, self.tensorboard_log)
+                        
+        epoch = self._checkpoint.start_epoch
+
+        if self._dataset.has_val_loader:
+            if not stage_name or stage_name == "val":
+                self._test_epoch_3d_seen_points(epoch, "val")
 
     def _finalize_epoch(self, epoch):
         self._tracker.finalise(**self.tracker_options)
-        if self._is_training:
-            metrics = self._tracker.publish(epoch)
-            self._checkpoint.save_best_models_under_current_metrics(
-                self._model, metrics, self._tracker.metric_func)
-            if self.wandb_log and self._cfg.training.wandb.public:
-                Wandb.add_file(self._checkpoint.checkpoint_path)
-            if self._tracker._stage == "train":
-                log.info("Learning rate = %f" % self._model.learning_rate)
 
     def _train_epoch(self, epoch: int):
 
@@ -481,6 +488,22 @@ class Trainer:
         # Get pointers for easy indexing
         pointers = CSRData._sorted_indices_to_pointers(image_ids)
 
+        # Save refined masks
+        im_paths = mm_data.modalities['image'][0].gt_mask_path
+        scan_dir = os.sep.join(im_paths[0].split(os.sep)[:-2])
+        input_mask_name = mm_data.modalities['image'][0].m2f_pred_mask_path[0].split(os.sep)[-2]
+
+        # Dirty workaround for masks in different directory
+        if input_mask_name == 'ViT_masks':
+            scan_id = scan_dir.split(os.sep)[-1]
+            mask_im_dir = osp.join("/home/fsun/data/scannet/scans", scan_id, input_mask_name)
+            refined_mask_im_dir = osp.join(scan_dir, input_mask_name + '_refined')
+        else:
+            mask_im_dir = osp.join(scan_dir, input_mask_name)
+            refined_mask_im_dir = osp.join(scan_dir, input_mask_name + '_refined')
+        print("Creating refined mask dir at ", refined_mask_im_dir)
+        os.makedirs(refined_mask_im_dir, exist_ok=True)
+        
         # Loop over all N views
         for i, x in enumerate(mm_data.modalities['image'][0]):
 
@@ -503,8 +526,15 @@ class Trainer:
             nearest_neighbor = scipy.ndimage.morphology.distance_transform_edt(
                 pred_mask_2d==-1, return_distances=False, return_indices=True)    
             pred_mask_2d = pred_mask_2d[nearest_neighbor].numpy().astype(np.uint8)
-            pred_mask_2d = Image.fromarray(pred_mask_2d, 'L')            
-            pred_mask_2d = np.asarray(pred_mask_2d.resize((640, 480), resample=0))
+            pred_mask_2d = Image.fromarray(pred_mask_2d, 'L')          
+            
+            # SAVE REFINED MASK IN GIVEN DIR
+            im_name = x.m2f_pred_mask_path[0].split("/")[-1]
+        
+            pred_mask_2d = pred_mask_2d.resize((640, 480), resample=0)
+            pred_mask_2d.save(osp.join(refined_mask_im_dir, im_name))
+
+            pred_mask_2d = np.asarray(pred_mask_2d)
             
             # 2D mIoU calculation for M2F labels per view
             # Get gt 2d image
@@ -532,19 +562,19 @@ class Trainer:
             self._tracker_2d_mvfusion_pred_masks.track(
                 pred_labels=refined_2d_pred, gt_labels=gt_img, model=None)
             
-            # View Entropy Scores (using 2D view gt labels and 3d projected predictions)
-            # NOTE: M2F case uses 2D interpolated predictions and 2D gt labels
-            # M2F predicted mask for current view
-            m2f_labels_2d = x.get_mapped_m2f_features().squeeze()
+#             # View Entropy Scores (using 2D view gt labels and 3d projected predictions)
+#             # NOTE: M2F case uses 2D interpolated predictions and 2D gt labels
+#             # M2F predicted mask for current view
+#             m2f_labels_2d = x.get_mapped_m2f_features().squeeze()
             
-            upscaled_indexing = tuple([2*coor for coor in x.mappings.feature_map_indexing[2:]])
-            gt_labels_2d = torch.LongTensor(gt_img[upscaled_indexing])
+#             upscaled_indexing = tuple([2*coor for coor in x.mappings.feature_map_indexing[2:]])
+#             gt_labels_2d = torch.LongTensor(gt_img[upscaled_indexing])
             
-            self._tracker_m2f_entropy.track(pred_labels=m2f_labels_2d, gt_labels=gt_labels_2d, model=None)
-            self._tracker_mvfusion_entropy.track(pred_labels=mm_data_of_view.data.pred, gt_labels=gt_labels_2d, model=None)
+#             self._tracker_m2f_entropy.track(pred_labels=m2f_labels_2d, gt_labels=gt_labels_2d, model=None)
+#             self._tracker_mvfusion_entropy.track(pred_labels=mm_data_of_view.data.pred, gt_labels=gt_labels_2d, model=None)
 
-            mm_data_of_view.data.y[mm_data_of_view.data.y == -1] = 0        # Replace ignored labels in 3D gt
-            self._tracker_gt_entropy.track(pred_labels=mm_data_of_view.data.y, gt_labels=gt_labels_2d, model=None)
+#             mm_data_of_view.data.y[mm_data_of_view.data.y == -1] = 0        # Replace ignored labels in 3D gt
+#             self._tracker_gt_entropy.track(pred_labels=mm_data_of_view.data.y, gt_labels=gt_labels_2d, model=None)
 
 
         return
@@ -587,9 +617,9 @@ class Trainer:
                 self._tracker_2d_mvfusion_pred_masks.reset(stage_name)
                 self._tracker_2d_model_pred_masks.reset(stage_name)
                 
-                self._tracker_m2f_entropy.reset(stage_name)
-                self._tracker_mvfusion_entropy.reset(stage_name)
-                self._tracker_gt_entropy.reset(stage_name)
+#                 self._tracker_m2f_entropy.reset(stage_name)
+#                 self._tracker_mvfusion_entropy.reset(stage_name)
+#                 self._tracker_gt_entropy.reset(stage_name)
             
             if self.has_visualization:
                 self._visualizer.reset(epoch, stage_name)
@@ -652,31 +682,101 @@ class Trainer:
                 os.makedirs(confusion_m_dir, exist_ok=True)
                 save_confusion_matrix(cm, path2save=confusion_m_dir, ordered_names=CLASS_LABELS)
                 
-                
-                # Incorrect view entropy metric
-#                 log.info("Evaluated view entropy scores for input masks (using 2D-3D correspondences and 3D GT): ")
-#                 self._tracker_m2f_entropy.finalise(**self.tracker_options)
-#                 self._tracker_m2f_entropy.print_summary()
-#                 mean_view_entropy, per_class_view_entropy = self.get_multiview_entropy_scores(self._tracker_m2f_entropy)
-#                 log.info(f"mean_view_entropy: {mean_view_entropy}")
-#                 log.info(f"per_class_view_entropy: {per_class_view_entropy}")
+    def _test_epoch_3d_seen_points(self, epoch, stage_name: str):
+        
+        def get_seen_points(mm_data):
+            ### Select seen points
+            csr_idx = mm_data.modalities['image'][0].view_csr_indexing
+            dense_idx_list = torch.arange(mm_data.modalities['image'][0].num_points).repeat_interleave(csr_idx[1:] - csr_idx[:-1])
+            # take subset of only seen points without re-indexing the same point
+            mm_data = mm_data[dense_idx_list.unique()]
+            return mm_data
 
-                    
-#                 log.info("Evaluated view entropy scores for refined predictions (using 2D-3D correspondences and 3D GT): ")
-#                 self._tracker_mvfusion_entropy.finalise(**self.tracker_options)
-#                 self._tracker_mvfusion_entropy.print_summary()
-#                 mean_view_entropy, per_class_view_entropy = self.get_multiview_entropy_scores(self._tracker_mvfusion_entropy)
-#                 log.info(f"mean_view_entropy: {mean_view_entropy}")
-#                 log.info(f"per_class_view_entropy: {per_class_view_entropy}")
+        def get_mode_pred(data):
+            pixel_validity = data.data.mvfusion_input[:, :, 0].bool()
+            mv_preds = data.data.mvfusion_input[:, :, -1].long()
 
-                
-#                 log.info("Evaluated view entropy scores for gt masks (using 2D-3D correspondences and 3D GT): ")
-#                 self._tracker_gt_entropy.finalise(**self.tracker_options)
-#                 self._tracker_gt_entropy.print_summary()
-#                 mean_view_entropy, per_class_view_entropy = self.get_multiview_entropy_scores(self._tracker_gt_entropy)
-#                 log.info(f"mean_view_entropy: {mean_view_entropy}")
-#                 log.info(f"per_class_view_entropy: {per_class_view_entropy}")
-                
+            valid_m2f_feats = []
+            for i in range(len(mv_preds)):
+                valid_m2f_feats.append(mv_preds[i][pixel_validity[i]])
+
+            mode_preds = []
+            for m2feats_of_seen_point in valid_m2f_feats:
+                mode_preds.append(torch.mode(m2feats_of_seen_point.squeeze(), dim=0)[0])
+            mode_preds = torch.stack(mode_preds, dim=0)
+
+            return mode_preds
+
+        
+        voting_runs = self._cfg.get("voting_runs", 1)
+        if stage_name == "test":
+            loaders = self._dataset.test_dataloaders
+        else:
+            loaders = [self._dataset.val_dataloader]
+
+        self._model.eval()
+        if self.enable_dropout:
+            self._model.enable_dropout_in_eval()
+            
+        count = 0
+
+        for loader in loaders:
+            print("Input mask type: ", loader.dataset.m2f_preds_dirname)
+            
+            stage_name = loader.dataset.name
+            self._tracker_baseline.reset(stage_name)
+            self._tracker_mvfusion.reset(stage_name)
+
+            for i in range(voting_runs):
+                with Ctq(loader) as tq_loader:
+                    for data in tq_loader:
+                        with torch.no_grad():
+
+                            self._model.set_input(data, self._device)
+                            with torch.cuda.amp.autocast(enabled=self._model.is_mixed_precision()):
+                                self._model.forward(epoch=epoch)
+                                
+                            data.data.pred = self._model.output.detach().cpu().argmax(1)
+                            
+                            if count < 5:
+                                print("Before subsampling")
+                                print(data, flush=True)
+                                print(data.data.pred, data.data.pred.shape, flush=True)
+                                print(data.data.y, data.data.y.shape, flush=True)
+                                
+                            data = get_seen_points(data)
+                            mode_pred = get_mode_pred(data)
+                            
+                            count += 1
+                            if count < 5:
+                                print("After subsampling")
+                                print(data, flush=True)
+                                print(data.data.pred, data.data.pred.shape, flush=True)
+                                print(data.data.y, data.data.y.shape, flush=True)
+                            
+                            # 3D mIoU
+                            self._tracker_baseline.track(pred_labels=mode_pred, gt_labels=data.data.y, model=None)
+                            self._tracker_mvfusion.track(pred_labels=data.data.pred, gt_labels=data.data.y, model=None)
+                            
+                        tq_loader.set_postfix(**self._tracker_mvfusion.get_metrics(), color=COLORS.TEST_COLOR)
+
+
+            log.info("Evaluated scores for 3D semantic segmentation on subset of seen points: ")
+            self._finalize_epoch(epoch)
+            log.info("--- Baseline ---")
+            self._tracker_baseline.print_summary()
+            cm = self._tracker_baseline._confusion_matrix.confusion_matrix
+            confusion_m_dir = f"/home/fsun/DeepViewAgg/notebooks/confusion_matrix/{loader.dataset.m2f_preds_dirname}_baseline_seen_points"
+            os.makedirs(confusion_m_dir, exist_ok=True)
+            save_confusion_matrix(cm, path2save=confusion_m_dir, ordered_names=CLASS_LABELS)
+            
+            log.info("--- MVFusion_3D ---")
+            self._tracker_mvfusion.print_summary()
+            cm = self._tracker_mvfusion._confusion_matrix.confusion_matrix
+            confusion_m_dir = f"/home/fsun/DeepViewAgg/notebooks/confusion_matrix/{loader.dataset.m2f_preds_dirname}_mvfusion_3d_seen_points"
+            os.makedirs(confusion_m_dir, exist_ok=True)
+            save_confusion_matrix(cm, path2save=confusion_m_dir, ordered_names=CLASS_LABELS)
+            
     @property
     def early_break(self):
         if not hasattr(self._cfg, "debugging"):
