@@ -1,21 +1,19 @@
 #!/bin/bash
 
-#SBATCH --partition=gpu_titanrtx_shared
+#SBATCH --partition=gpu
+#SBATCH --job-name=mvf
 #SBATCH --gpus=1
-#SBATCH --job-name=lower_lr
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=9
-#SBATCH --time=48:00:00
-#SBATCH --mem=190000M
-#SBATCH --output=job_logs/mvfusion_complex/lower_lr.out
+#SBATCH --cpus-per-task=18
+#SBATCH --time=20:00:00
+#SBATCH --mem=120000MB
+#SBATCH --output=job_logs/superconvergence/MVFusion_small_6views/ViT_masks_run_1_output_linear.out
 
 cd $HOME/DeepViewAgg
 
 module purge
+source activate pytorch3d
 
-module load 2021
-module load CUDA/11.3.1
-
-#export C_INCLUDE_PATH="/home/fsun/DeepViewAgg/sparsehash:$CPLUS_INCLUDE_PATH"
 export HYDRA_FULL_ERROR=1
+
 ./scripts/train_scannet_mvfusion.sh

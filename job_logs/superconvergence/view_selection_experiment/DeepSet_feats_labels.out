@@ -1,0 +1,256 @@
+MMData debug() function changed, please uncomment the 3rd assert line when doing inference without M2F features!
+[2023-01-16 15:34:12,336][torch_points3d.trainer][INFO] - DEVICE : cuda
+wandb: W&B is a tool that helps track and visualize machine learning experiments
+wandb: No credentials found.  Run "wandb login" to visualize your metrics
+wandb: Tracking run with wandb version 0.8.36
+wandb: Wandb version 0.13.9 is available!  To upgrade, please run:
+wandb:  $ pip install wandb --upgrade
+wandb: Run data is saved locally in wandb/run-20230116_143412-3lf281f4
+
+dataset_class:  scannet.ScannetDatasetMM
+dataset_paths:  ['scannet', 'ScannetDatasetMM']
+module:  scannet
+class_name:  ScannetDatasetMM
+dataset_module:  torch_points3d.datasets.segmentation.multimodal.scannet
+Load predicted 2D semantic segmentation labels from directory  ViT_masks
+initialize train dataset
+initialize val dataset
+task:  segmentation.multimodal
+tested_model_name:  DeepSetAttention
+class_name:  ViewSelectionExp_model
+model_module:  torch_points3d.models.segmentation.multimodal.Feng.view_selection_experiment
+name, cls of chosen model_cls:  ViewSelectionExp_model <class 'torch_points3d.models.segmentation.multimodal.Feng.view_selection_experiment.ViewSelectionExp_model'>
+opt:   {'class': 'Feng.view_selection_experiment.ViewSelectionExp_model', 'down_conv': {'image': {'down_conv': {'module_name': 'ADE20KResNet18PPM', 'frozen': False}, 'atomic_pooling': {'module_name': 'BimodalCSRPool', 'mode': 'max'}, 'view_pooling': {'module_name': 'GroupBimodalCSRPool', 'in_map': 9, 'in_mod': 20, 'num_groups': 20, 'use_mod': False, 'gating': False, 'group_scaling': True, 'map_encoder': 'DeepSetFeat', 'use_num': True, 'pool': 'max', 'fusion': 'concatenation'}, 'fusion': {'module_name': 'BimodalFusion', 'mode': 'residual'}, 'drop_mod': 0.0, 'branching_index': 0}}, 'backbone': {'use_deepset': True, 'use_transformer': False, 'transformer': {'n_views': 6, 'in_map': 9, 'in_m2f': 20, 'embed_dim': 64, 'hidden_dim': 256, 'num_heads': 2, 'num_layers': 4, 'use_batch_norm': False, 'feat_downproj_dim': None, 'remove_first_dropout': True, 'dropout': 0.2, 'mlp_dropout': 0.0, 'use_attn_mask': True, 'use_csr_mask': True, 'has_mlp_head': False, 'max_n_points': 200000, 'gating': False, 'checkpointing': False, 'n_classes': 20}}}
+WARNING: input points for Multi-View Fusion module are clipped at MAX_SEEN_POINTS for fair model comparison in evaluation
+task:  segmentation.multimodal
+tested_model_name:  DeepSetAttention
+[2023-01-16 15:34:31,274][torch_points3d.trainer][WARNING] - The model will not be able to be used from pretrained weights without the corresponding dataset. Current properties are {'feature_dimension': 3, 'num_classes': 20}
+[2023-01-16 15:34:31,275][torch_points3d.trainer][INFO] - ViewSelectionExp_model(
+  (backbone): ViewSelectionExpEncoder(
+    (down_modules): ModuleList(
+      (0): MultimodalBlockDown(
+        (block_1): Identity()
+        (block_2): Identity()
+        (image): UnimodalBranchOnlyAtomicPool(
+          drop_3d=None
+          drop_mod=None
+          keep_last_view=False
+          checkpointing=
+        )
+      )
+    )
+    (fusion): DeepSetFeat_ViewExperiment(
+      pool=['max']
+      fusion=concatenation
+      use_num=True
+      (mlp_elt_1): Sequential(
+        (0): Sequential(
+          (0): Linear(in_features=28, out_features=32, bias=False)
+          (1): FastBatchNorm1d(
+            (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+          (2): LeakyReLU(negative_slope=0.2, inplace=True)
+        )
+        (1): Sequential(
+          (0): Linear(in_features=32, out_features=32, bias=False)
+          (1): FastBatchNorm1d(
+            (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+          (2): LeakyReLU(negative_slope=0.2, inplace=True)
+        )
+      )
+      (mlp_set): Sequential(
+        (0): Sequential(
+          (0): Linear(in_features=33, out_features=32, bias=False)
+          (1): FastBatchNorm1d(
+            (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+          (2): LeakyReLU(negative_slope=0.2, inplace=True)
+        )
+        (1): Sequential(
+          (0): Linear(in_features=32, out_features=32, bias=False)
+          (1): FastBatchNorm1d(
+            (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+          (2): LeakyReLU(negative_slope=0.2, inplace=True)
+        )
+      )
+      (mlp_elt_2): Sequential(
+        (0): Sequential(
+          (0): Linear(in_features=64, out_features=32, bias=False)
+          (1): FastBatchNorm1d(
+            (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+          (2): LeakyReLU(negative_slope=0.2, inplace=True)
+        )
+        (1): Sequential(
+          (0): Linear(in_features=32, out_features=32, bias=False)
+          (1): FastBatchNorm1d(
+            (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+          (2): LeakyReLU(negative_slope=0.2, inplace=True)
+        )
+      )
+      (E_score): Linear(in_features=32, out_features=20, bias=True)
+    )
+  )
+  (head): Sequential(
+    (0): Linear(in_features=20, out_features=20, bias=True)
+  )
+)
+[2023-01-16 15:34:31,275][torch_points3d.utils.colors][INFO] - [0;32mOptimizer: SGD (
+Parameter Group 0
+    base_momentum: 0.85
+    dampening: 0
+    foreach: None
+    initial_lr: 0.012
+    lr: 0.01200000000000001
+    max_lr: 0.3
+    max_momentum: 0.95
+    maximize: False
+    min_lr: 1.2e-06
+    momentum: 0.95
+    nesterov: False
+    weight_decay: 0.0001
+)[0m
+[2023-01-16 15:34:31,275][torch_points3d.utils.colors][INFO] - [0;32mLearning Rate Scheduler: OneCycleLR({'max_lr': 0.3, 'epochs': 60, 'steps_per_epoch': 200, 'anneal_strategy': 'cos', 'cycle_momentum': True, 'base_momentum': 0.85, 'max_momentum': 0.95, 'three_phase': False}, update_scheduler_on=on_num_batch)[0m
+[2023-01-16 15:34:31,275][torch_points3d.utils.colors][INFO] - [0;32mBatchNorm Scheduler: None[0m
+[2023-01-16 15:34:31,275][torch_points3d.utils.colors][INFO] - [0;32mAccumulated gradients: None[0m
+[2023-01-16 15:34:31,275][torch_points3d.trainer][INFO] - Model size = 8536
+[2023-01-16 15:34:31,276][torch_points3d.trainer][INFO] - Dataset: ScannetDatasetMM 
+[0;95mtrain_pre_batch_collate_transform [0m= None
+[0;95mval_pre_batch_collate_transform [0m= None
+[0;95mtest_pre_batch_collate_transform [0m= None
+[0;95mpre_transform [0m= Compose([
+    SaveOriginalPosId,
+    PCAComputePointwise(num_neighbors=50, r=None, use_full_pos=False, use_cuda=False, use_faiss=False, ncells=None, nprobes=10, chunk_size=1000000),
+    EigenFeatures(norm=True, linearity=True, planarity=True, scattering=True, temperature=None),
+    RemoveAttributes(attr_names=['eigenvalues', 'eigenvectors'], strict=False),
+])
+[0;95mtest_transform [0m= Compose([
+    GridSampling3D(grid_size=0.03, quantize_coords=True, mode=last),
+    XYZFeature(axis=['x', 'y', 'z']),
+    AddFeatsByKeys(pos_x=True, pos_y=True, pos_z=True, rgb=False, linearity=False, norm=False, planarity=False, scattering=False),
+])
+[0;95mtrain_transform [0m= Compose([
+    ElasticDistortion(apply_distorsion=True, granularity=[0.2, 0.8], magnitude=[0.4, 1.6]),
+    Random3AxisRotation(apply_rotation=True, rot_x=8, rot_y=8, rot_z=180),
+    Random symmetry of axes: x=True, y=True, z=False,
+    RandomScaleAnisotropic([0.9, 1.1]),
+    GridSampling3D(grid_size=0.03, quantize_coords=True, mode=last),
+    XYZFeature(axis=['x', 'y', 'z']),
+    AddFeatsByKeys(pos_x=True, pos_y=True, pos_z=True, rgb=False, linearity=False, norm=False, planarity=False, scattering=False),
+])
+[0;95mval_transform [0m= Compose([
+    GridSampling3D(grid_size=0.03, quantize_coords=True, mode=last),
+    XYZFeature(axis=['x', 'y', 'z']),
+    AddFeatsByKeys(pos_x=True, pos_y=True, pos_z=True, rgb=False, linearity=False, norm=False, planarity=False, scattering=False),
+])
+[0;95minference_transform [0m= Compose([
+    SaveOriginalPosId,
+    PCAComputePointwise(num_neighbors=50, r=None, use_full_pos=False, use_cuda=False, use_faiss=False, ncells=None, nprobes=10, chunk_size=1000000),
+    EigenFeatures(norm=True, linearity=True, planarity=True, scattering=True, temperature=None),
+    RemoveAttributes(attr_names=['eigenvalues', 'eigenvectors'], strict=False),
+    GridSampling3D(grid_size=0.03, quantize_coords=True, mode=last),
+    XYZFeature(axis=['x', 'y', 'z']),
+    AddFeatsByKeys(pos_x=True, pos_y=True, pos_z=True, rgb=False, linearity=False, norm=False, planarity=False, scattering=False),
+])
+[0;95mpre_transform_image [0m= ComposeMultiModal([
+    LoadImages(ref_size=[320, 240], crop_size=None, crop_offsets=None, downscale=None, show_progress=False),
+    NonStaticMask(ref_size=(320, 240), proj_upscale=1, n_sample=5),
+    MapImages(key=mapping_index, verbose=False, cylinder=False, ref_size=[320, 240], proj_upscale=1, method=SplattingVisibility, use_cuda=False, kwargs={'voxel': 0.03, 'r_max': 8, 'r_min': 0.05, 'exact': True, 'camera': 'scannet'}),
+    NeighborhoodBasedMappingFeatures(k_list=[50], voxel=0.01, compute_density=True, compute_occlusion=True, use_faiss=False, use_cuda=False, ncells=None, nprobes=10, verbose=True),
+])
+[0;95mtest_transform_image [0m= ComposeMultiModal([
+    SelectMappingFromPointId(key=mapping_index),
+    ToImageData(),
+    PickImagesFromMemoryCredit(credit=7680000, use_coverage=True, k_coverage=2),
+])
+[0;95mtrain_transform_image [0m= ComposeMultiModal([
+    SelectMappingFromPointId(key=mapping_index),
+    ToImageData(),
+    PickImagesFromMemoryCredit(credit=7680000, use_coverage=True, k_coverage=2),
+    JitterMappingFeatures(sigma=0.02, clip=0.03),
+])
+[0;95mval_transform_image [0m= ComposeMultiModal([
+    SelectMappingFromPointId(key=mapping_index),
+    ToImageData(),
+    PickImagesFromMemoryCredit(credit=7680000, use_coverage=True, k_coverage=2),
+])
+[0;95minference_transform_image [0m= ComposeMultiModal([
+    LoadImages(ref_size=[320, 240], crop_size=None, crop_offsets=None, downscale=None, show_progress=False),
+    NonStaticMask(ref_size=(320, 240), proj_upscale=1, n_sample=5),
+    MapImages(key=mapping_index, verbose=False, cylinder=False, ref_size=[320, 240], proj_upscale=1, method=SplattingVisibility, use_cuda=False, kwargs={'voxel': 0.03, 'r_max': 8, 'r_min': 0.05, 'exact': True, 'camera': 'scannet'}),
+    NeighborhoodBasedMappingFeatures(k_list=[50], voxel=0.01, compute_density=True, compute_occlusion=True, use_faiss=False, use_cuda=False, ncells=None, nprobes=10, verbose=True),
+    SelectMappingFromPointId(key=mapping_index),
+    ToImageData(),
+    PickImagesFromMemoryCredit(credit=7680000, use_coverage=True, k_coverage=2),
+])
+Size of [0;95mtrain_dataset [0m= 1201
+Size of [0;95mtest_dataset [0m= 0
+Size of [0;95mval_dataset [0m= 312
+[0;95mBatch size =[0m 6
+[2023-01-16 15:34:39,929][torch_points3d.datasets.base_dataset][INFO] - Available stage selection datasets: [0;95m ['val'] [0m
+[2023-01-16 15:34:39,929][torch_points3d.datasets.base_dataset][INFO] - The models will be selected using the metrics on following dataset: [0;95m val [0m
+[2023-01-16 15:34:42,194][torch_points3d.trainer][INFO] - EPOCH 1 / 61
+  0% 0/200 [00:00<?, ?it/s]  0% 0/200 [01:45<?, ?it/s]
+Error executing job with overrides: ['data=segmentation/multimodal/Feng/scannet-neucon-smallres-m2f.yaml', 'models=segmentation/multimodal/Feng/view_selection_experiment', 'model_name=DeepSetAttention', 'task=segmentation', 'training=Feng/superconvergence.yaml', 'lr_scheduler=onecyclelr', 'eval_frequency=5', 'lr_range_test=False', 'update_lr_scheduler_on=on_num_batch', 'data.dataroot=/scratch-shared/fsun/dvata', 'data.m2f_preds_dirname=ViT_masks', 'data.pixel_credits=100', 'training.cuda=0', 'training.batch_size=6', 'training.test_batch_size=1', 'training.epochs=61', 'training.num_workers=17']
+Traceback (most recent call last):
+  File "train.py", line 23, in <module>
+    main()
+  File "/home/fsun/.conda/envs/pytorch3d/lib/python3.7/site-packages/hydra/main.py", line 53, in decorated_main
+    config_name=config_name,
+  File "/home/fsun/.conda/envs/pytorch3d/lib/python3.7/site-packages/hydra/_internal/utils.py", line 368, in _run_hydra
+    lambda: hydra.run(
+  File "/home/fsun/.conda/envs/pytorch3d/lib/python3.7/site-packages/hydra/_internal/utils.py", line 214, in run_and_report
+    raise ex
+  File "/home/fsun/.conda/envs/pytorch3d/lib/python3.7/site-packages/hydra/_internal/utils.py", line 211, in run_and_report
+    return func()
+  File "/home/fsun/.conda/envs/pytorch3d/lib/python3.7/site-packages/hydra/_internal/utils.py", line 371, in <lambda>
+    overrides=args.overrides,
+  File "/home/fsun/.conda/envs/pytorch3d/lib/python3.7/site-packages/hydra/_internal/hydra.py", line 110, in run
+    _ = ret.return_value
+  File "/home/fsun/.conda/envs/pytorch3d/lib/python3.7/site-packages/hydra/core/utils.py"
+, line 233, in return_value
+    raise self._return_value
+  File "/home/fsun/.conda/envs/pytorch3d/lib/python3.7/site-packages/hydra/core/utils.py", line 160, in run_job
+    ret.return_value = task_function(task_cfg)
+  File "train.py", line 15, in main
+    trainer.train()
+  File "/gpfs/home3/fsun/DeepViewAgg/torch_points3d/trainer.py", line 211, in train
+    self._train_epoch(epoch)
+  File "/gpfs/home3/fsun/DeepViewAgg/torch_points3d/trainer.py", line 353, in _train_epoch
+    self._model.optimize_parameters(epoch, self._dataset.batch_size)
+  File "/gpfs/home3/fsun/DeepViewAgg/torch_points3d/models/base_model.py", line 245, in optimize_parameters
+    self.forward(epoch=epoch)  # first call forward to calculate intermediate results
+  File "/gpfs/home3/fsun/DeepViewAgg/torch_points3d/models/segmentation/multimodal/Feng/view_selection_experiment.py", line 80, in forward
+    logits = self.head(features) if self._HAS_HEAD else features
+  File "/home/fsun/.conda/envs/pytorch3d/lib/python3.7/site-packages/torch/nn/modwandb: Waiting for W&B process to finish, PID 3431103
+ules/module.py", line 1130, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/home/fsun/.conda/envs/pytorch3d/lib/python3.7/site-packages/torch/nn/modules/container.py", line 139, in forward
+    input = module(input)
+  File "/home/fsun/.conda/envs/pytorch3d/lib/python3.7/site-packages/torch/nn/modules/module.py", line 1130, in _call_impl
+    return forward_call(*input, **kwargs)
+  File "/home/fsun/.conda/envs/pytorch3d/lib/python3.7/site-packages/torch/nn/modules/linear.py", line 114, in forward
+    return F.linear(input, self.weight, self.bias)
+RuntimeError: mat1 and mat2 shapes cannot be multiplied (2798911x32 and 20x20)
+wandb: Program failed with code 1. Press ctrl-c to abort syncing.
+wandb: You can sync this run to the cloud by running: 
+wandb: wandb sync wandb/run-20230116_143412-3lf281f4
+./scripts/DeepSet.sh: line 63: training.wandb.log=False: command not found
+
+JOB STATISTICS
+==============
+Job ID: 2077232
+Cluster: snellius
+User/Group: fsun/fsun
+State: RUNNING
+Nodes: 1
+Cores per node: 18
+CPU Utilized: 00:00:00
+CPU Efficiency: 0.00% of 00:47:42 core-walltime
+Job Wall-clock time: 00:02:39
+Memory Utilized: 0.00 MB (estimated maximum)
+Memory Efficiency: 0.00% of 117.19 GB (117.19 GB/node)
+WARNING: Efficiency statistics may be misleading for RUNNING jobs.

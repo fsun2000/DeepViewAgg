@@ -56,24 +56,30 @@ class MVFusionEncoder(MVFusionBackboneBasedModel, ABC):
             default_output_nc = mod_out_nc_list[0]
             
         self._output_nc = default_output_nc
-        self._checkpointing = model_config['transformer']['checkpointing']
+        self._checkpointing = model_config['backbone']['transformer']['checkpointing']
 
         # Set the MLP head if any
-        self._has_mlp_head = True
+#         self._has_mlp_head = True
 #         if "output_nc" in kwargs:
 #             self._has_mlp_head = True
-        print("self._has_mlp_head is true by default in applications/.../mvfusion.py")
+#         print("self._has_mlp_head is true by default in applications/.../mvfusion.py")
 #             self._output_nc = kwargs["output_nc"]
-        # Manually adjusted MLP size because the MVFusion config without 3d does not have output_nc 
-        self.mlp = MLP(
-            [model_config['transformer']['embed_dim'], model_config['transformer']['n_classes']], activation=torch.nn.ReLU(),
-            bias=False)
+
+#         # Manually adjusted MLP size because the MVFusion config without 3d does not have output_nc 
+#         self.mlp = MLP(
+#             [model_config['backbone']['transformer']['embed_dim'], model_config['backbone']['transformer']['n_classes']], activation=torch.nn.Identity(model_config['backbone']['transformer']['embed_dim']),
+#             bias=False)
             
         # modules
-        self.fusion = DVA_cls_5_fusion_7(model_config['transformer'])
+        self.fusion = DVA_cls_5_fusion_7(model_config['backbone']['transformer'])
         
-        self.n_views = model_config['transformer'].n_views
-        self.n_classes = model_config['transformer']['n_classes']
+        self.n_views = model_config.backbone.transformer.n_views
+        self.n_classes = model_config.backbone.transformer.n_classes
+        self.MAX_SEEN_POINTS = model_config.backbone.transformer.max_n_points
+        
+        print("WARNING: input points for Multi-View Fusion module are not clipped at MAX_SEEN_POINTS for fair model comparison in evaluation", flush=True)
+        if self._checkpointing:
+            print("checkpointing enabled for model forward pass!", flush=True)
         
     @property
     def has_mlp_head(self):
@@ -91,10 +97,12 @@ class MVFusionEncoder(MVFusionBackboneBasedModel, ABC):
 #         -----------
 #         data: MMData object
 #         """
-# #         print("temprarily skip moving data to device in applications")
-# #         print("data before to device", data)
 #         data = data.to(self.device)
-# #         print("data after to device: ", data)
+        
+                
+#         print("data all", data, flush=True)
+#         data = self.get_seen_points(data)
+#         print("data seen", data, flush=True)
         
 #         self.input = {
 #             'x_3d': getattr(data, 'x', None),   # Feng: adjusted from original 'getattr(data, 'x', None)', now it properly moves to gpu
@@ -127,23 +135,23 @@ class MVFusionEncoder(MVFusionBackboneBasedModel, ABC):
         # Apply ONLY atomic-level pooling which is in `down_modules`
         for i in range(len(self.down_modules)):
             mm_data_dict = self.down_modules[i](mm_data_dict)
-        """
-
-#         #### Mode preds
-#         pixel_validity = data.data.x[:, :, 0].bool()
-#         mv_preds = data.data.x[:, :, -1].long()
-
-#         valid_m2f_feats = []
-#         for i in range(len(mv_preds)):
-#             valid_m2f_feats.append(mv_preds[i][pixel_validity[i]])
-
-#         mode_preds = []
-#         for m2feats_of_seen_point in valid_m2f_feats:
-#             mode_preds.append(torch.mode(m2feats_of_seen_point.squeeze(), dim=0)[0])
-#         mode_preds = torch.stack(mode_preds, dim=0)
+        """    
     
-#         out_scores = torch.nn.functional.one_hot(mode_preds.squeeze().long(), self.n_classes).float()
-            
+#         if data.data.mvfusion_input.shape[0] > self.MAX_SEEN_POINTS \
+#             and self.training is True:
+#             print("self.training is True -> culling max n seen points", flush=True)
+#             # 1. get seen points
+#             # 2. remove them from mvfusion_input
+#             # 3. remove the removed points from seen points
+#             csr_idx = data.modalities['image'][0].view_csr_indexing
+#             seen_mask = csr_idx[1:] > csr_idx[:-1]
+#             keep_idx = torch.round(
+#                 torch.linspace(0, seen_mask.sum()-1, self.MAX_SEEN_POINTS)).long()
+#             keep_idx_mask = torch.zeros(seen_mask.sum(), dtype=torch.bool, device=keep_idx.device)
+#             keep_idx_mask[keep_idx] = True
+#             seen_mask[seen_mask.clone()] = keep_idx_mask
+#             data.data.mvfusion_input = data.data.mvfusion_input[keep_idx_mask]
+
     
         # Features from only seen point-image matches are included in 'x'
         viewing_feats = data.data.mvfusion_input[:, :, :-1]
@@ -163,20 +171,13 @@ class MVFusionEncoder(MVFusionBackboneBasedModel, ABC):
         }
         
         # get logits
-        print("checkpointing enabled for fusion forward")
-        out_scores = checkpoint(self.fusion, fusion_input)
-        
-#         out_scores = self.fusion(fusion_input)
-                
+        if self._checkpointing:
+            out_scores = checkpoint(self.fusion, fusion_input)
+        else:
+            out_scores = self.fusion(fusion_input)
         
         csr_idx = data.modalities['image'][0].view_csr_indexing
         x_seen_mask = csr_idx[1:] > csr_idx[:-1]
-        
-        
-        ###### Not used as we leave out unseen points for fairness.
-#         # Set logits of unseen points to 0.
-#         full_out_scores = torch.zeros((len(x_seen_mask), out_scores.shape[1]), dtype=out_scores.dtype, device=out_scores.device)
-#         full_out_scores[x_seen_mask] = out_scores
         
         
         # Discard the modalities used in the down modules, only
@@ -197,76 +198,14 @@ class MVFusionEncoder(MVFusionBackboneBasedModel, ABC):
         #  data. Besides, this behavior for NoDEncoder is not consistent
         #  with the multimodal UNet, need to consider homogenizing.
         for m in self.modalities:
-            # x_mod = getattr(mm_data_dict['modalities'][m], 'last_view_x_mod', None)
-            # if x_mod is not None:
-            #     out[m] = mm_data_dict['modalities'][m]
-            #####out[m] = mm_data_dict['modalities'][m]
-            
             # Feng:
             out[m] = data.modalities[m]
 
-        # Apply the MLP head, if any
-        if self.has_mlp_head:
-            # Apply to the 3D features
-            out.x = self.mlp(out.x)
-
-#             # Apply to the last modality-based view-level features
-#             for m in [mod for mod in self.modalities if mod in out.keys]:
-#                 out[m].last_view_x_mod = self.mlp(out[m].last_view_x_mod)
+#         # Apply the MLP head, if any
+#         if self.has_mlp_head:
+#             # Apply to the 3D features
+#             out.x = self.mlp(out.x)
 
         return out
 
-#     def get_view_dependent_features(self, mm_data):
-#         n_views = self.n_views
 
-#         image_data = mm_data.modalities['image']
-#         csr_idx = image_data.view_cat_csr_indexing
-
-#         viewing_conditions = image_data[0].mappings.values[2]
-        
-#         assert len(image_data) == 1
-#         m2f_mapped_feats = image_data[0].get_mapped_m2f_features(interpolate=True)
-        
-        
-
-#         # Add pixel validity as first feature
-#         viewing_conditions = torch.cat((torch.ones(viewing_conditions.shape[0], 1).to(viewing_conditions.device),
-#                                         viewing_conditions), dim=1)
-
-#         # Calculate amount of empty views. There should be n_points * n_views filled view conditions in total.
-#         n_seen = csr_idx[1:] - csr_idx[:-1]
-#         unfilled_points = n_seen[n_seen < n_views]
-#         n_views_to_fill = int(len(unfilled_points) * n_views - sum(unfilled_points))
-
-#         # generate random viewing conditions
-#         random_invalid_views = viewing_conditions[np.random.choice(range(len(viewing_conditions)), size=n_views_to_fill, replace=True)]
-#         # set pixel validity to invalid
-#         random_invalid_views[:, 0] = 0
-#         random_m2f_preds = m2f_mapped_feats[np.random.choice(range(len(viewing_conditions)), size=n_views_to_fill, replace=True)]
-
-
-#         # concat viewing conditions and random invalid views, then index the tensor such that each point
-#         # either has 9 valid subsampled views, or is filled to 9 views with random views
-#         combined_tensor = torch.cat((viewing_conditions, random_invalid_views), dim=0)
-#         combined_m2f_tensor = torch.cat((m2f_mapped_feats, random_m2f_preds), dim=0)
-        
-        
-#         unused_invalid_view_idx = len(viewing_conditions)
-#         combined_idx = []
-#         for i, n in enumerate(n_seen):
-#             if n < n_views:
-#                 n_empty_views = n_views -  n
-#                 combined_idx += list(range(csr_idx[i], csr_idx[i+1])) + \
-#                                 list(range(unused_invalid_view_idx, unused_invalid_view_idx + n_empty_views))
-#                 unused_invalid_view_idx += n_empty_views
-#             elif n > n_views:
-#                 sampled_idx = sorted(np.random.choice(range(csr_idx[i], csr_idx[i+1]), size=n_views, replace=False))
-#                 combined_idx += sampled_idx
-#             else:
-#                 combined_idx += list(range(csr_idx[i], csr_idx[i+1]))
-
-#         # re-index tensor for MVFusion format
-#         combined_tensor = combined_tensor[combined_idx]
-#         combined_m2f_tensor = combined_m2f_tensor[combined_idx]
-        
-#         return combined_tensor.reshape(mm_data.num_points, n_views, -1), combined_m2f_tensor.reshape(mm_data.num_points, n_views)

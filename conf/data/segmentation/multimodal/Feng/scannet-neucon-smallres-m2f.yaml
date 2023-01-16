@@ -33,6 +33,9 @@ center_z: True
 train_with_mix3d: True
 n_views_ablation:
 pixel_credits: 100
+pixel_credits_test: 100
+store_mode_pred: False      # unused flags, only for view selection experiment
+store_random_pred: False    # unused flags, only for view selection experiment
 
 
 pre_transform:
@@ -118,7 +121,7 @@ multimodal:  # Each modality must be inserted in a dedicated 'multimodal' sectio
         r_max: 8
         r_min: 0.05
         train_pixel_credit: ${data.pixel_credits}  # Choose based on GPU capacity, model ko/pixel cost and 3D batch_size
-        test_pixel_credit: ${data.pixel_credits}
+        test_pixel_credit: ${data.pixel_credits_test}
         k_coverage: 2
 
     pre_transform:

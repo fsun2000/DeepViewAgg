@@ -122,6 +122,8 @@ class ScannetMM(Scannet):
             center_z=False, 
             n_views=None,
             n_views_ablation=None,
+            store_mode_pred=False,
+            store_random_pred=False,
         **kwargs):
         
         self.pre_transform_image = pre_transform_image
@@ -136,6 +138,15 @@ class ScannetMM(Scannet):
         self.center_z = center_z
         self.n_views = n_views
         self.n_views_ablation = n_views_ablation
+        
+        # only for experiments
+        self.store_mode_pred = store_mode_pred
+        self.store_random_pred = store_random_pred
+        
+        if store_mode_pred:
+            print("Training using the mode prediction from all views for each point!")
+        if store_random_pred:
+            print("Selecting one random input prediction for each point from all of its views!")
         
         if self.n_views_ablation is not None:
             print("Currently running ablation studies on the number of points!")
@@ -509,6 +520,35 @@ class ScannetMM(Scannet):
                 m2f_feats[~view_feats[:, :, 0].bool()] = torch.randint(low=0, high=self.num_classes, size=(n_seen_points, N_VIEWS, 1))[~view_feats[:, :, 0].bool()]
                 
             
+            ##### hack: change all 2d pred labels for a point into the mode prediction/randomly selected view pred.
+            #####       for the view selection experiment
+            if self.store_mode_pred:                
+                valid_m2f_feats = []
+                for i in range(len(m2f_feats)):
+                    valid_m2f_feats.append(m2f_feats[i][pixel_validity[i]])
+
+                mode_preds = []
+                for m2feats_of_seen_point in valid_m2f_feats:
+                    mode_preds.append(torch.mode(m2feats_of_seen_point.squeeze(), dim=0)[0])
+                mode_preds = torch.stack(mode_preds, dim=0)
+                # repeat to MVFusion input shape
+                m2f_feats = mode_preds.unsqueeze(-1).repeat_interleave(self.n_views, dim=-1).unsqueeze(-1)
+                
+                print(m2f_feats.shape)
+            elif self.store_random_pred:
+                valid_m2f_feats = []
+                for i in range(len(m2f_feats)):
+                    valid_m2f_feats.append(m2f_feats[i][pixel_validity[i]])
+
+                selected_view_preds = []
+                for m2feats_of_seen_point in valid_m2f_feats:
+                    selected_idx = torch.randint(low=0, high=m2feats_of_seen_point.shape[0], size=(1,))
+                    selected_pred = m2feats_of_seen_point[selected_idx].squeeze(0)
+                    selected_view_preds.append(selected_pred)
+                selected_view_preds = torch.stack(selected_view_preds, dim=0)
+                # repeat to MVFusion input shape
+                m2f_feats = selected_view_preds.repeat_interleave(self.n_views, dim=-1).unsqueeze(-1)
+    
             # Save mapping + m2f features
             data.data.mvfusion_input = torch.cat((view_feats, m2f_feats), dim=-1)
                 
@@ -608,7 +648,8 @@ class ScannetDatasetMM(BaseDatasetMM, ABC):
         center_z: bool = dataset_opt.get('center_z', False)
         n_views: int = dataset_opt.get('n_views', 0)
         n_views_ablation = dataset_opt.get('n_views_ablation', None)
-        
+        store_mode_pred: bool = dataset_opt.get('store_mode_pred', False)
+        store_random_pred: bool = dataset_opt.get('store_random_pred', False)
             
         print("initialize train dataset")
         self.train_dataset = ScannetMM(
@@ -640,6 +681,8 @@ class ScannetDatasetMM(BaseDatasetMM, ABC):
             center_z=center_z, 
             n_views=n_views,
             n_views_ablation=n_views_ablation,
+            store_mode_pred=store_mode_pred,
+            store_random_pred=store_random_pred
         )
 
         print("initialize val dataset")
@@ -672,6 +715,8 @@ class ScannetDatasetMM(BaseDatasetMM, ABC):
             center_z=center_z, 
             n_views=n_views,
             n_views_ablation=n_views_ablation,
+            store_mode_pred=store_mode_pred,
+            store_random_pred=store_random_pred
         )
 
 #         print("initialize test dataset")
@@ -704,6 +749,8 @@ class ScannetDatasetMM(BaseDatasetMM, ABC):
 #             center_z=center_z, 
 #             n_views=n_views,
 #             n_views_ablation=n_views_ablation,
+#             store_mode_pred=store_mode_pred,
+#             store_random_pred=store_random_pred
 #         )
 
         if dataset_opt.class_weight_method:

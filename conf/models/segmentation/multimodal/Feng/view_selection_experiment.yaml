@@ -1,0 +1,556 @@
+# @package models
+defaults:
+  - segmentation/default
+
+
+# MVFusion_small:
+#     class: Feng.mvfusion.MVFusion_model
+#     down_conv:
+#         image:
+#             down_conv:
+#                 module_name: ADE20KResNet18TruncatedLayer4
+#                 frozen: False
+#             atomic_pooling:
+#                 module_name: BimodalCSRPool
+#                 mode: max
+#             view_pooling:
+#                 module_name: GroupBimodalCSRPool
+#                 in_map: 8
+#                 in_mod: out_mv_feat_dim
+#                 num_groups: 4
+#                 use_mod: False
+#                 map_encoder: DeepSetFeat
+#                 use_num: True
+#             fusion:
+#                 module_name: BimodalFusion
+#                 mode: concatenation
+#             branching_index: 0
+#     backbone:
+#         transformer:   # config for multi-view fusion transformer
+#             n_views: 9
+#             in_map: 9                    # mapping feature size
+#             in_m2f: 20                   # M2F one-hot encoded label size
+#             embed_dim: 64
+#             hidden_dim: 256
+#             num_heads: 2
+#             num_layers: 4
+#             use_batch_norm: False        # layer norm by default
+#             feat_downproj_dim:
+#             remove_first_dropout: True   # remove first dropout layer before the Transformer block
+#             dropout: 0.2
+#             mlp_dropout: 0.0             # final layer dropout
+#             use_attn_mask: True          # Transformer attention masking
+#             use_csr_mask: True           # Transformer pixel validity masking
+#             has_mlp_head: False           # MVFusion without 3d module should set to False by default
+#             max_n_points: 200000      # max. size of transformer batched input. Increase if memory allows
+#             checkpointing: True       # Reduce max GPU memory load but is slower
+            
+
+MVFusion_small_6views:
+    # 6.1 M params - 23.8 Mo on the GPU - ~7.2 ko/pixel at training time
+    class: Feng.mvfusion.MVFusion_model
+    down_conv:
+        image:
+            down_conv:
+                module_name: ADE20KResNet18PPM
+                frozen: False
+            atomic_pooling:
+                module_name: BimodalCSRPool
+                mode: max
+            view_pooling:
+                module_name: GroupBimodalCSRPool
+                in_map: 8
+                in_mod: 512
+                num_groups: 4
+                use_mod: False
+                gating: True
+                group_scaling: True
+                map_encoder: DeepSetFeat
+                use_num: True
+                pool: max
+                fusion: concatenation
+            fusion:
+                module_name: BimodalFusion
+                mode: concatenation
+            drop_mod: 0.0
+            branching_index: 0
+    backbone:
+        transformer:   # config for multi-view fusion transformer
+            n_views: 6
+            in_map: 9                    # mapping feature size
+            in_m2f: 20                   # M2F one-hot encoded label size
+            embed_dim: 64
+            hidden_dim: 256
+            num_heads: 2
+            num_layers: 4
+            use_batch_norm: False        # layer norm by default
+            feat_downproj_dim: 20
+            remove_first_dropout: True   # remove first dropout layer before the Transformer block
+            dropout: 0.0
+            mlp_dropout: 0.0             # final layer dropout
+            use_attn_mask: True          # Transformer attention masking
+            use_csr_mask: True           # Transformer pixel validity masking
+            has_mlp_head: False          # Whether or not to add MLP head in transformer fusion module
+            max_n_points: 200000      # max. size of transformer batched input. Increase if memory allows
+            gating: False
+            checkpointing: True
+
+
+
+
+# MVAttention_3D_small_6views:
+#     class: Feng.mvattention_attention_weighted_m2f_pred.MVAttentionAPIModel
+#     conv_type: "SPARSE"
+#     backend: "torchsparse"
+#     backbone: # backbone offset specific for Sparse conv application builder
+#         define_constants:
+#             in_feat: 32
+#             in_feat_img: 4
+#             in_feat_map: 8
+#             in_feat_attention: 4
+#             block: ResBlock # Can be any of the blocks in modules/MinkowskiEngine/api_modules.py
+#             out_mv_feat_dim: 20  # out dim of multi-view fused feature
+
+#         down_conv:
+#             module_name: ResNetDown
+#             block: block
+#             conv3d_after_fusion: False
+#             N: [ 0, 2, 3, 4, 6 ]
+#             kernel_size: [ 3, 2, 2, 2, 2 ]
+#             stride: [ 1, 2, 2, 2, 2 ]
+#             down_conv_nn:
+#               [
+#                   [ FEAT + out_mv_feat_dim, 2*in_feat ],
+#                   [ 2*in_feat, in_feat ],               
+#                   [ in_feat, 2*in_feat ],              
+#                   [ 2*in_feat, 4*in_feat ],
+#                   [ 4*in_feat, 8*in_feat ],
+#               ]
+
+#             image:
+#                 down_conv:
+#                     module_name: ADE20KResNet18TruncatedLayer4
+#                     frozen: False
+#                 atomic_pooling:
+#                     module_name: BimodalCSRPool
+#                     mode: max
+#                 view_pooling:
+#                     module_name: GroupBimodalCSRPool
+#                     in_map: 8
+#                     in_mod: out_mv_feat_dim
+#                     num_groups: 4
+#                     use_mod: False
+#                     map_encoder: DeepSetFeat
+#                     use_num: True
+#                 fusion:
+#                     module_name: BimodalFusion
+#                     mode: concatenation
+#                 branching_index: 0
+#                 checkpointing:  c 
+#                 interpolate: True
+
+#         up_conv:
+#             block: block
+#             module_name: ResNetUp
+#             N: [ 1, 1, 1, 1, 1 ]
+#             kernel_size: [ 2, 2, 2, 2, 3 ]
+#             stride: [ 2, 2, 2, 2, 1 ]
+#             up_conv_nn:
+#                 [
+#                   [ 8*in_feat, 4*in_feat, 4*in_feat ],
+#                   [ 4*in_feat, 2*in_feat, 4*in_feat ],
+#                   [ 4*in_feat, in_feat, 3*in_feat ],
+#                   [ 3*in_feat, 2*in_feat, 3*in_feat ],
+#                   [ 3*in_feat, 0, 3*in_feat ],
+#                 ]
+#         transformer:   # config for multi-view fusion transformer
+#             use_transformer: True
+#             use_deepset: False
+#             use_random: False
+#             use_average: False
+#             n_views: 6
+#             in_map: 9                    # mapping feature size
+#             in_m2f: 20                   # M2F one-hot encoded label size
+#             embed_dim: 64
+#             hidden_dim: 256
+#             num_heads: 2
+#             num_layers: 4
+#             use_batch_norm: False        # layer norm by default
+#             feat_downproj_dim:
+#             remove_first_dropout: True   # remove first dropout layer before the Transformer block
+#             dropout: 0.2
+#             mlp_dropout: 0.0             # final layer dropout
+#             use_attn_mask: True          # Transformer attention masking
+#             use_csr_mask: True           # Transformer pixel validity masking
+#             has_mlp_head: False          # False by default
+#             max_n_points: 200000      # max. size of transformer batched input. Increase if memory allows
+#             gating: False
+            
+            
+# Deepset_3D:
+#     class: Feng.mvattention_attention_weighted_m2f_pred.MVAttentionAPIModel
+#     conv_type: "SPARSE"
+#     backend: "torchsparse"
+#     backbone: # backbone offset specific for Sparse conv application builder
+#         define_constants:
+#             in_feat: 32
+#             in_feat_img: 4
+#             in_feat_map: 8
+#             in_feat_attention: 4
+#             block: ResBlock # Can be any of the blocks in modules/MinkowskiEngine/api_modules.py
+#             out_mv_feat_dim: 20  # out dim of multi-view fused feature
+
+#         down_conv:
+#             module_name: ResNetDown
+#             block: block
+#             conv3d_after_fusion: False
+#             N: [ 0, 2, 3, 4, 6 ]
+#             kernel_size: [ 3, 2, 2, 2, 2 ]
+#             stride: [ 1, 2, 2, 2, 2 ]
+#             down_conv_nn:
+#               [
+#                   [ FEAT + out_mv_feat_dim, 2*in_feat ],
+#                   [ 2*in_feat, in_feat ],               
+#                   [ in_feat, 2*in_feat ],              
+#                   [ 2*in_feat, 4*in_feat ],
+#                   [ 4*in_feat, 8*in_feat ],
+#               ]
+
+#             image:
+#                 down_conv:
+#                     module_name: ADE20KResNet18TruncatedLayer4
+#                     frozen: False
+#                 atomic_pooling:
+#                     module_name: BimodalCSRPool
+#                     mode: max
+#                 view_pooling:
+#                     module_name: GroupBimodalCSRPool
+#                     in_map: 8
+#                     in_mod: out_mv_feat_dim
+#                     num_groups: 4
+#                     use_mod: False
+#                     map_encoder: DeepSetFeat
+#                     use_num: True
+#                 fusion:
+#                     module_name: BimodalFusion
+#                     mode: concatenation
+#                 branching_index: 0
+#                 checkpointing:  c 
+#                 interpolate: True
+
+#         up_conv:
+#             block: block
+#             module_name: ResNetUp
+#             N: [ 1, 1, 1, 1, 1 ]
+#             kernel_size: [ 2, 2, 2, 2, 3 ]
+#             stride: [ 2, 2, 2, 2, 1 ]
+#             up_conv_nn:
+#                 [
+#                   [ 8*in_feat, 4*in_feat, 4*in_feat ],
+#                   [ 4*in_feat, 2*in_feat, 4*in_feat ],
+#                   [ 4*in_feat, in_feat, 3*in_feat ],
+#                   [ 3*in_feat, 2*in_feat, 3*in_feat ],
+#                   [ 3*in_feat, 0, 3*in_feat ],
+#                 ]
+#         transformer:   # config for multi-view fusion transformer
+#             use_transformer: False
+#             use_deepset: True
+#             use_random: False
+#             use_average: False
+#             n_views: 6
+#             in_map: 9                    # mapping feature size
+#             in_m2f: 20                   # M2F one-hot encoded label size
+#             embed_dim: 64
+#             hidden_dim: 256
+#             num_heads: 2
+#             num_layers: 4
+#             use_batch_norm: False        # layer norm by default
+#             feat_downproj_dim:
+#             remove_first_dropout: True   # remove first dropout layer before the Transformer block
+#             dropout: 0.2
+#             mlp_dropout: 0.0             # final layer dropout
+#             use_attn_mask: True          # Transformer attention masking
+#             use_csr_mask: True           # Transformer pixel validity masking
+#             has_mlp_head: False          # False by default
+#             max_n_points: 200000      # max. size of transformer batched input. Increase if memory allows
+#             gating: False
+            
+            
+# Select_Random_View:
+#     class: Feng.mvattention_attention_weighted_m2f_pred.MVAttentionAPIModel
+#     conv_type: "SPARSE"
+#     backend: "torchsparse"
+#     backbone: # backbone offset specific for Sparse conv application builder
+#         define_constants:
+#             in_feat: 32
+#             in_feat_img: 4
+#             in_feat_map: 8
+#             in_feat_attention: 4
+#             block: ResBlock # Can be any of the blocks in modules/MinkowskiEngine/api_modules.py
+#             out_mv_feat_dim: 20  # out dim of multi-view fused feature
+
+#         down_conv:
+#             module_name: ResNetDown
+#             block: block
+#             conv3d_after_fusion: False
+#             N: [ 0, 2, 3, 4, 6 ]
+#             kernel_size: [ 3, 2, 2, 2, 2 ]
+#             stride: [ 1, 2, 2, 2, 2 ]
+#             down_conv_nn:
+#               [
+#                   [ FEAT + out_mv_feat_dim, 2*in_feat ],
+#                   [ 2*in_feat, in_feat ],               
+#                   [ in_feat, 2*in_feat ],              
+#                   [ 2*in_feat, 4*in_feat ],
+#                   [ 4*in_feat, 8*in_feat ],
+#               ]
+
+#             image:
+#                 down_conv:
+#                     module_name: ADE20KResNet18TruncatedLayer4
+#                     frozen: False
+#                 atomic_pooling:
+#                     module_name: BimodalCSRPool
+#                     mode: max
+#                 view_pooling:
+#                     module_name: GroupBimodalCSRPool
+#                     in_map: 8
+#                     in_mod: out_mv_feat_dim
+#                     num_groups: 4
+#                     use_mod: False
+#                     map_encoder: DeepSetFeat
+#                     use_num: True
+#                 fusion:
+#                     module_name: BimodalFusion
+#                     mode: concatenation
+#                 branching_index: 0
+#                 checkpointing:  c 
+#                 interpolate: True
+
+#         up_conv:
+#             block: block
+#             module_name: ResNetUp
+#             N: [ 1, 1, 1, 1, 1 ]
+#             kernel_size: [ 2, 2, 2, 2, 3 ]
+#             stride: [ 2, 2, 2, 2, 1 ]
+#             up_conv_nn:
+#                 [
+#                   [ 8*in_feat, 4*in_feat, 4*in_feat ],
+#                   [ 4*in_feat, 2*in_feat, 4*in_feat ],
+#                   [ 4*in_feat, in_feat, 3*in_feat ],
+#                   [ 3*in_feat, 2*in_feat, 3*in_feat ],
+#                   [ 3*in_feat, 0, 3*in_feat ],
+#                 ]
+#         transformer:   # config for multi-view fusion transformer
+#             use_transformer: False
+#             use_deepset: False
+#             use_random: True
+#             use_average: False
+#             n_views: 6
+#             in_map: 9                    # mapping feature size
+#             in_m2f: 20                   # M2F one-hot encoded label size
+#             embed_dim: 64
+#             hidden_dim: 256
+#             num_heads: 2
+#             num_layers: 4
+#             use_batch_norm: False        # layer norm by default
+#             feat_downproj_dim:
+#             remove_first_dropout: True   # remove first dropout layer before the Transformer block
+#             dropout: 0.2
+#             mlp_dropout: 0.0             # final layer dropout
+#             use_attn_mask: True          # Transformer attention masking
+#             use_csr_mask: True           # Transformer pixel validity masking
+#             has_mlp_head: False          # False by default
+#             max_n_points: 200000      # max. size of transformer batched input. Increase if memory allows
+#             gating: False
+
+
+# Average_Fusion:
+#     class: Feng.mvattention_attention_weighted_m2f_pred.MVAttentionAPIModel
+#     conv_type: "SPARSE"
+#     backend: "torchsparse"
+#     backbone: # backbone offset specific for Sparse conv application builder
+#         define_constants:
+#             in_feat: 32
+#             in_feat_img: 4
+#             in_feat_map: 8
+#             in_feat_attention: 4
+#             block: ResBlock # Can be any of the blocks in modules/MinkowskiEngine/api_modules.py
+#             out_mv_feat_dim: 20  # out dim of multi-view fused feature
+
+#         down_conv:
+#             module_name: ResNetDown
+#             block: block
+#             conv3d_after_fusion: False
+#             N: [ 0, 2, 3, 4, 6 ]
+#             kernel_size: [ 3, 2, 2, 2, 2 ]
+#             stride: [ 1, 2, 2, 2, 2 ]
+#             down_conv_nn:
+#               [
+#                   [ FEAT + out_mv_feat_dim, 2*in_feat ],
+#                   [ 2*in_feat, in_feat ],               
+#                   [ in_feat, 2*in_feat ],              
+#                   [ 2*in_feat, 4*in_feat ],
+#                   [ 4*in_feat, 8*in_feat ],
+#               ]
+
+#             image:
+#                 down_conv:
+#                     module_name: ADE20KResNet18TruncatedLayer4
+#                     frozen: False
+#                 atomic_pooling:
+#                     module_name: BimodalCSRPool
+#                     mode: max
+#                 view_pooling:
+#                     module_name: GroupBimodalCSRPool
+#                     in_map: 8
+#                     in_mod: out_mv_feat_dim
+#                     num_groups: 4
+#                     use_mod: False
+#                     map_encoder: DeepSetFeat
+#                     use_num: True
+#                 fusion:
+#                     module_name: BimodalFusion
+#                     mode: concatenation
+#                 branching_index: 0
+#                 checkpointing:  c 
+#                 interpolate: True
+
+#         up_conv:
+#             block: block
+#             module_name: ResNetUp
+#             N: [ 1, 1, 1, 1, 1 ]
+#             kernel_size: [ 2, 2, 2, 2, 3 ]
+#             stride: [ 2, 2, 2, 2, 1 ]
+#             up_conv_nn:
+#                 [
+#                   [ 8*in_feat, 4*in_feat, 4*in_feat ],
+#                   [ 4*in_feat, 2*in_feat, 4*in_feat ],
+#                   [ 4*in_feat, in_feat, 3*in_feat ],
+#                   [ 3*in_feat, 2*in_feat, 3*in_feat ],
+#                   [ 3*in_feat, 0, 3*in_feat ],
+#                 ]
+#         transformer:   # config for multi-view fusion transformer
+#             use_transformer: False
+#             use_deepset: False
+#             use_random: False
+#             use_average: True
+#             n_views: 6
+#             in_map: 9                    # mapping feature size
+#             in_m2f: 20                   # M2F one-hot encoded label size
+#             embed_dim: 64
+#             hidden_dim: 256
+#             num_heads: 2
+#             num_layers: 4
+#             use_batch_norm: False        # layer norm by default
+#             feat_downproj_dim:
+#             remove_first_dropout: True   # remove first dropout layer before the Transformer block
+#             dropout: 0.2
+#             mlp_dropout: 0.0             # final layer dropout
+#             use_attn_mask: True          # Transformer attention masking
+#             use_csr_mask: True           # Transformer pixel validity masking
+#             has_mlp_head: False          # False by default
+#             max_n_points: 200000      # max. size of transformer batched input. Increase if memory allows
+#             gating: False
+            
+            
+# MVAttention_small_6views:
+#     class: Feng.view_selection_experiment.ViewSelectionExp_model
+#     down_conv:
+#         image:
+#             down_conv:
+#                 module_name: ADE20KResNet18PPM
+#                 frozen: False
+#             atomic_pooling:
+#                 module_name: BimodalCSRPool
+#                 mode: max
+#             view_pooling:
+#                 module_name: GroupBimodalCSRPool
+#                 in_map: 8
+#                 in_mod: 512
+#                 num_groups: 4
+#                 use_mod: False
+#                 gating: True
+#                 group_scaling: True
+#                 map_encoder: DeepSetFeat
+#                 use_num: True
+#                 pool: max
+#                 fusion: concatenation
+#             fusion:
+#                 module_name: BimodalFusion
+#                 mode: residual
+#             drop_mod: 0.1
+#             branching_index: 0
+#     backbone:
+#         use_deepset: False
+#         use_transformer: True
+#         transformer:   # config for multi-view fusion transformer
+#             n_views: 6
+#             in_map: 9                    # mapping feature size
+#             in_m2f: 20                   # M2F one-hot encoded label size
+#             embed_dim: 64
+#             hidden_dim: 256
+#             num_heads: 2
+#             num_layers: 4
+#             use_batch_norm: False        # layer norm by default
+#             feat_downproj_dim:
+#             remove_first_dropout: True   # remove first dropout layer before the Transformer block
+#             dropout: 0.2
+#             mlp_dropout: 0.0             # final layer dropout
+#             use_attn_mask: True          # Transformer attention masking
+#             use_csr_mask: True           # Transformer pixel validity masking
+#             has_mlp_head: False          # Whether or not to add MLP head in transformer fusion module
+#             max_n_points: 200000      # max. size of transformer batched input. Increase if memory allows
+#             gating: False
+#             checkpointing: True
+            
+            
+DeepSetAttention:
+    class: Feng.view_selection_experiment.ViewSelectionExp_model
+    down_conv:
+        image:
+            down_conv:
+                module_name: ADE20KResNet18PPM
+                frozen: False
+            atomic_pooling:
+                module_name: BimodalCSRPool
+                mode: max
+            view_pooling:
+                module_name: GroupBimodalCSRPool
+                in_map: 9
+                in_mod: 20
+                num_groups: 20
+                use_mod: False
+                gating: False
+                group_scaling: True
+                map_encoder: DeepSetFeat
+                use_num: True
+                pool: max
+                fusion: concatenation
+            fusion:
+                module_name: BimodalFusion
+                mode: residual
+            drop_mod: 0.0
+            branching_index: 0
+    backbone:
+        use_deepset: True
+        use_transformer: False
+        transformer:   # config for multi-view fusion transformer
+            n_views: 6
+            in_map: 9                    # mapping feature size
+            in_m2f: 20                   # M2F one-hot encoded label size
+            embed_dim: 64
+            hidden_dim: 256
+            num_heads: 2
+            num_layers: 4
+            use_batch_norm: False        # layer norm by default
+            feat_downproj_dim:
+            remove_first_dropout: True   # remove first dropout layer before the Transformer block
+            dropout: 0.2
+            mlp_dropout: 0.0             # final layer dropout
+            use_attn_mask: True          # Transformer attention masking
+            use_csr_mask: True           # Transformer pixel validity masking
+            has_mlp_head: False          # Whether or not to add MLP head in transformer fusion module
+            max_n_points: 200000      # max. size of transformer batched input. Increase if memory allows
+            gating: False
+            checkpointing: False

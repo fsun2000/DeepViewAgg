@@ -1234,9 +1234,32 @@ class MVAttentionUnimodalBranch(nn.Module, ABC):
             out_channels=None, interpolate=False, transformer_config=None):
         super(MVAttentionUnimodalBranch, self).__init__()
         
-        self.attn_fusion = DVA_attention_weighted_M2F_preds(transformer_config)
+        self.use_transformer = False
+        self.use_deepset = False
+        self.use_random = False
+        self.use_average = False
+        
+        self.gating = None
         self.n_classes = transformer_config['n_classes']
-        self.gating = view_pool if transformer_config['gating'] is True else None
+        if transformer_config.use_transformer:
+            self.use_transformer = True
+            self.attn_fusion = DVA_attention_weighted_M2F_preds(transformer_config)
+        elif transformer_config.use_deepset:
+            self.use_deepset = True
+            d_in = 8 + self.n_classes   # Viewing Conditions + Input pred label (one hot)
+            d_hidden = 32
+            pool = 'max'
+            use_num = True
+                    
+            self.attn_fusion = DeepSetFeat_AttentionWeighting(d_in=d_in, d_out=d_hidden, pool=pool, fusion='concatenation',
+            use_num=use_num, num_classes=self.n_classes)
+        elif transformer_config.use_random:
+            self.use_random = True
+#         elif transformer_config.use_heuristic:
+#             self.use_heuristic = True
+        elif transformer_config.use_average:
+            self.use_average = True
+            
         self.fusion = fusion
     
         drop_cls = ModalityDropout if hard_drop else nn.Dropout
@@ -1364,8 +1387,14 @@ class MVAttentionUnimodalBranch(nn.Module, ABC):
 
             return mm_data_dict
  
-        x_mod = self.forward_transformerfusion(mm_data_dict)
-            
+        if self.use_transformer:
+            x_mod = self.forward_transformerfusion(mm_data_dict)
+        elif self.use_deepset:
+            x_mod = self.forward_deepset(mm_data_dict)
+        elif self.use_random:
+            x_mod = self.forward_random(mm_data_dict)
+        elif self.use_average:
+            x_mod = self.forward_average(mm_data_dict)
        
 
         # Dropout 3D or modality features
@@ -1448,7 +1477,53 @@ class MVAttentionUnimodalBranch(nn.Module, ABC):
         x_mod[mm_data_dict['transformer_x_seen']] = seen_x_mod
         return x_mod
 
+    def forward_deepset(self, mm_data_dict, reset=True):
+        viewing_conditions = mm_data_dict['modalities']['image'][0].mappings.values[2]
 
+        input_preds = mm_data_dict['modalities']['image'][0].get_mapped_m2f_features()
+        input_preds_one_hot = torch.nn.functional.one_hot(input_preds.long().squeeze(), self.n_classes)
+        attention_input = torch.concat((viewing_conditions, input_preds_one_hot), dim=1)
+
+        csr_idx = mm_data_dict['modalities']['image'][0].view_csr_indexing
+
+        seen_x_mod = self.attn_fusion(attention_input, csr_idx, input_preds_one_hot)        
+       
+
+#         # Assign fused features back to points that were seen 
+#         x_mod = torch.zeros((mm_data_dict['modalities']['image'].num_points, 
+#                              seen_x_mod.shape[-1]), device=seen_x_mod.device)
+        
+        x_mod = seen_x_mod
+        return x_mod
+    
+    def forward_random(self, mm_data_dict, reset=True):
+        input_preds = mm_data_dict['transformer_input'][:, 0, -1].long()
+        
+        
+        selected_view_preds_one_hot = torch.nn.functional.one_hot(input_preds.squeeze(), self.n_classes)
+    
+        # Assign fused features back to points that were seen 
+        x_mod = torch.zeros((mm_data_dict['modalities']['image'].num_points, 
+                             selected_view_preds_one_hot.shape[-1]), device=selected_view_preds_one_hot.device)
+        x_mod[mm_data_dict['transformer_x_seen']] = selected_view_preds_one_hot.float()
+        return x_mod
+    
+    
+    def forward_average(self, mm_data_dict, reset=True):
+        input_preds = mm_data_dict['transformer_input'][:, 0, -1].long()
+        
+
+        
+        mode_preds_one_hot = torch.nn.functional.one_hot(input_preds.squeeze(), self.n_classes)
+        
+    
+        # Assign fused features back to points that were seen 
+        x_mod = torch.zeros((mm_data_dict['modalities']['image'].num_points, 
+                             mode_preds_one_hot.shape[-1]), device=mode_preds_one_hot.device)
+        x_mod[mm_data_dict['transformer_x_seen']] = mode_preds_one_hot.float()
+        return x_mod
+    
+    
     def forward_fusion(self, x_3d, x_mod):
         """Fuse the modality features into the 3D points features.
 
@@ -1474,3 +1549,258 @@ class MVAttentionUnimodalBranch(nn.Module, ABC):
     def extra_repr(self) -> str:
         repr_attr = ['drop_3d', 'drop_mod', 'keep_last_view', 'checkpointing']
         return "\n".join([f'{a}={getattr(self, a)}' for a in repr_attr])
+    
+    
+    
+    
+    
+    
+    
+    
+    
+################################## Adjusted DeepSetFeat for view selection experiment   ##################################
+import sys
+import torch
+import torch.nn.functional as F
+from torch_scatter import segment_csr, scatter_min, scatter_max
+from torch_points3d.core.common_modules import MLP
+import math
+
+
+class DeepSetFeat_AttentionWeighting(nn.Module, ABC):
+    """Produce element-wise set features based on shared learned
+    features.
+
+    Inspired from:
+        DeepSets: https://arxiv.org/abs/1703.06114
+        PointNet: https://arxiv.org/abs/1612.00593
+    """
+
+    _POOLING_MODES = ['max', 'mean', 'min', 'sum']
+    _FUSION_MODES = ['residual', 'concatenation', 'both']
+
+    def __init__(
+            self, d_in, d_out, pool='max', fusion='concatenation',
+            use_num=False, num_classes=None, **kwargs):
+        super(DeepSetFeat_AttentionWeighting, self).__init__()
+
+        # Initialize the set-pooling mechanism to aggregate features of
+        # elements-level features to set-level features
+        pool = pool.split('_')
+        assert all([p in self._POOLING_MODES for p in pool]), \
+            f"Unsupported pool='{pool}'. Expected elements of: " \
+            f"{self._POOLING_MODES}"
+        self.f_pool = lambda a, b: torch.cat([
+            segment_csr(a, b, reduce=p) for p in pool], dim=-1)
+        self.pool = pool
+
+        # Initialize the fusion mechanism to merge set-level and
+        # element-level features
+        if fusion == 'residual':
+            self.f_fusion = lambda a, b: a + b
+        elif fusion == 'concatenation':
+            self.f_fusion = lambda a, b: torch.cat((a, b), dim=-1)
+        elif fusion == 'both':
+            self.f_fusion = lambda a, b: torch.cat((a, a + b), dim=-1)
+        else:
+            raise NotImplementedError(
+                f"Unknown fusion='{fusion}'. Please choose among "
+                f"supported modes: {self._FUSION_MODES}.")
+        self.fusion = fusion
+
+        # Initialize the MLPs
+        self.d_in = d_in
+        self.d_out = d_out
+        self.use_num = use_num
+        self.mlp_elt_1 = MLP(
+            [d_in, d_out, d_out], bias=False)
+        in_set_mlp = d_out * len(self.pool) + self.use_num
+        self.mlp_set = MLP(
+            [in_set_mlp, d_out, d_out], bias=False)
+        in_last_mlp = d_out if fusion == 'residual' else d_out * 2
+        self.mlp_elt_2 = MLP(
+            [in_last_mlp, d_out, d_out], bias=False)
+        
+        # E_score computes the compatibility score for each feature
+        # group, these are to be further normalized to produce
+        # final attention scores
+        self.E_score = nn.Linear(d_out, num_classes, bias=True)
+        
+        self.num_classes = num_classes
+
+    def forward(self, x, csr_idx, x_mod):
+        x = self.mlp_elt_1(x)
+        x_set = self.f_pool(x, csr_idx)
+        if self.use_num:
+            # Heuristic to normalize in [0,1]
+            set_num = torch.sqrt(1 / (csr_idx[1:] - csr_idx[:-1] + 1e-3))
+            x_set = torch.cat((x_set, set_num.view(-1, 1)), dim=1)
+        x_set = self.mlp_set(x_set)
+        x_set = gather_csr(x_set, csr_idx)
+        x_out = self.f_fusion(x, x_set)
+        x_out = self.mlp_elt_2(x_out)
+        
+        
+        
+        # Attention weighting 
+        
+        # Compute compatibilities (unscaled scores) : V x num_groups
+        compatibilities = self.E_score(x_out)
+        
+
+        # Compute attention scores : V x num_classes
+        attentions = segment_softmax_csr(
+            compatibilities, csr_idx, scaling=False)
+        # Apply attention scores : P x F_mod
+        x_pool = segment_csr(
+            x_mod * expand_group_feat(attentions, self.num_classes, self.num_classes),
+            csr_idx, reduce='sum')
+
+        
+        return x_pool
+
+    def extra_repr(self) -> str:
+        repr_attr = ['pool', 'fusion', 'use_num']
+        return "\n".join([f'{a}={getattr(self, a)}' for a in repr_attr])
+    
+    
+#################################################### Functions hardcoded #####################################################
+def nearest_power_of_2(x, min_power=16):
+    """Local helper to find the nearest power of 2 of a given number.
+    The `min_power` parameter puts a minimum threshold for the returned
+    power.
+    """
+    x = int(x)
+
+    if x < min_power:
+        return min_power
+
+    previous_power = 2 ** ((x - 1).bit_length() - 1)
+    next_power = 2 ** (x - 1).bit_length()
+
+    if x - previous_power < next_power - x:
+        return previous_power
+    else:
+        return next_power
+
+
+def group_sizes(num_elements, num_groups):
+    """Local helper to compute the group sizes, when distributing
+    num_elements across num_groups while keeping group sizes as close
+    as possible."""
+    sizes = torch.full(
+        (num_groups,), math.floor(num_elements / num_groups),
+        dtype=torch.long)
+    sizes += torch.arange(num_groups) < num_elements - sizes.sum()
+    return sizes
+
+
+def expand_group_feat(A, num_groups, num_channels):
+    if num_groups == 1:
+        A = A.view(-1, 1)
+    elif num_groups < num_channels:
+        # Expand compatibilities to features of the same group
+        sizes = group_sizes(num_channels, num_groups).to(A.device)
+        A = A.repeat_interleave(sizes, dim=1)
+    return A
+
+
+@torch.jit.script
+def segment_softmax_csr(src: torch.Tensor, csr_idx: torch.Tensor,
+                        eps: float = 1e-12, scaling: bool = False) -> torch.Tensor:
+    """Equivalent of scatter_softmax but for CSR indices.
+    Based on: torch_scatter/composite/softmax.py
+
+    The `scaling` option allows for scaled softmax computation, where
+    `scaling='True'` scales by the number of items in each index group.
+    """
+    if not torch.is_floating_point(src):
+        raise ValueError(
+            '`segment_csr_softmax` can only be computed over tensors with '
+            'floating point data types.')
+    if csr_idx.dim() != 1:
+        raise ValueError(
+            '`segment_csr_softmax` can only be computed over 1D CSR indices.')
+    if src.dim() > 2:
+        raise NotImplementedError(
+            '`segment_csr_softmax` can only be computed over 1D or 2D source '
+            'tensors.')
+
+    # Compute dense indices from CSR indices
+    n_groups = csr_idx.shape[0] - 1
+    dense_idx = torch.arange(n_groups).to(src.device).repeat_interleave(
+        csr_idx[1:] - csr_idx[:-1])
+    if src.dim() > 1:
+        dense_idx = dense_idx.view(-1, 1).repeat(1, src.shape[1])
+
+    # Center scores maxima near 1 for computation precision
+    max_value_per_index = segment_csr(src, csr_idx, reduce='max')
+    max_per_src_element = max_value_per_index.gather(0, dense_idx)
+    centered_scores = src - max_per_src_element
+
+    # Optionally scale scores by the sqrt of index group sizes
+    if scaling:
+        num_per_index = (csr_idx[1:] - csr_idx[:-1])
+        sqrt_num_per_index = num_per_index.float().sqrt()
+        num_per_src_element = torch.repeat_interleave(
+            sqrt_num_per_index, num_per_index)
+        if src.dim() > 1:
+            num_per_src_element = num_per_src_element.view(-1, 1).repeat(
+                1, src.shape[1])
+
+        centered_scores /= num_per_src_element
+
+    # Compute the numerators
+    centered_scores_exp = centered_scores.exp()
+
+    # Compute the denominators
+    sum_per_index = segment_csr(centered_scores_exp, csr_idx, reduce='sum')
+    normalizing_constants = sum_per_index.add_(eps).gather(0, dense_idx)
+
+    return centered_scores_exp.div(normalizing_constants)
+
+
+@torch.jit.script
+def gather_csr(src: torch.Tensor, csr_idx: torch.Tensor) -> torch.Tensor:
+    """Gather index-level src values into element-level values based on
+    CSR indices.
+
+    When applied to the output or segment_csr, this redistributes the
+    reduced values to the appropriate segment_csr input elements.
+    """
+    if not torch.is_floating_point(src):
+        raise ValueError(
+            '`gather_csr` can only be computed over tensors with '
+            'floating point data types.')
+    if csr_idx.dim() != 1:
+        raise ValueError(
+            '`gather_csr` can only be computed over 1D CSR indices.')
+    if src.dim() > 2:
+        raise NotImplementedError(
+            '`gather_csr` can only be computed over 1D or 2D source '
+            'tensors.')
+
+    # Compute dense indices from CSR indices
+    n_groups = csr_idx.shape[0] - 1
+    dense_idx = torch.arange(n_groups).to(src.device).repeat_interleave(
+        csr_idx[1:] - csr_idx[:-1])
+    if src.dim() > 1:
+        dense_idx = dense_idx.view(-1, 1).repeat(1, src.shape[1])
+
+    # Center scores maxima near 1 for computation precision
+    return src.gather(0, dense_idx)
+
+
+@torch.jit.script
+def segment_gather_csr(src: torch.Tensor, csr_idx: torch.Tensor,
+                       reduce: str = 'sum') -> torch.Tensor:
+    """Compute the reduced value between same-index elements, for CSR
+    indices, and redistribute them to input elements.
+    """
+    # Reduce with segment_csr
+    reduced_per_index = segment_csr(src, csr_idx, reduce=reduce)
+
+    # Expand with gather_csr
+    reduced_per_src_element = gather_csr(reduced_per_index, csr_idx)
+
+    return reduced_per_src_element

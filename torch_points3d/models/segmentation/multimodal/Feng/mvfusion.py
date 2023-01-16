@@ -29,13 +29,13 @@ class MVFusion(BaseModel, ABC):
         super().__init__(option)
 
         # UnwrappedUnetBasedModel init
-        option['transformer']['n_classes'] = dataset.num_classes
+        option['backbone']['transformer']['n_classes'] = dataset.num_classes
         self.backbone = MVFusionEncoder(option, model_type, dataset, modules)
         self._modalities = self.backbone._modalities
 
         # Segmentation head init
         if self._HAS_HEAD:
-            self.head = nn.Sequential(nn.Linear(self.backbone.output_nc,
+            self.head = nn.Sequential(nn.Linear(20,
                                                 dataset.num_classes))
         self.loss_names = ["loss_seg"]
 
@@ -60,7 +60,18 @@ class MVFusion(BaseModel, ABC):
 #             #  requires any training, then it will never receive any
 #             #  gradient from the view loss and hence will not be trained.
 
+    def get_seen_points(self, mm_data):
+        ### Select seen points
+        csr_idx = mm_data.modalities['image'][0].view_csr_indexing
+        dense_idx_list = torch.arange(mm_data.modalities['image'][0].num_points).repeat_interleave(csr_idx[1:] - csr_idx[:-1])
+        # take subset of only seen points without re-indexing the same point
+        mm_data = mm_data[dense_idx_list.unique()]
+        return mm_data
+
     def set_input(self, data, device):
+        # Get only seen points
+        data = self.get_seen_points(data)
+    
         self.input = data
 
         if hasattr(data, 'batch') and data.batch is not None:
@@ -84,21 +95,21 @@ class MVFusion(BaseModel, ABC):
         if seen_mask is None:
             seen_mask = torch.zeros(features.shape[0], dtype=torch.bool, device=self.device)
 
-        # TODO: this is a bit dirty, saving the modality-wise feature
-        #  maps in self.input. Need to find a cleaner way. This impacts
-        #  the Dash visualization app.
-        for m in self.modalities:
-            for i in range(self.input.modalities[m].num_settings):
-                if self._HAS_HEAD:
-                    f_map = data[m][i].x
-                    s = f_map.shape
-                    f_map = f_map.permute(1, 0, 2, 3).reshape(s[1], -1).T
-                    f_map = self.head(f_map)
-                    f_map = f_map.T.reshape(f_map.shape[1], s[0], s[2], s[3]).permute(1, 0, 2, 3)
-                    self.input.modalities[m][i].pred = f_map
-                    self.input.modalities[m][i].feat = data[m][i].x
-                else:
-                    self.input.modalities[m][i].pred = data[m][i].x
+#         # TODO: this is a bit dirty, saving the modality-wise feature
+#         #  maps in self.input. Need to find a cleaner way. This impacts
+#         #  the Dash visualization app.
+#         for m in self.modalities:
+#             for i in range(self.input.modalities[m].num_settings):
+#                 if self._HAS_HEAD:
+#                     f_map = data[m][i].x
+#                     s = f_map.shape
+#                     f_map = f_map.permute(1, 0, 2, 3).reshape(s[1], -1).T
+#                     f_map = self.head(f_map)
+#                     f_map = f_map.T.reshape(f_map.shape[1], s[0], s[2], s[3]).permute(1, 0, 2, 3)
+#                     self.input.modalities[m][i].pred = f_map
+#                     self.input.modalities[m][i].feat = data[m][i].x
+#                 else:
+#                     self.input.modalities[m][i].pred = data[m][i].x
         
     
         # Feng: directly use the logits output from DVA_cls_5_fusion_7 class with MLP_head inside
@@ -164,7 +175,7 @@ class MVFusion(BaseModel, ABC):
 
 
 class MVFusion_model(MVFusion):
-    _HAS_HEAD = False
+    _HAS_HEAD = True
 
 
 # class No3DLogitFusion(No3D):

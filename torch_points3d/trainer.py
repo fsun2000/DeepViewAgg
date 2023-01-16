@@ -258,6 +258,9 @@ class Trainer:
         if self._checkpoint.start_epoch > self._cfg.training.epochs:
             if self._dataset.has_test_loaders:
                 self._test_epoch(epoch, "test")
+        else:
+            # After training finished, run final evaluation on 2D and 3D
+            self.eval(stage_name="val")
 
     def eval(self, stage_name=""):
         self._is_training = False
@@ -301,6 +304,12 @@ class Trainer:
             self.wandb_log, self.tensorboard_log)
         self._tracker_mvfusion: BaseTracker = self._dataset.get_tracker(
             self.wandb_log, self.tensorboard_log)
+            
+        print("trainer.py: Tracking 2D mask and 2D refined mask scores!")
+        self._tracker_2d_model_pred_masks: BaseTracker = self._dataset.get_tracker(
+            self.wandb_log, self.tensorboard_log)
+        self._tracker_2d_mvfusion_pred_masks: BaseTracker = self._dataset.get_tracker(
+            self.wandb_log, self.tensorboard_log)
                         
         epoch = self._checkpoint.start_epoch
 
@@ -310,7 +319,16 @@ class Trainer:
 
     def _finalize_epoch(self, epoch):
         self._tracker.finalise(**self.tracker_options)
-
+        if self._is_training:
+            metrics = self._tracker.publish(epoch)
+            self._checkpoint.save_best_models_under_current_metrics(
+                self._model, metrics, self._tracker.metric_func)
+            if self.wandb_log and self._cfg.training.wandb.public:
+                Wandb.add_file(self._checkpoint.checkpoint_path)
+            if self._tracker._stage == "train":
+                log.info("Learning rate = %f" % self._model.learning_rate)
+        
+        
     def _train_epoch(self, epoch: int):
 
         self._model.train()
@@ -466,10 +484,11 @@ class Trainer:
         self._finalize_epoch(epoch)
         self._tracker.print_summary()
         
-    def _track_2d_results(self, model, mm_data):
+    def _track_2d_results(self, model, mm_data, contains_pred=False, save_output=False):
         """ Track 2D scores for input semantic segmentation masks and output Multi-View Fusion refined 2D masks using simple nearest-neighbor interpolation and projected 3D point predictions.
         """
-        mm_data.data.pred = model.output.detach().cpu().argmax(1)
+        if contains_pred == False:
+            mm_data.data.pred = model.output.detach().cpu().argmax(1)
         
         mappings = mm_data.modalities['image'][0].mappings
         point_ids = torch.arange(
@@ -501,8 +520,10 @@ class Trainer:
         else:
             mask_im_dir = osp.join(scan_dir, input_mask_name)
             refined_mask_im_dir = osp.join(scan_dir, input_mask_name + '_refined')
-        print("Creating refined mask dir at ", refined_mask_im_dir)
-        os.makedirs(refined_mask_im_dir, exist_ok=True)
+            
+        if save_output:
+            print("Creating refined mask dir at ", refined_mask_im_dir)
+            os.makedirs(refined_mask_im_dir, exist_ok=True)
         
         # Loop over all N views
         for i, x in enumerate(mm_data.modalities['image'][0]):
@@ -532,7 +553,9 @@ class Trainer:
             im_name = x.m2f_pred_mask_path[0].split("/")[-1]
         
             pred_mask_2d = pred_mask_2d.resize((640, 480), resample=0)
-            pred_mask_2d.save(osp.join(refined_mask_im_dir, im_name))
+            
+            if save_output:
+                pred_mask_2d.save(osp.join(refined_mask_im_dir, im_name))
 
             pred_mask_2d = np.asarray(pred_mask_2d)
             
@@ -579,23 +602,23 @@ class Trainer:
 
         return
         
-    def get_multiview_entropy_scores(self, tracker):
-        confusion_mat = tracker._confusion_matrix.get_confusion_matrix()
+#     def get_multiview_entropy_scores(self, tracker):
+#         confusion_mat = tracker._confusion_matrix.get_confusion_matrix()
 
-        per_class_normalized_entropy = []
-        for i in range(len(confusion_mat)):
-            nonzero_entries = confusion_mat[:, i][confusion_mat[:, i] > 0]
+#         per_class_normalized_entropy = []
+#         for i in range(len(confusion_mat)):
+#             nonzero_entries = confusion_mat[:, i][confusion_mat[:, i] > 0]
 
-            # normalized entropy using log2 base
-            pk = nonzero_entries / nonzero_entries.sum()
+#             # normalized entropy using log2 base
+#             pk = nonzero_entries / nonzero_entries.sum()
 
-            if len(pk) <= 1:
-                per_class_normalized_entropy.append(0.)
-            else:
-                normalized_entropy = -sum(pk * np.log2(pk)) / np.log2(len(pk))
-                per_class_normalized_entropy.append(normalized_entropy)
+#             if len(pk) <= 1:
+#                 per_class_normalized_entropy.append(0.)
+#             else:
+#                 normalized_entropy = -sum(pk * np.log2(pk)) / np.log2(len(pk))
+#                 per_class_normalized_entropy.append(normalized_entropy)
 
-        return np.mean(np.round(np.array(per_class_normalized_entropy), 4)), np.round(per_class_normalized_entropy, 4)
+#         return np.mean(np.round(np.array(per_class_normalized_entropy), 4)), np.round(per_class_normalized_entropy, 4)
 
     def _test_epoch(self, epoch, stage_name: str):
         
@@ -659,13 +682,16 @@ class Trainer:
             log.info("Evaluated scores for 3D semantic segmentation: ")
             self._finalize_epoch(epoch)
             self._tracker.print_summary()
-            cm = self._tracker._confusion_matrix.confusion_matrix
-            confusion_m_dir = "/home/fsun/DeepViewAgg/notebooks/confusion_matrix/mvfusion_3d"
-            os.makedirs(confusion_m_dir, exist_ok=True)
-            save_confusion_matrix(cm, path2save=confusion_m_dir, ordered_names=CLASS_LABELS)
+
             
             # Finalise 2D evaluation
             if self._tracker_2d_mvfusion_pred_masks is not None:
+                
+#                 cm = self._tracker._confusion_matrix.confusion_matrix
+#                 confusion_m_dir = "/home/fsun/DeepViewAgg/notebooks/confusion_matrix/mvfusion_3d"
+#                 os.makedirs(confusion_m_dir, exist_ok=True)
+#                 save_confusion_matrix(cm, path2save=confusion_m_dir, ordered_names=CLASS_LABELS)
+            
                 log.info("Evaluated scores for 2D refined masks: ")
                 self._tracker_2d_mvfusion_pred_masks.finalise(**self.tracker_options)
                 self._tracker_2d_mvfusion_pred_masks.print_summary()
@@ -726,6 +752,9 @@ class Trainer:
             stage_name = loader.dataset.name
             self._tracker_baseline.reset(stage_name)
             self._tracker_mvfusion.reset(stage_name)
+            
+            self._tracker_2d_mvfusion_pred_masks.reset(stage_name)
+            self._tracker_2d_model_pred_masks.reset(stage_name)
 
             for i in range(voting_runs):
                 with Ctq(loader) as tq_loader:
@@ -758,24 +787,31 @@ class Trainer:
                             self._tracker_baseline.track(pred_labels=mode_pred, gt_labels=data.data.y, model=None)
                             self._tracker_mvfusion.track(pred_labels=data.data.pred, gt_labels=data.data.y, model=None)
                             
+                            # 2D mIoU
+                            self._track_2d_results(self._model, data, contains_pred=True, save_output=False)
+                            
                         tq_loader.set_postfix(**self._tracker_mvfusion.get_metrics(), color=COLORS.TEST_COLOR)
 
 
             log.info("Evaluated scores for 3D semantic segmentation on subset of seen points: ")
             self._finalize_epoch(epoch)
-            log.info("--- Baseline ---")
+            log.info("--- Baseline 3D ---")
             self._tracker_baseline.print_summary()
             cm = self._tracker_baseline._confusion_matrix.confusion_matrix
             confusion_m_dir = f"/home/fsun/DeepViewAgg/notebooks/confusion_matrix/{loader.dataset.m2f_preds_dirname}_baseline_seen_points"
             os.makedirs(confusion_m_dir, exist_ok=True)
             save_confusion_matrix(cm, path2save=confusion_m_dir, ordered_names=CLASS_LABELS)
+            log.info("--- Baseline 2D ---")
+            self._tracker_2d_model_pred_masks.print_summary()
             
-            log.info("--- MVFusion_3D ---")
+            log.info("--- MVFusion_3D 3D ---")
             self._tracker_mvfusion.print_summary()
             cm = self._tracker_mvfusion._confusion_matrix.confusion_matrix
             confusion_m_dir = f"/home/fsun/DeepViewAgg/notebooks/confusion_matrix/{loader.dataset.m2f_preds_dirname}_mvfusion_3d_seen_points"
             os.makedirs(confusion_m_dir, exist_ok=True)
             save_confusion_matrix(cm, path2save=confusion_m_dir, ordered_names=CLASS_LABELS)
+            log.info("--- MVFusion_3D 2D ---")
+            self._tracker_2d_mvfusion_pred_masks.print_summary()
             
     @property
     def early_break(self):

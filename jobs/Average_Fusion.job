@@ -1,0 +1,19 @@
+#!/bin/bash
+
+#SBATCH --partition=gpu
+#SBATCH --job-name=Average_Fusion
+#SBATCH --gpus=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=18
+#SBATCH --time=20:00:00
+#SBATCH --mem=120000MB
+#SBATCH --output=job_logs/superconvergence/view_selection_experiment/Average_Fusion.out
+
+cd $HOME/DeepViewAgg
+
+module purge
+source activate pytorch3d
+
+export HYDRA_FULL_ERROR=1
+
+./scripts/Average_Fusion.sh
