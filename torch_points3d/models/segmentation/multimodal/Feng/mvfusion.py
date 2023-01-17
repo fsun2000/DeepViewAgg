@@ -35,7 +35,7 @@ class MVFusion(BaseModel, ABC):
 
         # Segmentation head init
         if self._HAS_HEAD:
-            self.head = nn.Sequential(nn.Linear(20,
+            self.head = nn.Sequential(nn.Linear(option['backbone']['transformer']['feat_downproj_dim'],
                                                 dataset.num_classes))
         self.loss_names = ["loss_seg"]
 
@@ -60,6 +60,8 @@ class MVFusion(BaseModel, ABC):
 #             #  requires any training, then it will never receive any
 #             #  gradient from the view loss and hence will not be trained.
 
+        self.MAX_SEEN_POINTS = option['backbone']['transformer']['max_n_points']
+
     def get_seen_points(self, mm_data):
         ### Select seen points
         csr_idx = mm_data.modalities['image'][0].view_csr_indexing
@@ -71,6 +73,24 @@ class MVFusion(BaseModel, ABC):
     def set_input(self, data, device):
         # Get only seen points
         data = self.get_seen_points(data)
+        
+#         if data.data.mvfusion_input.shape[0] > self.MAX_SEEN_POINTS \
+#             and self.training is True:
+#             print("self.training is True -> culling max n seen points", flush=True)
+#             # 1. get seen points
+#             # 2. remove them from mvfusion_input
+#             # 3. remove the removed points from seen points
+#             csr_idx = data.modalities['image'][0].view_csr_indexing
+#             seen_mask = csr_idx[1:] > csr_idx[:-1]
+#             keep_idx = torch.round(
+#                 torch.linspace(0, seen_mask.sum()-1, self.MAX_SEEN_POINTS)).long()
+#             keep_idx_mask = torch.zeros(seen_mask.sum(), dtype=torch.bool, device=keep_idx.device)
+#             keep_idx_mask[keep_idx] = True
+#             seen_mask[seen_mask.clone()] = keep_idx_mask
+#             data.data.mvfusion_input = data.data.mvfusion_input[keep_idx_mask]
+            
+#             data = data[keep_idx_mask]
+            
     
         self.input = data
 
@@ -176,6 +196,10 @@ class MVFusion(BaseModel, ABC):
 
 class MVFusion_model(MVFusion):
     _HAS_HEAD = True
+    
+
+class MVFusion_model_no_head(MVFusion):
+    _HAS_HEAD = False
 
 
 # class No3DLogitFusion(No3D):

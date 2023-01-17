@@ -77,7 +77,8 @@ class MVFusionEncoder(MVFusionBackboneBasedModel, ABC):
         self.n_classes = model_config.backbone.transformer.n_classes
         self.MAX_SEEN_POINTS = model_config.backbone.transformer.max_n_points
         
-        print("WARNING: input points for Multi-View Fusion module are not clipped at MAX_SEEN_POINTS for fair model comparison in evaluation", flush=True)
+        print("WARNING: input points clipped at ", self.MAX_SEEN_POINTS, flush=True)
+#         print("WARNING: input points for Multi-View Fusion module are not clipped at MAX_SEEN_POINTS for fair model comparison in evaluation", flush=True)
         if self._checkpointing:
             print("checkpointing enabled for model forward pass!", flush=True)
         

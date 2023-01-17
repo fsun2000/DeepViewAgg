@@ -260,7 +260,20 @@ class Trainer:
                 self._test_epoch(epoch, "test")
         else:
             # After training finished, run final evaluation on 2D and 3D
-            self.eval(stage_name="val")
+            
+            # Create val loader and delete train loader
+            self._dataset.create_dataloaders(
+                self._model,
+                self._cfg.training.batch_size,
+                self._cfg.training.shuffle,
+                self._cfg.training.num_workers,
+                self.precompute_multi_scale,
+                train_only=False,
+                val_only=True
+            )
+            
+            log.info("Evaluating model on 3D seen points")
+            self.eval_3d_seen_points(stage_name="val")
 
     def eval(self, stage_name=""):
         self._is_training = False
@@ -271,21 +284,9 @@ class Trainer:
         self._tracker_2d_mvfusion_pred_masks: BaseTracker = self._dataset.get_tracker(
             self.wandb_log, self.tensorboard_log)
             
-#         print("trainer.py: Tracking view entropy scores for Input Masks, Refined Prediction and GT Masks!")
-#         self._tracker_m2f_entropy: BaseTracker = self._dataset.get_tracker(
-#             self.wandb_log, self.tensorboard_log)
-#         self._tracker_mvfusion_entropy: BaseTracker = self._dataset.get_tracker(
-#             self.wandb_log, self.tensorboard_log)
-#         self._tracker_gt_entropy: BaseTracker = self._dataset.get_tracker(
-#             self.wandb_log, self.tensorboard_log)
-            
-            
             
         epoch = self._checkpoint.start_epoch
         
-#         print()
-#         print(" Evaluation of validation set is disabled in trainer.py at line 217 ")
-#         print()
         if self._dataset.has_val_loader:
             if not stage_name or stage_name == "val":
                 self._test_epoch(epoch, "val")
@@ -316,6 +317,27 @@ class Trainer:
         if self._dataset.has_val_loader:
             if not stage_name or stage_name == "val":
                 self._test_epoch_3d_seen_points(epoch, "val")
+                
+    def eval_3d_seen_points_view_selection_experiment(self, stage_name=""):
+        self._is_training = False
+        
+        self._tracker_baseline: BaseTracker = self._dataset.get_tracker(
+            self.wandb_log, self.tensorboard_log)
+        self._tracker_mvfusion: BaseTracker = self._dataset.get_tracker(
+            self.wandb_log, self.tensorboard_log)
+            
+        print("trainer.py: Tracking 2D mask and 2D refined mask scores!")
+        self._tracker_2d_model_pred_masks: BaseTracker = self._dataset.get_tracker(
+            self.wandb_log, self.tensorboard_log)
+        self._tracker_2d_mvfusion_pred_masks: BaseTracker = self._dataset.get_tracker(
+            self.wandb_log, self.tensorboard_log)
+                        
+        epoch = self._checkpoint.start_epoch
+
+        if self._dataset.has_val_loader:
+            if not stage_name or stage_name == "val":
+                self._test_epoch_3d_seen_points_view_selection_experiment(epoch, "val")
+                
 
     def _finalize_epoch(self, epoch):
         self._tracker.finalise(**self.tracker_options)
@@ -342,7 +364,7 @@ class Trainer:
                 
                 t_data = time.time() - iter_data_time
 
-                
+                mix3d_time = 0.0
                 if self._dataset.dataset_opt.train_with_mix3d and self._dataset.batch_size > 1:
                     mix3d_time = time.time()
                     data = PointcloudMerge(data, n_merge=2)
@@ -883,6 +905,86 @@ class Trainer:
     @property
     def lr_range_test(self):
         return self._cfg.get("lr_range_test", False)
+    
+    def _test_epoch_3d_seen_points_view_selection_experiment(self, epoch, stage_name: str):
+        
+        def get_seen_points(mm_data):
+            ### Select seen points
+            csr_idx = mm_data.modalities['image'][0].view_csr_indexing
+            dense_idx_list = torch.arange(mm_data.modalities['image'][0].num_points).repeat_interleave(csr_idx[1:] - csr_idx[:-1])
+            # take subset of only seen points without re-indexing the same point
+            mm_data = mm_data[dense_idx_list.unique()]
+            return mm_data
+        
+        def get_mode_pred(data):
+            pixel_validity = data.data.mvfusion_input[:, :, 0].bool()
+            mv_preds = data.data.mvfusion_input[:, :, -1].long()
+
+            valid_m2f_feats = []
+            for i in range(len(mv_preds)):
+                valid_m2f_feats.append(mv_preds[i][pixel_validity[i]])
+
+            mode_preds = []
+            for m2feats_of_seen_point in valid_m2f_feats:
+                mode_preds.append(torch.mode(m2feats_of_seen_point.squeeze(), dim=0)[0])
+            mode_preds = torch.stack(mode_preds, dim=0)
+
+            return mode_preds
+        
+        voting_runs = self._cfg.get("voting_runs", 1)
+        if stage_name == "test":
+            loaders = self._dataset.test_dataloaders
+        else:
+            loaders = [self._dataset.val_dataloader]
+
+        self._model.eval()
+        if self.enable_dropout:
+            self._model.enable_dropout_in_eval()
+            
+
+        for loader in loaders:
+            print("Input mask type: ", loader.dataset.m2f_preds_dirname)
+            
+            stage_name = loader.dataset.name
+            self._tracker_baseline.reset(stage_name)
+            self._tracker_mvfusion.reset(stage_name)
+            
+            self._tracker_2d_mvfusion_pred_masks.reset(stage_name)
+            self._tracker_2d_model_pred_masks.reset(stage_name)
+
+            for i in range(voting_runs):
+                with Ctq(loader) as tq_loader:
+                    for data in tq_loader:
+                        with torch.no_grad():
+                            
+                            ### Store average / random prediction per point
+                            random_or_average_pred = data.data.pred.clone()
+                            
+                                
+                            data = get_seen_points(data)
+                            mode_pred = get_mode_pred(data)
+                            
+                            
+                            # 3D mIoU
+                            self._tracker_baseline.track(pred_labels=mode_pred, gt_labels=data.data.y, model=None)
+                            self._tracker_mvfusion.track(pred_labels=random_or_average_pred, gt_labels=data.data.y, model=None)
+                            
+                            # 2D mIoU
+                            self._track_2d_results(self._model, data, contains_pred=True, save_output=False)
+                            
+                        tq_loader.set_postfix(**self._tracker_mvfusion.get_metrics(), color=COLORS.TEST_COLOR)
+
+
+            log.info("Evaluated scores for 3D semantic segmentation on subset of seen points: ")
+            self._finalize_epoch(epoch)
+            log.info("--- Mode Pred 3D ---")
+            self._tracker_baseline.print_summary()
+            log.info("--- Baseline 2D (input masks) ---")
+            self._tracker_2d_model_pred_masks.print_summary()
+            log.info("--- Mode Pred 3D ---")
+            self._tracker_mvfusion.print_summary()
+            log.info("--- Mode Pred projected to 2D views ---")
+            self._tracker_2d_mvfusion_pred_masks.print_summary()
 
     def _do_lr_test(self, epoch=1):
         self._model.train()
