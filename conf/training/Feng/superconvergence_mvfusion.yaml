@@ -1,0 +1,63 @@
+# @package training
+# Ref: https://github.com/chrischoy/SpatioTemporalSegmentation/blob/master/config.py
+epochs: 300
+num_workers: 17
+batch_size: 8
+test_batch_size: 1
+shuffle: True
+cuda: 0
+precompute_multi_scale: False # Compute multiscate features on cpu for faster training / inference
+optim:
+  base_lr: ${training.optim.lr_scheduler.params.max_lr}
+#   accumulated_gradient: -1 # Accumulate gradient accumulated_gradient * batch_size
+  grad_clip: -1
+  optimizer:
+    class: SGD
+    params:
+      lr: ${training.optim.base_lr}
+      momentum: 0.95
+      weight_decay: 0.0001
+      nesterov: False
+#       dampening: 0.1
+  lr_scheduler:
+    class: OneCycleLR
+    params:
+      max_lr: 0.1      # Maybe Transformer needs separate learning rate!
+      epochs: 20
+      steps_per_epoch: 1201
+      pct_start: 0.1   
+      anneal_strategy: 'linear'
+      cycle_momentum: True
+      base_momentum: 0.85
+      max_momentum: 0.95
+    #   div_factor: 25
+    #   final_div_factor: 1e4
+      three_phase: False   # Set True to mimic original paper
+
+bn_scheduler:
+    bn_policy: "step_decay"
+    params:
+      bn_momentum: 0.02
+      bn_decay: 1
+      decay_step: 2000
+      bn_clip: 1e-2
+weight_name: "miou" # Used during resume, select with model to load from [miou, macc, acc..., latest]
+enable_cudnn: True
+checkpoint_dir: ""
+
+# Those arguments within experiment defines which model, dataset and task to be created for benchmarking
+# parameters for Weights and Biases
+wandb:
+  entity: ""
+  project: scannet-benchmark
+  log: True
+  notes: "MVFusion_3D with superconvergence"
+  name: ${model_name}
+  id:
+  public: True # It will be display the model within wandb log, else not.
+  config:
+    model_name: ${model_name}
+
+  # parameters for TensorBoard Visualization
+tensorboard:
+  log: False

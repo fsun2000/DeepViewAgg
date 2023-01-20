@@ -28,7 +28,7 @@ optim:
   lr_scheduler:
     class: OneCycleLR
     params:
-      max_lr: 0.3       # Maybe Transformer needs separate learning rate!
+      max_lr: 0.3      # Maybe Transformer needs separate learning rate!
 #       total_steps:  None # epochs * steps_per_epoch
       epochs: 60
       steps_per_epoch: 200

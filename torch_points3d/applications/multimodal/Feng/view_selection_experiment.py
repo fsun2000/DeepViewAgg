@@ -409,7 +409,9 @@ class DeepSetFeat_ViewExperiment(nn.Module, ABC):
         # E_score computes the compatibility score for each feature
         # group, these are to be further normalized to produce
         # final attention scores
-        self.E_score = nn.Linear(d_out, num_classes, bias=True)
+        self.E_score = nn.Linear(d_out, d_out, bias=True)
+        
+        self.d_out = d_out
         
         self.num_classes = num_classes
 
@@ -424,8 +426,22 @@ class DeepSetFeat_ViewExperiment(nn.Module, ABC):
         x_set = gather_csr(x_set, csr_idx)
         x_out = self.f_fusion(x, x_set)
         x_out = self.mlp_elt_2(x_out)
+        
+        # Attention weighting 
+        
+        # Compute compatibilities (unscaled scores) : V x d_out
+        compatibilities = self.E_score(x_out)
+        
 
-        return x_out
+        # Compute attention scores : V x d_out
+        attentions = segment_softmax_csr(
+            compatibilities, csr_idx, scaling=False)
+        # Apply attention scores : P x d_out
+        x_pool = segment_csr(
+            x_out * expand_group_feat(attentions, self.d_out, self.d_out),
+            csr_idx, reduce='sum')
+        
+        return x_pool
 
     def extra_repr(self) -> str:
         repr_attr = ['pool', 'fusion', 'use_num']

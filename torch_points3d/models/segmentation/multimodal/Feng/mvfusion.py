@@ -35,8 +35,12 @@ class MVFusion(BaseModel, ABC):
 
         # Segmentation head init
         if self._HAS_HEAD:
+#             self.head = nn.Sequential(nn.Linear(option['backbone']['transformer']['feat_downproj_dim'],
+#                                                 dataset.num_classes))
             self.head = nn.Sequential(nn.Linear(option['backbone']['transformer']['feat_downproj_dim'],
-                                                dataset.num_classes))
+                                        dataset.num_classes * 2),
+                              nn.Linear(dataset.num_classes * 2,
+                                        dataset.num_classes))
         self.loss_names = ["loss_seg"]
 
 #         # Control the loss mechanism with MODALITY_VIEW_LOSS. If set to
@@ -74,22 +78,23 @@ class MVFusion(BaseModel, ABC):
         # Get only seen points
         data = self.get_seen_points(data)
         
-#         if data.data.mvfusion_input.shape[0] > self.MAX_SEEN_POINTS \
-#             and self.training is True:
-#             print("self.training is True -> culling max n seen points", flush=True)
-#             # 1. get seen points
-#             # 2. remove them from mvfusion_input
-#             # 3. remove the removed points from seen points
-#             csr_idx = data.modalities['image'][0].view_csr_indexing
-#             seen_mask = csr_idx[1:] > csr_idx[:-1]
-#             keep_idx = torch.round(
-#                 torch.linspace(0, seen_mask.sum()-1, self.MAX_SEEN_POINTS)).long()
-#             keep_idx_mask = torch.zeros(seen_mask.sum(), dtype=torch.bool, device=keep_idx.device)
-#             keep_idx_mask[keep_idx] = True
-#             seen_mask[seen_mask.clone()] = keep_idx_mask
-#             data.data.mvfusion_input = data.data.mvfusion_input[keep_idx_mask]
+        if data.data.mvfusion_input.shape[0] > self.MAX_SEEN_POINTS \
+            and self.training is True:
+            print("self.training is True -> culling max n seen points", flush=True)
+            # 1. get seen points
+            # 2. remove them from mvfusion_input
+            # 3. remove the removed points from seen points
+            csr_idx = data.modalities['image'][0].view_csr_indexing
+            seen_mask = csr_idx[1:] > csr_idx[:-1]
+            keep_idx = torch.round(
+                torch.linspace(0, seen_mask.sum()-1, self.MAX_SEEN_POINTS)).long()
+            keep_idx_mask = torch.zeros(seen_mask.sum(), dtype=torch.bool, device=keep_idx.device)
+            keep_idx_mask[keep_idx] = True
+            seen_mask[seen_mask.clone()] = keep_idx_mask
             
-#             data = data[keep_idx_mask]
+            # Take slice
+#             data.data.mvfusion_input = data.data.mvfusion_input[keep_idx_mask]
+            data = data[keep_idx_mask]
             
     
         self.input = data

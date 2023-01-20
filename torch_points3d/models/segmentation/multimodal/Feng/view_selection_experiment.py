@@ -36,7 +36,7 @@ class ViewSelectionExp(BaseModel, ABC):
 
         # Segmentation head init
         if self._HAS_HEAD:
-            self.head = nn.Sequential(nn.Linear(dataset.num_classes,
+            self.head = nn.Sequential(nn.Linear(32,
                                                 dataset.num_classes))
         self.loss_names = ["loss_seg"]
 

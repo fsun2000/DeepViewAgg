@@ -7,7 +7,7 @@
 #SBATCH --cpus-per-task=18
 #SBATCH --time=15:00:00
 #SBATCH --mem=120000MB
-#SBATCH --output=job_logs/superconvergence/view_selection_experiment/DeepSet_feats_labels.out
+#SBATCH --output=job_logs/superconvergence/view_selection_experiment/DeepSet_feats_labels_bs6_lr0.06.out
 
 cd $HOME/DeepViewAgg
 

@@ -531,10 +531,13 @@ class ScannetMM(Scannet):
                 for m2feats_of_seen_point in valid_m2f_feats:
                     mode_preds.append(torch.mode(m2feats_of_seen_point.squeeze(), dim=0)[0])
                 mode_preds = torch.stack(mode_preds, dim=0)
-                # repeat to MVFusion input shape
-                m2f_feats = mode_preds.unsqueeze(-1).repeat_interleave(self.n_views, dim=-1).unsqueeze(-1)
                 
-                print(m2f_feats.shape)
+                # save directly in 'pred' attribute
+                data.data.pred = mode_preds
+                
+#                 # repeat to MVFusion input shape
+#                 m2f_feats = mode_preds.unsqueeze(-1).repeat_interleave(self.n_views, dim=-1).unsqueeze(-1)
+                
             elif self.store_random_pred:
                 valid_m2f_feats = []
                 for i in range(len(m2f_feats)):
@@ -546,8 +549,12 @@ class ScannetMM(Scannet):
                     selected_pred = m2feats_of_seen_point[selected_idx].squeeze(0)
                     selected_view_preds.append(selected_pred)
                 selected_view_preds = torch.stack(selected_view_preds, dim=0)
-                # repeat to MVFusion input shape
-                m2f_feats = selected_view_preds.repeat_interleave(self.n_views, dim=-1).unsqueeze(-1)
+                
+                # save directly in 'pred' attribute
+                data.data.pred = selected_view_preds.squeeze()
+                
+#                 # repeat to MVFusion input shape
+#                 m2f_feats = selected_view_preds.repeat_interleave(self.n_views, dim=-1).unsqueeze(-1)
     
             # Save mapping + m2f features
             data.data.mvfusion_input = torch.cat((view_feats, m2f_feats), dim=-1)
