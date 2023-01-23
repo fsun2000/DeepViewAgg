@@ -859,7 +859,8 @@ class MVAttentionBaseSparseConv3d(MVAttentionUnwrappedUnetBasedModel):
                 'x_seen': None,
                 'modalities': data.to(self.device).modalities,
                 'transformer_input': data.data.mvfusion_input.to(self.device),
-                'transformer_x_seen': seen_mask.to(self.device)
+                'transformer_x_seen': seen_mask.to(self.device),
+                'orig_data': data.to(self.device)
             }
         else:
             self.input = sp3d.nn.SparseTensor(data.x, data.coords, data.batch, self.device)

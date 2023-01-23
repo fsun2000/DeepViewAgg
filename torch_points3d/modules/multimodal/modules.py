@@ -1234,6 +1234,8 @@ class MVAttentionUnimodalBranch(nn.Module, ABC):
             out_channels=None, interpolate=False, transformer_config=None):
         super(MVAttentionUnimodalBranch, self).__init__()
         
+        self.use_3D = transformer_config['use_3D']
+        
         self.use_transformer = False
         self.use_deepset = False
         self.use_random = False
@@ -1250,9 +1252,13 @@ class MVAttentionUnimodalBranch(nn.Module, ABC):
             d_hidden = 32
             pool = 'max'
             use_num = True
-                    
-            self.attn_fusion = DeepSetFeat_AttentionWeighting(d_in=d_in, d_out=d_hidden, pool=pool, fusion='concatenation',
-            use_num=use_num, num_classes=self.n_classes)
+             
+            if self.use_3D:
+                self.attn_fusion = DeepSetFeat_ViewFusion(d_in=d_in, d_out=d_hidden, pool=pool, fusion='concatenation',
+                                                          use_num=use_num, num_classes=self.n_classes)
+            else:
+                self.attn_fusion = DeepSetFeat_AttentionWeighting(d_in=d_in, d_out=d_hidden, pool=pool, fusion='concatenation',
+                use_num=use_num, num_classes=self.n_classes)
         elif transformer_config.use_random:
             self.use_random = True
 #         elif transformer_config.use_heuristic:
@@ -1478,6 +1484,8 @@ class MVAttentionUnimodalBranch(nn.Module, ABC):
         return x_mod
 
     def forward_deepset(self, mm_data_dict, reset=True):
+#         print(mm_data_dict['modalities'])
+                
         viewing_conditions = mm_data_dict['modalities']['image'][0].mappings.values[2]
 
         input_preds = mm_data_dict['modalities']['image'][0].get_mapped_m2f_features()
@@ -1485,15 +1493,36 @@ class MVAttentionUnimodalBranch(nn.Module, ABC):
         attention_input = torch.concat((viewing_conditions, input_preds_one_hot), dim=1)
 
         csr_idx = mm_data_dict['modalities']['image'][0].view_csr_indexing
-
+        
+        n_seen = (csr_idx[1:] - csr_idx[:-1])
+        
+#         print("n seen points: ", (n_seen > 0).sum())
+        
+#         print('total n seen', n_seen.sum())
+        
+#         print(attention_input.shape, csr_idx.shape, input_preds_one_hot.shape)
         seen_x_mod = self.attn_fusion(attention_input, csr_idx, input_preds_one_hot)        
        
 
-#         # Assign fused features back to points that were seen 
-#         x_mod = torch.zeros((mm_data_dict['modalities']['image'].num_points, 
-#                              seen_x_mod.shape[-1]), device=seen_x_mod.device)
-        
-        x_mod = seen_x_mod
+       
+        if self.use_3D:
+            # Assign fused features back to points that were seen 
+#             x_mod = torch.zeros((mm_data_dict['modalities']['image'].num_points, 
+#                                  seen_x_mod.shape[-1]), device=seen_x_mod.device)
+            
+# #             print(mm_data_dict['orig_data'])
+            
+#             csr_idx = mm_data_dict['modalities']['image'][0].view_csr_indexing # mm_data_dict['orig_data']['modalities']['image'][0].view_csr_indexing
+            
+            
+            
+#             x_seen = csr_idx[1:] > csr_idx[:-1]       
+            
+#             print(x_mod.shape, x_seen.shape, seen_x_mod.shape)
+            x_mod = seen_x_mod
+        else:
+            x_mod = seen_x_mod
+            
         return x_mod
     
     def forward_random(self, mm_data_dict, reset=True):
@@ -1565,6 +1594,108 @@ import torch.nn.functional as F
 from torch_scatter import segment_csr, scatter_min, scatter_max
 from torch_points3d.core.common_modules import MLP
 import math
+
+# New improved
+class DeepSetFeat_ViewFusion(nn.Module, ABC):
+    """Produce element-wise set features based on shared learned
+    features.
+
+    Inspired from:
+        DeepSets: https://arxiv.org/abs/1703.06114
+        PointNet: https://arxiv.org/abs/1612.00593
+    """
+
+    _POOLING_MODES = ['max', 'mean', 'min', 'sum']
+    _FUSION_MODES = ['residual', 'concatenation', 'both']
+
+    def __init__(
+            self, d_in, d_out, pool='max', fusion='concatenation',
+            use_num=False, num_classes=None, **kwargs):
+        super(DeepSetFeat_ViewFusion, self).__init__()
+
+        # Initialize the set-pooling mechanism to aggregate features of
+        # elements-level features to set-level features
+        pool = pool.split('_')
+        assert all([p in self._POOLING_MODES for p in pool]), \
+            f"Unsupported pool='{pool}'. Expected elements of: " \
+            f"{self._POOLING_MODES}"
+        self.f_pool = lambda a, b: torch.cat([
+            segment_csr(a, b, reduce=p) for p in pool], dim=-1)
+        self.pool = pool
+
+        # Initialize the fusion mechanism to merge set-level and
+        # element-level features
+        if fusion == 'residual':
+            self.f_fusion = lambda a, b: a + b
+        elif fusion == 'concatenation':
+            self.f_fusion = lambda a, b: torch.cat((a, b), dim=-1)
+        elif fusion == 'both':
+            self.f_fusion = lambda a, b: torch.cat((a, a + b), dim=-1)
+        else:
+            raise NotImplementedError(
+                f"Unknown fusion='{fusion}'. Please choose among "
+                f"supported modes: {self._FUSION_MODES}.")
+        self.fusion = fusion
+
+        # Initialize the MLPs
+        self.d_in = d_in
+        self.d_out = d_out
+        self.use_num = use_num
+        self.mlp_elt_1 = MLP(
+            [d_in, d_out, d_out], bias=False)
+        in_set_mlp = d_out * len(self.pool) + self.use_num
+        self.mlp_set = MLP(
+            [in_set_mlp, d_out, d_out], bias=False)
+        in_last_mlp = d_out if fusion == 'residual' else d_out * 2
+        self.mlp_elt_2 = MLP(
+            [in_last_mlp, d_out, d_out], bias=False)
+        
+        # E_score computes the compatibility score for each feature
+        # group, these are to be further normalized to produce
+        # final attention scores
+        self.E_score = nn.Linear(d_out, d_out, bias=True)
+        
+        self.d_out = d_out
+        
+        self.num_classes = num_classes
+
+    def forward(self, x, csr_idx, x_mod):
+        
+#         print('x', x.shape)
+        
+        x = self.mlp_elt_1(x)
+        x_set = self.f_pool(x, csr_idx)
+        if self.use_num:
+            # Heuristic to normalize in [0,1]
+            set_num = torch.sqrt(1 / (csr_idx[1:] - csr_idx[:-1] + 1e-3))
+            x_set = torch.cat((x_set, set_num.view(-1, 1)), dim=1)
+        x_set = self.mlp_set(x_set)
+        x_set = gather_csr(x_set, csr_idx)
+        x_out = self.f_fusion(x, x_set)
+        x_out = self.mlp_elt_2(x_out)
+        
+        # Attention weighting 
+        
+        # Compute compatibilities (unscaled scores) : V x d_out
+        compatibilities = self.E_score(x_out)
+        
+
+        # Compute attention scores : V x d_out
+        attentions = segment_softmax_csr(
+            compatibilities, csr_idx, scaling=False)
+                
+        # Apply attention scores : P x d_out
+        x_pool = segment_csr(
+            x_out * expand_group_feat(attentions, self.d_out, self.d_out),
+            csr_idx, reduce='sum')
+        
+#         print(x_out.shape, x_pool.shape, attentions.shape, csr_idx.shape)
+        
+        return x_pool
+
+    def extra_repr(self) -> str:
+        repr_attr = ['pool', 'fusion', 'use_num']
+        return "\n".join([f'{a}={getattr(self, a)}' for a in repr_attr])
 
 
 class DeepSetFeat_AttentionWeighting(nn.Module, ABC):
