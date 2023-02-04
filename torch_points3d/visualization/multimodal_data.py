@@ -255,6 +255,34 @@ def visualize_3d(
         modes['key'].append('pred')
         modes['num_traces'].append(n_pred_traces)
         initialized_visibility = True
+        
+    # Draw a trace for view-wise mode pred labels 3D point cloud
+    if getattr(data, 'mode_pred', None) is not None:
+        pred = data.mode_pred.numpy()
+        n_pred_traces = 0
+
+        for label in np.unique(pred):
+            indices = np.where(pred == label)[0]
+
+            fig.add_trace(
+                go.Scatter3d(
+                    name=class_names[label] if class_names else f"Class {label}",
+                    opacity=class_opacities[label] if class_opacities else 1.0,
+                    x=data.pos[indices, 0],
+                    y=data.pos[indices, 1],
+                    z=data.pos[indices, 2],
+                    mode='markers',
+                    marker=dict(
+                        size=pointsize,
+                        color=class_colors[label] if class_colors else None, ),
+                    visible=not initialized_visibility, ))
+            n_pred_traces += 1  # keep track of the number of traces
+
+        modes['name'].append('Mode Predictions')
+        modes['key'].append('mode_pred')
+        modes['num_traces'].append(n_pred_traces)
+        initialized_visibility = True
+
 
     # Draw a trace for 3D point cloud of number of images seen
     if has_2d and images[0].mappings is not None:

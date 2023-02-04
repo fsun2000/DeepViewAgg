@@ -20,6 +20,9 @@ def read_image_pose_pairs(
         int(osp.basename(x).replace(pose_suffix, ''))
         for x in glob.glob(osp.join(pose_dir, '*' + pose_suffix))])
     
+    print("read_image_pose_pairs: pose_names equals", pose_names)
+    
+    
     # Remove invalid poses and data
     for i, pose_id in enumerate(pose_names):        
         
@@ -265,7 +268,12 @@ def load_pose(filename):
     """
     lines = open(filename).read().splitlines()
     
-    if len(lines) == 3:
+    assert len(lines) == 4
+    
+    if len(lines) == 4:
+        lines = [[x[0], x[1], x[2], x[3]] for x in (x.split(" ") for x in lines)]
+        out = torch.from_numpy(np.asarray(lines).astype(np.float32))    
+    elif len(lines) == 3:
         lines = [[x[0], x[1], x[2]] for x in (x.split(" ") for x in lines)]
         R = np.asarray(lines).astype(np.float32)
         out = np.zeros((4, 4))
@@ -278,7 +286,7 @@ def load_pose(filename):
         entries = [float(x) for x in lines[:16]]
         out = np.asarray(entries).astype(np.float32).reshape(4, 4)
     else:
-        raise ValueError(f"pose file incorrect, len of lines was: {len(lines)}. Has to be either 3 or 16")
+        raise ValueError(f"pose file incorrect, len of lines was: {len(lines)}")
     
     return out
 

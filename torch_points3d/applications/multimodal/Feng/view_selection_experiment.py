@@ -255,101 +255,101 @@ class ViewSelectionExpBackboneBasedModel(BaseModel, ABC):
         return self._n_early_conv
 
     
-class DeepSetFeat_AttentionWeighting(nn.Module, ABC):
-    """Produce element-wise set features based on shared learned
-    features.
+# class DeepSetFeat_AttentionWeighting(nn.Module, ABC):
+#     """Produce element-wise set features based on shared learned
+#     features.
 
-    Inspired from:
-        DeepSets: https://arxiv.org/abs/1703.06114
-        PointNet: https://arxiv.org/abs/1612.00593
-    """
+#     Inspired from:
+#         DeepSets: https://arxiv.org/abs/1703.06114
+#         PointNet: https://arxiv.org/abs/1612.00593
+#     """
 
-    _POOLING_MODES = ['max', 'mean', 'min', 'sum']
-    _FUSION_MODES = ['residual', 'concatenation', 'both']
+#     _POOLING_MODES = ['max', 'mean', 'min', 'sum']
+#     _FUSION_MODES = ['residual', 'concatenation', 'both']
 
-    def __init__(
-            self, d_in, d_out, pool='max', fusion='concatenation',
-            use_num=False, num_classes=None, **kwargs):
-        super(DeepSetFeat_AttentionWeighting, self).__init__()
+#     def __init__(
+#             self, d_in, d_out, pool='max', fusion='concatenation',
+#             use_num=False, num_classes=None, **kwargs):
+#         super(DeepSetFeat_AttentionWeighting, self).__init__()
 
-        # Initialize the set-pooling mechanism to aggregate features of
-        # elements-level features to set-level features
-        pool = pool.split('_')
-        assert all([p in self._POOLING_MODES for p in pool]), \
-            f"Unsupported pool='{pool}'. Expected elements of: " \
-            f"{self._POOLING_MODES}"
-        self.f_pool = lambda a, b: torch.cat([
-            segment_csr(a, b, reduce=p) for p in pool], dim=-1)
-        self.pool = pool
+#         # Initialize the set-pooling mechanism to aggregate features of
+#         # elements-level features to set-level features
+#         pool = pool.split('_')
+#         assert all([p in self._POOLING_MODES for p in pool]), \
+#             f"Unsupported pool='{pool}'. Expected elements of: " \
+#             f"{self._POOLING_MODES}"
+#         self.f_pool = lambda a, b: torch.cat([
+#             segment_csr(a, b, reduce=p) for p in pool], dim=-1)
+#         self.pool = pool
 
-        # Initialize the fusion mechanism to merge set-level and
-        # element-level features
-        if fusion == 'residual':
-            self.f_fusion = lambda a, b: a + b
-        elif fusion == 'concatenation':
-            self.f_fusion = lambda a, b: torch.cat((a, b), dim=-1)
-        elif fusion == 'both':
-            self.f_fusion = lambda a, b: torch.cat((a, a + b), dim=-1)
-        else:
-            raise NotImplementedError(
-                f"Unknown fusion='{fusion}'. Please choose among "
-                f"supported modes: {self._FUSION_MODES}.")
-        self.fusion = fusion
+#         # Initialize the fusion mechanism to merge set-level and
+#         # element-level features
+#         if fusion == 'residual':
+#             self.f_fusion = lambda a, b: a + b
+#         elif fusion == 'concatenation':
+#             self.f_fusion = lambda a, b: torch.cat((a, b), dim=-1)
+#         elif fusion == 'both':
+#             self.f_fusion = lambda a, b: torch.cat((a, a + b), dim=-1)
+#         else:
+#             raise NotImplementedError(
+#                 f"Unknown fusion='{fusion}'. Please choose among "
+#                 f"supported modes: {self._FUSION_MODES}.")
+#         self.fusion = fusion
 
-        # Initialize the MLPs
-        self.d_in = d_in
-        self.d_out = d_out
-        self.use_num = use_num
-        self.mlp_elt_1 = MLP(
-            [d_in, d_out, d_out], bias=False)
-        in_set_mlp = d_out * len(self.pool) + self.use_num
-        self.mlp_set = MLP(
-            [in_set_mlp, d_out, d_out], bias=False)
-        in_last_mlp = d_out if fusion == 'residual' else d_out * 2
-        self.mlp_elt_2 = MLP(
-            [in_last_mlp, d_out, d_out], bias=False)
+#         # Initialize the MLPs
+#         self.d_in = d_in
+#         self.d_out = d_out
+#         self.use_num = use_num
+#         self.mlp_elt_1 = MLP(
+#             [d_in, d_out, d_out], bias=False)
+#         in_set_mlp = d_out * len(self.pool) + self.use_num
+#         self.mlp_set = MLP(
+#             [in_set_mlp, d_out, d_out], bias=False)
+#         in_last_mlp = d_out if fusion == 'residual' else d_out * 2
+#         self.mlp_elt_2 = MLP(
+#             [in_last_mlp, d_out, d_out], bias=False)
         
-        # E_score computes the compatibility score for each feature
-        # group, these are to be further normalized to produce
-        # final attention scores
-        self.E_score = nn.Linear(d_out, num_classes, bias=True)
+#         # E_score computes the compatibility score for each feature
+#         # group, these are to be further normalized to produce
+#         # final attention scores
+#         self.E_score = nn.Linear(d_out, num_classes, bias=True)
         
-        self.num_classes = num_classes
+#         self.num_classes = num_classes
 
-    def forward(self, x, csr_idx, x_mod):
-        x = self.mlp_elt_1(x)
-        x_set = self.f_pool(x, csr_idx)
-        if self.use_num:
-            # Heuristic to normalize in [0,1]
-            set_num = torch.sqrt(1 / (csr_idx[1:] - csr_idx[:-1] + 1e-3))
-            x_set = torch.cat((x_set, set_num.view(-1, 1)), dim=1)
-        x_set = self.mlp_set(x_set)
-        x_set = gather_csr(x_set, csr_idx)
-        x_out = self.f_fusion(x, x_set)
-        x_out = self.mlp_elt_2(x_out)
+#     def forward(self, x, csr_idx, x_mod):
+#         x = self.mlp_elt_1(x)
+#         x_set = self.f_pool(x, csr_idx)
+#         if self.use_num:
+#             # Heuristic to normalize in [0,1]
+#             set_num = torch.sqrt(1 / (csr_idx[1:] - csr_idx[:-1] + 1e-3))
+#             x_set = torch.cat((x_set, set_num.view(-1, 1)), dim=1)
+#         x_set = self.mlp_set(x_set)
+#         x_set = gather_csr(x_set, csr_idx)
+#         x_out = self.f_fusion(x, x_set)
+#         x_out = self.mlp_elt_2(x_out)
         
         
         
-        # Attention weighting 
+#         # Attention weighting 
         
-        # Compute compatibilities (unscaled scores) : V x num_groups
-        compatibilities = self.E_score(x_out)
+#         # Compute compatibilities (unscaled scores) : V x num_groups
+#         compatibilities = self.E_score(x_out)
         
 
-        # Compute attention scores : V x num_classes
-        attentions = segment_softmax_csr(
-            compatibilities, csr_idx, scaling=False)
-        # Apply attention scores : P x F_mod
-        x_pool = segment_csr(
-            x_mod * expand_group_feat(attentions, self.num_classes, self.num_classes),
-            csr_idx, reduce='sum')
+#         # Compute attention scores : V x num_classes
+#         attentions = segment_softmax_csr(
+#             compatibilities, csr_idx, scaling=False)
+#         # Apply attention scores : P x F_mod
+#         x_pool = segment_csr(
+#             x_mod * expand_group_feat(attentions, self.num_classes, self.num_classes),
+#             csr_idx, reduce='sum')
 
         
-        return x_pool
+#         return x_pool
 
-    def extra_repr(self) -> str:
-        repr_attr = ['pool', 'fusion', 'use_num']
-        return "\n".join([f'{a}={getattr(self, a)}' for a in repr_attr])
+#     def extra_repr(self) -> str:
+#         repr_attr = ['pool', 'fusion', 'use_num']
+#         return "\n".join([f'{a}={getattr(self, a)}' for a in repr_attr])
 
     
 class DeepSetFeat_ViewExperiment(nn.Module, ABC):

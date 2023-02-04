@@ -234,22 +234,22 @@ class ScannetMM(Scannet):
                     continue
 
                     
-#                 # Recover the image-pose pairs
-#                 image_info_list = [
-#                     {'path': i_file, 'extrinsic': load_pose(p_file)}
-#                     for i_file, p_file in read_image_pose_pairs(
-#                         osp.join(scan_sens_dir, 'color'),
-#                         osp.join(scan_sens_dir, 'pose'),
-#                         image_suffix='.jpg', pose_suffix='.txt', skip_freq=self.frame_skip,
-#                         neucon_metas_dir=self.neucon_metas_dir)]
-                
-                # TEMPORARY ADJUSTMENT TO PROCESS NEUCON META IDS AND TEST BENCHMARK IDS SIMULTANEOUSLY
+                # Recover the image-pose pairs
                 image_info_list = [
                     {'path': i_file, 'extrinsic': load_pose(p_file)}
-                    for i_file, p_file in read_image_pose_pairs_without_frameskip(
-                        osp.join(scannet_dir, scan_name, 'color_resized'),
+                    for i_file, p_file in read_image_pose_pairs(
+                        osp.join(scan_sens_dir, 'color'),
                         osp.join(scan_sens_dir, 'pose'),
-                        image_suffix='.png', pose_suffix='.txt')]
+                        image_suffix='.jpg', pose_suffix='.txt', skip_freq=self.frame_skip,
+                        neucon_metas_dir=self.neucon_metas_dir)]
+                
+#                 # TEMPORARY ADJUSTMENT TO PROCESS NEUCON META IDS AND TEST BENCHMARK IDS SIMULTANEOUSLY
+#                 image_info_list = [
+#                     {'path': i_file, 'extrinsic': load_pose(p_file)}
+#                     for i_file, p_file in read_image_pose_pairs_without_frameskip(
+#                         osp.join(scannet_dir, scan_name, 'color_resized'),
+#                         osp.join(scan_sens_dir, 'pose'),
+#                         image_suffix='.png', pose_suffix='.txt')]
 
                 # Aggregate all RGB image paths
                 path = np.array([info['path'] for info in image_info_list])
@@ -349,6 +349,34 @@ class ScannetMM(Scannet):
         
         # Get the 3D point sample
         data = self.get(idx)
+        
+#         #### Temporary solution to measure Cross-view consistency
+#         def get_instance_labels(dset, scan_name):
+#             scannet_dir = osp.join(dset.raw_dir, "scans" if dset.split in ["train", "val"] else "scans_test")
+#             args = (
+#                     scannet_dir,
+#                     scan_name,
+#                     dset.label_map_file,
+#                     dset.donotcare_class_ids,
+#                     dset.max_num_point,
+#                     dset.VALID_CLASS_IDS,
+#                     dset.normalize_rgb,
+#                     dset.frame_depth,
+#                     dset.frame_rgb,
+#                     dset.frame_pose,
+#                     dset.frame_intrinsics,
+#                     dset.frame_skip,
+#                 )
+
+#             data = dset.read_one_scan(*args)
+#             return data['instance_labels']
+        
+#         print("Adding instance labels to mm_data")
+#         data['instance_labels'] = get_instance_labels(self, scan_name)
+        
+        
+        
+        
 
         # Load the corresponding 2D data and mappings
         i_split = self.SPLITS.index(self.split)
@@ -422,9 +450,11 @@ class ScannetMM(Scannet):
                 m2f_dir = ['', 'scratch-shared', 'fsun', 'data', 'scannet', 'scans', scan_dir[-1]]
                 m2f_dir = os.sep.join([*m2f_dir, self.m2f_preds_dirname])                
             
-            gt_dir = os.path.join('/scratch-shared/fsun/data/scannet/scans', scan_dir[-1], 'label-filt-scannet20')
+#             print("Changing gt_dir to m2f_masks_refined! ")
+            gt_dir = os.path.join('/scratch-shared/fsun/data/scannet/scans', scan_dir[-1], 'label-filt-scannet20')#'label-filt-scannet20')
                                                 
             m2f_masks, m2f_mask_paths, gt_masks, gt_mask_paths = [], [], [], []
+            print(len(images[0].path))
             for rgb_path in images[0].path:
                 # Pred masks
                 m2f_filename, ext = osp.splitext(rgb_path.split(os.sep)[-1])
