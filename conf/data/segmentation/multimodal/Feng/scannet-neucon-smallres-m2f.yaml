@@ -9,7 +9,7 @@ exact_splatting_2d: True  # Whether only exact mappings are preserved after spla
 
 class: scannet.ScannetDatasetMM
 dataset_name: "scannet-neucon-smallres-m2f"
-dataroot: data
+dataroot: "/scratch-shared/fsun/dvata"
 full_resolution_3d: 0.01
 version: "v2"
 use_instance_labels: False

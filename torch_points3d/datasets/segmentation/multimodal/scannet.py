@@ -454,7 +454,6 @@ class ScannetMM(Scannet):
             gt_dir = os.path.join('/scratch-shared/fsun/data/scannet/scans', scan_dir[-1], 'label-filt-scannet20')#'label-filt-scannet20')
                                                 
             m2f_masks, m2f_mask_paths, gt_masks, gt_mask_paths = [], [], [], []
-            print(len(images[0].path))
             for rgb_path in images[0].path:
                 # Pred masks
                 m2f_filename, ext = osp.splitext(rgb_path.split(os.sep)[-1])
