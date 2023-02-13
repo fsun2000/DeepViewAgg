@@ -27,7 +27,7 @@ optim:
   lr_scheduler:
     class: ExponentialLR
     params:
-      gamma: 0.955  #0.97725  # in 200 epochs, LR decays by 1/100th  following 1 * (0.9885)^100 where lr = 1
+      gamma: 0.97725  #0.97725  # in 200 epochs, LR decays by 1/100th  following 1 * (0.9885)^100 where lr = 1
   bn_scheduler:
     bn_policy: "step_decay"
     params:

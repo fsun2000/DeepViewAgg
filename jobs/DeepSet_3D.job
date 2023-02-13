@@ -7,7 +7,7 @@
 #SBATCH --cpus-per-task=18
 #SBATCH --time=15:00:00
 #SBATCH --mem=120000MB
-#SBATCH --output=job_logs/superconvergence/view_selection_experiment/DeepSet_3D_allfeatures_m2f_masks.out
+#SBATCH --output=job_logs/thesis_results/m2f_masks/DeepSet_3D.out
 
 cd $HOME/DeepViewAgg
 

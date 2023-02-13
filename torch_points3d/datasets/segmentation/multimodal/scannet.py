@@ -38,6 +38,26 @@ def load_pose(filename):
     out = torch.from_numpy(np.asarray(lines).astype(np.float32))
     return out
 
+#### Temporary function to measure cross-view consistency
+def get_instance_labels(dset, scan_name):
+    scannet_dir = osp.join(dset.raw_dir, "scans" if dset.split in ["train", "val"] else "scans_test")
+    args = (
+            scannet_dir,
+            scan_name,
+            dset.label_map_file,
+            dset.donotcare_class_ids,
+            dset.max_num_point,
+            dset.VALID_CLASS_IDS,
+            dset.normalize_rgb,
+            dset.frame_depth,
+            dset.frame_rgb,
+            dset.frame_pose,
+            dset.frame_intrinsics,
+            dset.frame_skip,
+        )
+
+    data = dset.read_one_scan(*args)
+    return data['instance_labels']
 
 
 ########################################################################################
@@ -151,6 +171,9 @@ class ScannetMM(Scannet):
         if self.n_views_ablation is not None:
             print("Currently running ablation studies on the number of points!")
             print("self.n_views_ablation ", self.n_views_ablation)
+            
+        self.load_instance_labels = False
+        self.gt_dir_name = 'label-filt-scannet20'
 
         super(ScannetMM, self).__init__(*args, **kwargs)
     
@@ -350,29 +373,9 @@ class ScannetMM(Scannet):
         # Get the 3D point sample
         data = self.get(idx)
         
-#         #### Temporary solution to measure Cross-view consistency
-#         def get_instance_labels(dset, scan_name):
-#             scannet_dir = osp.join(dset.raw_dir, "scans" if dset.split in ["train", "val"] else "scans_test")
-#             args = (
-#                     scannet_dir,
-#                     scan_name,
-#                     dset.label_map_file,
-#                     dset.donotcare_class_ids,
-#                     dset.max_num_point,
-#                     dset.VALID_CLASS_IDS,
-#                     dset.normalize_rgb,
-#                     dset.frame_depth,
-#                     dset.frame_rgb,
-#                     dset.frame_pose,
-#                     dset.frame_intrinsics,
-#                     dset.frame_skip,
-#                 )
-
-#             data = dset.read_one_scan(*args)
-#             return data['instance_labels']
-        
-#         print("Adding instance labels to mm_data")
-#         data['instance_labels'] = get_instance_labels(self, scan_name)
+        if self.load_instance_labels:
+            print("Adding instance labels to mm_data")
+            data['instance_labels'] = get_instance_labels(self, scan_name)
         
         
         
@@ -448,10 +451,14 @@ class ScannetMM(Scannet):
             elif self.m2f_preds_dirname == 'm2f_masks':
                 scan_dir[1] = 'scratch-shared'
                 m2f_dir = ['', 'scratch-shared', 'fsun', 'data', 'scannet', 'scans', scan_dir[-1]]
-                m2f_dir = os.sep.join([*m2f_dir, self.m2f_preds_dirname])                
-            
+                m2f_dir = os.sep.join([*m2f_dir, self.m2f_preds_dirname])   
+            else:
+                scan_dir[1] = 'scratch-shared'
+                m2f_dir = ['', 'scratch-shared', 'fsun', 'data', 'scannet', 'scans', scan_dir[-1]]
+                m2f_dir = os.sep.join([*m2f_dir, self.m2f_preds_dirname])   
+                
 #             print("Changing gt_dir to m2f_masks_refined! ")
-            gt_dir = os.path.join('/scratch-shared/fsun/data/scannet/scans', scan_dir[-1], 'label-filt-scannet20')#'label-filt-scannet20')
+            gt_dir = os.path.join('/scratch-shared/fsun/data/scannet/scans', scan_dir[-1], self.gt_dir_name)#'label-filt-scannet20')
                                                 
             m2f_masks, m2f_mask_paths, gt_masks, gt_mask_paths = [], [], [], []
             for rgb_path in images[0].path:

@@ -250,7 +250,6 @@ def represents_int(s):
 
 def read_label_mapping(filename, label_from="raw_category", label_to="nyu40id"):
     
-    print("filename: ", filename)
     assert osp.isfile(filename)
     mapping = dict()
     with open(filename) as csvfile:
@@ -279,7 +278,6 @@ def read_mesh_vertices_rgb(filename):
     """read XYZ RGB for each vertex.
     Note: RGB values are in 0-255
     """
-    print("filename: ", filename)
     assert osp.isfile(filename)
     with open(filename, "rb") as f:
         plydata = PlyData.read(f)
@@ -993,7 +991,7 @@ class Scannet(InMemoryDataset):
             f.close()
 
         for idx_split, split in enumerate(Scannet.SPLITS):
-#             self.scan_names[idx_split] = self.scan_names[idx_split][:1]  # to test on mini dataset
+#             self.scan_names[idx_split] = self.scan_names[idx_split][:5]  # to test on mini dataset
             idx_mapping = {idx: scan_name for idx, scan_name in enumerate(self.scan_names[idx_split])}
             setattr(self, "MAPPING_IDX_TO_SCAN_{}_NAMES".format(split.upper()), idx_mapping)
 
