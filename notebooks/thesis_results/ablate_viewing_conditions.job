@@ -1,0 +1,19 @@
+#!/bin/bash
+
+#SBATCH --partition=gpu
+#SBATCH --job-name=ablate
+#SBATCH --gpus=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=18
+#SBATCH --time=5:00:00
+#SBATCH --mem=120000MB
+#SBATCH --output=job_logs/ViT_masks/MVFusion_orig_ablate_viewing_conditions.out
+
+cd $HOME/DeepViewAgg/notebooks/thesis_results
+
+module purge
+source activate pytorch3d_backup
+
+export HYDRA_FULL_ERROR=1
+
+python evaluate_all_metrics.py --input-mask ViT_masks --model-name MVFusion_orig --ablate-viewing-conditions

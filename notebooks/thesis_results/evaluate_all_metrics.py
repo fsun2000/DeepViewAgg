@@ -194,17 +194,22 @@ class Evaluator():
     def __init__(self, cfg, dataset, checkpoint_dir):
         self.scans_dir = "/scratch-shared/fsun/data/scannet/scans"
 
-        self._dataset = dataset
+#         self._dataset = dataset
         self._cfg = cfg
+    
+        if self._cfg.model_name in ['MVFusion_orig', 'DeepSetAttention']:
+            self.no_3d = True
+        else:
+            self.no_3d = False
+            
+        print("self.no_3d == ", self.no_3d)
+            
         self.wandb_log = False
         self.tensorboard_log = False
         
         self.early_break = False
-        
-        self.mapping_idx_to_scan_names = getattr(dataset.val_dataset, "MAPPING_IDX_TO_SCAN_{}_NAMES".format(dataset.val_dataset.split.upper()))
 
 
-        
 #         # Create the model
 #         print(f"Creating model: {self._cfg.model_name}")
 #         model = instantiate_model(self._cfg, self._dataset)
@@ -262,16 +267,18 @@ class Evaluator():
             self._model: BaseModel = self._checkpoint.create_model(
                 self._dataset, weight_name="best_miou")
         else:
-            self._dataset: BaseDataset = instantiate_dataset(self._cfg.data)
-            self._model: BaseModel = instantiate_model(
-                copy.deepcopy(self._cfg), self._dataset)
-            self._model.instantiate_optimizers(self._cfg, "cuda" in device)
-            self._model.set_pretrained_weights()
-            if not self._checkpoint.validate(self._dataset.used_properties):
-                log.warning(
-                    "The model will not be able to be used from pretrained "
-                    "weights without the corresponding dataset. Current "
-                    "properties are {}".format(self._dataset.used_properties))
+            log.warning("Checkpoint is empty or model cannot be instantiated from given checkpoint.")
+
+#             self._dataset: BaseDataset = instantiate_dataset(self._cfg.data)
+#             self._model: BaseModel = instantiate_model(
+#                 copy.deepcopy(self._cfg), self._dataset)
+#             self._model.instantiate_optimizers(self._cfg, "cuda" in device)
+#             self._model.set_pretrained_weights()
+#             if not self._checkpoint.validate(self._dataset.used_properties):
+#                 log.warning(
+#                     "The model will not be able to be used from pretrained "
+#                     "weights without the corresponding dataset. Current "
+#                     "properties are {}".format(self._dataset.used_properties))
                 
         self._checkpoint.dataset_properties = self._dataset.used_properties
 
@@ -302,7 +309,9 @@ class Evaluator():
         self._checkpoint.selection_stage = self._dataset.resolve_saving_stage(
             selection_stage)
         
-    
+        self.mapping_idx_to_scan_names = getattr(self._dataset.val_dataset, "MAPPING_IDX_TO_SCAN_{}_NAMES".format(self._dataset.val_dataset.split.upper()))
+
+        
     def eval_all_metrics(self, stage_name=""):
         self._is_training = False
         
@@ -321,9 +330,9 @@ class Evaluator():
         path_to_submission = save_semantic_prediction_as_txt(
             self._tracker_refined, self._cfg.model_name, self._dataset.val_dataset.m2f_preds_dirname)
         
-        # Back-project semantic mesh (from pcd) to 2D images given the maximum number of views per scene, and save.
-        # Skips this step if refined images already exist for given model and mask
-        self.mesh_to_image(self._cfg, self._dataset, path_to_submission, self.scans_dir, save_output='if_not_exists') 
+#         # Back-project semantic mesh (from pcd) to 2D images given the maximum number of views per scene, and save.
+#         # Skips this step if refined images already exist for given model and mask
+#         self.mesh_to_image(self._cfg, self._dataset, path_to_submission, self.scans_dir, save_output='if_not_exists') 
         
         # Evaluate 2D semantic segmentation
         self._tracker_refined_2d_iou: BaseTracker = self._dataset.get_tracker(
@@ -331,7 +340,6 @@ class Evaluator():
         
         self._evaluate_2d_iou()
         
-        # Evaluate 2D cross-view consistency        
         self._evaluate_2d_CC()        
         
         # Evaluate 2D temporal consistency
@@ -450,11 +458,18 @@ class Evaluator():
         # Load instance labels for cross-view consistency evaluation
         self._dataset.val_dataset.load_instance_labels = True
         
-        # Load refined masks in attribute of gt mask for CC evaluation
-        self._dataset.val_dataset.gt_dir_name = osp.join(self._cfg.data.m2f_preds_dirname + '_refined', self._cfg.model_name) 
+#         # Load refined masks in attribute of gt mask for CC evaluation
+#         self._dataset.val_dataset.gt_dir_name = osp.join(self._cfg.data.m2f_preds_dirname + '_refined', self._cfg.model_name) 
 
         
         del self._dataset._val_loader
+        
+        
+        # Evaluate 2D cross-view consistency
+        # Temporary solution to evaluate both 2D input masks and 2D refined masks for Cross-view Consistency:
+        # load refined masks into gt_mask attribute
+        self._dataset.val_dataset.gt_dir_name = osp.join(f"{self._dataset.val_dataset.m2f_preds_dirname}_refined", 
+                                                         self._cfg.model_name)
         
         # Re-create dataloader
         self._dataset.create_dataloaders(
@@ -549,53 +564,53 @@ class Evaluator():
 
         for scan_name in Ctq(scan_names):
             # Output folder location
-            refined_mask_dir = osp.join(scans_dir, scan_name, f"{input_mask_name}_refined", f"{cfg.model_name}")
+            refined_mask_dir = osp.join(scans_dir, scan_name, f"{input_mask_name}_refined", f"{self._cfg.model_name}")
 
             if not osp.exists(refined_mask_dir):
                 os.makedirs(refined_mask_dir)
 
-            # Skip this step if output folder already contains masks
-            if len(os.listdir(refined_mask_dir)) < 10:
+#             # Skip this step if output folder already contains masks
+#             if len(os.listdir(refined_mask_dir)) < 10:
 
-                # Load data
-                mesh = o3d.io.read_triangle_mesh(f"{scans_dir}/{scan_name}/{scan_name}_vh_clean_2.ply")
-                mesh_triangles = np.asarray(mesh.triangles)
-                mesh = o3d.t.geometry.TriangleMesh.from_legacy(mesh)
+            # Load data
+            mesh = o3d.io.read_triangle_mesh(f"{scans_dir}/{scan_name}/{scan_name}_vh_clean_2.ply")
+            mesh_triangles = np.asarray(mesh.triangles)
+            mesh = o3d.t.geometry.TriangleMesh.from_legacy(mesh)
 
-                # Load predicted class label per vertex
-                class_id_faces = np.loadtxt(f"{path_to_submission}/{scan_name}.txt").astype(int)
+            # Load predicted class label per vertex
+            class_id_faces = np.loadtxt(f"{path_to_submission}/{scan_name}.txt").astype(int)
 
-                # Camera parameters
-                intrinsic = np.loadtxt(f"{scans_dir}/{scan_name}/sens/intrinsic/intrinsic_depth.txt")[:3, :3]
-                images = torch.load(f"{preprocessed_2d_data_dir}/{scan_name}.pt")
+            # Camera parameters
+            intrinsic = np.loadtxt(f"{scans_dir}/{scan_name}/sens/intrinsic/intrinsic_depth.txt")[:3, :3]
+            images = torch.load(f"{preprocessed_2d_data_dir}/{scan_name}.pt")
 
-                # Undo axis alignment for extrinsics  
-                axis_align_matrix_path = osp.join(scans_dir, scan_name, scan_name + '.txt')
-                axis_align_matrix = read_axis_align_matrix(axis_align_matrix_path)
-                inv = torch.linalg.inv(axis_align_matrix.T)
-                images.extrinsic = inv.T  @ images.extrinsic        
+            # Undo axis alignment for extrinsics  
+            axis_align_matrix_path = osp.join(scans_dir, scan_name, scan_name + '.txt')
+            axis_align_matrix = read_axis_align_matrix(axis_align_matrix_path)
+            inv = torch.linalg.inv(axis_align_matrix.T)
+            images.extrinsic = inv.T  @ images.extrinsic        
 
-                # Make world-to-camera
-                extrinsics = torch.linalg.inv(images.extrinsic).numpy()
-                image_names = [osp.splitext(osp.basename(x))[0] for x in images.path]
+            # Make world-to-camera
+            extrinsics = torch.linalg.inv(images.extrinsic).numpy()
+            image_names = [osp.splitext(osp.basename(x))[0] for x in images.path]
 
-                # Raycasting
-                scene = o3d.t.geometry.RaycastingScene()
-                scene.add_triangles(mesh)
+            # Raycasting
+            scene = o3d.t.geometry.RaycastingScene()
+            scene.add_triangles(mesh)
 
-                for i in range(len(image_names)):
-                    image = get_semantic_image_from_camera(dataset=dataset, scene=scene, mesh_triangles=mesh_triangles, intrinsic=intrinsic,
-                                                           extrinsic=extrinsics[i], 
-                                                           class_id_faces=class_id_faces, im_size=output_image_size)
+            for i in range(len(image_names)):
+                image = get_semantic_image_from_camera(dataset=dataset, scene=scene, mesh_triangles=mesh_triangles, intrinsic=intrinsic,
+                                                       extrinsic=extrinsics[i], 
+                                                       class_id_faces=class_id_faces, im_size=output_image_size)
 
 
-                    # Save refined prediction (backprojected from mesh + interpolated missing pixels)
-                    image = Image.fromarray(image.astype(np.uint8), 'L')
-                    im_save_path = osp.join(refined_mask_dir, image_names[i] + '.png')
-                    image.save(im_save_path)   
+                # Save refined prediction (backprojected from mesh + interpolated missing pixels)
+                image = Image.fromarray(image.astype(np.uint8), 'L')
+                im_save_path = osp.join(refined_mask_dir, image_names[i] + '.png')
+                image.save(im_save_path)   
 
-            else:
-                print("Output directory already exists and contains >10 masks!")
+#             else:
+#                 print("Output directory already exists and contains >10 masks!")
 
             if self.early_break:
                 break
@@ -612,7 +627,7 @@ class Evaluator():
                 scan_name = self.mapping_idx_to_scan_names[batch.id_scan.item()]
 
                 gt_dir = osp.join(self.scans_dir, scan_name, 'label-filt-scannet20')
-                mask_dir = osp.join(self.scans_dir, scan_name, f"{input_mask_name}_refined", f"{cfg.model_name}")
+                mask_dir = osp.join(self.scans_dir, scan_name, f"{input_mask_name}_refined", f"{self._cfg.model_name}")
 
                 im_names = [osp.basename(x) for x in batch.modalities['image'][0].m2f_pred_mask_path]
 
@@ -649,8 +664,12 @@ class Evaluator():
             with Ctq(loader) as tq_loader:
                 for data in tq_loader:
                     with torch.no_grad():
-
-                        self._model.set_input(data, self._device)
+                        if self.no_3d:
+                            data = get_seen_points(data)
+                            self._model.set_input(data, self._device)
+                        else:
+                            self._model.set_input(data, self._device)
+                            
                         with torch.cuda.amp.autocast(enabled=self._model.is_mixed_precision()):
                             self._model.forward(epoch=epoch)
 
@@ -659,8 +678,9 @@ class Evaluator():
                         # 3D mIoU, all points
                         self._tracker_refined.track(self._model, full_res=True, data=data)
 
-                        # 3D mIoU, seen points
-                        data = get_seen_points(data)
+                        if not self.no_3d:
+                            # 3D mIoU, seen points
+                            data = get_seen_points(data)
                         self._tracker_refined_seen_points.track(pred_labels=data.data.pred, gt_labels=data.data.y, model=None)
         
 
@@ -697,6 +717,40 @@ class Evaluator():
         if self._dataset.has_val_loader:
             if not stage_name or stage_name == "val":
                 self._test_baseline(epoch, "val")   
+                
+                
+    def ablate_viewing_conditions(self):
+        weighted_mean = torch.tensor([0.2711, 0.1401, 0.6778, 0.1822, 0.6568, 0.4669, 0.2979, 0.6933])
+        
+        tracker = self._dataset.get_tracker(False, False)
+                    
+
+        for idx in range(8):
+            tracker.reset(stage='val')
+
+            with Ctq(self._dataset._val_loader) as tq_loader:
+                for data in tq_loader:
+
+                    with torch.no_grad():
+                        if self.no_3d:
+                            data = get_seen_points(data)
+                            
+                            
+                        if self._cfg.model_name == 'DeepSetAttention':
+                            data.modalities['image'][0]._mappings.values[-1][:, idx] = weighted_mean[idx]
+                        else:
+                            data.data.mvfusion_input[:, :, idx+1] = weighted_mean[idx]
+
+                        self._model.set_input(data, self._device)
+
+                        with torch.cuda.amp.autocast(enabled=self._model.is_mixed_precision()):
+                            self._model.forward(epoch=1)
+
+                        # 3D mIoU, seen points
+                        data = get_seen_points(data)
+                        tracker.track(self._model, full_res=False, data=data)
+            print(f"Refined 3D seen points without {idx}th feature: ", tracker.get_metrics())
+
 
     @property
     def has_training(self):
@@ -717,6 +771,9 @@ class Evaluator():
             return self._model.conv_type == "PARTIAL_DENSE" and getattr(self._cfg, "precompute_multi_scale", False)
         
         
+        
+        
+        
 if __name__ == "__main__":
     import argparse
     
@@ -726,6 +783,7 @@ if __name__ == "__main__":
                             choices=['m2f_masks', 'ViT_masks'],
                             help='input mask')
         parser.add_argument('--model-name', help='model name')
+        parser.add_argument('--ablate-viewing-conditions', action='store_true')
         
         args = parser.parse_args()
         return args
@@ -747,12 +805,12 @@ if __name__ == "__main__":
                           "/home/fsun/DeepViewAgg/outputs/2023-01-23/12-57-16"]        
         models_config = 'segmentation/multimodal/Feng/view_selection_experiment' 
     elif model_name == 'MVFusion_orig':
-        checkpoint_dir = ['',
+        checkpoint_dir = ['/home/fsun/DeepViewAgg_31-10-22/DeepViewAgg/outputs/2023-02-11/22-17-12',
                           '/home/fsun/DeepViewAgg/outputs/MVFusion_orig']
         models_config = 'segmentation/multimodal/Feng/mvfusion_orig' 
     elif model_name == 'DeepSetAttention':
-        checkpoint_dir = ['',
-                          '/home/fsun/DeepViewAgg/outputs/2023-01-17/18-49-35']
+        checkpoint_dir = ['/home/fsun/DeepViewAgg/outputs/2023-02-11/10-54-19',
+                          '/home/fsun/DeepViewAgg/outputs/2023-02-11/10-52-09']   # old: 'DeepSet_feats_labels_superconvergence'
         models_config = 'segmentation/multimodal/Feng/view_selection_experiment' 
 
 
@@ -781,4 +839,8 @@ if __name__ == "__main__":
 
 
     evaluator = Evaluator(cfg, dataset, checkpoint_dir=checkpoint_dir)
-    evaluator.eval_all_metrics(stage_name='val')
+    
+    if args.ablate_viewing_conditions:
+        evaluator.ablate_viewing_conditions()
+    else:
+        evaluator.eval_all_metrics(stage_name='val')

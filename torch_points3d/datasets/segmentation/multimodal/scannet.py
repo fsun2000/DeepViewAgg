@@ -458,6 +458,7 @@ class ScannetMM(Scannet):
                 m2f_dir = os.sep.join([*m2f_dir, self.m2f_preds_dirname])   
                 
 #             print("Changing gt_dir to m2f_masks_refined! ")
+            print("loading gt mask from : ", self.gt_dir_name)
             gt_dir = os.path.join('/scratch-shared/fsun/data/scannet/scans', scan_dir[-1], self.gt_dir_name)#'label-filt-scannet20')
                                                 
             m2f_masks, m2f_mask_paths, gt_masks, gt_mask_paths = [], [], [], []

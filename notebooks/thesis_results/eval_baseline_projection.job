@@ -1,0 +1,19 @@
+#!/bin/bash
+
+#SBATCH --partition=gpu
+#SBATCH --job-name=vit-proj
+#SBATCH --gpus=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=18
+#SBATCH --time=5:00:00
+#SBATCH --mem=120000MB
+#SBATCH --output=job_logs/ViT_masks/baseline_projected.out
+
+cd $HOME/DeepViewAgg/notebooks/thesis_results
+
+module purge
+source activate pytorch3d_backup
+
+export HYDRA_FULL_ERROR=1
+
+python eval_baseline_projection.py --input-mask ViT_masks --model-name DeepSetAttention
