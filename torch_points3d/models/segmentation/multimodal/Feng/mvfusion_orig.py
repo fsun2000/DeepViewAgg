@@ -34,10 +34,15 @@ class MVFusion_orig(BaseModel, ABC):
         self.backbone = MVFusionEncoder_orig(option, model_type, dataset, modules)
         self._modalities = self.backbone._modalities
 
-#         # This model version already has a head
-#         if self._HAS_HEAD:
-#             self.head = nn.Sequential(nn.Linear(self.backbone.output_nc,
-#                                                 dataset.num_classes))
+        # This model version already has a head
+        if self._HAS_HEAD:
+            if option['backbone']['transformer']['feat_downproj_dim'] is not None:
+                self.head = nn.Sequential(nn.Linear(option['backbone']['transformer']['feat_downproj_dim'],
+                                                    dataset.num_classes))
+            else:
+                self.head = nn.Sequential(nn.Linear(option['backbone']['transformer']['embed_dim'],
+                                                    dataset.num_classes))
+                
         self.loss_names = ["loss_seg"]
 
 #         # Control the loss mechanism with MODALITY_VIEW_LOSS. If set to
@@ -82,7 +87,7 @@ class MVFusion_orig(BaseModel, ABC):
             csr_idx = data.modalities['image'][0].view_csr_indexing
             seen_mask = csr_idx[1:] > csr_idx[:-1]
             keep_idx = torch.round(
-                torch.linspace(0, seen_mask.sum()-1, self.MAX_SEEN_POINTS)).long()
+                torch.linspace(0, seen_mask.sum()-1, self.MAX_N_POINTS)).long()
             keep_idx_mask = torch.zeros(seen_mask.sum(), dtype=torch.bool, device=keep_idx.device)
             keep_idx_mask[keep_idx] = True
             seen_mask[seen_mask.clone()] = keep_idx_mask
@@ -92,7 +97,7 @@ class MVFusion_orig(BaseModel, ABC):
             data = data[keep_idx_mask]
             
     
-        self.input = data
+        self.input = data.to(self.device)
 
         if hasattr(data, 'batch') and data.batch is not None:
             self.batch_idx = data.batch.squeeze()
@@ -133,7 +138,7 @@ class MVFusion_orig(BaseModel, ABC):
         
     
         # Feng: directly use the logits output from DVA_cls_5_fusion_7 class with MLP_head inside
-        logits = features
+        logits = self.head(features) if self._HAS_HEAD else features
         self.output = F.log_softmax(logits, dim=-1)
 
         if not self.training and not torch.all(seen_mask):    # Skip if all points were seen
@@ -197,6 +202,8 @@ class MVFusion_orig(BaseModel, ABC):
 class MVFusion_model_orig(MVFusion_orig):
     _HAS_HEAD = False
 
+class MVFusion_model_orig_with_head(MVFusion_orig):
+    _HAS_HEAD = True
 
 # class No3DLogitFusion(No3D):
 #     _HAS_HEAD = False

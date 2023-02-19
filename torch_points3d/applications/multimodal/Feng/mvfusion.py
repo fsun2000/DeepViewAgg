@@ -71,14 +71,14 @@ class MVFusionEncoder(MVFusionBackboneBasedModel, ABC):
 #             bias=False)
             
         # modules
-        self.fusion = DVA_cls_5_fusion_7(model_config['backbone']['transformer'])
+        self.transformerfusion = DVA_cls_5_fusion_7(model_config['backbone']['transformer'])
         
         self.n_views = model_config.backbone.transformer.n_views
         self.n_classes = model_config.backbone.transformer.n_classes
         self.MAX_SEEN_POINTS = model_config.backbone.transformer.max_n_points
         
         print("WARNING: input points clipped at ", self.MAX_SEEN_POINTS, flush=True)
-#         print("WARNING: input points for Multi-View Fusion module are not clipped at MAX_SEEN_POINTS for fair model comparison in evaluation", flush=True)
+
         if self._checkpointing:
             print("checkpointing enabled for model forward pass!", flush=True)
         
@@ -90,27 +90,6 @@ class MVFusionEncoder(MVFusionBackboneBasedModel, ABC):
     def output_nc(self):
         return self._output_nc
 
-#     def _set_input(self, data: MMData):
-#         """Unpack input data from the dataloader and perform necessary
-#         pre-processing steps.
-
-#         Parameters
-#         -----------
-#         data: MMData object
-#         """
-#         data = data.to(self.device)
-        
-                
-#         print("data all", data, flush=True)
-#         data = self.get_seen_points(data)
-#         print("data seen", data, flush=True)
-        
-#         self.input = {
-#             'x_3d': getattr(data, 'x', None),   # Feng: adjusted from original 'getattr(data, 'x', None)', now it properly moves to gpu
-#             'x_seen': None,
-#             'modalities': data.modalities}
-#         if data.pos is not None:
-#             self.xyz = data.pos
 
     def forward(self, data, *args, **kwargs):
         """Run forward pass. Expects a MMData object for input, with
@@ -137,45 +116,26 @@ class MVFusionEncoder(MVFusionBackboneBasedModel, ABC):
         for i in range(len(self.down_modules)):
             mm_data_dict = self.down_modules[i](mm_data_dict)
         """    
-    
-#         if data.data.mvfusion_input.shape[0] > self.MAX_SEEN_POINTS \
-#             and self.training is True:
-#             print("self.training is True -> culling max n seen points", flush=True)
-#             # 1. get seen points
-#             # 2. remove them from mvfusion_input
-#             # 3. remove the removed points from seen points
-#             csr_idx = data.modalities['image'][0].view_csr_indexing
-#             seen_mask = csr_idx[1:] > csr_idx[:-1]
-#             keep_idx = torch.round(
-#                 torch.linspace(0, seen_mask.sum()-1, self.MAX_SEEN_POINTS)).long()
-#             keep_idx_mask = torch.zeros(seen_mask.sum(), dtype=torch.bool, device=keep_idx.device)
-#             keep_idx_mask[keep_idx] = True
-#             seen_mask[seen_mask.clone()] = keep_idx_mask
-#             data.data.mvfusion_input = data.data.mvfusion_input[keep_idx_mask]
-
-    
+        ### multi-view mapping & M2F feature fusion using Transformer 
+        
         # Features from only seen point-image matches are included in 'x'
         viewing_feats = data.data.mvfusion_input[:, :, :-1]
         m2f_feats = data.data.mvfusion_input[:, :, -1]
-        
-        # Mask2Former predictions per view as feature
+                
+        # One hot features of M2F preds
         m2f_feats = torch.nn.functional.one_hot(m2f_feats.squeeze().long(), self.n_classes)
     
         ### Multi-view fusion of M2F and viewing conditions using Transformer
         # TODO: remove assumption that pixel validity is the 1st feature
-        invalid_pixel_mask = viewing_feats[:, :, 0] == 0
-        
-        fusion_input = {
-            'invalid_pixels_mask': invalid_pixel_mask.to(self.device),
-            'viewing_features': viewing_feats.to(self.device),
-            'one_hot_mask_labels': m2f_feats.to(self.device)
-        }
-        
+        invalid_pixel_mask = viewing_feats[:, :, 0] == 0  
+            
+            
         # get logits
         if self._checkpointing:
-            out_scores = checkpoint(self.fusion, fusion_input)
+            out_scores = checkpoint(self.transformerfusion, invalid_pixel_mask, viewing_feats.requires_grad_(), m2f_feats)
         else:
-            out_scores = self.fusion(fusion_input)
+            out_scores = self.transformerfusion(invalid_pixel_mask, viewing_feats, m2f_feats)
+            
         
         csr_idx = data.modalities['image'][0].view_csr_indexing
         x_seen_mask = csr_idx[1:] > csr_idx[:-1]

@@ -722,7 +722,7 @@ def MVFusionSparseConv3d(
          decoder
      input_nc : int, optional
          Number of channels for the input
-    output_nc : int, optional
+     output_nc : int, optional
          If specified, then we add a fully connected head at the end of
          the network to provide the requested dimension
      num_layers : int, optional
@@ -855,6 +855,7 @@ class MVFusionBaseSparseConv3d(MVFusionUnwrappedUnetBasedModel):
             else:
                 csr_idx = data.modalities['image'][0].view_csr_indexing
                 seen_mask = csr_idx[1:] > csr_idx[:-1]
+                
             
             self.input = {
                 'x_3d': sp3d.nn.SparseTensor(data.x, data.coords, data.batch, self.device),
@@ -953,6 +954,10 @@ class MVFusionSparseConv3dUnet(MVFusionBaseSparseConv3d):
         # Last down conv module
         data = self.down_modules[-1](data)
         
+        # Save view fused features
+        view_fused_features = data['view_fused_features']
+        x_seen_mask = data['transformer_x_seen']
+               
         if self.is_multimodal:
             # Discard the modalities used in the down modules, only
             # pointwise features are used in subsequent modules.
@@ -973,7 +978,8 @@ class MVFusionSparseConv3dUnet(MVFusionBaseSparseConv3d):
         # outside of the model
         self.last_sparse_tensor = data
         
-        out = Batch(x=data.F, pos=self.xyz).to(self.device)
+                
+        out = Batch(x=data.F, pos=self.xyz, view_fused_features=view_fused_features, x_seen_mask=x_seen_mask).to(self.device)
         if self.has_mlp_head:
             out.x = self.mlp(out.x)
         return out
@@ -987,6 +993,8 @@ class MVFusionAPIModel(BaseModel):
         
         self._weight_classes = dataset.weight_classes
         
+        option.backbone['use_view_fusion_loss'] = option.get('use_view_fusion_loss', False)
+        
         option['backbone']['transformer']['n_classes'] = dataset.num_classes
         self.backbone = MVFusionSparseConv3d(
             "unet", dataset.feature_dimension, config=option.backbone,
@@ -998,12 +1006,19 @@ class MVFusionAPIModel(BaseModel):
         self._use_lovasz = option.get('use_lovasz', False)
         self._use_2d_cross_entropy = option.get('use_2d_cross_entropy', False)
         self._2d_loss_weight = option.get('2d_loss_weight', 0.)
+        self._use_view_fusion_loss = option.get('use_view_fusion_loss', False)
+        self._view_fusion_loss_weight = option.get('view_fusion_loss_weight', 0.)
         assert self._use_cross_entropy or self._use_lovasz, \
             "Choose at least one between Cross-Entropy loss and Lovasz loss."
         self.loss_names = ['loss_seg'] \
                           + self._use_cross_entropy * ['loss_cross_entropy'] \
                           + self._use_lovasz * ['loss_lovasz'] \
-                          + self._use_2d_cross_entropy * ['loss_2d_cross_entropy']
+                          + self._use_2d_cross_entropy * ['loss_2d_cross_entropy'] \
+                          + self._use_view_fusion_loss * ['loss_view_fusion']
+        
+        if self._use_view_fusion_loss:
+            # maybe add some type of norm or not? would it be helpful or harmful
+            self.view_fusion_head = nn.Sequential(nn.Linear(option.backbone.define_constants.out_mv_feat_dim, dataset.num_classes))
 
     def set_input(self, data, device):
         self.batch_idx = data.batch.squeeze()
@@ -1014,7 +1029,9 @@ class MVFusionAPIModel(BaseModel):
             self.labels = None
 
     def forward(self, *args, **kwargs):
-        features = self.backbone(self.input).x
+        out = self.backbone(self.input)
+        
+        features = out.x
         logits = self.head(features)
         self.output = F.log_softmax(logits, dim=-1)
         if self._weight_classes is not None:
@@ -1023,7 +1040,7 @@ class MVFusionAPIModel(BaseModel):
             self.loss_seg = 0
             if self._use_cross_entropy:
                 self.loss_cross_entropy = F.nll_loss(self.output, self.labels, ignore_index=IGNORE_LABEL, weight=self._weight_classes)
-                self.loss_seg += (1 - self._2d_loss_weight) * self.loss_cross_entropy
+                self.loss_seg += (1 - self._2d_loss_weight - self._view_fusion_loss_weight) * self.loss_cross_entropy
             if self._use_2d_cross_entropy:
                 """
                 Think about:
@@ -1044,14 +1061,7 @@ class MVFusionAPIModel(BaseModel):
                 # Get the number of views in which each point is visible
                 csr_idx = self.input.modalities['image'][0].view_csr_indexing
                 n_seen = (csr_idx[1:] - csr_idx[:-1]).cuda()
-                
-                # Thinking about it, this subsampling of points would not even changes to model performance
-#                 min_seen_mask = n_seen >= 2
-#                 seen_mm_data = self.input[min_seen_mask]
-#                 n_seen = n_seen[min_seen_mask]
-                
-#                 seen_mm_data[
-                
+
                 
                 # Grab 2D labels of each 3D point from all seen views
                 labels_2d = self.input.modalities['image'][0].get_mapped_gt_labels().flatten().cuda()
@@ -1064,6 +1074,12 @@ class MVFusionAPIModel(BaseModel):
             if self._use_lovasz:
                 self.loss_lovasz = lovasz_softmax(self.output.exp(), self.labels, ignore=IGNORE_LABEL)
                 self.loss_seg += self.loss_lovasz
+            # Additional loss term for view fusion module
+            if self._use_view_fusion_loss:
+                view_fused_logits = self.view_fusion_head(out['view_fused_features'][out['x_seen_mask']])
+                self.loss_view_fusion = F.cross_entropy(view_fused_logits, self.labels[out['x_seen_mask']], ignore_index=IGNORE_LABEL, weight=self._weight_classes)
+                self.loss_seg += self._view_fusion_loss_weight * self.loss_view_fusion
+                
                 
     def backward(self):
         self.loss_seg.backward()

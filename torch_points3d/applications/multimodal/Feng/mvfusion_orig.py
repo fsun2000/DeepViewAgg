@@ -15,7 +15,7 @@ from torch.utils.checkpoint import checkpoint
 from torch_points3d.modules.multimodal.pooling import BimodalCSRPool
 import sys
 sys.path.append("/home/fsun/thesis/modeling")
-from compare_methods import DVA_cls_5_fusion_7_orig
+from compare_methods import DVA_cls_5_fusion_7#_orig
 
 
 log = logging.getLogger(__name__)
@@ -60,7 +60,8 @@ class MVFusionEncoder_orig(MVFusionBackboneBasedModel, ABC):
 
             
         # modules
-        self.fusion = DVA_cls_5_fusion_7_orig(model_config['backbone']['transformer'])
+#         self.transformerfusion = DVA_cls_5_fusion_7_orig(model_config['backbone']['transformer'])
+        self.transformerfusion = DVA_cls_5_fusion_7(model_config['backbone']['transformer'])
         
         self.n_views = model_config.backbone.transformer.n_views
         self.n_classes = model_config.backbone.transformer.n_classes
@@ -127,22 +128,6 @@ class MVFusionEncoder_orig(MVFusionBackboneBasedModel, ABC):
             mm_data_dict = self.down_modules[i](mm_data_dict)
         """    
     
-#         if data.data.mvfusion_input.shape[0] > self.MAX_SEEN_POINTS \
-#             and self.training is True:
-#             print("self.training is True -> culling max n seen points", flush=True)
-#             # 1. get seen points
-#             # 2. remove them from mvfusion_input
-#             # 3. remove the removed points from seen points
-#             csr_idx = data.modalities['image'][0].view_csr_indexing
-#             seen_mask = csr_idx[1:] > csr_idx[:-1]
-#             keep_idx = torch.round(
-#                 torch.linspace(0, seen_mask.sum()-1, self.MAX_SEEN_POINTS)).long()
-#             keep_idx_mask = torch.zeros(seen_mask.sum(), dtype=torch.bool, device=keep_idx.device)
-#             keep_idx_mask[keep_idx] = True
-#             seen_mask[seen_mask.clone()] = keep_idx_mask
-#             data.data.mvfusion_input = data.data.mvfusion_input[keep_idx_mask]
-
-    
         # Features from only seen point-image matches are included in 'x'
         viewing_feats = data.data.mvfusion_input[:, :, :-1]
         m2f_feats = data.data.mvfusion_input[:, :, -1]
@@ -154,17 +139,14 @@ class MVFusionEncoder_orig(MVFusionBackboneBasedModel, ABC):
         # TODO: remove assumption that pixel validity is the 1st feature
         invalid_pixel_mask = viewing_feats[:, :, 0] == 0
         
-        fusion_input = {
-            'invalid_pixels_mask': invalid_pixel_mask.to(self.device),
-            'viewing_features': viewing_feats.to(self.device),
-            'one_hot_mask_labels': m2f_feats.to(self.device)
-        }
-        
-        # get logits
+        # If checkpointing the view-fusion, need to set requires_grad for input
+        # tensor because checkpointing the first layer breaks the
+        # gradients
         if self._checkpointing:
-            out_scores = checkpoint(self.fusion, fusion_input)
+            print("Going through checkpoint")
+            out_scores = checkpoint(self.transformerfusion, invalid_pixel_mask, viewing_feats.requires_grad_(), m2f_feats)
         else:
-            out_scores = self.fusion(fusion_input)
+            out_scores = self.transformerfusion(invalid_pixel_mask, viewing_feats, m2f_feats)
         
         csr_idx = data.modalities['image'][0].view_csr_indexing
         x_seen_mask = csr_idx[1:] > csr_idx[:-1]

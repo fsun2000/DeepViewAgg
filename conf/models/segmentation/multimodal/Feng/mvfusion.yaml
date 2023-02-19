@@ -221,7 +221,7 @@ MVFusion_3D_small_6views_2d_supervision:
                     module_name: BimodalFusion
                     mode: concatenation
                 branching_index: 0
-                checkpointing:  c 
+#                 checkpointing:  c 
                 interpolate: True
 
         up_conv:
@@ -254,7 +254,95 @@ MVFusion_3D_small_6views_2d_supervision:
             use_attn_mask: True          # Transformer attention masking
             use_csr_mask: True           # Transformer pixel validity masking
             has_mlp_head: False          # False by default
-            max_n_points: 200000      # max. size of transformer batched input. Increase if memory allows
+            max_n_points: 250000      # max. size of transformer batched input. Increase if memory allows
+            gating: False
+            
+            
+MVFusion_3D_small_6views_view_fusion_loss:
+    class: Feng.mvfusion_3d.MVFusionAPIModel
+    conv_type: "SPARSE"
+    backend: "torchsparse"
+    use_cross_entropy: True
+    use_view_fusion_loss: True
+    view_fusion_loss_weight: 0.0
+    backbone: # backbone offset specific for Sparse conv application builder
+        define_constants:
+            in_feat: 32
+            in_feat_img: 4
+            in_feat_map: 8
+            in_feat_attention: 4
+            block: ResBlock # Can be any of the blocks in modules/MinkowskiEngine/api_modules.py
+            out_mv_feat_dim: 64  # out dim of multi-view fused feature
+
+        down_conv:
+            module_name: ResNetDown
+            block: block
+            conv3d_after_fusion: False
+            N: [ 0, 2, 3, 4, 6 ]
+            kernel_size: [ 3, 2, 2, 2, 2 ]
+            stride: [ 1, 2, 2, 2, 2 ]
+            down_conv_nn:
+              [
+                  [ FEAT + out_mv_feat_dim, 2*in_feat ],
+                  [ 2*in_feat, in_feat ],               
+                  [ in_feat, 2*in_feat ],              
+                  [ 2*in_feat, 4*in_feat ],
+                  [ 4*in_feat, 8*in_feat ],
+              ]
+
+            image:
+                down_conv:
+                    module_name: ADE20KResNet18TruncatedLayer4
+                    frozen: False
+                atomic_pooling:
+                    module_name: BimodalCSRPool
+                    mode: max
+                view_pooling:
+                    module_name: GroupBimodalCSRPool
+                    in_map: 8
+                    in_mod: out_mv_feat_dim
+                    num_groups: 4
+                    use_mod: False
+                    map_encoder: DeepSetFeat
+                    use_num: True
+                fusion:
+                    module_name: BimodalFusion
+                    mode: concatenation
+                branching_index: 0
+#                 checkpointing: c
+                interpolate: True
+
+        up_conv:
+            block: block
+            module_name: ResNetUp
+            N: [ 1, 1, 1, 1, 1 ]
+            kernel_size: [ 2, 2, 2, 2, 3 ]
+            stride: [ 2, 2, 2, 2, 1 ]
+            up_conv_nn:
+                [
+                  [ 8*in_feat, 4*in_feat, 4*in_feat ],
+                  [ 4*in_feat, 2*in_feat, 4*in_feat ],
+                  [ 4*in_feat, in_feat, 3*in_feat ],
+                  [ 3*in_feat, 2*in_feat, 3*in_feat ],
+                  [ 3*in_feat, 0, 3*in_feat ],
+                ]
+        transformer:   # config for multi-view fusion transformer
+            n_views: 6
+            in_map: 9                    # mapping feature size
+            in_m2f: 20                   # M2F one-hot encoded label size
+            embed_dim: 64
+            hidden_dim: 256
+            num_heads: 2
+            num_layers: 4
+            use_batch_norm: False        # layer norm by default
+            feat_downproj_dim:
+            remove_first_dropout: True   # remove first dropout layer before the Transformer block
+            dropout: 0.2
+            mlp_dropout: 0.0             # final layer dropout
+            use_attn_mask: True          # Transformer attention masking
+            use_csr_mask: True           # Transformer pixel validity masking
+            has_mlp_head: False          # False by default
+            max_n_points: 250000      # max. size of transformer batched input. Increase if memory allows
             gating: False
             
 
@@ -306,7 +394,7 @@ MVFusion_3D_small_6views_no_attention_masking:
                     module_name: BimodalFusion
                     mode: concatenation
                 branching_index: 0
-                checkpointing:  c 
+#                 checkpointing:  c 
                 interpolate: True
 
         up_conv:
@@ -472,7 +560,7 @@ MVFusion_3D_small_gating:
                     module_name: BimodalFusion
                     mode: concatenation
                 branching_index: 0
-                checkpointing:  c 
+#                 checkpointing:  c 
                 interpolate: True
 
         up_conv:
@@ -556,7 +644,7 @@ MVFusion_3D_medium:
                     module_name: BimodalFusion
                     mode: concatenation
                 branching_index: 0
-                checkpointing:  c 
+#                 checkpointing:  c 
                 interpolate: True
 
         up_conv:
@@ -638,7 +726,7 @@ MVFusion_3D_medium_gating:
                     module_name: BimodalFusion
                     mode: concatenation
                 branching_index: 0
-                checkpointing:  c 
+#                 checkpointing:  c 
                 interpolate: True
 
         up_conv:
@@ -722,7 +810,7 @@ MVFusion_3D_medium_12views:
                     module_name: BimodalFusion
                     mode: concatenation
                 branching_index: 0
-                checkpointing:  c 
+#                 checkpointing:  c 
                 interpolate: True
 
         up_conv:
@@ -806,7 +894,7 @@ MVFusion_3D_large:
                     module_name: BimodalFusion
                     mode: concatenation
                 branching_index: 0
-                checkpointing:  c 
+#                 checkpointing:  c 
                 interpolate: True
 
         up_conv:
@@ -891,7 +979,7 @@ MVFusion_3D_large_6views:
                     module_name: BimodalFusion
                     mode: concatenation
                 branching_index: 0
-                checkpointing:  c 
+#                 checkpointing:  c 
                 interpolate: True
 
         up_conv:
@@ -979,7 +1067,7 @@ MVFusion_3D_large_6views_2d_supervision:
                     module_name: BimodalFusion
                     mode: concatenation
                 branching_index: 0
-                checkpointing:  c 
+#                 checkpointing:  c 
                 interpolate: True
 
         up_conv:
@@ -1065,7 +1153,7 @@ MVFusion_3D: #Res16UNet34-L4-early-ade20k-interpolate:
                     module_name: BimodalFusion
                     mode: concatenation
                 branching_index: 0
-                checkpointing:  c 
+#                 checkpointing:  c 
                 interpolate: True
 
         up_conv:
@@ -1150,7 +1238,7 @@ MVFusion_3D_M1: #Res16UNet34-L4-early-ade20k-interpolate:
                     module_name: BimodalFusion
                     mode: concatenation
                 branching_index: 0
-                checkpointing:  c 
+#                 checkpointing:  c 
                 interpolate: True
 
         up_conv:
@@ -1234,7 +1322,7 @@ MVFusion_3D_M2: #Res16UNet34-L4-early-ade20k-interpolate:
                     module_name: BimodalFusion
                     mode: concatenation
                 branching_index: 0
-                checkpointing:  c 
+#                 checkpointing:  c 
                 interpolate: True
 
         up_conv:
@@ -1319,7 +1407,7 @@ MVFusion_3D_M3: #Res16UNet34-L4-early-ade20k-interpolate:
                     module_name: BimodalFusion
                     mode: concatenation
                 branching_index: 0
-                checkpointing:  c 
+#                 checkpointing:  c 
                 interpolate: True
 
         up_conv:
@@ -1403,7 +1491,7 @@ MVFusion_3D_M4: #Res16UNet34-L4-early-ade20k-interpolate:
                     module_name: BimodalFusion
                     mode: concatenation
                 branching_index: 0
-                checkpointing:  c 
+#                 checkpointing:  c 
                 interpolate: True
 
         up_conv:
@@ -1487,7 +1575,7 @@ MVFusion_3D_M5: #Res16UNet34-L4-early-ade20k-interpolate:
                     module_name: BimodalFusion
                     mode: concatenation
                 branching_index: 0
-                checkpointing:  c 
+#                 checkpointing:  c 
                 interpolate: True
 
         up_conv:
@@ -1571,7 +1659,7 @@ MVFusion_3D_M6: #Res16UNet34-L4-early-ade20k-interpolate:
                     module_name: BimodalFusion
                     mode: concatenation
                 branching_index: 0
-                checkpointing:  c 
+#                 checkpointing:  c 
                 interpolate: True
 
         up_conv:

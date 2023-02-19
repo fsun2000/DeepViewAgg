@@ -7,7 +7,7 @@
 #SBATCH --cpus-per-task=18
 #SBATCH --time=36:00:00
 #SBATCH --mem=120000MB
-#SBATCH --output=job_logs/thesis_results/ViT_masks/MVFusion_small_6views_2nd_try.out
+#SBATCH --output=job_logs/thesis_results/m2f_masks/MVFusion_small_6views_hotfixed.out
 
 cd $HOME/DeepViewAgg
 

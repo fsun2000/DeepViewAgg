@@ -35,34 +35,13 @@ class MVFusion(BaseModel, ABC):
 
         # Segmentation head init
         if self._HAS_HEAD:
-#             self.head = nn.Sequential(nn.Linear(option['backbone']['transformer']['feat_downproj_dim'],
-#                                                 dataset.num_classes))
-            self.head = nn.Sequential(nn.Linear(option['backbone']['transformer']['feat_downproj_dim'],
-                                        dataset.num_classes * 2),
-                              nn.Linear(dataset.num_classes * 2,
-                                        dataset.num_classes))
+            if option['backbone']['transformer']['feat_downproj_dim'] is not None:
+                self.head = nn.Linear(option['backbone']['transformer']['feat_downproj_dim'],
+                                                    dataset.num_classes)
+            else:
+                self.head = nn.Linear(option['backbone']['transformer']['embed_dim'],
+                                                    dataset.num_classes)
         self.loss_names = ["loss_seg"]
-
-#         # Control the loss mechanism with MODALITY_VIEW_LOSS. If set to
-#         # None, the model will be trained by backpropagating the 3D
-#         # pointwise loss through the modality branches. If
-#         # MODALITY_VIEW_LOSS is set to an existing modality name, then
-#         # the loss used will the loss computed on the provided
-#         # modality's latest view-level output. This mode requires
-#         # setting 'keep_last_view=True' for the corresponding
-#         # UniModalBranch.
-#         if self._MODALITY_VIEW_LOSS is not None:
-#             assert self._MODALITY_VIEW_LOSS in self._modalities, \
-#                 f"Cannot set modality loss for '{self._MODALITY_VIEW_LOSS}'. " \
-#                 f"Expected one of {self._modalities}."
-#             # TODO: check that the corresponding UniModalBranches have
-#             #  'keep_last_view=True' and that the pooling mechanism does
-#             #  not require any learning: ie not AttentiveBimodalCSRPool.
-#             #  Indeed, the current view-loss training is coded in such a
-#             #  way that the image encoder is supervised for each view as
-#             #  if it was alone. If the desired view-pooling mechanism
-#             #  requires any training, then it will never receive any
-#             #  gradient from the view loss and hence will not be trained.
 
         self.MAX_SEEN_POINTS = option['backbone']['transformer']['max_n_points']
 
@@ -93,11 +72,10 @@ class MVFusion(BaseModel, ABC):
             seen_mask[seen_mask.clone()] = keep_idx_mask
             
             # Take slice
-#             data.data.mvfusion_input = data.data.mvfusion_input[keep_idx_mask]
             data = data[keep_idx_mask]
             
     
-        self.input = data
+        self.input = data.to(self.device)
 
         if hasattr(data, 'batch') and data.batch is not None:
             self.batch_idx = data.batch.squeeze()
@@ -109,7 +87,8 @@ class MVFusion(BaseModel, ABC):
         else:
             self.labels = None
 
-    def forward(self, *args, **kwargs):      
+    def forward(self, *args, **kwargs): 
+                
         data = self.backbone(self.input)
         features = data.x
         seen_mask = data.seen
@@ -120,21 +99,6 @@ class MVFusion(BaseModel, ABC):
         if seen_mask is None:
             seen_mask = torch.zeros(features.shape[0], dtype=torch.bool, device=self.device)
 
-#         # TODO: this is a bit dirty, saving the modality-wise feature
-#         #  maps in self.input. Need to find a cleaner way. This impacts
-#         #  the Dash visualization app.
-#         for m in self.modalities:
-#             for i in range(self.input.modalities[m].num_settings):
-#                 if self._HAS_HEAD:
-#                     f_map = data[m][i].x
-#                     s = f_map.shape
-#                     f_map = f_map.permute(1, 0, 2, 3).reshape(s[1], -1).T
-#                     f_map = self.head(f_map)
-#                     f_map = f_map.T.reshape(f_map.shape[1], s[0], s[2], s[3]).permute(1, 0, 2, 3)
-#                     self.input.modalities[m][i].pred = f_map
-#                     self.input.modalities[m][i].feat = data[m][i].x
-#                 else:
-#                     self.input.modalities[m][i].pred = data[m][i].x
         
     
         # Feng: directly use the logits output from DVA_cls_5_fusion_7 class with MLP_head inside
@@ -182,6 +146,7 @@ class MVFusion(BaseModel, ABC):
             if self._MODALITY_VIEW_LOSS is None:
                 pred = self.output
                 target = self.labels
+                
 
 #             # Based on a modality's view-wise predictions
 #             else:
@@ -193,6 +158,8 @@ class MVFusion(BaseModel, ABC):
 #                 target = torch.repeat_interleave(self.labels,
 #                     csr_idx[1:] - csr_idx[:-1])
 
+
+            
             self.loss_seg = F.nll_loss(pred, target, ignore_index=IGNORE_LABEL)
 
     def backward(self):

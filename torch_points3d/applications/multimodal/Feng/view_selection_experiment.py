@@ -558,17 +558,11 @@ class ViewSelectionExpEncoder(ViewSelectionExpBackboneBasedModel, ABC):
             # TODO: remove assumption that pixel validity is the 1st feature
             invalid_pixel_mask = viewing_feats[:, :, 0] == 0
         
-            fusion_input = {
-                'invalid_pixels_mask': invalid_pixel_mask.to(self.device),
-                'viewing_features': viewing_feats.to(self.device),
-                'one_hot_mask_labels': m2f_feats.to(self.device)
-            }
-
             # get logits
             if self._checkpointing:
-                out_scores = checkpoint(self.fusion, fusion_input)
+                out_scores = checkpoint(self.fusion, invalid_pixel_mask, viewing_feats.requires_grad_(), m2f_feats)
             else:
-                out_scores = self.fusion(fusion_input)
+                out_scores = self.fusion(invalid_pixel_mask, viewing_feats, m2f_feats)
         elif self.use_deepset:
             
             viewing_conditions = data.modalities['image'][0].mappings.values[2]
