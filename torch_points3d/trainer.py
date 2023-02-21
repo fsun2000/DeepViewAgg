@@ -384,6 +384,7 @@ class Trainer:
                     mix_3d=float(mix3d_time),
                     iteration=float(time.time() - iter_start_time),
                     learning_rate=self._model.learning_rate,
+                    max_mem=torch.cuda.max_memory_allocated()/1048576,
                     color=COLORS.TRAIN_COLOR
                 )
 

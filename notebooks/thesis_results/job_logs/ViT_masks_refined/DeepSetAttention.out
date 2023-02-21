@@ -1,0 +1,207 @@
+MMData debug() function changed, please uncomment the 3rd assert line when doing inference without M2F features!
+INFO - 2023-02-09 23:28:38,760 - evaluate_all_metrics - DEVICE : cuda
+Maximum number of views per point:  6
+Load predicted 2D semantic segmentation labels from directory  ViT_masks
+initialize train dataset
+initialize val dataset
+Dataset Creation Time = 7.4 sec.
+dataset_class:  scannet.ScannetDatasetMM
+dataset_paths:  ['scannet', 'ScannetDatasetMM']
+module:  scannet
+class_name:  ScannetDatasetMM
+dataset_module:  torch_points3d.datasets.segmentation.multimodal.scannet
+Load predicted 2D semantic segmentation labels from directory  ViT_masks
+initialize train dataset
+initialize val dataset
+task:  segmentation.multimodal
+tested_model_name:  DeepSetAttention
+class_name:  ViewSelectionExp_model
+model_module:  torch_points3d.models.segmentation.multimodal.Feng.view_selection_experiment
+name, cls of chosen model_cls:  ViewSelectionExp_model <class 'torch_points3d.models.segmentation.multimodal.Feng.view_selection_experiment.ViewSelectionExp_model'>
+opt:   {'class': 'Feng.view_selection_experiment.ViewSelectionExp_model', 'down_conv': {'image': {'down_conv': {'module_name': 'ADE20KResNet18PPM', 'frozen': False}, 'atomic_pooling': {'module_name': 'BimodalCSRPool', 'mode': 'max'}, 'view_pooling': {'module_name': 'GroupBimodalCSRPool', 'in_map': 9, 'in_mod': 20, 'num_groups': 20, 'use_mod': False, 'gating': False, 'group_scaling': True, 'map_encoder': 'DeepSetFeat', 'use_num': True, 'pool': 'max', 'fusion': 'concatenation'}, 'fusion': {'module_name': 'BimodalFusion', 'mode': 'residual'}, 'drop_mod': 0.0, 'branching_index': 0}}, 'backbone': {'use_deepset': True, 'use_transformer': False, 'transformer': {'n_views': 6, 'in_map': 9, 'in_m2f': 20, 'embed_dim': 64, 'hidden_dim': 256, 'num_heads': 2, 'num_layers': 4, 'use_batch_norm': False, 'feat_downproj_dim': None, 'remove_first_dropout': True, 'dropout': 0.2, 'mlp_dropout': 0.0, 'use_attn_mask': True, 'use_csr_mask': True, 'has_mlp_head': False, 'max_n_points': 200000, 'gating': False, 'checkpointing': False, 'n_classes': 20}}}
+WARNING: input points for Multi-View Fusion module are clipped at MAX_SEEN_POINTS for fair model comparison in evaluation
+INFO - 2023-02-09 23:28:55,562 - bn_schedulers - Setting batchnorm momentum at 0.1
+WARNING - 2023-02-09 23:28:55,865 - evaluate_all_metrics - The model will not be able to be used from pretrained weights without the corresponding dataset. Current properties are {'feature_dimension': 3, 'num_classes': 20}
+INFO - 2023-02-09 23:28:55,865 - evaluate_all_metrics - ViewSelectionExp_model(
+  (backbone): ViewSelectionExpEncoder(
+    (down_modules): ModuleList(
+      (0): MultimodalBlockDown(
+        (block_1): Identity()
+        (block_2): Identity()
+        (image): UnimodalBranchOnlyAtomicPool(
+          drop_3d=None
+          drop_mod=None
+          keep_last_view=False
+          checkpointing=
+        )
+      )
+    )
+    (fusion): DeepSetFeat_ViewExperiment(
+      pool=['max']
+      fusion=concatenation
+      use_num=True
+      (mlp_elt_1): Sequential(
+        (0): Sequential(
+          (0): Linear(in_features=28, out_features=32, bias=False)
+          (1): FastBatchNorm1d(
+            (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+          (2): LeakyReLU(negative_slope=0.2, inplace=True)
+        )
+        (1): Sequential(
+          (0): Linear(in_features=32, out_features=32, bias=False)
+          (1): FastBatchNorm1d(
+            (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+          (2): LeakyReLU(negative_slope=0.2, inplace=True)
+        )
+      )
+      (mlp_set): Sequential(
+        (0): Sequential(
+          (0): Linear(in_features=33, out_features=32, bias=False)
+          (1): FastBatchNorm1d(
+            (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+          (2): LeakyReLU(negative_slope=0.2, inplace=True)
+        )
+        (1): Sequential(
+          (0): Linear(in_features=32, out_features=32, bias=False)
+          (1): FastBatchNorm1d(
+            (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+          (2): LeakyReLU(negative_slope=0.2, inplace=True)
+        )
+      )
+      (mlp_elt_2): Sequential(
+        (0): Sequential(
+          (0): Linear(in_features=64, out_features=32, bias=False)
+          (1): FastBatchNorm1d(
+            (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+          (2): LeakyReLU(negative_slope=0.2, inplace=True)
+        )
+        (1): Sequential(
+          (0): Linear(in_features=32, out_features=32, bias=False)
+          (1): FastBatchNorm1d(
+            (batch_norm): BatchNorm1d(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          )
+          (2): LeakyReLU(negative_slope=0.2, inplace=True)
+        )
+      )
+      (E_score): Linear(in_features=32, out_features=32, bias=True)
+    )
+  )
+  (head): Sequential(
+    (0): Linear(in_features=32, out_features=20, bias=True)
+  )
+)
+INFO - 2023-02-09 23:28:55,867 - colors - [0;32mOptimizer: Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    eps: 1e-08
+    foreach: None
+    initial_lr: 0.001
+    lr: 0.001
+    maximize: False
+    weight_decay: 0
+)[0m
+INFO - 2023-02-09 23:28:55,867 - colors - [0;32mLearning Rate Scheduler: ExponentialLR({'gamma': 0.9885}, update_scheduler_on=on_epoch)[0m
+INFO - 2023-02-09 23:28:55,867 - colors - [0;32mBatchNorm Scheduler: BNMomentumScheduler(base_momentum: 0.1, update_scheduler_on=on_epoch)[0m
+INFO - 2023-02-09 23:28:55,867 - colors - [0;32mAccumulated gradients: None[0m
+INFO - 2023-02-09 23:28:55,867 - evaluate_all_metrics - Model size = 9172
+INFO - 2023-02-09 23:28:55,868 - evaluate_all_metrics - Dataset: ScannetDatasetMM 
+[0;95mtrain_pre_batch_collate_transform [0m= None
+[0;95mval_pre_batch_collate_transform [0m= None
+[0;95mtest_pre_batch_collate_transform [0m= None
+[0;95mpre_transform [0m= Compose([
+    SaveOriginalPosId,
+    PCAComputePointwise(num_neighbors=50, r=None, use_full_pos=False, use_cuda=False, use_faiss=False, ncells=None, nprobes=10, chunk_size=1000000),
+    EigenFeatures(norm=True, linearity=True, planarity=True, scattering=True, temperature=None),
+    RemoveAttributes(attr_names=['eigenvalues', 'eigenvectors'], strict=False),
+])
+[0;95mtest_transform [0m= Compose([
+    GridSampling3D(grid_size=0.03, quantize_coords=True, mode=last),
+    XYZFeature(axis=['x', 'y', 'z']),
+    AddFeatsByKeys(pos_x=True, pos_y=True, pos_z=True, rgb=False, linearity=False, norm=False, planarity=False, scattering=False),
+])
+[0;95mtrain_transform [0m= Compose([
+    ElasticDistortion(apply_distorsion=True, granularity=[0.2, 0.8], magnitude=[0.4, 1.6]),
+    Random3AxisRotation(apply_rotation=True, rot_x=8, rot_y=8, rot_z=180),
+    Random symmetry of axes: x=True, y=True, z=False,
+    RandomScaleAnisotropic([0.9, 1.1]),
+    GridSampling3D(grid_size=0.03, quantize_coords=True, mode=last),
+    XYZFeature(axis=['x', 'y', 'z']),
+    AddFeatsByKeys(pos_x=True, pos_y=True, pos_z=True, rgb=False, linearity=False, norm=False, planarity=False, scattering=False),
+])
+[0;95mval_transform [0m= Compose([
+    GridSampling3D(grid_size=0.03, quantize_coords=True, mode=last),
+    XYZFeature(axis=['x', 'y', 'z']),
+    AddFeatsByKeys(pos_x=True, pos_y=True, pos_z=True, rgb=False, linearity=False, norm=False, planarity=False, scattering=False),
+])
+[0;95minference_transform [0m= Compose([
+    SaveOriginalPosId,
+    PCAComputePointwise(num_neighbors=50, r=None, use_full_pos=False, use_cuda=False, use_faiss=False, ncells=None, nprobes=10, chunk_size=1000000),
+    EigenFeatures(norm=True, linearity=True, planarity=True, scattering=True, temperature=None),
+    RemoveAttributes(attr_names=['eigenvalues', 'eigenvectors'], strict=False),
+    GridSampling3D(grid_size=0.03, quantize_coords=True, mode=last),
+    XYZFeature(axis=['x', 'y', 'z']),
+    AddFeatsByKeys(pos_x=True, pos_y=True, pos_z=True, rgb=False, linearity=False, norm=False, planarity=False, scattering=False),
+])
+[0;95mpre_transform_image [0m= ComposeMultiModal([
+    LoadImages(ref_size=[320, 240], crop_size=None, crop_offsets=None, downscale=None, show_progress=False),
+    NonStaticMask(ref_size=(320, 240), proj_upscale=1, n_sample=5),
+    MapImages(key=mapping_index, verbose=False, cylinder=False, ref_size=[320, 240], proj_upscale=1, method=SplattingVisibility, use_cuda=False, kwargs={'voxel': 0.03, 'r_max': 8, 'r_min': 0.05, 'exact': True, 'camera': 'scannet'}),
+    NeighborhoodBasedMappingFeatures(k_list=[50], voxel=0.01, compute_density=True, compute_occlusion=True, use_faiss=False, use_cuda=False, ncells=None, nprobes=10, verbose=True),
+])
+[0;95mtest_transform_image [0m= ComposeMultiModal([
+    SelectMappingFromPointId(key=mapping_index),
+    ToImageData(),
+    PickImagesFromMemoryCredit(credit=7679999923200, use_coverage=True, k_coverage=2),
+])
+[0;95mtrain_transform_image [0m= ComposeMultiModal([
+    SelectMappingFromPointId(key=mapping_index),
+    ToImageData(),
+    PickImagesFromMemoryCredit(credit=7680000, use_coverage=True, k_coverage=2),
+    JitterMappingFeatures(sigma=0.02, clip=0.03),
+])
+[0;95mval_transform_image [0m= ComposeMultiModal([
+    SelectMappingFromPointId(key=mapping_index),
+    ToImageData(),
+    PickImagesFromMemoryCredit(credit=7679999923200, use_coverage=True, k_coverage=2),
+])
+[0;95minference_transform_image [0m= ComposeMultiModal([
+    LoadImages(ref_size=[320, 240], crop_size=None, crop_offsets=None, downscale=None, show_progress=False),
+    NonStaticMask(ref_size=(320, 240), proj_upscale=1, n_sample=5),
+    MapImages(key=mapping_index, verbose=False, cylinder=False, ref_size=[320, 240], proj_upscale=1, method=SplattingVisibility, use_cuda=False, kwargs={'voxel': 0.03, 'r_max': 8, 'r_min': 0.05, 'exact': True, 'camera': 'scannet'}),
+    NeighborhoodBasedMappingFeatures(k_list=[50], voxel=0.01, compute_density=True, compute_occlusion=True, use_faiss=False, use_cuda=False, ncells=None, nprobes=10, verbose=True),
+    SelectMappingFromPointId(key=mapping_index),
+    ToImageData(),
+    PickImagesFromMemoryCredit(credit=7679999923200, use_coverage=True, k_coverage=2),
+])
+Size of [0;95mtrain_dataset [0m= 1201
+Size of [0;95mtest_dataset [0m= 0
+Size of [0;95mval_dataset [0m= 312
+[0;95mBatch size =[0m 16
+INFO - 2023-02-09 23:29:03,376 - base_dataset - Available stage selection datasets: [0;95m ['val'] [0m
+INFO - 2023-02-09 23:29:03,376 - base_dataset - The models will be selected using the metrics on following dataset: [0;95m val [0m
+task:  segmentation.multimodal
+tested_model_name:  DeepSetAttention
+Evaluating on validation set
+Input mask name:  ViT_masks
+  0%|          | 0/312 [00:00<?, ?it/s]slurmstepd: error: *** JOB 2205003 ON gcn33 CANCELLED AT 2023-02-09T23:29:07 ***
+
+JOB STATISTICS
+==============
+Job ID: 2205003
+Cluster: snellius
+User/Group: fsun/fsun
+State: CANCELLED (exit code 0)
+Nodes: 1
+Cores per node: 18
+CPU Utilized: 00:00:00
+CPU Efficiency: 0.00% of 00:15:54 core-walltime
+Job Wall-clock time: 00:00:53
+Memory Utilized: 30.90 GB
+Memory Efficiency: 26.36% of 117.19 GB

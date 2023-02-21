@@ -1,0 +1,55 @@
+MMData debug() function changed, please uncomment the 3rd assert line when doing inference without M2F features!
+Traceback (most recent call last):
+  File "evaluate_all_metrics.py", line 754, in <module>
+    cfg = hydra_read(overrides)
+  File "/gpfs/home3/fsun/DeepViewAgg/notebooks/../torch_points3d/utils/config.py", line 166, in hydra_read
+    cfg = compose(config_name=config_name, overrides=overrides)
+  File "/home/fsun/.conda/envs/pytorch3d_backup/lib/python3.7/site-packages/hydra/compose.py", line 33, in compose
+    with_log_configuration=False,
+  File "/home/fsun/.conda/envs/pytorch3d_backup/lib/python3.7/site-packages/hydra/_internal/hydra.py", line 568, in compose_config
+    from_shell=from_shell,
+  File "/home/fsun/.conda/envs/pytorch3d_backup/lib/python3.7/site-packages/hydra/_internal/config_loader_impl.py", line 150, in load_configuration
+    from_shell=from_shell,
+  File "/home/fsun/.conda/envs/pytorch3d_backup/lib/python3.7/site-packages/hydra/_internal/config_loader_impl.py", line 244, in _load_configuration_impl
+    skip_missing=run_mode == RunMode.MULTIRUN,
+  File "/home/fsun/.conda/envs/pytorch3d_backup/lib/python3.7/site-packages/hydra/_internal/defaults_list.py", line 724, in create_defaults_list
+    skip_missing=skip_missing,
+  File "/home/fsun/.conda/envs/pytorch3d_backup/lib/python3.7/site-packages/hydra/_internal/defaults_list.py", line 695, in _create_defaults_list
+    skip_missing=skip_missing,
+  File "/home/fsun/.conda/envs/pytorch3d_backup/lib/python3.7/site-packages/hydra/_internal/defaults_list.py", line 343, in _create_defaults_tree
+    overrides=overrides,
+  File "/home/fsun/.conda/envs/pytorch3d_backup/lib/python3.7/site-packages/hydra/_internal/defaults_list.py", line 420, in _create_defaults_tree_impl
+    return _expand_virtual_root(repo, root, overrides, skip_missing)
+  File "/home/fsun/.conda/envs/pytorch3d_backup/lib/python3.7/site-packages/hydra/_internal/defaults_list.py", line 268, in _expand_virtual_root
+    overrides=overrides,
+  File "/home/fsun/.conda/envs/pytorch3d_backup/lib/python3.7/site-packages/hydra/_internal/defaults_list.py", line 539, in _create_defaults_tree_impl
+    add_child(children, new_root)
+  File "/home/fsun/.conda/envs/pytorch3d_backup/lib/python3.7/site-packages/hydra/_internal/defaults_list.py", line 488, in add_child
+    overrides=overrides,
+  File "/home/fsun/.conda/envs/pytorch3d_backup/lib/python3.7/site-packages/hydra/_internal/defaults_list.py", line 451, in _create_defaults_tree_impl
+    config_not_found_error(repo=repo, tree=root)
+  File "/home/fsun/.conda/envs/pytorch3d_backup/lib/python3.7/site-packages/hydra/_internal/defaults_list.py", line 776, in config_not_found_error
+    options=options,
+hydra.errors.MissingConfigException: In 'config.yaml': Could not find 'models/segmentation/multimodal/Feng/MVFusion_orig'
+
+Available options in 'models':
+	default
+Config search path:
+	provider=hydra, path=pkg://hydra.conf
+	provider=main, path=file:///gpfs/home3/fsun/DeepViewAgg/conf
+	provider=schema, path=structured://
+
+JOB STATISTICS
+==============
+Job ID: 2205001
+Cluster: snellius
+User/Group: fsun/fsun
+State: RUNNING
+Nodes: 1
+Cores per node: 18
+CPU Utilized: 00:00:00
+CPU Efficiency: 0.00% of 00:04:30 core-walltime
+Job Wall-clock time: 00:00:15
+Memory Utilized: 0.00 MB (estimated maximum)
+Memory Efficiency: 0.00% of 117.19 GB (117.19 GB/node)
+WARNING: Efficiency statistics may be misleading for RUNNING jobs.

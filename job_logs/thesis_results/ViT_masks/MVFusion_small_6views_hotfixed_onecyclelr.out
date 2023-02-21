@@ -1,0 +1,47 @@
+MMData debug() function changed, please uncomment the 3rd assert line when doing inference without M2F features!
+[2023-02-18 14:41:31,418][torch_points3d.trainer][INFO] - DEVICE : cuda
+Error executing job with overrides: ['data=segmentation/multimodal/Feng/scannet-neucon-smallres-m2f.yaml', 'models=segmentation/multimodal/Feng/mvfusion', 'model_name=MVFusion_small_6views', 'task=segmentation', 'training=Feng/superconvergence.yaml', 'lr_scheduler=onecyclelr', 'eval_frequency=5', 'lr_range_test=False', 'update_lr_scheduler_on=on_num_batch', 'data.dataroot=/scratch-shared/fsun/dvata', 'data.m2f_preds_dirname=ViT_masks', 'data.pixel_credits=100', 'training.cuda=0', 'training.batch_size=6', 'training.test_batch_size=1', 'training.epochs=61', 'training.num_workers=17']
+Traceback (most recent call last):
+  File "train.py", line 23, in <module>
+    main()
+  File "/home/fsun/.conda/envs/pytorch3d/lib/python3.7/site-packages/hydra/main.py", line 53, in decorated_main
+    config_name=config_name,
+  File "/home/fsun/.conda/envs/pytorch3d/lib/python3.7/site-packages/hydra/_internal/utils.py", line 368, in _run_hydra
+    lambda: hydra.run(
+  File "/home/fsun/.conda/envs/pytorch3d/lib/python3.7/site-packages/hydra/_internal/utils.py", line 214, in run_and_report
+    raise ex
+  File "/home/fsun/.conda/envs/pytorch3d/lib/python3.7/site-packages/hydra/_internal/utils.py", line 211, in run_and_report
+    return func()
+  File "/home/fsun/.conda/envs/pytorch3d/lib/python3.7/site-packages/hydra/_internal/utils.py", line 371, in <lambda>
+    overrides=args.overrides,
+  File "/home/fsun/.conda/envs/pytorch3d/lib/python3.7/site-packages/hydra/_internal/hydra.py", line 110, in run
+    _ = ret.return_value
+  File "/home/fsun/.conda/envs/pytorch3d/lib/python3.7/site-packages/hydra/core/utils.py", line 233, in return_value
+    raise self._return_value
+  File "/home/fsun/.conda/envs/pytorch3d/lib/python3.7/site-packages/hydra/core/utils.py", line 160, in run_job
+    ret.return_value = task_function(task_cfg)
+  File "train.py", line 13, in main
+    trainer = Trainer(cfg)
+  File "/gpfs/home3/fsun/DeepViewAgg/torch_points3d/trainer.py", line 93, in __init__
+    self._initialize_trainer()
+  File "/gpfs/home3/fsun/DeepViewAgg/torch_points3d/trainer.py", line 125, in _initialize_trainer
+    self._cfg, self._cfg.training.wandb.public and self.wandb_log)
+  File "/gpfs/home3/fsun/DeepViewAgg/torch_points3d/utils/wandb_utils.py", line 52, in launch
+    model_class = getattr(model_config, "class")
+AttributeError: 'NoneType' object has no attribute 'class'
+./scripts/train_superconvergence.sh: line 63: training.wandb.log=False: command not found
+
+JOB STATISTICS
+==============
+Job ID: 2261493
+Cluster: snellius
+User/Group: fsun/fsun
+State: RUNNING
+Nodes: 1
+Cores per node: 18
+CPU Utilized: 00:00:00
+CPU Efficiency: 0.00% of 00:06:00 core-walltime
+Job Wall-clock time: 00:00:20
+Memory Utilized: 0.00 MB (estimated maximum)
+Memory Efficiency: 0.00% of 117.19 GB (117.19 GB/node)
+WARNING: Efficiency statistics may be misleading for RUNNING jobs.

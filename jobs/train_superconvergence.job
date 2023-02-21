@@ -1,13 +1,13 @@
 #!/bin/bash
 
 #SBATCH --partition=gpu
-#SBATCH --job-name=vit-mvf-onecycle
+#SBATCH --job-name=DeepSet3D
 #SBATCH --gpus=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=18
 #SBATCH --time=24:00:00
 #SBATCH --mem=120000MB
-#SBATCH --output=job_logs/thesis_results/ViT_masks/MVFusion_3D_small_6views_hotfixed.out
+#SBATCH --output=job_logs/thesis_results/ViT_masks/Deepset_3D.out
 
 cd $HOME/DeepViewAgg
 

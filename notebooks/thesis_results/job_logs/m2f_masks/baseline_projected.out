@@ -1,0 +1,721 @@
+MMData debug() function changed, please uncomment the 3rd assert line when doing inference without M2F features!
+Maximum number of views per point:  6
+self.no_3d ==  True
+####################### Temporary Solution for baseline + 2D-3D projection: SETTING MODEL_NAME TO : majority_vote
+Number of views for baseline input:  6
+dataset_class:  scannet.ScannetDatasetMM
+dataset_paths:  ['scannet', 'ScannetDatasetMM']
+module:  scannet
+class_name:  ScannetDatasetMM
+dataset_module:  torch_points3d.datasets.segmentation.multimodal.scannet
+Load predicted 2D semantic segmentation labels from directory  m2f_masks
+initialize train dataset
+initialize val dataset
+task:  segmentation.multimodal
+tested_model_name:  DeepSetAttention
+loading gt mask from :  label-filt-scannet20
+class_name:  ViewSelectionExp_model
+model_module:  torch_points3d.models.segmentation.multimodal.Feng.view_selection_experiment
+name, cls of chosen model_cls:  ViewSelectionExp_model <class 'torch_points3d.models.segmentation.multimodal.Feng.view_selection_experiment.ViewSelectionExp_model'>
+opt:   {'class': 'Feng.view_selection_experiment.ViewSelectionExp_model', 'down_conv': {'image': {'down_conv': {'module_name': 'ADE20KResNet18PPM', 'frozen': False}, 'atomic_pooling': {'module_name': 'BimodalCSRPool', 'mode': 'max'}, 'view_pooling': {'module_name': 'GroupBimodalCSRPool', 'in_map': 9, 'in_mod': 20, 'num_groups': 20, 'use_mod': False, 'gating': False, 'group_scaling': True, 'map_encoder': 'DeepSetFeat', 'use_num': True, 'pool': 'max', 'fusion': 'concatenation'}, 'fusion': {'module_name': 'BimodalFusion', 'mode': 'residual'}, 'drop_mod': 0.0, 'branching_index': 0}}, 'backbone': {'use_deepset': True, 'use_transformer': False, 'transformer': {'n_views': 6, 'in_map': 9, 'in_m2f': 20, 'embed_dim': 64, 'hidden_dim': 256, 'num_heads': 2, 'num_layers': 4, 'use_batch_norm': False, 'feat_downproj_dim': None, 'remove_first_dropout': True, 'dropout': 0.2, 'mlp_dropout': 0.0, 'use_attn_mask': True, 'use_csr_mask': True, 'has_mlp_head': False, 'max_n_points': 200000, 'gating': False, 'checkpointing': False, 'n_classes': 20}}}
+WARNING: input points for Multi-View Fusion module are clipped at MAX_SEEN_POINTS for fair model comparison in evaluation
+loading gt mask from :  label-filt-scannet20
+Evaluating on validation set
+Input mask name:  m2f_masks
+  0%|          | 0/312 [00:00<?, ?it/s]  0%|          | 0/312 [01:08<?, ?it/s, val_acc=88.84, val_macc=83.55, val_miou=57.26]  0%|          | 1/312 [01:08<5:53:03, 68.12s/it, val_acc=88.84, val_macc=83.55, val_miou=57.26]  0%|          | 1/312 [01:11<5:53:03, 68.12s/it, val_acc=88.30, val_macc=82.37, val_miou=55.18]  1%|          | 2/312 [01:11<2:34:11, 29.84s/it, val_acc=88.30, val_macc=82.37, val_miou=55.18]  1%|          | 2/312 [01:13<2:34:11, 29.84s/it, val_acc=88.38, val_macc=82.02, val_miou=54.65]  1%|          | 3/312 [01:13<1:28:19, 17.15s/it, val_acc=88.38, val_macc=82.02, val_miou=54.65]  1%|          | 3/312 [01:17<1:28:19, 17.15s/it, val_acc=88.17, val_macc=80.94, val_miou=50.29]  1%|▏         | 4/312 [01:17<1:01:41, 12.02s/it, val_acc=88.17, val_macc=80.94, val_miou=50.29]  1%|▏         | 4/312 [01:21<1:01:41, 12.02s/it, val_acc=88.01, val_macc=80.19, val_miou=49.07]  2%|▏         | 5/312 [01:21<47:16,  9.24s/it, val_acc=88.01, val_macc=80.19, val_miou=49.07]    2%|▏         | 5/312 [01:26<47:16,  9.24s/it, val_acc=88.75, val_macc=81.55, val_miou=55.09]  2%|▏         | 6/312 [01:26<38:56,  7.63s/it, val_acc=88.75, val_macc=81.55, val_miou=55.09]  2%|▏         | 6/312 [01:27<38:56,  7.63s/it, val_acc=89.14, val_macc=81.73, val_miou=55.03]  2%|▏         | 7/312 [01:27<28:55,  5.69s/it, val_acc=89.14, val_macc=81.73, val_miou=55.03]  2%|▏         | 7/312 [01:30<28:55,  5.69s/it, val_acc=89.68, val_macc=82.18, val_miou=56.16]  3%|▎         | 8/312 [01:30<23:54,  4.72s/it, val_acc=89.68, val_macc=82.18, val_miou=56.16]  3%|▎         | 8/312 [01:32<23:54,  4.72s/it, val_acc=90.33, val_macc=83.92, val_miou=62.71]  3%|▎         | 9/312 [01:32<19:46,  3.92s/it, val_acc=90.33, val_macc=83.92, val_miou=62.71]  3%|▎         | 9/312 [01:34<19:46,  3.92s/it, val_acc=90.76, val_macc=84.65, val_miou=63.58]  3%|▎         | 10/312 [01:34<16:29,  3.28s/it, val_acc=90.76, val_macc=84.65, val_miou=63.58]  3%|▎         | 10/312 [01:36<16:29,  3.28s/it, val_acc=91.18, val_macc=85.25, val_miou=64.32]  4%|▎         | 11/312 [01:36<14:38,  2.92s/it, val_acc=91.18, val_macc=85.25, val_miou=64.32]  4%|▎         | 11/312 [01:38<14:38,  2.92s/it, val_acc=90.99, val_macc=88.29, val_miou=76.91]  4%|▍         | 12/312 [01:38<13:39,  2.73s/it, val_acc=90.99, val_macc=88.29, val_miou=76.91]  4%|▍         | 12/312 [01:42<13:39,  2.73s/it, val_acc=90.66, val_macc=88.35, val_miou=76.06]  4%|▍         | 13/312 [01:42<14:23,  2.89s/it, val_acc=90.66, val_macc=88.35, val_miou=76.06]  4%|▍         | 13/312 [01:44<14:23,  2.89s/it, val_acc=90.26, val_macc=87.54, val_miou=73.57]  4%|▍         | 14/312 [01:44<13:19,  2.68s/it, val_acc=90.26, val_macc=87.54, val_miou=73.57]  4%|▍         | 14/312 [01:48<13:19,  2.68s/it, val_acc=89.78, val_macc=86.98, val_miou=73.14]  5%|▍         | 15/312 [01:48<15:54,  3.21s/it, val_acc=89.78, val_macc=86.98, val_miou=73.14]  5%|▍         | 15/312 [01:50<15:54,  3.21s/it, val_acc=89.45, val_macc=86.66, val_miou=72.98]  5%|▌         | 16/312 [01:50<12:49,  2.60s/it, val_acc=89.45, val_macc=86.66, val_miou=72.98]  5%|▌         | 16/312 [01:56<12:49,  2.60s/it, val_acc=89.43, val_macc=86.54, val_miou=72.80]  5%|▌         | 17/312 [01:56<19:09,  3.90s/it, val_acc=89.43, val_macc=86.54, val_miou=72.80]  5%|▌         | 17/312 [01:57<19:09,  3.90s/it, val_acc=89.53, val_macc=86.59, val_miou=72.84]  6%|▌         | 18/312 [01:57<14:41,  3.00s/it, val_acc=89.53, val_macc=86.59, val_miou=72.84]  6%|▌         | 18/312 [01:59<14:41,  3.00s/it, val_acc=89.75, val_macc=86.64, val_miou=72.93]  6%|▌         | 19/312 [01:59<12:11,  2.50s/it, val_acc=89.75, val_macc=86.64, val_miou=72.93]  6%|▌         | 19/312 [02:02<12:11,  2.50s/it, val_acc=89.66, val_macc=86.58, val_miou=72.50]  6%|▋         | 20/312 [02:02<12:54,  2.65s/it, val_acc=89.66, val_macc=86.58, val_miou=72.50]  6%|▋         | 20/312 [02:03<12:54,  2.65s/it, val_acc=89.75, val_macc=86.75, val_miou=72.75]  7%|▋         | 21/312 [02:03<10:34,  2.18s/it, val_acc=89.75, val_macc=86.75, val_miou=72.75]  7%|▋         | 21/312 [02:04<10:34,  2.18s/it, val_acc=89.85, val_macc=86.92, val_miou=73.01]  7%|▋         | 22/312 [02:04<09:21,  1.93s/it, val_acc=89.85, val_macc=86.92, val_miou=73.01]  7%|▋         | 22/312 [02:06<09:21,  1.93s/it, val_acc=89.91, val_macc=87.00, val_miou=73.22]  7%|▋         | 23/312 [02:06<09:37,  2.00s/it, val_acc=89.91, val_macc=87.00, val_miou=73.22]  7%|▋         | 23/312 [02:08<09:37,  2.00s/it, val_acc=89.76, val_macc=86.87, val_miou=73.01]  8%|▊         | 24/312 [02:08<08:49,  1.84s/it, val_acc=89.76, val_macc=86.87, val_miou=73.01]  8%|▊         | 24/312 [02:11<08:49,  1.84s/it, val_acc=89.74, val_macc=86.82, val_miou=72.95]  8%|▊         | 25/312 [02:11<10:45,  2.25s/it, val_acc=89.74, val_macc=86.82, val_miou=72.95]  8%|▊         | 25/312 [02:14<10:45,  2.25s/it, val_acc=89.98, val_macc=86.75, val_miou=73.16]  8%|▊         | 26/312 [02:14<11:38,  2.44s/it, val_acc=89.98, val_macc=86.75, val_miou=73.16]  8%|▊         | 26/312 [02:17<11:38,  2.44s/it, val_acc=90.17, val_macc=86.61, val_miou=73.28]  9%|▊         | 27/312 [02:17<12:43,  2.68s/it, val_acc=90.17, val_macc=86.61, val_miou=73.28]  9%|▊         | 27/312 [02:18<12:43,  2.68s/it, val_acc=90.33, val_macc=86.00, val_miou=72.84]  9%|▉         | 28/312 [02:18<10:00,  2.11s/it, val_acc=90.33, val_macc=86.00, val_miou=72.84]  9%|▉         | 28/312 [02:20<10:00,  2.11s/it, val_acc=90.44, val_macc=86.14, val_miou=73.07]  9%|▉         | 29/312 [02:20<09:32,  2.02s/it, val_acc=90.44, val_macc=86.14, val_miou=73.07]  9%|▉         | 29/312 [02:21<09:32,  2.02s/it, val_acc=90.56, val_macc=86.21, val_miou=73.21] 10%|▉         | 30/312 [02:21<08:52,  1.89s/it, val_acc=90.56, val_macc=86.21, val_miou=73.21] 10%|▉         | 30/312 [02:22<08:52,  1.89s/it, val_acc=90.66, val_macc=86.24, val_miou=73.30] 10%|▉         | 31/312 [02:22<07:34,  1.62s/it, val_acc=90.66, val_macc=86.24, val_miou=73.30] 10%|▉         | 31/312 [02:24<07:34,  1.62s/it, val_acc=90.78, val_macc=86.29, val_miou=73.30] 10%|█         | 32/312 [02:24<07:11,  1.54s/it, val_acc=90.78, val_macc=86.29, val_miou=73.30] 10%|█         | 32/312 [02:25<07:11,  1.54s/it, val_acc=90.74, val_macc=86.24, val_miou=73.11] 11%|█         | 33/312 [02:25<06:52,  1.48s/it, val_acc=90.74, val_macc=86.24, val_miou=73.11] 11%|█         | 33/312 [02:29<06:52,  1.48s/it, val_acc=90.66, val_macc=86.12, val_miou=72.91] 11%|█         | 34/312 [02:29<10:07,  2.18s/it, val_acc=90.66, val_macc=86.12, val_miou=72.91] 11%|█         | 34/312 [02:30<10:07,  2.18s/it, val_acc=90.74, val_macc=86.15, val_miou=72.95] 11%|█         | 35/312 [02:30<08:20,  1.81s/it, val_acc=90.74, val_macc=86.15, val_miou=72.95] 11%|█         | 35/312 [02:41<08:20,  1.81s/it, val_acc=90.54, val_macc=86.05, val_miou=72.80] 12%|█▏        | 36/312 [02:41<21:43,  4.72s/it, val_acc=90.54, val_macc=86.05, val_miou=72.80] 12%|█▏        | 36/312 [02:43<21:43,  4.72s/it, val_acc=90.57, val_macc=86.13, val_miou=72.84] 12%|█▏        | 37/312 [02:43<17:28,  3.81s/it, val_acc=90.57, val_macc=86.13, val_miou=72.84] 12%|█▏        | 37/312 [02:44<17:28,  3.81s/it, val_acc=90.57, val_macc=86.21, val_miou=72.87] 12%|█▏        | 38/312 [02:44<14:02,  3.08s/it, val_acc=90.57, val_macc=86.21, val_miou=72.87] 12%|█▏        | 38/312 [02:45<14:02,  3.08s/it, val_acc=90.56, val_macc=86.30, val_miou=72.85] 12%|█▎        | 39/312 [02:45<10:14,  2.25s/it, val_acc=90.56, val_macc=86.30, val_miou=72.85] 12%|█▎        | 39/312 [02:45<10:14,  2.25s/it, val_acc=90.56, val_macc=86.38, val_miou=72.92] 13%|█▎        | 40/312 [02:45<07:45,  1.71s/it, val_acc=90.56, val_macc=86.38, val_miou=72.92] 13%|█▎        | 40/312 [02:47<07:45,  1.71s/it, val_acc=90.55, val_macc=86.25, val_miou=73.00] 13%|█▎        | 41/312 [02:47<07:28,  1.65s/it, val_acc=90.55, val_macc=86.25, val_miou=73.00] 13%|█▎        | 41/312 [02:54<07:28,  1.65s/it, val_acc=90.58, val_macc=86.09, val_miou=72.99] 13%|█▎        | 42/312 [02:54<15:28,  3.44s/it, val_acc=90.58, val_macc=86.09, val_miou=72.99] 13%|█▎        | 42/312 [02:55<15:28,  3.44s/it, val_acc=90.61, val_macc=85.85, val_miou=72.82] 14%|█▍        | 43/312 [02:55<12:09,  2.71s/it, val_acc=90.61, val_macc=85.85, val_miou=72.82] 14%|█▍        | 43/312 [02:56<12:09,  2.71s/it, val_acc=90.58, val_macc=85.91, val_miou=72.90] 14%|█▍        | 44/312 [02:56<09:13,  2.06s/it, val_acc=90.58, val_macc=85.91, val_miou=72.90] 14%|█▍        | 44/312 [02:57<09:13,  2.06s/it, val_acc=90.45, val_macc=85.64, val_miou=72.46] 14%|█▍        | 45/312 [02:57<08:47,  1.97s/it, val_acc=90.45, val_macc=85.64, val_miou=72.46] 14%|█▍        | 45/312 [03:01<08:47,  1.97s/it, val_acc=90.44, val_macc=85.60, val_miou=72.38] 15%|█▍        | 46/312 [03:01<11:10,  2.52s/it, val_acc=90.44, val_macc=85.60, val_miou=72.38] 15%|█▍        | 46/312 [03:03<11:10,  2.52s/it, val_acc=90.49, val_macc=85.64, val_miou=72.41] 15%|█▌        | 47/312 [03:03<09:39,  2.19s/it, val_acc=90.49, val_macc=85.64, val_miou=72.41] 15%|█▌        | 47/312 [03:06<09:39,  2.19s/it, val_acc=90.55, val_macc=85.69, val_miou=72.47] 15%|█▌        | 48/312 [03:06<10:52,  2.47s/it, val_acc=90.55, val_macc=85.69, val_miou=72.47] 15%|█▌        | 48/312 [03:08<10:52,  2.47s/it, val_acc=90.58, val_macc=85.70, val_miou=72.49] 16%|█▌        | 49/312 [03:08<10:24,  2.37s/it, val_acc=90.58, val_macc=85.70, val_miou=72.49] 16%|█▌        | 49/312 [03:09<10:24,  2.37s/it, val_acc=90.57, val_macc=85.83, val_miou=72.67] 16%|█▌        | 50/312 [03:09<08:27,  1.94s/it, val_acc=90.57, val_macc=85.83, val_miou=72.67] 16%|█▌        | 50/312 [03:09<08:27,  1.94s/it, val_acc=90.63, val_macc=86.05, val_miou=73.11] 16%|█▋        | 51/312 [03:09<06:27,  1.48s/it, val_acc=90.63, val_macc=86.05, val_miou=73.11] 16%|█▋        | 51/312 [03:10<06:27,  1.48s/it, val_acc=90.67, val_macc=86.18, val_miou=73.36] 17%|█▋        | 52/312 [03:10<04:54,  1.13s/it, val_acc=90.67, val_macc=86.18, val_miou=73.36] 17%|█▋        | 52/312 [03:11<04:54,  1.13s/it, val_acc=90.70, val_macc=86.39, val_miou=74.01] 17%|█▋        | 53/312 [03:11<04:43,  1.09s/it, val_acc=90.70, val_macc=86.39, val_miou=74.01] 17%|█▋        | 53/312 [03:11<04:43,  1.09s/it, val_acc=90.74, val_macc=86.69, val_miou=74.56] 17%|█▋        | 54/312 [03:11<04:01,  1.07it/s, val_acc=90.74, val_macc=86.69, val_miou=74.56] 17%|█▋        | 54/312 [03:13<04:01,  1.07it/s, val_acc=90.78, val_macc=86.83, val_miou=74.98] 18%|█▊        | 55/312 [03:13<04:38,  1.08s/it, val_acc=90.78, val_macc=86.83, val_miou=74.98] 18%|█▊        | 55/312 [03:16<04:38,  1.08s/it, val_acc=90.82, val_macc=87.03, val_miou=75.34] 18%|█▊        | 56/312 [03:16<07:08,  1.67s/it, val_acc=90.82, val_macc=87.03, val_miou=75.34] 18%|█▊        | 56/312 [03:29<07:08,  1.67s/it, val_acc=90.65, val_macc=86.61, val_miou=75.43] 18%|█▊        | 57/312 [03:29<22:12,  5.22s/it, val_acc=90.65, val_macc=86.61, val_miou=75.43] 18%|█▊        | 57/312 [03:34<22:12,  5.22s/it, val_acc=90.48, val_macc=86.30, val_miou=75.25] 19%|█▊        | 58/312 [03:34<21:18,  5.03s/it, val_acc=90.48, val_macc=86.30, val_miou=75.25] 19%|█▊        | 58/312 [03:36<21:18,  5.03s/it, val_acc=90.52, val_macc=86.22, val_miou=75.17] 19%|█▉        | 59/312 [03:36<17:30,  4.15s/it, val_acc=90.52, val_macc=86.22, val_miou=75.17] 19%|█▉        | 59/312 [03:38<17:30,  4.15s/it, val_acc=90.49, val_macc=86.15, val_miou=74.98] 19%|█▉        | 60/312 [03:38<15:09,  3.61s/it, val_acc=90.49, val_macc=86.15, val_miou=74.98] 19%|█▉        | 60/312 [03:40<15:09,  3.61s/it, val_acc=90.45, val_macc=86.08, val_miou=74.83] 20%|█▉        | 61/312 [03:40<12:31,  2.99s/it, val_acc=90.45, val_macc=86.08, val_miou=74.83] 20%|█▉        | 61/312 [03:43<12:31,  2.99s/it, val_acc=90.41, val_macc=85.98, val_miou=74.68] 20%|█▉        | 62/312 [03:43<12:13,  2.94s/it, val_acc=90.41, val_macc=85.98, val_miou=74.68] 20%|█▉        | 62/312 [03:48<12:13,  2.94s/it, val_acc=90.35, val_macc=85.93, val_miou=74.62] 20%|██        | 63/312 [03:48<15:36,  3.76s/it, val_acc=90.35, val_macc=85.93, val_miou=74.62] 20%|██        | 63/312 [03:51<15:36,  3.76s/it, val_acc=90.14, val_macc=85.15, val_miou=73.87] 21%|██        | 64/312 [03:51<14:25,  3.49s/it, val_acc=90.14, val_macc=85.15, val_miou=73.87] 21%|██        | 64/312 [03:53<14:25,  3.49s/it, val_acc=90.11, val_macc=84.98, val_miou=73.86] 21%|██        | 65/312 [03:53<12:39,  3.07s/it, val_acc=90.11, val_macc=84.98, val_miou=73.86] 21%|██        | 65/312 [03:57<12:39,  3.07s/it, val_acc=89.98, val_macc=84.49, val_miou=73.44] 21%|██        | 66/312 [03:57<13:02,  3.18s/it, val_acc=89.98, val_macc=84.49, val_miou=73.44] 21%|██        | 66/312 [04:00<13:02,  3.18s/it, val_acc=89.86, val_macc=84.21, val_miou=73.08] 21%|██▏       | 67/312 [04:00<12:50,  3.15s/it, val_acc=89.86, val_macc=84.21, val_miou=73.08] 21%|██▏       | 67/312 [04:04<12:50,  3.15s/it, val_acc=89.85, val_macc=84.23, val_miou=72.99] 22%|██▏       | 68/312 [04:04<14:08,  3.48s/it, val_acc=89.85, val_macc=84.23, val_miou=72.99] 22%|██▏       | 68/312 [04:18<14:08,  3.48s/it, val_acc=89.91, val_macc=84.37, val_miou=73.14] 22%|██▏       | 69/312 [04:18<27:05,  6.69s/it, val_acc=89.91, val_macc=84.37, val_miou=73.14] 22%|██▏       | 69/312 [04:24<27:05,  6.69s/it, val_acc=89.70, val_macc=83.89, val_miou=72.59] 22%|██▏       | 70/312 [04:24<26:08,  6.48s/it, val_acc=89.70, val_macc=83.89, val_miou=72.59] 22%|██▏       | 70/312 [04:28<26:08,  6.48s/it, val_acc=89.77, val_macc=84.03, val_miou=72.79] 23%|██▎       | 71/312 [04:28<23:16,  5.79s/it, val_acc=89.77, val_macc=84.03, val_miou=72.79] 23%|██▎       | 71/312 [04:33<23:16,  5.79s/it, val_acc=89.76, val_macc=84.15, val_miou=73.03] 23%|██▎       | 72/312 [04:33<21:41,  5.42s/it, val_acc=89.76, val_macc=84.15, val_miou=73.03] 23%|██▎       | 72/312 [04:35<21:41,  5.42s/it, val_acc=89.78, val_macc=84.18, val_miou=73.20] 23%|██▎       | 73/312 [04:35<18:07,  4.55s/it, val_acc=89.78, val_macc=84.18, val_miou=73.20] 23%|██▎       | 73/312 [04:37<18:07,  4.55s/it, val_acc=89.71, val_macc=84.11, val_miou=73.18] 24%|██▎       | 74/312 [04:37<14:14,  3.59s/it, val_acc=89.71, val_macc=84.11, val_miou=73.18] 24%|██▎       | 74/312 [04:38<14:14,  3.59s/it, val_acc=89.63, val_macc=84.03, val_miou=73.09] 24%|██▍       | 75/312 [04:38<11:19,  2.87s/it, val_acc=89.63, val_macc=84.03, val_miou=73.09] 24%|██▍       | 75/312 [05:05<11:19,  2.87s/it, val_acc=89.68, val_macc=83.63, val_miou=73.35] 24%|██▍       | 76/312 [05:05<39:37, 10.08s/it, val_acc=89.68, val_macc=83.63, val_miou=73.35] 24%|██▍       | 76/312 [05:08<39:37, 10.08s/it, val_acc=89.68, val_macc=83.13, val_miou=73.31] 25%|██▍       | 77/312 [05:08<31:43,  8.10s/it, val_acc=89.68, val_macc=83.13, val_miou=73.31] 25%|██▍       | 77/312 [05:11<31:43,  8.10s/it, val_acc=89.56, val_macc=82.57, val_miou=72.90] 25%|██▌       | 78/312 [05:11<25:07,  6.44s/it, val_acc=89.56, val_macc=82.57, val_miou=72.90] 25%|██▌       | 78/312 [05:13<25:07,  6.44s/it, val_acc=89.49, val_macc=82.55, val_miou=72.84] 25%|██▌       | 79/312 [05:13<19:42,  5.08s/it, val_acc=89.49, val_macc=82.55, val_miou=72.84] 25%|██▌       | 79/312 [05:17<19:42,  5.08s/it, val_acc=89.44, val_macc=82.53, val_miou=72.77] 26%|██▌       | 80/312 [05:17<18:06,  4.68s/it, val_acc=89.44, val_macc=82.53, val_miou=72.77] 26%|██▌       | 80/312 [05:19<18:06,  4.68s/it, val_acc=89.48, val_macc=82.60, val_miou=72.85] 26%|██▌       | 81/312 [05:19<15:40,  4.07s/it, val_acc=89.48, val_macc=82.60, val_miou=72.85] 26%|██▌       | 81/312 [05:23<15:40,  4.07s/it, val_acc=89.49, val_macc=82.70, val_miou=72.96] 26%|██▋       | 82/312 [05:23<14:51,  3.88s/it, val_acc=89.49, val_macc=82.70, val_miou=72.96] 26%|██▋       | 82/312 [05:26<14:51,  3.88s/it, val_acc=89.49, val_macc=82.73, val_miou=73.00] 27%|██▋       | 83/312 [05:26<13:50,  3.62s/it, val_acc=89.49, val_macc=82.73, val_miou=73.00] 27%|██▋       | 83/312 [05:29<13:50,  3.62s/it, val_acc=89.50, val_macc=82.76, val_miou=73.01] 27%|██▋       | 84/312 [05:29<13:06,  3.45s/it, val_acc=89.50, val_macc=82.76, val_miou=73.01] 27%|██▋       | 84/312 [05:33<13:06,  3.45s/it, val_acc=89.49, val_macc=82.73, val_miou=72.93] 27%|██▋       | 85/312 [05:33<14:31,  3.84s/it, val_acc=89.49, val_macc=82.73, val_miou=72.93] 27%|██▋       | 85/312 [05:35<14:31,  3.84s/it, val_acc=89.49, val_macc=82.73, val_miou=72.93] 28%|██▊       | 86/312 [05:35<11:36,  3.08s/it, val_acc=89.49, val_macc=82.73, val_miou=72.93] 28%|██▊       | 86/312 [05:36<11:36,  3.08s/it, val_acc=89.49, val_macc=82.73, val_miou=72.92] 28%|██▊       | 87/312 [05:36<09:06,  2.43s/it, val_acc=89.49, val_macc=82.73, val_miou=72.92] 28%|██▊       | 87/312 [05:36<09:06,  2.43s/it, val_acc=89.47, val_macc=82.71, val_miou=72.89] 28%|██▊       | 88/312 [05:36<06:59,  1.87s/it, val_acc=89.47, val_macc=82.71, val_miou=72.89] 28%|██▊       | 88/312 [05:37<06:59,  1.87s/it, val_acc=89.51, val_macc=82.76, val_miou=72.98] 29%|██▊       | 89/312 [05:37<05:47,  1.56s/it, val_acc=89.51, val_macc=82.76, val_miou=72.98] 29%|██▊       | 89/312 [05:38<05:47,  1.56s/it, val_acc=89.49, val_macc=82.75, val_miou=72.79] 29%|██▉       | 90/312 [05:38<04:37,  1.25s/it, val_acc=89.49, val_macc=82.75, val_miou=72.79] 29%|██▉       | 90/312 [05:39<04:37,  1.25s/it, val_acc=89.37, val_macc=82.53, val_miou=72.72] 29%|██▉       | 91/312 [05:39<04:21,  1.18s/it, val_acc=89.37, val_macc=82.53, val_miou=72.72] 29%|██▉       | 91/312 [05:41<04:21,  1.18s/it, val_acc=89.23, val_macc=82.22, val_miou=72.53] 29%|██▉       | 92/312 [05:41<05:33,  1.52s/it, val_acc=89.23, val_macc=82.22, val_miou=72.53] 29%|██▉       | 92/312 [05:46<05:33,  1.52s/it, val_acc=89.27, val_macc=82.24, val_miou=72.56] 30%|██▉       | 93/312 [05:46<09:05,  2.49s/it, val_acc=89.27, val_macc=82.24, val_miou=72.56] 30%|██▉       | 93/312 [05:48<09:05,  2.49s/it, val_acc=89.17, val_macc=82.12, val_miou=72.32] 30%|███       | 94/312 [05:48<09:12,  2.53s/it, val_acc=89.17, val_macc=82.12, val_miou=72.32] 30%|███       | 94/312 [06:05<09:12,  2.53s/it, val_acc=89.08, val_macc=82.03, val_miou=72.10] 30%|███       | 95/312 [06:05<24:18,  6.72s/it, val_acc=89.08, val_macc=82.03, val_miou=72.10] 30%|███       | 95/312 [06:08<24:18,  6.72s/it, val_acc=88.85, val_macc=81.81, val_miou=71.79] 31%|███       | 96/312 [06:08<20:27,  5.68s/it, val_acc=88.85, val_macc=81.81, val_miou=71.79] 31%|███       | 96/312 [06:10<20:27,  5.68s/it, val_acc=88.82, val_macc=81.75, val_miou=71.75] 31%|███       | 97/312 [06:10<15:58,  4.46s/it, val_acc=88.82, val_macc=81.75, val_miou=71.75] 31%|███       | 97/312 [06:11<15:58,  4.46s/it, val_acc=88.83, val_macc=81.74, val_miou=71.73] 31%|███▏      | 98/312 [06:11<12:40,  3.55s/it, val_acc=88.83, val_macc=81.74, val_miou=71.73] 31%|███▏      | 98/312 [06:13<12:40,  3.55s/it, val_acc=88.84, val_macc=81.83, val_miou=71.84] 32%|███▏      | 99/312 [06:13<10:56,  3.08s/it, val_acc=88.84, val_macc=81.83, val_miou=71.84] 32%|███▏      | 99/312 [06:16<10:56,  3.08s/it, val_acc=88.81, val_macc=81.60, val_miou=71.62] 32%|███▏      | 100/312 [06:16<10:49,  3.06s/it, val_acc=88.81, val_macc=81.60, val_miou=71.62] 32%|███▏      | 100/312 [06:19<10:49,  3.06s/it, val_acc=88.84, val_macc=81.39, val_miou=71.45] 32%|███▏      | 101/312 [06:19<10:18,  2.93s/it, val_acc=88.84, val_macc=81.39, val_miou=71.45] 32%|███▏      | 101/312 [06:21<10:18,  2.93s/it, val_acc=88.80, val_macc=81.16, val_miou=71.20] 33%|███▎      | 102/312 [06:21<09:28,  2.71s/it, val_acc=88.80, val_macc=81.16, val_miou=71.20] 33%|███▎      | 102/312 [06:23<09:28,  2.71s/it, val_acc=88.82, val_macc=81.13, val_miou=71.20] 33%|███▎      | 103/312 [06:23<08:49,  2.53s/it, val_acc=88.82, val_macc=81.13, val_miou=71.20] 33%|███▎      | 103/312 [06:25<08:49,  2.53s/it, val_acc=88.83, val_macc=81.11, val_miou=71.19] 33%|███▎      | 104/312 [06:25<08:24,  2.43s/it, val_acc=88.83, val_macc=81.11, val_miou=71.19] 33%|███▎      | 104/312 [06:28<08:24,  2.43s/it, val_acc=88.81, val_macc=80.99, val_miou=71.07] 34%|███▎      | 105/312 [06:28<08:24,  2.44s/it, val_acc=88.81, val_macc=80.99, val_miou=71.07] 34%|███▎      | 105/312 [06:29<08:24,  2.44s/it, val_acc=88.86, val_macc=81.04, val_miou=71.15] 34%|███▍      | 106/312 [06:29<07:29,  2.18s/it, val_acc=88.86, val_macc=81.04, val_miou=71.15] 34%|███▍      | 106/312 [06:30<07:29,  2.18s/it, val_acc=88.89, val_macc=81.05, val_miou=71.18] 34%|███▍      | 107/312 [06:30<05:46,  1.69s/it, val_acc=88.89, val_macc=81.05, val_miou=71.18] 34%|███▍      | 107/312 [06:30<05:46,  1.69s/it, val_acc=88.92, val_macc=81.09, val_miou=71.26] 35%|███▍      | 108/312 [06:30<04:37,  1.36s/it, val_acc=88.92, val_macc=81.09, val_miou=71.26] 35%|███▍      | 108/312 [06:31<04:37,  1.36s/it, val_acc=88.95, val_macc=81.10, val_miou=71.28] 35%|███▍      | 109/312 [06:31<03:48,  1.13s/it, val_acc=88.95, val_macc=81.10, val_miou=71.28] 35%|███▍      | 109/312 [06:33<03:48,  1.13s/it, val_acc=88.95, val_macc=81.09, val_miou=71.26] 35%|███▌      | 110/312 [06:33<04:49,  1.44s/it, val_acc=88.95, val_macc=81.09, val_miou=71.26] 35%|███▌      | 110/312 [06:35<04:49,  1.44s/it, val_acc=88.98, val_macc=81.23, val_miou=71.43] 36%|███▌      | 111/312 [06:35<05:43,  1.71s/it, val_acc=88.98, val_macc=81.23, val_miou=71.43] 36%|███▌      | 111/312 [06:36<05:43,  1.71s/it, val_acc=89.01, val_macc=81.31, val_miou=71.54] 36%|███▌      | 112/312 [06:36<04:50,  1.45s/it, val_acc=89.01, val_macc=81.31, val_miou=71.54] 36%|███▌      | 112/312 [06:38<04:50,  1.45s/it, val_acc=89.04, val_macc=81.44, val_miou=71.69] 36%|███▌      | 113/312 [06:38<04:35,  1.38s/it, val_acc=89.04, val_macc=81.44, val_miou=71.69] 36%|███▌      | 113/312 [06:40<04:35,  1.38s/it, val_acc=89.01, val_macc=81.41, val_miou=71.60] 37%|███▋      | 114/312 [06:40<05:22,  1.63s/it, val_acc=89.01, val_macc=81.41, val_miou=71.60] 37%|███▋      | 114/312 [06:43<05:22,  1.63s/it, val_acc=88.98, val_macc=81.38, val_miou=71.51] 37%|███▋      | 115/312 [06:43<06:36,  2.01s/it, val_acc=88.98, val_macc=81.38, val_miou=71.51] 37%|███▋      | 115/312 [06:45<06:36,  2.01s/it, val_acc=88.98, val_macc=81.39, val_miou=71.51] 37%|███▋      | 116/312 [06:45<06:30,  1.99s/it, val_acc=88.98, val_macc=81.39, val_miou=71.51] 37%|███▋      | 116/312 [06:49<06:30,  1.99s/it, val_acc=88.99, val_macc=81.39, val_miou=71.49] 38%|███▊      | 117/312 [06:49<08:19,  2.56s/it, val_acc=88.99, val_macc=81.39, val_miou=71.49] 38%|███▊      | 117/312 [06:49<08:19,  2.56s/it, val_acc=89.01, val_macc=81.40, val_miou=71.49] 38%|███▊      | 118/312 [06:49<06:28,  2.00s/it, val_acc=89.01, val_macc=81.40, val_miou=71.49] 38%|███▊      | 118/312 [06:50<06:28,  2.00s/it, val_acc=89.03, val_macc=81.42, val_miou=71.53] 38%|███▊      | 119/312 [06:50<05:05,  1.58s/it, val_acc=89.03, val_macc=81.42, val_miou=71.53] 38%|███▊      | 119/312 [06:51<05:05,  1.58s/it, val_acc=89.05, val_macc=81.47, val_miou=71.58] 38%|███▊      | 120/312 [06:51<05:06,  1.59s/it, val_acc=89.05, val_macc=81.47, val_miou=71.58] 38%|███▊      | 120/312 [06:52<05:06,  1.59s/it, val_acc=89.06, val_macc=81.49, val_miou=71.61] 39%|███▉      | 121/312 [06:52<04:19,  1.36s/it, val_acc=89.06, val_macc=81.49, val_miou=71.61] 39%|███▉      | 121/312 [06:54<04:19,  1.36s/it, val_acc=88.99, val_macc=81.39, val_miou=71.49] 39%|███▉      | 122/312 [06:54<04:50,  1.53s/it, val_acc=88.99, val_macc=81.39, val_miou=71.49] 39%|███▉      | 122/312 [06:56<04:50,  1.53s/it, val_acc=88.92, val_macc=81.28, val_miou=71.34] 39%|███▉      | 123/312 [06:56<05:10,  1.64s/it, val_acc=88.92, val_macc=81.28, val_miou=71.34] 39%|███▉      | 123/312 [06:57<05:10,  1.64s/it, val_acc=88.94, val_macc=81.28, val_miou=71.35] 40%|███▉      | 124/312 [06:57<04:55,  1.57s/it, val_acc=88.94, val_macc=81.28, val_miou=71.35] 40%|███▉      | 124/312 [07:00<04:55,  1.57s/it, val_acc=88.96, val_macc=81.28, val_miou=71.35] 40%|████      | 125/312 [07:00<06:03,  1.94s/it, val_acc=88.96, val_macc=81.28, val_miou=71.35] 40%|████      | 125/312 [07:02<06:03,  1.94s/it, val_acc=88.99, val_macc=81.28, val_miou=71.35] 40%|████      | 126/312 [07:02<05:24,  1.75s/it, val_acc=88.99, val_macc=81.28, val_miou=71.35] 40%|████      | 126/312 [07:04<05:24,  1.75s/it, val_acc=89.03, val_macc=81.39, val_miou=71.50] 41%|████      | 127/312 [07:04<05:54,  1.91s/it, val_acc=89.03, val_macc=81.39, val_miou=71.50] 41%|████      | 127/312 [07:05<05:54,  1.91s/it, val_acc=89.06, val_macc=81.48, val_miou=71.64] 41%|████      | 128/312 [07:05<05:34,  1.82s/it, val_acc=89.06, val_macc=81.48, val_miou=71.64] 41%|████      | 128/312 [07:10<05:34,  1.82s/it, val_acc=89.09, val_macc=81.57, val_miou=71.76] 41%|████▏     | 129/312 [07:10<08:17,  2.72s/it, val_acc=89.09, val_macc=81.57, val_miou=71.76] 41%|████▏     | 129/312 [07:12<08:17,  2.72s/it, val_acc=89.09, val_macc=81.57, val_miou=71.70] 42%|████▏     | 130/312 [07:12<07:05,  2.34s/it, val_acc=89.09, val_macc=81.57, val_miou=71.70] 42%|████▏     | 130/312 [07:13<07:05,  2.34s/it, val_acc=89.11, val_macc=81.60, val_miou=71.75] 42%|████▏     | 131/312 [07:13<06:21,  2.11s/it, val_acc=89.11, val_macc=81.60, val_miou=71.75] 42%|████▏     | 131/312 [07:16<06:21,  2.11s/it, val_acc=89.16, val_macc=81.73, val_miou=71.84] 42%|████▏     | 132/312 [07:16<07:15,  2.42s/it, val_acc=89.16, val_macc=81.73, val_miou=71.84] 42%|████▏     | 132/312 [07:17<07:15,  2.42s/it, val_acc=89.16, val_macc=81.75, val_miou=71.92] 43%|████▎     | 133/312 [07:17<05:45,  1.93s/it, val_acc=89.16, val_macc=81.75, val_miou=71.92] 43%|████▎     | 133/312 [07:18<05:45,  1.93s/it, val_acc=89.18, val_macc=81.85, val_miou=72.06] 43%|████▎     | 134/312 [07:18<04:26,  1.50s/it, val_acc=89.18, val_macc=81.85, val_miou=72.06] 43%|████▎     | 134/312 [07:18<04:26,  1.50s/it, val_acc=89.19, val_macc=81.94, val_miou=72.17] 43%|████▎     | 135/312 [07:18<03:29,  1.18s/it, val_acc=89.19, val_macc=81.94, val_miou=72.17] 43%|████▎     | 135/312 [07:19<03:29,  1.18s/it, val_acc=89.15, val_macc=81.92, val_miou=72.10] 44%|████▎     | 136/312 [07:19<03:20,  1.14s/it, val_acc=89.15, val_macc=81.92, val_miou=72.10] 44%|████▎     | 136/312 [07:20<03:20,  1.14s/it, val_acc=89.07, val_macc=81.81, val_miou=71.95] 44%|████▍     | 137/312 [07:20<03:07,  1.07s/it, val_acc=89.07, val_macc=81.81, val_miou=71.95] 44%|████▍     | 137/312 [07:22<03:07,  1.07s/it, val_acc=89.05, val_macc=81.85, val_miou=71.99] 44%|████▍     | 138/312 [07:22<03:29,  1.21s/it, val_acc=89.05, val_macc=81.85, val_miou=71.99] 44%|████▍     | 138/312 [07:23<03:29,  1.21s/it, val_acc=89.08, val_macc=81.87, val_miou=72.01] 45%|████▍     | 139/312 [07:23<03:38,  1.26s/it, val_acc=89.08, val_macc=81.87, val_miou=72.01] 45%|████▍     | 139/312 [07:26<03:38,  1.26s/it, val_acc=89.09, val_macc=81.87, val_miou=72.02] 45%|████▍     | 140/312 [07:26<05:11,  1.81s/it, val_acc=89.09, val_macc=81.87, val_miou=72.02] 45%|████▍     | 140/312 [07:29<05:11,  1.81s/it, val_acc=89.13, val_macc=81.89, val_miou=72.04] 45%|████▌     | 141/312 [07:29<06:21,  2.23s/it, val_acc=89.13, val_macc=81.89, val_miou=72.04] 45%|████▌     | 141/312 [07:32<06:21,  2.23s/it, val_acc=89.15, val_macc=81.94, val_miou=72.11] 46%|████▌     | 142/312 [07:32<06:52,  2.43s/it, val_acc=89.15, val_macc=81.94, val_miou=72.11] 46%|████▌     | 142/312 [07:33<06:52,  2.43s/it, val_acc=89.17, val_macc=81.97, val_miou=72.13] 46%|████▌     | 143/312 [07:33<05:28,  1.94s/it, val_acc=89.17, val_macc=81.97, val_miou=72.13] 46%|████▌     | 143/312 [07:34<05:28,  1.94s/it, val_acc=89.20, val_macc=82.02, val_miou=72.19] 46%|████▌     | 144/312 [07:34<04:29,  1.61s/it, val_acc=89.20, val_macc=82.02, val_miou=72.19] 46%|████▌     | 144/312 [07:35<04:29,  1.61s/it, val_acc=89.23, val_macc=82.06, val_miou=72.26] 46%|████▋     | 145/312 [07:35<03:57,  1.42s/it, val_acc=89.23, val_macc=82.06, val_miou=72.26] 46%|████▋     | 145/312 [07:35<03:57,  1.42s/it, val_acc=89.26, val_macc=82.08, val_miou=72.28] 47%|████▋     | 146/312 [07:35<03:09,  1.14s/it, val_acc=89.26, val_macc=82.08, val_miou=72.28] 47%|████▋     | 146/312 [07:49<03:09,  1.14s/it, val_acc=89.27, val_macc=82.08, val_miou=72.28] 47%|████▋     | 147/312 [07:49<13:45,  5.00s/it, val_acc=89.27, val_macc=82.08, val_miou=72.28] 47%|████▋     | 147/312 [07:50<13:45,  5.00s/it, val_acc=89.26, val_macc=82.08, val_miou=72.28] 47%|████▋     | 148/312 [07:50<10:26,  3.82s/it, val_acc=89.26, val_macc=82.08, val_miou=72.28] 47%|████▋     | 148/312 [07:52<10:26,  3.82s/it, val_acc=89.26, val_macc=82.09, val_miou=72.28] 48%|████▊     | 149/312 [07:52<08:11,  3.01s/it, val_acc=89.26, val_macc=82.09, val_miou=72.28] 48%|████▊     | 149/312 [07:54<08:11,  3.01s/it, val_acc=89.26, val_macc=82.09, val_miou=72.27] 48%|████▊     | 150/312 [07:54<08:03,  2.98s/it, val_acc=89.26, val_macc=82.09, val_miou=72.27] 48%|████▊     | 150/312 [07:58<08:03,  2.98s/it, val_acc=89.30, val_macc=82.23, val_miou=72.45] 48%|████▊     | 151/312 [07:58<08:44,  3.26s/it, val_acc=89.30, val_macc=82.23, val_miou=72.45] 48%|████▊     | 151/312 [08:02<08:44,  3.26s/it, val_acc=89.34, val_macc=82.13, val_miou=72.43] 49%|████▊     | 152/312 [08:02<09:15,  3.47s/it, val_acc=89.34, val_macc=82.13, val_miou=72.43] 49%|████▊     | 152/312 [08:04<09:15,  3.47s/it, val_acc=89.38, val_macc=82.25, val_miou=72.58] 49%|████▉     | 153/312 [08:04<08:02,  3.03s/it, val_acc=89.38, val_macc=82.25, val_miou=72.58] 49%|████▉     | 153/312 [08:07<08:02,  3.03s/it, val_acc=89.41, val_macc=82.37, val_miou=72.72] 49%|████▉     | 154/312 [08:07<07:18,  2.78s/it, val_acc=89.41, val_macc=82.37, val_miou=72.72] 49%|████▉     | 154/312 [08:08<07:18,  2.78s/it, val_acc=89.44, val_macc=82.38, val_miou=72.74] 50%|████▉     | 155/312 [08:08<06:13,  2.38s/it, val_acc=89.44, val_macc=82.38, val_miou=72.74] 50%|████▉     | 155/312 [08:09<06:13,  2.38s/it, val_acc=89.44, val_macc=82.41, val_miou=72.78] 50%|█████     | 156/312 [08:09<05:20,  2.06s/it, val_acc=89.44, val_macc=82.41, val_miou=72.78] 50%|█████     | 156/312 [08:11<05:20,  2.06s/it, val_acc=89.45, val_macc=82.44, val_miou=72.82] 50%|█████     | 157/312 [08:11<05:13,  2.03s/it, val_acc=89.45, val_macc=82.44, val_miou=72.82] 50%|█████     | 157/312 [08:13<05:13,  2.03s/it, val_acc=89.45, val_macc=82.45, val_miou=72.82] 51%|█████     | 158/312 [08:13<04:38,  1.81s/it, val_acc=89.45, val_macc=82.45, val_miou=72.82] 51%|█████     | 158/312 [08:14<04:38,  1.81s/it, val_acc=89.46, val_macc=82.40, val_miou=72.80] 51%|█████     | 159/312 [08:14<04:41,  1.84s/it, val_acc=89.46, val_macc=82.40, val_miou=72.80] 51%|█████     | 159/312 [08:16<04:41,  1.84s/it, val_acc=89.48, val_macc=82.44, val_miou=72.85] 51%|█████▏    | 160/312 [08:16<04:27,  1.76s/it, val_acc=89.48, val_macc=82.44, val_miou=72.85] 51%|█████▏    | 160/312 [08:21<04:27,  1.76s/it, val_acc=89.49, val_macc=82.48, val_miou=72.82] 52%|█████▏    | 161/312 [08:21<06:55,  2.75s/it, val_acc=89.49, val_macc=82.48, val_miou=72.82] 52%|█████▏    | 161/312 [08:26<06:55,  2.75s/it, val_acc=89.52, val_macc=82.55, val_miou=72.83] 52%|█████▏    | 162/312 [08:26<08:13,  3.29s/it, val_acc=89.52, val_macc=82.55, val_miou=72.83] 52%|█████▏    | 162/312 [08:27<08:13,  3.29s/it, val_acc=89.53, val_macc=82.57, val_miou=72.86] 52%|█████▏    | 163/312 [08:27<07:06,  2.86s/it, val_acc=89.53, val_macc=82.57, val_miou=72.86] 52%|█████▏    | 163/312 [08:30<07:06,  2.86s/it, val_acc=89.49, val_macc=82.41, val_miou=72.75] 53%|█████▎    | 164/312 [08:30<06:46,  2.75s/it, val_acc=89.49, val_macc=82.41, val_miou=72.75] 53%|█████▎    | 164/312 [08:31<06:46,  2.75s/it, val_acc=89.51, val_macc=82.45, val_miou=72.82] 53%|█████▎    | 165/312 [08:31<05:42,  2.33s/it, val_acc=89.51, val_macc=82.45, val_miou=72.82] 53%|█████▎    | 165/312 [08:32<05:42,  2.33s/it, val_acc=89.54, val_macc=82.53, val_miou=72.98] 53%|█████▎    | 166/312 [08:32<04:29,  1.84s/it, val_acc=89.54, val_macc=82.53, val_miou=72.98] 53%|█████▎    | 166/312 [08:33<04:29,  1.84s/it, val_acc=89.56, val_macc=82.64, val_miou=73.18] 54%|█████▎    | 167/312 [08:33<03:42,  1.53s/it, val_acc=89.56, val_macc=82.64, val_miou=73.18] 54%|█████▎    | 167/312 [08:34<03:42,  1.53s/it, val_acc=89.58, val_macc=82.66, val_miou=73.21] 54%|█████▍    | 168/312 [08:34<03:17,  1.37s/it, val_acc=89.58, val_macc=82.66, val_miou=73.21] 54%|█████▍    | 168/312 [08:34<03:17,  1.37s/it, val_acc=89.60, val_macc=82.67, val_miou=73.22] 54%|█████▍    | 169/312 [08:34<02:41,  1.13s/it, val_acc=89.60, val_macc=82.67, val_miou=73.22] 54%|█████▍    | 169/312 [08:36<02:41,  1.13s/it, val_acc=89.61, val_macc=82.68, val_miou=73.22] 54%|█████▍    | 170/312 [08:36<02:54,  1.23s/it, val_acc=89.61, val_macc=82.68, val_miou=73.22] 54%|█████▍    | 170/312 [08:51<02:54,  1.23s/it, val_acc=89.62, val_macc=82.72, val_miou=73.27] 55%|█████▍    | 171/312 [08:51<12:54,  5.49s/it, val_acc=89.62, val_macc=82.72, val_miou=73.27] 55%|█████▍    | 171/312 [08:54<12:54,  5.49s/it, val_acc=89.63, val_macc=82.76, val_miou=73.30] 55%|█████▌    | 172/312 [08:54<10:36,  4.55s/it, val_acc=89.63, val_macc=82.76, val_miou=73.30] 55%|█████▌    | 172/312 [08:55<10:36,  4.55s/it, val_acc=89.59, val_macc=82.68, val_miou=73.22] 55%|█████▌    | 173/312 [08:55<08:20,  3.60s/it, val_acc=89.59, val_macc=82.68, val_miou=73.22] 55%|█████▌    | 173/312 [08:56<08:20,  3.60s/it, val_acc=89.56, val_macc=82.63, val_miou=73.10] 56%|█████▌    | 174/312 [08:56<06:41,  2.91s/it, val_acc=89.56, val_macc=82.63, val_miou=73.10] 56%|█████▌    | 174/312 [08:58<06:41,  2.91s/it, val_acc=89.50, val_macc=82.53, val_miou=72.98] 56%|█████▌    | 175/312 [08:58<05:33,  2.43s/it, val_acc=89.50, val_macc=82.53, val_miou=72.98] 56%|█████▌    | 175/312 [08:59<05:33,  2.43s/it, val_acc=89.52, val_macc=82.55, val_miou=73.00] 56%|█████▋    | 176/312 [08:59<04:48,  2.12s/it, val_acc=89.52, val_macc=82.55, val_miou=73.00] 56%|█████▋    | 176/312 [09:07<04:48,  2.12s/it, val_acc=89.56, val_macc=82.62, val_miou=73.05] 57%|█████▋    | 177/312 [09:07<08:50,  3.93s/it, val_acc=89.56, val_macc=82.62, val_miou=73.05] 57%|█████▋    | 177/312 [09:09<08:50,  3.93s/it, val_acc=89.55, val_macc=82.59, val_miou=72.99] 57%|█████▋    | 178/312 [09:09<07:07,  3.19s/it, val_acc=89.55, val_macc=82.59, val_miou=72.99] 57%|█████▋    | 178/312 [09:12<07:07,  3.19s/it, val_acc=89.57, val_macc=82.63, val_miou=73.04] 57%|█████▋    | 179/312 [09:12<07:08,  3.22s/it, val_acc=89.57, val_macc=82.63, val_miou=73.04] 57%|█████▋    | 179/312 [09:13<07:08,  3.22s/it, val_acc=89.58, val_macc=82.66, val_miou=73.09] 58%|█████▊    | 180/312 [09:13<05:55,  2.69s/it, val_acc=89.58, val_macc=82.66, val_miou=73.09] 58%|█████▊    | 180/312 [09:16<05:55,  2.69s/it, val_acc=89.59, val_macc=82.69, val_miou=73.13] 58%|█████▊    | 181/312 [09:16<05:53,  2.70s/it, val_acc=89.59, val_macc=82.69, val_miou=73.13] 58%|█████▊    | 181/312 [09:17<05:53,  2.70s/it, val_acc=89.61, val_macc=82.73, val_miou=73.18] 58%|█████▊    | 182/312 [09:17<04:33,  2.11s/it, val_acc=89.61, val_macc=82.73, val_miou=73.18] 58%|█████▊    | 182/312 [09:17<04:33,  2.11s/it, val_acc=89.63, val_macc=82.76, val_miou=73.22] 59%|█████▊    | 183/312 [09:17<03:30,  1.63s/it, val_acc=89.63, val_macc=82.76, val_miou=73.22] 59%|█████▊    | 183/312 [09:19<03:30,  1.63s/it, val_acc=89.64, val_macc=82.78, val_miou=73.25] 59%|█████▉    | 184/312 [09:19<03:13,  1.51s/it, val_acc=89.64, val_macc=82.78, val_miou=73.25] 59%|█████▉    | 184/312 [09:20<03:13,  1.51s/it, val_acc=89.66, val_macc=82.79, val_miou=73.27] 59%|█████▉    | 185/312 [09:20<02:48,  1.33s/it, val_acc=89.66, val_macc=82.79, val_miou=73.27] 59%|█████▉    | 185/312 [09:21<02:48,  1.33s/it, val_acc=89.68, val_macc=82.79, val_miou=73.30] 60%|█████▉    | 186/312 [09:21<02:37,  1.25s/it, val_acc=89.68, val_macc=82.79, val_miou=73.30] 60%|█████▉    | 186/312 [09:21<02:37,  1.25s/it, val_acc=89.67, val_macc=82.80, val_miou=73.30] 60%|█████▉    | 187/312 [09:21<02:17,  1.10s/it, val_acc=89.67, val_macc=82.80, val_miou=73.30] 60%|█████▉    | 187/312 [09:23<02:17,  1.10s/it, val_acc=89.66, val_macc=82.81, val_miou=73.30] 60%|██████    | 188/312 [09:23<02:29,  1.21s/it, val_acc=89.66, val_macc=82.81, val_miou=73.30] 60%|██████    | 188/312 [09:26<02:29,  1.21s/it, val_acc=89.67, val_macc=82.82, val_miou=73.31] 61%|██████    | 189/312 [09:26<03:26,  1.68s/it, val_acc=89.67, val_macc=82.82, val_miou=73.31] 61%|██████    | 189/312 [09:30<03:26,  1.68s/it, val_acc=89.65, val_macc=82.76, val_miou=73.27] 61%|██████    | 190/312 [09:30<05:15,  2.58s/it, val_acc=89.65, val_macc=82.76, val_miou=73.27] 61%|██████    | 190/312 [09:34<05:15,  2.58s/it, val_acc=89.68, val_macc=82.78, val_miou=73.29] 61%|██████    | 191/312 [09:34<06:06,  3.03s/it, val_acc=89.68, val_macc=82.78, val_miou=73.29] 61%|██████    | 191/312 [09:36<06:06,  3.03s/it, val_acc=89.71, val_macc=82.78, val_miou=73.31] 62%|██████▏   | 192/312 [09:36<05:13,  2.62s/it, val_acc=89.71, val_macc=82.78, val_miou=73.31] 62%|██████▏   | 192/312 [09:38<05:13,  2.62s/it, val_acc=89.76, val_macc=82.81, val_miou=73.35] 62%|██████▏   | 193/312 [09:38<04:34,  2.31s/it, val_acc=89.76, val_macc=82.81, val_miou=73.35] 62%|██████▏   | 193/312 [09:39<04:34,  2.31s/it, val_acc=89.74, val_macc=82.81, val_miou=73.35] 62%|██████▏   | 194/312 [09:39<03:59,  2.03s/it, val_acc=89.74, val_macc=82.81, val_miou=73.35] 62%|██████▏   | 194/312 [09:40<03:59,  2.03s/it, val_acc=89.74, val_macc=82.82, val_miou=73.36] 62%|██████▎   | 195/312 [09:40<03:10,  1.63s/it, val_acc=89.74, val_macc=82.82, val_miou=73.36] 62%|██████▎   | 195/312 [09:40<03:10,  1.63s/it, val_acc=89.73, val_macc=82.82, val_miou=73.36] 63%|██████▎   | 196/312 [09:40<02:39,  1.37s/it, val_acc=89.73, val_macc=82.82, val_miou=73.36] 63%|██████▎   | 196/312 [09:52<02:39,  1.37s/it, val_acc=89.75, val_macc=82.80, val_miou=73.36] 63%|██████▎   | 197/312 [09:52<08:17,  4.33s/it, val_acc=89.75, val_macc=82.80, val_miou=73.36] 63%|██████▎   | 197/312 [09:58<08:17,  4.33s/it, val_acc=89.75, val_macc=82.79, val_miou=73.36] 63%|██████▎   | 198/312 [09:58<09:16,  4.88s/it, val_acc=89.75, val_macc=82.79, val_miou=73.36] 63%|██████▎   | 198/312 [09:59<09:16,  4.88s/it, val_acc=89.76, val_macc=82.76, val_miou=73.35] 64%|██████▍   | 199/312 [09:59<07:11,  3.82s/it, val_acc=89.76, val_macc=82.76, val_miou=73.35] 64%|██████▍   | 199/312 [10:01<07:11,  3.82s/it, val_acc=89.78, val_macc=82.77, val_miou=73.36] 64%|██████▍   | 200/312 [10:01<05:55,  3.18s/it, val_acc=89.78, val_macc=82.77, val_miou=73.36] 64%|██████▍   | 200/312 [10:03<05:55,  3.18s/it, val_acc=89.80, val_macc=82.77, val_miou=73.37] 64%|██████▍   | 201/312 [10:03<05:13,  2.83s/it, val_acc=89.80, val_macc=82.77, val_miou=73.37] 64%|██████▍   | 201/312 [10:05<05:13,  2.83s/it, val_acc=89.83, val_macc=82.76, val_miou=73.37] 65%|██████▍   | 202/312 [10:05<04:40,  2.55s/it, val_acc=89.83, val_macc=82.76, val_miou=73.37] 65%|██████▍   | 202/312 [10:11<04:40,  2.55s/it, val_acc=89.80, val_macc=82.70, val_miou=73.27] 65%|██████▌   | 203/312 [10:11<06:44,  3.71s/it, val_acc=89.80, val_macc=82.70, val_miou=73.27] 65%|██████▌   | 203/312 [10:12<06:44,  3.71s/it, val_acc=89.77, val_macc=82.63, val_miou=73.16] 65%|██████▌   | 204/312 [10:12<05:16,  2.93s/it, val_acc=89.77, val_macc=82.63, val_miou=73.16] 65%|██████▌   | 204/312 [10:13<05:16,  2.93s/it, val_acc=89.76, val_macc=82.36, val_miou=72.86] 66%|██████▌   | 205/312 [10:13<04:11,  2.35s/it, val_acc=89.76, val_macc=82.36, val_miou=72.86] 66%|██████▌   | 205/312 [10:15<04:11,  2.35s/it, val_acc=89.74, val_macc=82.17, val_miou=72.63] 66%|██████▌   | 206/312 [10:15<03:43,  2.11s/it, val_acc=89.74, val_macc=82.17, val_miou=72.63] 66%|██████▌   | 206/312 [10:18<03:43,  2.11s/it, val_acc=89.71, val_macc=81.79, val_miou=72.19] 66%|██████▋   | 207/312 [10:18<04:22,  2.50s/it, val_acc=89.71, val_macc=81.79, val_miou=72.19] 66%|██████▋   | 207/312 [10:20<04:22,  2.50s/it, val_acc=89.71, val_macc=81.81, val_miou=72.22] 67%|██████▋   | 208/312 [10:20<03:55,  2.26s/it, val_acc=89.71, val_macc=81.81, val_miou=72.22] 67%|██████▋   | 208/312 [10:22<03:55,  2.26s/it, val_acc=89.75, val_macc=81.86, val_miou=72.29] 67%|██████▋   | 209/312 [10:22<03:40,  2.14s/it, val_acc=89.75, val_macc=81.86, val_miou=72.29] 67%|██████▋   | 209/312 [10:25<03:40,  2.14s/it, val_acc=89.74, val_macc=81.84, val_miou=72.27] 67%|██████▋   | 210/312 [10:25<03:56,  2.32s/it, val_acc=89.74, val_macc=81.84, val_miou=72.27] 67%|██████▋   | 210/312 [10:26<03:56,  2.32s/it, val_acc=89.72, val_macc=81.81, val_miou=72.20] 68%|██████▊   | 211/312 [10:26<03:35,  2.13s/it, val_acc=89.72, val_macc=81.81, val_miou=72.20] 68%|██████▊   | 211/312 [10:27<03:35,  2.13s/it, val_acc=89.70, val_macc=81.79, val_miou=72.12] 68%|██████▊   | 212/312 [10:27<02:58,  1.78s/it, val_acc=89.70, val_macc=81.79, val_miou=72.12] 68%|██████▊   | 212/312 [10:28<02:58,  1.78s/it, val_acc=89.69, val_macc=81.83, val_miou=72.14] 68%|██████▊   | 213/312 [10:28<02:30,  1.52s/it, val_acc=89.69, val_macc=81.83, val_miou=72.14] 68%|██████▊   | 213/312 [10:30<02:30,  1.52s/it, val_acc=89.66, val_macc=81.80, val_miou=72.11] 69%|██████▊   | 214/312 [10:30<02:36,  1.60s/it, val_acc=89.66, val_macc=81.80, val_miou=72.11] 69%|██████▊   | 214/312 [10:32<02:36,  1.60s/it, val_acc=89.66, val_macc=81.80, val_miou=72.11] 69%|██████▉   | 215/312 [10:32<03:02,  1.88s/it, val_acc=89.66, val_macc=81.80, val_miou=72.11] 69%|██████▉   | 215/312 [10:36<03:02,  1.88s/it, val_acc=89.68, val_macc=81.82, val_miou=72.14] 69%|██████▉   | 216/312 [10:36<03:39,  2.28s/it, val_acc=89.68, val_macc=81.82, val_miou=72.14] 69%|██████▉   | 216/312 [10:38<03:39,  2.28s/it, val_acc=89.70, val_macc=81.85, val_miou=72.17] 70%|██████▉   | 217/312 [10:38<03:27,  2.19s/it, val_acc=89.70, val_macc=81.85, val_miou=72.17] 70%|██████▉   | 217/312 [10:40<03:27,  2.19s/it, val_acc=89.72, val_macc=81.87, val_miou=72.20] 70%|██████▉   | 218/312 [10:40<03:39,  2.33s/it, val_acc=89.72, val_macc=81.87, val_miou=72.20] 70%|██████▉   | 218/312 [10:41<03:39,  2.33s/it, val_acc=89.74, val_macc=81.89, val_miou=72.23] 70%|███████   | 219/312 [10:41<03:01,  1.95s/it, val_acc=89.74, val_macc=81.89, val_miou=72.23] 70%|███████   | 219/312 [10:43<03:01,  1.95s/it, val_acc=89.71, val_macc=81.80, val_miou=72.15] 71%|███████   | 220/312 [10:43<02:56,  1.92s/it, val_acc=89.71, val_macc=81.80, val_miou=72.15] 71%|███████   | 220/312 [10:45<02:56,  1.92s/it, val_acc=89.67, val_macc=81.73, val_miou=72.05] 71%|███████   | 221/312 [10:45<03:02,  2.01s/it, val_acc=89.67, val_macc=81.73, val_miou=72.05] 71%|███████   | 221/312 [10:50<03:02,  2.01s/it, val_acc=89.63, val_macc=81.68, val_miou=71.98] 71%|███████   | 222/312 [10:50<04:09,  2.77s/it, val_acc=89.63, val_macc=81.68, val_miou=71.98] 71%|███████   | 222/312 [10:54<04:09,  2.77s/it, val_acc=89.64, val_macc=81.62, val_miou=71.95] 71%|███████▏  | 223/312 [10:54<04:44,  3.20s/it, val_acc=89.64, val_macc=81.62, val_miou=71.95] 71%|███████▏  | 223/312 [10:57<04:44,  3.20s/it, val_acc=89.63, val_macc=81.57, val_miou=71.94] 72%|███████▏  | 224/312 [10:57<04:41,  3.20s/it, val_acc=89.63, val_macc=81.57, val_miou=71.94] 72%|███████▏  | 224/312 [11:02<04:41,  3.20s/it, val_acc=89.59, val_macc=81.56, val_miou=71.90] 72%|███████▏  | 225/312 [11:02<05:16,  3.64s/it, val_acc=89.59, val_macc=81.56, val_miou=71.90] 72%|███████▏  | 225/312 [11:05<05:16,  3.64s/it, val_acc=89.53, val_macc=81.53, val_miou=71.82] 72%|███████▏  | 226/312 [11:05<04:59,  3.48s/it, val_acc=89.53, val_macc=81.53, val_miou=71.82] 72%|███████▏  | 226/312 [11:06<04:59,  3.48s/it, val_acc=89.49, val_macc=81.53, val_miou=71.78] 73%|███████▎  | 227/312 [11:06<04:00,  2.83s/it, val_acc=89.49, val_macc=81.53, val_miou=71.78] 73%|███████▎  | 227/312 [11:09<04:00,  2.83s/it, val_acc=89.46, val_macc=81.49, val_miou=71.70] 73%|███████▎  | 228/312 [11:09<03:40,  2.63s/it, val_acc=89.46, val_macc=81.49, val_miou=71.70] 73%|███████▎  | 228/312 [11:09<03:40,  2.63s/it, val_acc=89.44, val_macc=81.46, val_miou=71.65] 73%|███████▎  | 229/312 [11:09<02:52,  2.08s/it, val_acc=89.44, val_macc=81.46, val_miou=71.65] 73%|███████▎  | 229/312 [11:10<02:52,  2.08s/it, val_acc=89.44, val_macc=81.44, val_miou=71.62] 74%|███████▎  | 230/312 [11:10<02:25,  1.78s/it, val_acc=89.44, val_macc=81.44, val_miou=71.62] 74%|███████▎  | 230/312 [11:11<02:25,  1.78s/it, val_acc=89.45, val_macc=81.44, val_miou=71.63] 74%|███████▍  | 231/312 [11:11<01:56,  1.44s/it, val_acc=89.45, val_macc=81.44, val_miou=71.63] 74%|███████▍  | 231/312 [11:21<01:56,  1.44s/it, val_acc=89.34, val_macc=80.64, val_miou=71.17] 74%|███████▍  | 232/312 [11:21<05:12,  3.90s/it, val_acc=89.34, val_macc=80.64, val_miou=71.17] 74%|███████▍  | 232/312 [11:30<05:12,  3.90s/it, val_acc=89.31, val_macc=80.37, val_miou=71.00] 75%|███████▍  | 233/312 [11:30<07:13,  5.49s/it, val_acc=89.31, val_macc=80.37, val_miou=71.00] 75%|███████▍  | 233/312 [11:35<07:13,  5.49s/it, val_acc=89.32, val_macc=80.38, val_miou=71.02] 75%|███████▌  | 234/312 [11:35<07:04,  5.44s/it, val_acc=89.32, val_macc=80.38, val_miou=71.02] 75%|███████▌  | 234/312 [11:41<07:04,  5.44s/it, val_acc=89.32, val_macc=80.39, val_miou=71.00] 75%|███████▌  | 235/312 [11:41<06:57,  5.42s/it, val_acc=89.32, val_macc=80.39, val_miou=71.00] 75%|███████▌  | 235/312 [11:45<06:57,  5.42s/it, val_acc=89.29, val_macc=80.37, val_miou=70.94] 76%|███████▌  | 236/312 [11:45<06:38,  5.25s/it, val_acc=89.29, val_macc=80.37, val_miou=70.94] 76%|███████▌  | 236/312 [11:50<06:38,  5.25s/it, val_acc=89.27, val_macc=80.36, val_miou=70.91] 76%|███████▌  | 237/312 [11:50<06:09,  4.92s/it, val_acc=89.27, val_macc=80.36, val_miou=70.91] 76%|███████▌  | 237/312 [11:54<06:09,  4.92s/it, val_acc=89.25, val_macc=80.34, val_miou=70.86] 76%|███████▋  | 238/312 [11:54<05:44,  4.66s/it, val_acc=89.25, val_macc=80.34, val_miou=70.86] 76%|███████▋  | 238/312 [11:55<05:44,  4.66s/it, val_acc=89.21, val_macc=80.32, val_miou=70.78] 77%|███████▋  | 239/312 [11:55<04:21,  3.58s/it, val_acc=89.21, val_macc=80.32, val_miou=70.78] 77%|███████▋  | 239/312 [11:56<04:21,  3.58s/it, val_acc=89.16, val_macc=80.27, val_miou=70.68] 77%|███████▋  | 240/312 [11:56<03:20,  2.79s/it, val_acc=89.16, val_macc=80.27, val_miou=70.68] 77%|███████▋  | 240/312 [11:57<03:20,  2.79s/it, val_acc=89.16, val_macc=80.25, val_miou=70.67] 77%|███████▋  | 241/312 [11:57<02:44,  2.32s/it, val_acc=89.16, val_macc=80.25, val_miou=70.67] 77%|███████▋  | 241/312 [11:59<02:44,  2.32s/it, val_acc=89.13, val_macc=80.24, val_miou=70.64] 78%|███████▊  | 242/312 [11:59<02:31,  2.17s/it, val_acc=89.13, val_macc=80.24, val_miou=70.64] 78%|███████▊  | 242/312 [12:16<02:31,  2.17s/it, val_acc=89.18, val_macc=80.34, val_miou=70.74] 78%|███████▊  | 243/312 [12:16<07:51,  6.84s/it, val_acc=89.18, val_macc=80.34, val_miou=70.74] 78%|███████▊  | 243/312 [12:27<07:51,  6.84s/it, val_acc=89.21, val_macc=80.40, val_miou=70.80] 78%|███████▊  | 244/312 [12:27<09:01,  7.97s/it, val_acc=89.21, val_macc=80.40, val_miou=70.80] 78%|███████▊  | 244/312 [12:31<09:01,  7.97s/it, val_acc=89.25, val_macc=80.46, val_miou=70.86] 79%|███████▊  | 245/312 [12:31<07:25,  6.65s/it, val_acc=89.25, val_macc=80.46, val_miou=70.86] 79%|███████▊  | 245/312 [12:36<07:25,  6.65s/it, val_acc=89.23, val_macc=80.32, val_miou=70.78] 79%|███████▉  | 246/312 [12:36<06:45,  6.14s/it, val_acc=89.23, val_macc=80.32, val_miou=70.78] 79%|███████▉  | 246/312 [12:40<06:45,  6.14s/it, val_acc=89.25, val_macc=80.32, val_miou=70.79] 79%|███████▉  | 247/312 [12:40<06:01,  5.57s/it, val_acc=89.25, val_macc=80.32, val_miou=70.79] 79%|███████▉  | 247/312 [12:44<06:01,  5.57s/it, val_acc=89.22, val_macc=80.28, val_miou=70.75] 79%|███████▉  | 248/312 [12:44<05:29,  5.15s/it, val_acc=89.22, val_macc=80.28, val_miou=70.75] 79%|███████▉  | 248/312 [12:48<05:29,  5.15s/it, val_acc=89.20, val_macc=80.28, val_miou=70.74] 80%|███████▉  | 249/312 [12:48<05:00,  4.77s/it, val_acc=89.20, val_macc=80.28, val_miou=70.74] 80%|███████▉  | 249/312 [12:51<05:00,  4.77s/it, val_acc=89.21, val_macc=80.32, val_miou=70.82] 80%|████████  | 250/312 [12:51<04:27,  4.31s/it, val_acc=89.21, val_macc=80.32, val_miou=70.82] 80%|████████  | 250/312 [12:54<04:27,  4.31s/it, val_acc=89.23, val_macc=80.37, val_miou=70.89] 80%|████████  | 251/312 [12:54<03:52,  3.81s/it, val_acc=89.23, val_macc=80.37, val_miou=70.89] 80%|████████  | 251/312 [12:55<03:52,  3.81s/it, val_acc=89.25, val_macc=80.40, val_miou=70.95] 81%|████████  | 252/312 [12:55<02:56,  2.93s/it, val_acc=89.25, val_macc=80.40, val_miou=70.95] 81%|████████  | 252/312 [12:55<02:56,  2.93s/it, val_acc=89.24, val_macc=80.42, val_miou=70.96] 81%|████████  | 253/312 [12:55<02:12,  2.25s/it, val_acc=89.24, val_macc=80.42, val_miou=70.96] 81%|████████  | 253/312 [12:58<02:12,  2.25s/it, val_acc=89.27, val_macc=80.44, val_miou=71.01] 81%|████████▏ | 254/312 [12:58<02:14,  2.32s/it, val_acc=89.27, val_macc=80.44, val_miou=71.01] 81%|████████▏ | 254/312 [13:20<02:14,  2.32s/it, val_acc=89.30, val_macc=80.48, val_miou=71.08] 82%|████████▏ | 255/312 [13:20<07:44,  8.15s/it, val_acc=89.30, val_macc=80.48, val_miou=71.08] 82%|████████▏ | 255/312 [13:21<07:44,  8.15s/it, val_acc=89.32, val_macc=80.49, val_miou=71.09] 82%|████████▏ | 256/312 [13:21<05:45,  6.17s/it, val_acc=89.32, val_macc=80.49, val_miou=71.09] 82%|████████▏ | 256/312 [13:24<05:45,  6.17s/it, val_acc=89.33, val_macc=80.50, val_miou=71.11] 82%|████████▏ | 257/312 [13:24<04:41,  5.12s/it, val_acc=89.33, val_macc=80.50, val_miou=71.11] 82%|████████▏ | 257/312 [13:27<04:41,  5.12s/it, val_acc=89.36, val_macc=80.52, val_miou=71.13] 83%|████████▎ | 258/312 [13:27<04:00,  4.45s/it, val_acc=89.36, val_macc=80.52, val_miou=71.13] 83%|████████▎ | 258/312 [13:30<04:00,  4.45s/it, val_acc=89.37, val_macc=80.53, val_miou=71.14] 83%|████████▎ | 259/312 [13:30<03:40,  4.15s/it, val_acc=89.37, val_macc=80.53, val_miou=71.14] 83%|████████▎ | 259/312 [13:32<03:40,  4.15s/it, val_acc=89.38, val_macc=80.54, val_miou=71.14] 83%|████████▎ | 260/312 [13:32<02:55,  3.38s/it, val_acc=89.38, val_macc=80.54, val_miou=71.14] 83%|████████▎ | 260/312 [13:33<02:55,  3.38s/it, val_acc=89.39, val_macc=80.58, val_miou=71.20] 84%|████████▎ | 261/312 [13:33<02:20,  2.76s/it, val_acc=89.39, val_macc=80.58, val_miou=71.20] 84%|████████▎ | 261/312 [13:38<02:20,  2.76s/it, val_acc=89.41, val_macc=80.61, val_miou=71.21] 84%|████████▍ | 262/312 [13:38<02:44,  3.29s/it, val_acc=89.41, val_macc=80.61, val_miou=71.21] 84%|████████▍ | 262/312 [13:42<02:44,  3.29s/it, val_acc=89.39, val_macc=80.61, val_miou=71.19] 84%|████████▍ | 263/312 [13:42<02:57,  3.62s/it, val_acc=89.39, val_macc=80.61, val_miou=71.19] 84%|████████▍ | 263/312 [13:45<02:57,  3.62s/it, val_acc=89.40, val_macc=80.66, val_miou=71.27] 85%|████████▍ | 264/312 [13:45<02:43,  3.41s/it, val_acc=89.40, val_macc=80.66, val_miou=71.27] 85%|████████▍ | 264/312 [13:48<02:43,  3.41s/it, val_acc=89.40, val_macc=80.67, val_miou=71.32] 85%|████████▍ | 265/312 [13:48<02:32,  3.25s/it, val_acc=89.40, val_macc=80.67, val_miou=71.32] 85%|████████▍ | 265/312 [13:51<02:32,  3.25s/it, val_acc=89.41, val_macc=80.68, val_miou=71.36] 85%|████████▌ | 266/312 [13:51<02:26,  3.18s/it, val_acc=89.41, val_macc=80.68, val_miou=71.36] 85%|████████▌ | 266/312 [13:54<02:26,  3.18s/it, val_acc=89.40, val_macc=80.66, val_miou=71.35] 86%|████████▌ | 267/312 [13:54<02:27,  3.27s/it, val_acc=89.40, val_macc=80.66, val_miou=71.35] 86%|████████▌ | 267/312 [13:56<02:27,  3.27s/it, val_acc=89.40, val_macc=80.68, val_miou=71.37] 86%|████████▌ | 268/312 [13:56<02:09,  2.94s/it, val_acc=89.40, val_macc=80.68, val_miou=71.37] 86%|████████▌ | 268/312 [13:58<02:09,  2.94s/it, val_acc=89.42, val_macc=80.78, val_miou=71.47] 86%|████████▌ | 269/312 [13:58<01:43,  2.42s/it, val_acc=89.42, val_macc=80.78, val_miou=71.47] 86%|████████▌ | 269/312 [14:00<01:43,  2.42s/it, val_acc=89.39, val_macc=80.71, val_miou=71.45] 87%|████████▋ | 270/312 [14:00<01:39,  2.36s/it, val_acc=89.39, val_macc=80.71, val_miou=71.45] 87%|████████▋ | 270/312 [14:01<01:39,  2.36s/it, val_acc=89.39, val_macc=80.71, val_miou=71.45] 87%|████████▋ | 271/312 [14:01<01:17,  1.90s/it, val_acc=89.39, val_macc=80.71, val_miou=71.45] 87%|████████▋ | 271/312 [14:02<01:17,  1.90s/it, val_acc=89.39, val_macc=80.71, val_miou=71.45] 87%|████████▋ | 272/312 [14:02<01:05,  1.63s/it, val_acc=89.39, val_macc=80.71, val_miou=71.45] 87%|████████▋ | 272/312 [14:15<01:05,  1.63s/it, val_acc=89.42, val_macc=80.90, val_miou=71.64] 88%|████████▊ | 273/312 [14:15<03:25,  5.27s/it, val_acc=89.42, val_macc=80.90, val_miou=71.64] 88%|████████▊ | 273/312 [14:19<03:25,  5.27s/it, val_acc=89.42, val_macc=80.95, val_miou=71.62] 88%|████████▊ | 274/312 [14:19<02:56,  4.64s/it, val_acc=89.42, val_macc=80.95, val_miou=71.62] 88%|████████▊ | 274/312 [14:22<02:56,  4.64s/it, val_acc=89.44, val_macc=81.03, val_miou=71.73] 88%|████████▊ | 275/312 [14:22<02:37,  4.25s/it, val_acc=89.44, val_macc=81.03, val_miou=71.73] 88%|████████▊ | 275/312 [14:22<02:37,  4.25s/it, val_acc=89.44, val_macc=81.03, val_miou=71.72] 88%|████████▊ | 276/312 [14:22<01:53,  3.14s/it, val_acc=89.44, val_macc=81.03, val_miou=71.72] 88%|████████▊ | 276/312 [14:23<01:53,  3.14s/it, val_acc=89.44, val_macc=81.03, val_miou=71.70] 89%|████████▉ | 277/312 [14:23<01:19,  2.28s/it, val_acc=89.44, val_macc=81.03, val_miou=71.70] 89%|████████▉ | 277/312 [14:25<01:19,  2.28s/it, val_acc=89.45, val_macc=81.06, val_miou=71.73] 89%|████████▉ | 278/312 [14:25<01:12,  2.13s/it, val_acc=89.45, val_macc=81.06, val_miou=71.73] 89%|████████▉ | 278/312 [14:26<01:12,  2.13s/it, val_acc=89.46, val_macc=81.09, val_miou=71.75] 89%|████████▉ | 279/312 [14:26<01:05,  1.99s/it, val_acc=89.46, val_macc=81.09, val_miou=71.75] 89%|████████▉ | 279/312 [14:29<01:05,  1.99s/it, val_acc=89.48, val_macc=81.12, val_miou=71.76] 90%|████████▉ | 280/312 [14:29<01:11,  2.24s/it, val_acc=89.48, val_macc=81.12, val_miou=71.76] 90%|████████▉ | 280/312 [14:31<01:11,  2.24s/it, val_acc=89.49, val_macc=81.11, val_miou=71.77] 90%|█████████ | 281/312 [14:31<01:03,  2.04s/it, val_acc=89.49, val_macc=81.11, val_miou=71.77] 90%|█████████ | 281/312 [14:32<01:03,  2.04s/it, val_acc=89.51, val_macc=81.12, val_miou=71.78] 90%|█████████ | 282/312 [14:32<00:59,  1.99s/it, val_acc=89.51, val_macc=81.12, val_miou=71.78] 90%|█████████ | 282/312 [14:34<00:59,  1.99s/it, val_acc=89.52, val_macc=81.10, val_miou=71.77] 91%|█████████ | 283/312 [14:34<00:54,  1.86s/it, val_acc=89.52, val_macc=81.10, val_miou=71.77] 91%|█████████ | 283/312 [14:38<00:54,  1.86s/it, val_acc=89.52, val_macc=81.12, val_miou=71.78] 91%|█████████ | 284/312 [14:38<01:08,  2.45s/it, val_acc=89.52, val_macc=81.12, val_miou=71.78] 91%|█████████ | 284/312 [14:41<01:08,  2.45s/it, val_acc=89.54, val_macc=81.14, val_miou=71.82] 91%|█████████▏| 285/312 [14:41<01:10,  2.60s/it, val_acc=89.54, val_macc=81.14, val_miou=71.82] 91%|█████████▏| 285/312 [14:42<01:10,  2.60s/it, val_acc=89.54, val_macc=81.15, val_miou=71.84] 92%|█████████▏| 286/312 [14:42<01:00,  2.34s/it, val_acc=89.54, val_macc=81.15, val_miou=71.84] 92%|█████████▏| 286/312 [14:43<01:00,  2.34s/it, val_acc=89.55, val_macc=81.17, val_miou=71.86] 92%|█████████▏| 287/312 [14:43<00:45,  1.82s/it, val_acc=89.55, val_macc=81.17, val_miou=71.86] 92%|█████████▏| 287/312 [14:45<00:45,  1.82s/it, val_acc=89.56, val_macc=81.20, val_miou=71.90] 92%|█████████▏| 288/312 [14:45<00:43,  1.81s/it, val_acc=89.56, val_macc=81.20, val_miou=71.90] 92%|█████████▏| 288/312 [14:46<00:43,  1.81s/it, val_acc=89.56, val_macc=81.22, val_miou=71.93] 93%|█████████▎| 289/312 [14:46<00:36,  1.58s/it, val_acc=89.56, val_macc=81.22, val_miou=71.93] 93%|█████████▎| 289/312 [14:47<00:36,  1.58s/it, val_acc=89.54, val_macc=81.09, val_miou=71.81] 93%|█████████▎| 290/312 [14:47<00:30,  1.37s/it, val_acc=89.54, val_macc=81.09, val_miou=71.81] 93%|█████████▎| 290/312 [14:51<00:30,  1.37s/it, val_acc=89.54, val_macc=81.09, val_miou=71.80] 93%|█████████▎| 291/312 [14:51<00:47,  2.26s/it, val_acc=89.54, val_macc=81.09, val_miou=71.80] 93%|█████████▎| 291/312 [14:55<00:47,  2.26s/it, val_acc=89.54, val_macc=81.09, val_miou=71.81] 94%|█████████▎| 292/312 [14:55<00:53,  2.66s/it, val_acc=89.54, val_macc=81.09, val_miou=71.81] 94%|█████████▎| 292/312 [14:56<00:53,  2.66s/it, val_acc=89.55, val_macc=81.11, val_miou=71.83] 94%|█████████▍| 293/312 [14:56<00:42,  2.25s/it, val_acc=89.55, val_macc=81.11, val_miou=71.83] 94%|█████████▍| 293/312 [14:59<00:42,  2.25s/it, val_acc=89.51, val_macc=81.06, val_miou=71.75] 94%|█████████▍| 294/312 [14:59<00:42,  2.36s/it, val_acc=89.51, val_macc=81.06, val_miou=71.75] 94%|█████████▍| 294/312 [15:03<00:42,  2.36s/it, val_acc=89.44, val_macc=80.92, val_miou=71.58] 95%|█████████▍| 295/312 [15:03<00:49,  2.91s/it, val_acc=89.44, val_macc=80.92, val_miou=71.58] 95%|█████████▍| 295/312 [15:05<00:49,  2.91s/it, val_acc=89.39, val_macc=80.82, val_miou=71.44] 95%|█████████▍| 296/312 [15:05<00:40,  2.55s/it, val_acc=89.39, val_macc=80.82, val_miou=71.44] 95%|█████████▍| 296/312 [15:07<00:40,  2.55s/it, val_acc=89.37, val_macc=80.80, val_miou=71.41] 95%|█████████▌| 297/312 [15:07<00:36,  2.43s/it, val_acc=89.37, val_macc=80.80, val_miou=71.41] 95%|█████████▌| 297/312 [15:08<00:36,  2.43s/it, val_acc=89.36, val_macc=80.8 , val_miou=71.39] 96%|█████████▌| 298/312 [15:08<00:28,  2.03s/it, val_acc=89.36, val_macc=80.8 , val_miou=71.39] 96%|█████████▌| 298/312 [15:11<00:28,  2.03s/it, val_acc=89.35, val_macc=80.80, val_miou=71.40] 96%|█████████▌| 299/312 [15:11<00:32,  2.52s/it, val_acc=89.35, val_macc=80.80, val_miou=71.40] 96%|█████████▌| 299/312 [15:14<00:32,  2.52s/it, val_acc=89.34, val_macc=80.79, val_miou=71.39] 96%|█████████▌| 300/312 [15:14<00:28,  2.40s/it, val_acc=89.34, val_macc=80.79, val_miou=71.39] 96%|█████████▌| 300/312 [15:16<00:28,  2.40s/it, val_acc=89.31, val_macc=80.76, val_miou=71.35] 96%|█████████▋| 301/312 [15:16<00:25,  2.35s/it, val_acc=89.31, val_macc=80.76, val_miou=71.35] 96%|█████████▋| 301/312 [15:18<00:25,  2.35s/it, val_acc=89.25, val_macc=80.63, val_miou=71.22] 97%|█████████▋| 302/312 [15:18<00:21,  2.17s/it, val_acc=89.25, val_macc=80.63, val_miou=71.22] 97%|█████████▋| 302/312 [15:18<00:21,  2.17s/it, val_acc=89.19, val_macc=80.48, val_miou=71.07] 97%|█████████▋| 303/312 [15:18<00:16,  1.78s/it, val_acc=89.19, val_macc=80.48, val_miou=71.07] 97%|█████████▋| 303/312 [15:19<00:16,  1.78s/it, val_acc=89.15, val_macc=80.45, val_miou=71.03] 97%|█████████▋| 304/312 [15:19<00:12,  1.54s/it, val_acc=89.15, val_macc=80.45, val_miou=71.03] 97%|█████████▋| 304/312 [15:20<00:12,  1.54s/it, val_acc=89.16, val_macc=80.48, val_miou=71.07] 98%|█████████▊| 305/312 [15:20<00:08,  1.22s/it, val_acc=89.16, val_macc=80.48, val_miou=71.07] 98%|█████████▊| 305/312 [15:20<00:08,  1.22s/it, val_acc=89.17, val_macc=80.51, val_miou=71.12] 98%|█████████▊| 306/312 [15:20<00:06,  1.02s/it, val_acc=89.17, val_macc=80.51, val_miou=71.12] 98%|█████████▊| 306/312 [15:21<00:06,  1.02s/it, val_acc=89.18, val_macc=80.54, val_miou=71.17] 98%|█████████▊| 307/312 [15:21<00:04,  1.07it/s, val_acc=89.18, val_macc=80.54, val_miou=71.17] 98%|█████████▊| 307/312 [15:22<00:04,  1.07it/s, val_acc=89.18, val_macc=80.55, val_miou=71.20] 99%|█████████▊| 308/312 [15:22<00:03,  1.29it/s, val_acc=89.18, val_macc=80.55, val_miou=71.20] 99%|█████████▊| 308/312 [15:22<00:03,  1.29it/s, val_acc=89.18, val_macc=80.55, val_miou=71.21] 99%|█████████▉| 309/312 [15:22<00:01,  1.61it/s, val_acc=89.18, val_macc=80.55, val_miou=71.21] 99%|█████████▉| 309/312 [15:22<00:01,  1.61it/s, val_acc=89.18, val_macc=80.56, val_miou=71.20] 99%|█████████▉| 310/312 [15:22<00:00,  2.03it/s, val_acc=89.18, val_macc=80.56, val_miou=71.20] 99%|█████████▉| 310/312 [15:23<00:00,  2.03it/s, val_acc=89.13, val_macc=80.55, val_miou=71.16]100%|█████████▉| 311/312 [15:23<00:00,  1.54it/s, val_acc=89.13, val_macc=80.55, val_miou=71.16]100%|█████████▉| 311/312 [15:24<00:00,  1.54it/s, val_acc=89.12, val_macc=80.54, val_miou=71.15]100%|██████████| 312/312 [15:24<00:00,  1.34it/s, val_acc=89.12, val_macc=80.54, val_miou=71.15]100%|██████████| 312/312 [15:24<00:00,  2.96s/it, val_acc=89.12, val_macc=80.54, val_miou=71.15]
+Evaluated scores for 3D semantic segmentation on all points: 
+--- Refined 3D ---
+{'val_acc': 89.12908878790296, 'val_macc': 80.54334517386653, 'val_miou': 71.15855245075086}
+{0: '84.96', 1: '92.00', 2: '67.14', 3: '81.88', 4: '72.50', 5: '72.63', 6: '69.51', 7: '64.72', 8: '63.06', 9: '77.37', 10: '42.25', 11: '64.59', 12: '65.16', 13: '74.27', 14: '64.03', 15: '69.62', 16: '85.77', 17: '65.20', 18: '85.84', 19: '60.68'}
+Evaluated scores for 3D semantic segmentation on seen points: 
+--- Refined 3D ---
+{'val_acc': 89.12908878790296, 'val_macc': 80.54334517386653, 'val_miou': 71.15855245075086}
+{0: '84.96', 1: '92.00', 2: '67.14', 3: '81.88', 4: '72.50', 5: '72.63', 6: '69.51', 7: '64.72', 8: '63.06', 9: '77.37', 10: '42.25', 11: '64.59', 12: '65.16', 13: '74.27', 14: '64.03', 15: '69.62', 16: '85.77', 17: '65.20', 18: '85.84', 19: '60.68'}
+  0%|          | 0/312 [00:00<?, ?it/s]  0%|          | 1/312 [01:01<5:18:54, 61.53s/it]  1%|          | 2/312 [01:13<2:47:19, 32.38s/it]  1%|          | 3/312 [01:16<1:38:39, 19.16s/it]  1%|▏         | 4/312 [01:17<1:00:00, 11.69s/it]  2%|▏         | 5/312 [01:18<40:44,  7.96s/it]    2%|▏         | 6/312 [01:21<31:21,  6.15s/it]  2%|▏         | 7/312 [01:23<24:37,  4.84s/it]  3%|▎         | 8/312 [01:24<18:49,  3.71s/it]  3%|▎         | 9/312 [01:27<17:11,  3.40s/it]  3%|▎         | 10/312 [01:33<20:59,  4.17s/it]  4%|▎         | 11/312 [01:36<18:59,  3.78s/it]  4%|▍         | 12/312 [01:37<15:58,  3.19s/it]  4%|▍         | 13/312 [01:42<17:29,  3.51s/it]  4%|▍         | 14/312 [01:45<16:24,  3.30s/it]  5%|▍         | 15/312 [01:49<17:39,  3.57s/it]  5%|▌         | 16/312 [01:52<16:41,  3.38s/it]  5%|▌         | 17/312 [01:56<18:01,  3.67s/it]  6%|▌         | 18/312 [01:57<13:25,  2.74s/it]  6%|▌         | 19/312 [01:58<11:39,  2.39s/it]  6%|▋         | 20/312 [02:00<10:11,  2.10s/it]  7%|▋         | 21/312 [02:00<08:08,  1.68s/it]  7%|▋         | 22/312 [02:01<06:14,  1.29s/it]  7%|▋         | 23/312 [02:01<04:49,  1.00s/it]  8%|▊         | 24/312 [02:03<06:55,  1.44s/it]  8%|▊         | 25/312 [02:06<07:47,  1.63s/it]  8%|▊         | 26/312 [02:07<07:53,  1.65s/it]  9%|▊         | 27/312 [02:09<08:42,  1.83s/it]  9%|▉         | 28/312 [02:11<07:41,  1.63s/it]  9%|▉         | 29/312 [02:13<08:03,  1.71s/it] 10%|▉         | 30/312 [02:14<07:16,  1.55s/it] 10%|▉         | 31/312 [02:15<07:18,  1.56s/it] 10%|█         | 32/312 [02:18<08:46,  1.88s/it] 11%|█         | 33/312 [02:19<07:56,  1.71s/it] 11%|█         | 34/312 [02:22<09:11,  1.98s/it] 11%|█         | 35/312 [02:23<08:32,  1.85s/it] 12%|█▏        | 36/312 [02:25<08:44,  1.90s/it] 12%|█▏        | 37/312 [02:28<09:03,  1.98s/it] 12%|█▏        | 38/312 [02:28<07:15,  1.59s/it] 12%|█▎        | 39/312 [02:29<05:57,  1.31s/it] 13%|█▎        | 40/312 [02:30<05:11,  1.15s/it] 13%|█▎        | 41/312 [02:31<05:44,  1.27s/it] 13%|█▎        | 42/312 [02:33<06:14,  1.39s/it] 14%|█▍        | 43/312 [02:34<06:01,  1.34s/it] 14%|█▍        | 44/312 [02:35<04:48,  1.08s/it] 14%|█▍        | 45/312 [02:37<06:11,  1.39s/it] 15%|█▍        | 46/312 [02:37<05:18,  1.20s/it] 15%|█▌        | 47/312 [02:38<04:31,  1.02s/it] 15%|█▌        | 48/312 [02:39<03:54,  1.12it/s] 16%|█▌        | 49/312 [02:40<03:56,  1.11it/s] 16%|█▌        | 50/312 [02:41<03:59,  1.09it/s] 16%|█▋        | 51/312 [02:41<03:25,  1.27it/s] 17%|█▋        | 52/312 [02:42<03:21,  1.29it/s] 17%|█▋        | 53/312 [02:43<03:51,  1.12it/s] 17%|█▋        | 54/312 [02:44<03:29,  1.23it/s] 18%|█▊        | 55/312 [02:44<03:10,  1.35it/s] 18%|█▊        | 56/312 [02:45<03:12,  1.33it/s] 18%|█▊        | 57/312 [02:59<20:40,  4.86s/it] 19%|█▊        | 58/312 [03:02<17:11,  4.06s/it] 19%|█▉        | 59/312 [03:06<17:44,  4.21s/it] 19%|█▉        | 60/312 [03:10<17:13,  4.10s/it] 20%|█▉        | 61/312 [03:11<12:51,  3.07s/it] 20%|█▉        | 62/312 [03:11<09:47,  2.35s/it] 20%|██        | 63/312 [03:13<08:28,  2.04s/it] 21%|██        | 64/312 [03:15<08:38,  2.09s/it] 21%|██        | 65/312 [03:17<08:13,  2.00s/it] 21%|██        | 66/312 [03:20<10:31,  2.57s/it] 21%|██▏       | 67/312 [03:23<10:19,  2.53s/it] 22%|██▏       | 68/312 [03:25<09:12,  2.26s/it] 22%|██▏       | 69/312 [03:27<09:47,  2.42s/it] 22%|██▏       | 70/312 [03:31<10:41,  2.65s/it] 23%|██▎       | 71/312 [03:32<09:02,  2.25s/it] 23%|██▎       | 72/312 [03:33<07:53,  1.97s/it] 23%|██▎       | 73/312 [03:35<07:34,  1.90s/it] 24%|██▎       | 74/312 [03:39<10:13,  2.58s/it] 24%|██▍       | 75/312 [03:41<09:28,  2.40s/it] 24%|██▍       | 76/312 [04:09<39:09,  9.96s/it] 25%|██▍       | 77/312 [04:13<32:52,  8.40s/it] 25%|██▌       | 78/312 [04:18<28:20,  7.27s/it] 25%|██▌       | 79/312 [04:20<22:04,  5.69s/it] 26%|██▌       | 80/312 [04:23<19:02,  4.92s/it] 26%|██▌       | 81/312 [04:26<16:47,  4.36s/it] 26%|██▋       | 82/312 [04:27<12:59,  3.39s/it] 27%|██▋       | 83/312 [04:29<10:41,  2.80s/it] 27%|██▋       | 84/312 [04:30<08:21,  2.20s/it] 27%|██▋       | 85/312 [04:32<08:04,  2.13s/it] 28%|██▊       | 86/312 [04:32<06:22,  1.69s/it] 28%|██▊       | 87/312 [04:33<05:07,  1.37s/it] 28%|██▊       | 88/312 [04:34<04:41,  1.26s/it] 29%|██▊       | 89/312 [04:35<04:21,  1.17s/it] 29%|██▉       | 90/312 [04:35<03:25,  1.08it/s] 29%|██▉       | 91/312 [04:37<04:04,  1.11s/it] 29%|██▉       | 92/312 [04:38<04:10,  1.14s/it] 30%|██▉       | 93/312 [04:41<05:58,  1.64s/it] 30%|███       | 94/312 [04:43<07:02,  1.94s/it] 30%|███       | 95/312 [05:01<24:07,  6.67s/it] 31%|███       | 96/312 [05:03<18:56,  5.26s/it] 31%|███       | 97/312 [05:04<14:06,  3.94s/it] 31%|███▏      | 98/312 [05:05<10:39,  2.99s/it] 32%|███▏      | 99/312 [05:06<08:23,  2.36s/it] 32%|███▏      | 100/312 [05:08<07:58,  2.25s/it] 32%|███▏      | 101/312 [05:09<07:14,  2.06s/it] 33%|███▎      | 102/312 [05:11<06:45,  1.93s/it] 33%|███▎      | 103/312 [05:13<06:54,  1.98s/it] 33%|███▎      | 104/312 [05:15<06:46,  1.95s/it] 34%|███▎      | 105/312 [05:17<06:46,  1.96s/it] 34%|███▍      | 106/312 [05:18<05:53,  1.72s/it] 34%|███▍      | 107/312 [05:18<04:42,  1.38s/it] 35%|███▍      | 108/312 [05:19<03:29,  1.03s/it] 35%|███▍      | 109/312 [05:19<03:10,  1.07it/s] 35%|███▌      | 110/312 [05:21<03:47,  1.13s/it] 36%|███▌      | 111/312 [05:22<03:43,  1.11s/it] 36%|███▌      | 112/312 [05:23<03:12,  1.04it/s] 36%|███▌      | 113/312 [05:24<04:02,  1.22s/it] 37%|███▋      | 114/312 [05:27<05:02,  1.53s/it] 37%|███▋      | 115/312 [05:28<04:56,  1.50s/it] 37%|███▋      | 116/312 [05:30<05:02,  1.54s/it] 38%|███▊      | 117/312 [05:34<07:16,  2.24s/it] 38%|███▊      | 118/312 [05:35<06:31,  2.02s/it] 38%|███▊      | 119/312 [05:37<05:48,  1.81s/it] 38%|███▊      | 120/312 [05:37<04:55,  1.54s/it] 39%|███▉      | 121/312 [05:38<03:59,  1.25s/it] 39%|███▉      | 122/312 [05:39<03:48,  1.20s/it] 39%|███▉      | 123/312 [05:40<03:31,  1.12s/it] 40%|███▉      | 124/312 [05:41<03:04,  1.02it/s] 40%|████      | 125/312 [05:41<02:45,  1.13it/s] 40%|████      | 126/312 [05:42<02:21,  1.32it/s] 41%|████      | 127/312 [05:43<02:50,  1.08it/s] 41%|████      | 128/312 [05:45<03:53,  1.27s/it] 41%|████▏     | 129/312 [05:47<04:23,  1.44s/it] 42%|████▏     | 130/312 [05:48<03:43,  1.23s/it] 42%|████▏     | 131/312 [05:48<03:01,  1.01s/it] 42%|████▏     | 132/312 [05:50<03:50,  1.28s/it] 43%|████▎     | 133/312 [05:51<03:04,  1.03s/it] 43%|████▎     | 134/312 [05:51<02:41,  1.10it/s] 43%|████▎     | 135/312 [05:52<02:15,  1.31it/s] 44%|████▎     | 136/312 [05:54<03:44,  1.27s/it] 44%|████▍     | 137/312 [05:56<04:30,  1.55s/it] 44%|████▍     | 138/312 [05:57<04:04,  1.40s/it] 45%|████▍     | 139/312 [05:59<03:56,  1.37s/it] 45%|████▍     | 140/312 [05:59<03:19,  1.16s/it] 45%|████▌     | 141/312 [06:00<03:13,  1.13s/it] 46%|████▌     | 142/312 [06:02<03:46,  1.33s/it] 46%|████▌     | 143/312 [06:04<03:58,  1.41s/it] 46%|████▌     | 144/312 [06:05<03:23,  1.21s/it] 46%|████▋     | 145/312 [06:06<03:20,  1.20s/it] 47%|████▋     | 146/312 [06:07<03:13,  1.16s/it] 47%|████▋     | 147/312 [06:09<04:19,  1.57s/it] 47%|████▋     | 148/312 [06:11<04:16,  1.57s/it] 48%|████▊     | 149/312 [06:11<03:10,  1.17s/it] 48%|████▊     | 150/312 [06:11<02:31,  1.07it/s] 48%|████▊     | 151/312 [06:17<06:13,  2.32s/it] 49%|████▊     | 152/312 [06:21<07:38,  2.87s/it] 49%|████▉     | 153/312 [06:23<06:49,  2.58s/it] 49%|████▉     | 154/312 [06:25<06:03,  2.30s/it] 50%|████▉     | 155/312 [06:25<04:26,  1.70s/it] 50%|█████     | 156/312 [06:26<03:49,  1.47s/it] 50%|█████     | 157/312 [06:27<03:34,  1.39s/it] 51%|█████     | 158/312 [06:28<02:48,  1.09s/it] 51%|█████     | 159/312 [06:29<02:42,  1.06s/it] 51%|█████▏    | 160/312 [06:30<02:53,  1.14s/it] 52%|█████▏    | 161/312 [06:33<03:59,  1.59s/it] 52%|█████▏    | 162/312 [06:34<04:07,  1.65s/it] 52%|█████▏    | 163/312 [06:36<04:01,  1.62s/it] 53%|█████▎    | 164/312 [06:37<03:44,  1.52s/it] 53%|█████▎    | 165/312 [06:38<03:20,  1.37s/it] 53%|█████▎    | 166/312 [06:39<02:56,  1.21s/it] 54%|█████▎    | 167/312 [06:40<03:02,  1.26s/it] 54%|█████▍    | 168/312 [06:42<03:05,  1.29s/it] 54%|█████▍    | 169/312 [06:43<02:46,  1.17s/it] 54%|█████▍    | 170/312 [06:44<03:11,  1.35s/it] 55%|█████▍    | 171/312 [06:51<07:04,  3.01s/it] 55%|█████▌    | 172/312 [06:54<06:33,  2.81s/it] 55%|█████▌    | 173/312 [06:55<05:21,  2.31s/it] 56%|█████▌    | 174/312 [06:55<03:57,  1.72s/it] 56%|█████▌    | 175/312 [06:56<03:10,  1.39s/it] 56%|█████▋    | 176/312 [06:58<03:45,  1.66s/it] 57%|█████▋    | 177/312 [07:07<08:39,  3.85s/it] 57%|█████▋    | 178/312 [07:09<07:22,  3.30s/it] 57%|█████▋    | 179/312 [07:10<05:37,  2.54s/it] 58%|█████▊    | 180/312 [07:10<04:23,  2.00s/it] 58%|█████▊    | 181/312 [07:11<03:36,  1.65s/it] 58%|█████▊    | 182/312 [07:12<02:54,  1.34s/it] 59%|█████▊    | 183/312 [07:13<02:31,  1.18s/it] 59%|█████▉    | 184/312 [07:13<01:58,  1.08it/s] 59%|█████▉    | 185/312 [07:14<02:04,  1.02it/s] 60%|█████▉    | 186/312 [07:15<02:12,  1.05s/it] 60%|█████▉    | 187/312 [07:16<01:54,  1.09it/s] 60%|██████    | 188/312 [07:17<01:41,  1.23it/s] 61%|██████    | 189/312 [07:18<01:53,  1.08it/s] 61%|██████    | 190/312 [07:19<02:15,  1.11s/it] 61%|██████    | 191/312 [07:22<03:10,  1.58s/it] 62%|██████▏   | 192/312 [07:24<03:15,  1.63s/it] 62%|██████▏   | 193/312 [07:25<03:17,  1.66s/it] 62%|██████▏   | 194/312 [07:26<02:37,  1.34s/it] 62%|██████▎   | 195/312 [07:27<02:26,  1.25s/it] 63%|██████▎   | 196/312 [07:28<02:17,  1.18s/it] 63%|██████▎   | 197/312 [07:42<09:20,  4.88s/it] 63%|██████▎   | 198/312 [07:46<08:59,  4.73s/it] 64%|██████▍   | 199/312 [07:49<08:02,  4.27s/it] 64%|██████▍   | 200/312 [07:51<06:24,  3.43s/it] 64%|██████▍   | 201/312 [07:53<05:47,  3.13s/it] 65%|██████▍   | 202/312 [07:55<04:49,  2.63s/it] 65%|██████▌   | 203/312 [08:03<07:43,  4.25s/it] 65%|██████▌   | 204/312 [08:05<06:35,  3.66s/it] 66%|██████▌   | 205/312 [08:06<05:21,  3.00s/it] 66%|██████▌   | 206/312 [08:07<04:11,  2.38s/it] 66%|██████▋   | 207/312 [08:09<03:44,  2.14s/it] 67%|██████▋   | 208/312 [08:10<03:11,  1.84s/it] 67%|██████▋   | 209/312 [08:12<03:06,  1.81s/it] 67%|██████▋   | 210/312 [08:14<03:12,  1.89s/it] 68%|██████▊   | 211/312 [08:16<03:14,  1.93s/it] 68%|██████▊   | 212/312 [08:17<02:47,  1.68s/it] 68%|██████▊   | 213/312 [08:18<02:38,  1.60s/it] 69%|██████▊   | 214/312 [08:19<02:05,  1.28s/it] 69%|██████▉   | 215/312 [08:20<01:47,  1.11s/it] 69%|██████▉   | 216/312 [08:21<01:49,  1.14s/it] 70%|██████▉   | 217/312 [08:23<02:16,  1.43s/it] 70%|██████▉   | 218/312 [08:26<02:47,  1.78s/it] 70%|███████   | 219/312 [08:28<03:02,  1.96s/it] 71%|███████   | 220/312 [08:30<02:51,  1.87s/it] 71%|███████   | 221/312 [08:31<02:34,  1.70s/it] 71%|███████   | 222/312 [08:33<02:36,  1.73s/it] 71%|███████▏  | 223/312 [08:34<02:18,  1.56s/it] 72%|███████▏  | 224/312 [08:34<01:45,  1.20s/it] 72%|███████▏  | 225/312 [08:36<01:56,  1.34s/it] 72%|███████▏  | 226/312 [08:38<02:20,  1.63s/it] 73%|███████▎  | 227/312 [08:40<02:13,  1.57s/it] 73%|███████▎  | 228/312 [08:41<02:16,  1.63s/it] 73%|███████▎  | 229/312 [08:43<02:15,  1.63s/it] 74%|███████▎  | 230/312 [08:45<02:22,  1.74s/it] 74%|███████▍  | 231/312 [08:46<02:07,  1.58s/it] 74%|███████▍  | 232/312 [08:56<05:20,  4.00s/it] 75%|███████▍  | 233/312 [09:02<06:10,  4.69s/it] 75%|███████▌  | 234/312 [09:05<05:12,  4.00s/it] 75%|███████▌  | 235/312 [09:09<05:29,  4.27s/it] 76%|███████▌  | 236/312 [09:12<04:47,  3.78s/it] 76%|███████▌  | 237/312 [09:14<04:10,  3.33s/it] 76%|███████▋  | 238/312 [09:16<03:25,  2.78s/it] 77%|███████▋  | 239/312 [09:17<02:41,  2.21s/it] 77%|███████▋  | 240/312 [09:17<02:01,  1.69s/it] 77%|███████▋  | 241/312 [09:19<01:57,  1.65s/it] 78%|███████▊  | 242/312 [09:21<02:06,  1.81s/it] 78%|███████▊  | 243/312 [09:39<07:32,  6.56s/it] 78%|███████▊  | 244/312 [10:01<12:44, 11.25s/it] 79%|███████▊  | 245/312 [10:04<09:50,  8.81s/it] 79%|███████▉  | 246/312 [10:06<07:24,  6.74s/it] 79%|███████▉  | 247/312 [10:07<05:35,  5.17s/it] 79%|███████▉  | 248/312 [10:10<04:39,  4.37s/it] 80%|███████▉  | 249/312 [10:14<04:33,  4.34s/it] 80%|████████  | 250/312 [10:15<03:24,  3.29s/it] 80%|████████  | 251/312 [10:15<02:27,  2.42s/it] 81%|████████  | 252/312 [10:16<01:59,  2.00s/it] 81%|████████  | 253/312 [10:17<01:37,  1.65s/it] 81%|████████▏ | 254/312 [10:20<01:57,  2.03s/it] 82%|████████▏ | 255/312 [10:41<07:26,  7.84s/it] 82%|████████▏ | 256/312 [10:42<05:17,  5.68s/it] 82%|████████▏ | 257/312 [10:43<03:54,  4.27s/it] 83%|████████▎ | 258/312 [10:44<02:55,  3.24s/it] 83%|████████▎ | 259/312 [10:44<02:06,  2.38s/it] 83%|████████▎ | 260/312 [10:46<01:51,  2.15s/it] 84%|████████▎ | 261/312 [10:53<03:00,  3.53s/it] 84%|████████▍ | 262/312 [10:56<02:49,  3.39s/it] 84%|████████▍ | 263/312 [10:58<02:31,  3.10s/it] 85%|████████▍ | 264/312 [10:59<01:50,  2.30s/it] 85%|████████▍ | 265/312 [11:00<01:29,  1.90s/it] 85%|████████▌ | 266/312 [11:00<01:08,  1.48s/it] 86%|████████▌ | 267/312 [11:04<01:43,  2.30s/it] 86%|████████▌ | 268/312 [11:06<01:28,  2.02s/it] 86%|████████▌ | 269/312 [11:08<01:27,  2.04s/it] 87%|████████▋ | 270/312 [11:10<01:33,  2.22s/it] 87%|████████▋ | 271/312 [11:11<01:15,  1.84s/it] 87%|████████▋ | 272/312 [11:12<01:00,  1.50s/it] 88%|████████▊ | 273/312 [11:35<05:09,  7.93s/it] 88%|████████▊ | 274/312 [11:40<04:23,  6.93s/it] 88%|████████▊ | 275/312 [11:44<03:47,  6.15s/it] 88%|████████▊ | 276/312 [11:44<02:38,  4.41s/it] 89%|████████▉ | 277/312 [11:44<01:50,  3.15s/it] 89%|████████▉ | 278/312 [11:46<01:28,  2.61s/it] 89%|████████▉ | 279/312 [11:47<01:11,  2.17s/it] 90%|████████▉ | 280/312 [11:49<01:07,  2.12s/it] 90%|█████████ | 281/312 [11:50<00:56,  1.82s/it] 90%|█████████ | 282/312 [11:51<00:42,  1.42s/it] 91%|█████████ | 283/312 [11:51<00:36,  1.26s/it] 91%|█████████ | 284/312 [11:53<00:34,  1.22s/it] 91%|█████████▏| 285/312 [11:53<00:28,  1.07s/it] 92%|█████████▏| 286/312 [11:54<00:22,  1.15it/s] 92%|█████████▏| 287/312 [11:54<00:19,  1.27it/s] 92%|█████████▏| 288/312 [11:55<00:17,  1.38it/s] 93%|█████████▎| 289/312 [11:55<00:15,  1.53it/s] 93%|█████████▎| 290/312 [11:57<00:17,  1.22it/s] 93%|█████████▎| 291/312 [11:58<00:19,  1.05it/s] 94%|█████████▎| 292/312 [11:59<00:21,  1.10s/it] 94%|█████████▍| 293/312 [12:01<00:22,  1.16s/it] 94%|█████████▍| 294/312 [12:02<00:22,  1.25s/it] 95%|█████████▍| 295/312 [12:14<01:16,  4.49s/it] 95%|█████████▍| 296/312 [12:16<00:59,  3.72s/it] 95%|█████████▌| 297/312 [12:17<00:44,  3.00s/it] 96%|█████████▌| 298/312 [12:19<00:34,  2.49s/it] 96%|█████████▌| 299/312 [12:20<00:29,  2.27s/it] 96%|█████████▌| 300/312 [12:21<00:22,  1.91s/it] 96%|█████████▋| 301/312 [12:24<00:21,  1.98s/it] 97%|█████████▋| 302/312 [12:27<00:23,  2.35s/it] 97%|█████████▋| 303/312 [12:30<00:22,  2.49s/it] 97%|█████████▋| 304/312 [12:32<00:20,  2.51s/it] 98%|█████████▊| 305/312 [12:33<00:13,  1.91s/it] 98%|█████████▊| 306/312 [12:34<00:09,  1.66s/it] 98%|█████████▊| 307/312 [12:35<00:07,  1.54s/it] 99%|█████████▊| 308/312 [12:36<00:05,  1.31s/it] 99%|█████████▉| 309/312 [12:36<00:03,  1.09s/it] 99%|█████████▉| 310/312 [12:37<00:01,  1.07it/s]100%|█████████▉| 311/312 [12:38<00:01,  1.03s/it]100%|██████████| 312/312 [12:40<00:00,  1.25s/it]100%|██████████| 312/312 [12:40<00:00,  2.44s/it]loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+loading gt mask from :  label-filt-scannet20
+
+2D evaluation of refined masks
+{'val_acc': 89.64484833233027, 'val_macc': 82.77623825693213, 'val_miou': 73.67908694841321}
+{0: '85.47', 1: '92.29', 2: '70.39', 3: '84.94', 4: '80.00', 5: '77.63', 6: '79.10', 7: '69.40', 8: '63.14', 9: '72.01', 10: '43.89', 11: '59.65', 12: '66.63', 13: '75.25', 14: '73.40', 15: '74.88', 16: '91.32', 17: '67.76', 18: '83.52', 19: '62.91'}
+  0%|          | 0/312 [00:00<?, ?it/s]  0%|          | 1/312 [02:50<14:44:32, 170.65s/it]  1%|          | 2/312 [02:54<6:15:17, 72.64s/it]    1%|          | 3/312 [02:58<3:32:47, 41.32s/it]  1%|▏         | 4/312 [03:02<2:15:08, 26.33s/it]  2%|▏         | 5/312 [03:12<1:45:10, 20.56s/it]  2%|▏         | 6/312 [03:17<1:17:22, 15.17s/it]  2%|▏         | 7/312 [03:18<53:53, 10.60s/it]    3%|▎         | 8/312 [03:19<38:39,  7.63s/it]  3%|▎         | 9/312 [03:22<31:03,  6.15s/it]  3%|▎         | 10/312 [03:24<24:45,  4.92s/it]  4%|▎         | 11/312 [03:27<21:09,  4.22s/it]  4%|▍         | 12/312 [03:28<16:48,  3.36s/it]  4%|▍         | 13/312 [04:15<1:22:09, 16.49s/it]  4%|▍         | 14/312 [04:27<1:15:25, 15.19s/it]  5%|▍         | 15/312 [05:54<3:02:59, 36.97s/it]  5%|▌         | 16/312 [05:56<2:10:07, 26.38s/it]  5%|▌         | 17/312 [05:59<1:34:44, 19.27s/it]  6%|▌         | 18/312 [06:02<1:09:44, 14.23s/it]  6%|▌         | 19/312 [06:03<50:59, 10.44s/it]    6%|▋         | 20/312 [06:05<37:36,  7.73s/it]  7%|▋         | 21/312 [06:05<26:57,  5.56s/it]  7%|▋         | 22/312 [06:06<19:31,  4.04s/it]  7%|▋         | 23/312 [06:06<14:05,  2.92s/it]  8%|▊         | 24/312 [06:08<12:20,  2.57s/it]  8%|▊         | 25/312 [09:09<4:28:52, 56.21s/it]  8%|▊         | 26/312 [09:10<3:09:12, 39.70s/it]  9%|▊         | 27/312 [09:51<3:09:43, 39.94s/it]  9%|▉         | 28/312 [09:51<2:13:34, 28.22s/it]  9%|▉         | 29/312 [09:53<1:34:41, 20.08s/it] 10%|▉         | 30/312 [09:54<1:07:34, 14.38s/it] 10%|▉         | 31/312 [10:20<1:24:38, 18.07s/it] 10%|█         | 32/312 [10:22<1:01:00, 13.07s/it] 11%|█         | 33/312 [10:26<49:02, 10.54s/it]   11%|█         | 34/312 [10:42<55:31, 11.98s/it] 11%|█         | 35/312 [10:43<40:08,  8.69s/it] 12%|█▏        | 36/312 [10:45<31:42,  6.89s/it] 12%|█▏        | 37/312 [10:55<35:44,  7.80s/it] 12%|█▏        | 38/312 [10:59<29:27,  6.45s/it] 12%|█▎        | 39/312 [11:00<22:18,  4.90s/it] 13%|█▎        | 40/312 [11:01<16:40,  3.68s/it] 13%|█▎        | 41/312 [11:04<16:24,  3.63s/it] 13%|█▎        | 42/312 [11:06<14:12,  3.16s/it] 14%|█▍        | 43/312 [11:09<13:09,  2.94s/it] 14%|█▍        | 44/312 [11:10<10:52,  2.44s/it] 14%|█▍        | 45/312 [11:14<12:27,  2.80s/it] 15%|█▍        | 46/312 [11:21<17:55,  4.04s/it] 15%|█▌        | 47/312 [11:23<15:32,  3.52s/it] 15%|█▌        | 48/312 [11:29<19:00,  4.32s/it] 16%|█▌        | 49/312 [11:34<19:30,  4.45s/it] 16%|█▌        | 50/312 [11:35<15:43,  3.60s/it] 16%|█▋        | 51/312 [11:37<13:27,  3.09s/it] 17%|█▋        | 52/312 [11:40<12:50,  2.96s/it] 17%|█▋        | 53/312 [11:48<19:08,  4.43s/it] 17%|█▋        | 54/312 [11:56<23:54,  5.56s/it] 18%|█▊        | 55/312 [12:00<21:55,  5.12s/it] 18%|█▊        | 56/312 [12:07<24:03,  5.64s/it] 18%|█▊        | 57/312 [12:18<30:44,  7.23s/it] 19%|█▊        | 58/312 [12:24<28:46,  6.80s/it] 19%|█▉        | 59/312 [12:35<34:26,  8.17s/it] 19%|█▉        | 60/312 [12:38<27:41,  6.59s/it] 20%|█▉        | 61/312 [12:41<22:25,  5.36s/it] 20%|█▉        | 62/312 [12:44<19:26,  4.67s/it] 20%|██        | 63/312 [12:51<23:22,  5.63s/it] 21%|██        | 64/312 [13:00<26:21,  6.38s/it] 21%|██        | 65/312 [13:21<44:20, 10.77s/it] 21%|██        | 66/312 [13:37<51:29, 12.56s/it] 21%|██▏       | 67/312 [13:43<42:14, 10.34s/it] 22%|██▏       | 68/312 [13:56<45:59, 11.31s/it] 22%|██▏       | 69/312 [14:04<41:47, 10.32s/it] 22%|██▏       | 70/312 [14:08<33:33,  8.32s/it] 23%|██▎       | 71/312 [14:11<27:00,  6.73s/it] 23%|██▎       | 72/312 [14:14<22:09,  5.54s/it] 23%|██▎       | 73/312 [14:19<21:51,  5.49s/it] 24%|██▎       | 74/312 [14:21<17:51,  4.50s/it] 24%|██▍       | 75/312 [14:24<15:20,  3.89s/it] 24%|██▍       | 76/312 [14:28<16:13,  4.12s/it] 25%|██▍       | 77/312 [14:33<16:36,  4.24s/it] 25%|██▌       | 78/312 [14:36<15:51,  4.07s/it] 25%|██▌       | 79/312 [14:40<15:29,  3.99s/it] 26%|██▌       | 80/312 [14:45<16:48,  4.35s/it] 26%|██▌       | 81/312 [14:51<17:53,  4.65s/it] 26%|██▋       | 82/312 [14:55<17:45,  4.63s/it] 27%|██▋       | 83/312 [15:01<18:21,  4.81s/it] 27%|██▋       | 84/312 [15:11<24:27,  6.43s/it] 27%|██▋       | 85/312 [15:14<20:10,  5.33s/it] 28%|██▊       | 86/312 [15:15<15:35,  4.14s/it] 28%|██▊       | 87/312 [15:17<12:51,  3.43s/it] 28%|██▊       | 88/312 [15:23<16:21,  4.38s/it] 29%|██▊       | 89/312 [15:27<15:14,  4.10s/it] 29%|██▉       | 90/312 [15:32<16:48,  4.54s/it] 29%|██▉       | 91/312 [15:38<18:19,  4.98s/it] 29%|██▉       | 92/312 [15:42<16:18,  4.45s/it] 30%|██▉       | 93/312 [15:48<18:59,  5.20s/it] 30%|███       | 94/312 [15:52<16:47,  4.62s/it] 30%|███       | 95/312 [15:58<18:08,  5.02s/it] 31%|███       | 96/312 [16:00<15:36,  4.33s/it] 31%|███       | 97/312 [16:03<13:15,  3.70s/it] 31%|███▏      | 98/312 [16:05<11:29,  3.22s/it] 32%|███▏      | 99/312 [16:07<10:45,  3.03s/it] 32%|███▏      | 100/312 [16:11<10:55,  3.09s/it] 32%|███▏      | 101/312 [16:17<13:58,  3.97s/it] 33%|███▎      | 102/312 [16:22<15:04,  4.31s/it] 33%|███▎      | 103/312 [16:26<15:12,  4.36s/it] 33%|███▎      | 104/312 [16:28<12:39,  3.65s/it] 34%|███▎      | 105/312 [16:33<14:18,  4.15s/it] 34%|███▍      | 106/312 [16:35<11:25,  3.33s/it] 34%|███▍      | 107/312 [16:36<09:16,  2.71s/it] 35%|███▍      | 108/312 [16:38<07:57,  2.34s/it] 35%|███▍      | 109/312 [16:40<07:28,  2.21s/it] 35%|███▌      | 110/312 [16:43<09:07,  2.71s/it] 36%|███▌      | 111/312 [16:46<08:26,  2.52s/it] 36%|███▌      | 112/312 [16:47<07:35,  2.28s/it] 36%|███▌      | 113/312 [16:51<08:48,  2.65s/it] 37%|███▋      | 114/312 [16:54<08:59,  2.73s/it] 37%|███▋      | 115/312 [16:57<09:39,  2.94s/it] 37%|███▋      | 116/312 [17:00<09:30,  2.91s/it] 38%|███▊      | 117/312 [17:05<11:20,  3.49s/it] 38%|███▊      | 118/312 [17:06<09:21,  2.89s/it] 38%|███▊      | 119/312 [17:08<08:05,  2.51s/it] 38%|███▊      | 120/312 [17:13<10:18,  3.22s/it] 39%|███▉      | 121/312 [17:14<08:02,  2.53s/it] 39%|███▉      | 122/312 [17:15<07:07,  2.25s/it] 39%|███▉      | 123/312 [17:17<06:31,  2.07s/it] 40%|███▉      | 124/312 [17:19<06:48,  2.17s/it] 40%|████      | 125/312 [17:23<07:58,  2.56s/it] 40%|████      | 126/312 [17:25<07:51,  2.53s/it] 41%|████      | 127/312 [17:27<07:11,  2.33s/it] 41%|████      | 128/312 [17:30<07:19,  2.39s/it] 41%|████▏     | 129/312 [17:33<07:55,  2.60s/it] 42%|████▏     | 130/312 [17:36<08:23,  2.77s/it] 42%|████▏     | 131/312 [17:38<07:46,  2.58s/it] 42%|████▏     | 132/312 [17:41<07:50,  2.61s/it] 43%|████▎     | 133/312 [17:42<07:01,  2.36s/it] 43%|████▎     | 134/312 [17:44<05:58,  2.01s/it] 43%|████▎     | 135/312 [17:47<06:40,  2.26s/it] 44%|████▎     | 136/312 [17:51<08:56,  3.05s/it] 44%|████▍     | 137/312 [17:53<07:16,  2.49s/it] 44%|████▍     | 138/312 [17:54<06:16,  2.17s/it] 45%|████▍     | 139/312 [17:57<07:19,  2.54s/it] 45%|████▍     | 140/312 [18:02<08:44,  3.05s/it] 45%|████▌     | 141/312 [18:08<11:18,  3.97s/it] 46%|████▌     | 142/312 [18:14<13:04,  4.62s/it] 46%|████▌     | 143/312 [18:18<12:14,  4.35s/it] 46%|████▌     | 144/312 [18:20<10:43,  3.83s/it] 46%|████▋     | 145/312 [18:24<10:11,  3.66s/it] 47%|████▋     | 146/312 [18:25<08:00,  2.89s/it] 47%|████▋     | 147/312 [18:28<08:32,  3.11s/it] 47%|████▋     | 148/312 [18:31<08:07,  2.97s/it] 48%|████▊     | 149/312 [18:33<07:28,  2.75s/it] 48%|████▊     | 150/312 [18:37<08:09,  3.02s/it] 48%|████▊     | 151/312 [18:42<09:51,  3.68s/it] 49%|████▊     | 152/312 [18:46<10:13,  3.83s/it] 49%|████▉     | 153/312 [18:50<10:26,  3.94s/it] 49%|████▉     | 154/312 [18:53<09:09,  3.48s/it] 50%|████▉     | 155/312 [18:54<07:34,  2.90s/it] 50%|█████     | 156/312 [18:56<06:43,  2.58s/it] 50%|█████     | 157/312 [18:58<05:48,  2.25s/it] 51%|█████     | 158/312 [19:00<05:59,  2.34s/it] 51%|█████     | 159/312 [19:05<08:02,  3.15s/it] 51%|█████▏    | 160/312 [19:16<13:33,  5.35s/it] 52%|█████▏    | 161/312 [19:19<11:46,  4.68s/it] 52%|█████▏    | 162/312 [19:21<10:02,  4.02s/it] 52%|█████▏    | 163/312 [19:26<10:20,  4.16s/it] 53%|█████▎    | 164/312 [19:28<08:54,  3.61s/it] 53%|█████▎    | 165/312 [19:31<08:19,  3.39s/it] 53%|█████▎    | 166/312 [19:36<09:04,  3.73s/it] 54%|█████▎    | 167/312 [19:38<08:14,  3.41s/it] 54%|█████▍    | 168/312 [19:40<06:48,  2.84s/it] 54%|█████▍    | 169/312 [19:42<06:38,  2.78s/it] 54%|█████▍    | 170/312 [19:45<06:31,  2.76s/it] 55%|█████▍    | 171/312 [19:49<07:06,  3.02s/it] 55%|█████▌    | 172/312 [19:52<07:33,  3.24s/it] 55%|█████▌    | 173/312 [19:55<06:41,  2.89s/it] 56%|█████▌    | 174/312 [19:57<06:14,  2.71s/it] 56%|█████▌    | 175/312 [19:59<05:51,  2.56s/it] 56%|█████▋    | 176/312 [20:03<06:33,  2.89s/it] 57%|█████▋    | 177/312 [20:06<06:31,  2.90s/it] 57%|█████▋    | 178/312 [20:08<06:10,  2.76s/it] 57%|█████▋    | 179/312 [20:11<06:29,  2.93s/it] 58%|█████▊    | 180/312 [20:15<06:46,  3.08s/it] 58%|█████▊    | 181/312 [20:18<06:50,  3.13s/it] 58%|█████▊    | 182/312 [20:23<07:46,  3.59s/it] 59%|█████▊    | 183/312 [20:25<06:52,  3.20s/it] 59%|█████▉    | 184/312 [20:26<05:29,  2.58s/it] 59%|█████▉    | 185/312 [20:29<05:42,  2.70s/it] 60%|█████▉    | 186/312 [20:39<10:28,  4.99s/it] 60%|█████▉    | 187/312 [20:42<09:06,  4.37s/it] 60%|██████    | 188/312 [20:47<09:23,  4.54s/it] 61%|██████    | 189/312 [20:49<07:37,  3.72s/it] 61%|██████    | 190/312 [20:53<07:38,  3.76s/it] 61%|██████    | 191/312 [21:01<09:59,  4.95s/it] 62%|██████▏   | 192/312 [21:03<08:27,  4.23s/it] 62%|██████▏   | 193/312 [21:07<08:03,  4.06s/it] 62%|██████▏   | 194/312 [21:08<06:24,  3.26s/it] 62%|██████▎   | 195/312 [21:10<05:18,  2.72s/it] 63%|██████▎   | 196/312 [21:15<06:45,  3.49s/it] 63%|██████▎   | 197/312 [21:21<07:56,  4.14s/it] 63%|██████▎   | 198/312 [21:24<07:12,  3.80s/it] 64%|██████▍   | 199/312 [21:30<08:40,  4.61s/it] 64%|██████▍   | 200/312 [21:33<07:26,  3.99s/it] 64%|██████▍   | 201/312 [21:36<06:54,  3.73s/it] 65%|██████▍   | 202/312 [21:39<06:18,  3.44s/it] 65%|██████▌   | 203/312 [21:41<05:43,  3.15s/it] 65%|██████▌   | 204/312 [21:44<05:20,  2.97s/it] 66%|██████▌   | 205/312 [21:46<05:03,  2.84s/it] 66%|██████▌   | 206/312 [21:49<04:50,  2.74s/it] 66%|██████▋   | 207/312 [21:55<06:52,  3.93s/it] 67%|██████▋   | 208/312 [21:58<06:05,  3.51s/it] 67%|██████▋   | 209/312 [22:03<06:47,  3.96s/it] 67%|██████▋   | 210/312 [22:08<07:31,  4.43s/it] 68%|██████▊   | 211/312 [22:11<06:19,  3.76s/it] 68%|██████▊   | 212/312 [22:12<05:14,  3.15s/it] 68%|██████▊   | 213/312 [22:16<05:14,  3.18s/it] 69%|██████▊   | 214/312 [22:18<04:51,  2.97s/it] 69%|██████▉   | 215/312 [22:22<05:06,  3.16s/it] 69%|██████▉   | 216/312 [22:25<04:58,  3.11s/it] 70%|██████▉   | 217/312 [22:28<04:52,  3.08s/it] 70%|██████▉   | 218/312 [22:30<04:24,  2.82s/it] 70%|███████   | 219/312 [22:33<04:15,  2.75s/it] 71%|███████   | 220/312 [22:37<04:52,  3.18s/it] 71%|███████   | 221/312 [22:50<09:31,  6.28s/it] 71%|███████   | 222/312 [22:54<08:09,  5.44s/it] 71%|███████▏  | 223/312 [23:03<09:50,  6.64s/it] 72%|███████▏  | 224/312 [23:06<08:15,  5.64s/it] 72%|███████▏  | 225/312 [23:16<09:42,  6.70s/it] 72%|███████▏  | 226/312 [23:22<09:36,  6.71s/it] 73%|███████▎  | 227/312 [23:25<07:51,  5.54s/it] 73%|███████▎  | 228/312 [23:27<06:04,  4.34s/it] 73%|███████▎  | 229/312 [23:29<05:19,  3.85s/it] 74%|███████▎  | 230/312 [23:33<05:20,  3.91s/it] 74%|███████▍  | 231/312 [23:38<05:37,  4.17s/it] 74%|███████▍  | 232/312 [24:00<12:37,  9.47s/it] 75%|███████▍  | 233/312 [24:14<14:08, 10.74s/it] 75%|███████▌  | 234/312 [24:20<12:16,  9.44s/it] 75%|███████▌  | 235/312 [24:27<10:58,  8.55s/it] 76%|███████▌  | 236/312 [24:33<09:56,  7.85s/it] 76%|███████▌  | 237/312 [24:42<10:09,  8.13s/it] 76%|███████▋  | 238/312 [24:44<07:47,  6.31s/it] 77%|███████▋  | 239/312 [24:46<06:06,  5.02s/it] 77%|███████▋  | 240/312 [24:48<04:52,  4.06s/it] 77%|███████▋  | 241/312 [24:51<04:44,  4.01s/it] 78%|███████▊  | 242/312 [24:59<06:00,  5.14s/it] 78%|███████▊  | 243/312 [25:28<13:56, 12.13s/it] 78%|███████▊  | 244/312 [25:32<11:14,  9.92s/it] 79%|███████▊  | 245/312 [25:37<09:09,  8.21s/it] 79%|███████▉  | 246/312 [25:40<07:19,  6.66s/it] 79%|███████▉  | 247/312 [25:44<06:31,  6.02s/it] 79%|███████▉  | 248/312 [25:46<05:04,  4.75s/it] 80%|███████▉  | 249/312 [25:49<04:30,  4.29s/it] 80%|████████  | 250/312 [25:53<04:12,  4.08s/it] 80%|████████  | 251/312 [25:59<04:39,  4.58s/it] 81%|████████  | 252/312 [26:01<03:49,  3.83s/it] 81%|████████  | 253/312 [26:02<03:06,  3.15s/it] 81%|████████▏ | 254/312 [26:05<02:56,  3.04s/it] 82%|████████▏ | 255/312 [26:12<03:53,  4.09s/it] 82%|████████▏ | 256/312 [26:14<03:27,  3.70s/it] 82%|████████▏ | 257/312 [26:21<04:06,  4.47s/it] 83%|████████▎ | 258/312 [26:24<03:45,  4.17s/it] 83%|████████▎ | 259/312 [26:28<03:40,  4.15s/it] 83%|████████▎ | 260/312 [26:29<02:49,  3.26s/it] 84%|████████▎ | 261/312 [26:35<03:15,  3.84s/it] 84%|████████▍ | 262/312 [26:53<06:54,  8.28s/it] 84%|████████▍ | 263/312 [26:58<05:52,  7.20s/it] 85%|████████▍ | 264/312 [27:04<05:26,  6.79s/it] 85%|████████▍ | 265/312 [27:10<05:11,  6.63s/it] 85%|████████▌ | 266/312 [27:13<04:15,  5.56s/it] 86%|████████▌ | 267/312 [27:17<03:51,  5.15s/it] 86%|████████▌ | 268/312 [27:21<03:25,  4.67s/it] 86%|████████▌ | 269/312 [27:27<03:34,  5.00s/it] 87%|████████▋ | 270/312 [27:29<03:03,  4.38s/it] 87%|████████▋ | 271/312 [27:31<02:28,  3.62s/it] 87%|████████▋ | 272/312 [27:34<02:16,  3.41s/it] 88%|████████▊ | 273/312 [27:38<02:21,  3.62s/it] 88%|████████▊ | 274/312 [27:42<02:22,  3.75s/it] 88%|████████▊ | 275/312 [27:46<02:16,  3.70s/it] 88%|████████▊ | 276/312 [27:47<01:41,  2.82s/it] 89%|████████▉ | 277/312 [27:48<01:17,  2.20s/it] 89%|████████▉ | 278/312 [27:49<01:11,  2.11s/it] 89%|████████▉ | 279/312 [27:52<01:10,  2.14s/it] 90%|████████▉ | 280/312 [27:55<01:21,  2.54s/it] 90%|█████████ | 281/312 [27:58<01:24,  2.72s/it] 90%|█████████ | 282/312 [28:01<01:25,  2.85s/it] 91%|█████████ | 283/312 [28:05<01:31,  3.14s/it] 91%|█████████ | 284/312 [28:13<02:06,  4.50s/it] 91%|█████████▏| 285/312 [28:15<01:40,  3.74s/it] 92%|█████████▏| 286/312 [28:17<01:24,  3.26s/it] 92%|█████████▏| 287/312 [28:22<01:33,  3.75s/it] 92%|█████████▏| 288/312 [28:27<01:36,  4.04s/it] 93%|█████████▎| 289/312 [28:29<01:21,  3.54s/it] 93%|█████████▎| 290/312 [28:31<01:10,  3.21s/it] 93%|█████████▎| 291/312 [28:38<01:29,  4.27s/it] 94%|█████████▎| 292/312 [28:40<01:13,  3.68s/it] 94%|█████████▍| 293/312 [28:46<01:19,  4.18s/it] 94%|█████████▍| 294/312 [28:48<01:03,  3.54s/it] 95%|█████████▍| 295/312 [28:52<01:03,  3.74s/it] 95%|█████████▍| 296/312 [28:55<00:55,  3.44s/it] 95%|█████████▌| 297/312 [28:57<00:44,  2.97s/it] 96%|█████████▌| 298/312 [28:58<00:36,  2.58s/it] 96%|█████████▌| 299/312 [29:01<00:34,  2.65s/it] 96%|█████████▌| 300/312 [29:04<00:31,  2.63s/it] 96%|█████████▋| 301/312 [29:06<00:26,  2.42s/it] 97%|█████████▋| 302/312 [29:08<00:23,  2.35s/it] 97%|█████████▋| 303/312 [29:09<00:17,  1.97s/it] 97%|█████████▋| 304/312 [29:10<00:13,  1.74s/it] 98%|█████████▊| 305/312 [29:11<00:10,  1.46s/it] 98%|█████████▊| 306/312 [29:11<00:07,  1.17s/it] 98%|█████████▊| 307/312 [29:12<00:05,  1.08s/it] 99%|█████████▊| 308/312 [29:13<00:03,  1.15it/s] 99%|█████████▉| 309/312 [29:13<00:02,  1.41it/s] 99%|█████████▉| 310/312 [29:13<00:01,  1.75it/s]100%|█████████▉| 311/312 [29:14<00:00,  1.36it/s]100%|██████████| 312/312 [29:15<00:00,  1.23it/s]100%|██████████| 312/312 [29:15<00:00,  5.63s/it]
+2023-02-15 21:52:36,796 - mmflow - INFO - Freeze the parameters in FlowNetCSS
+2023-02-15 21:52:37,801 - mmflow - INFO - Freeze the parameters in FlowNetS
+3D seen points metrics
+{'train_acc': 89.1247250732906, 'train_macc': 80.52680927022018, 'train_miou': 71.13905099978112}
+2D cross-view consistency (CC) for input masks
+tensor([80.5853, 90.7891, 72.1099, 80.6897, 66.8572, 73.9177, 63.5513, 64.8881,
+        60.2731, 79.3157, 44.9412, 71.0589, 72.7844, 66.1272, 71.8218, 71.5330,
+        73.5714, 57.5725, 81.4470, 65.1969])
+Mean:  tensor(70.4516)
+2D cross-view consistency (CC) for refined masks
+tensor([85.3835, 94.2228, 74.7778, 82.5454, 65.9127, 77.8012, 65.7069, 67.3345,
+        59.8703, 82.7934, 47.2354, 72.4034, 75.4391, 67.9573, 76.4211, 71.5025,
+        70.1106, 53.8994, 85.1339, 66.7772])
+Mean:  tensor(72.1614)
+load checkpoint from local path: /home/fsun/DeepViewAgg/flow/pretrained/flownet2_8x1_sfine_flyingthings3d_subset_384x768.pth
+  0%|          | 0/312 [00:00<?, ?it/s]  0%|          | 1/312 [00:43<3:45:17, 43.46s/it]  1%|          | 2/312 [01:31<3:56:59, 45.87s/it]  1%|          | 3/312 [01:52<2:57:52, 34.54s/it]  1%|▏         | 4/312 [01:55<1:55:15, 22.45s/it]  2%|▏         | 5/312 [02:02<1:25:31, 16.72s/it]  2%|▏         | 6/312 [02:20<1:27:52, 17.23s/it]  2%|▏         | 7/312 [02:37<1:26:10, 16.95s/it]  3%|▎         | 8/312 [02:50<1:19:24, 15.67s/it]  3%|▎         | 9/312 [03:28<1:54:54, 22.76s/it]  3%|▎         | 10/312 [03:55<2:01:35, 24.16s/it]  4%|▎         | 11/312 [04:24<2:07:35, 25.43s/it]  4%|▍         | 12/312 [04:44<1:58:53, 23.78s/it]  4%|▍         | 13/312 [05:04<1:53:46, 22.83s/it]  4%|▍         | 14/312 [05:26<1:52:32, 22.66s/it]  5%|▍         | 15/312 [06:10<2:23:08, 28.92s/it]  5%|▌         | 16/312 [06:43<2:29:15, 30.26s/it]  5%|▌         | 17/312 [07:29<2:51:07, 34.81s/it]  6%|▌         | 18/312 [07:34<2:07:42, 26.06s/it]  6%|▌         | 19/312 [07:56<2:00:20, 24.64s/it]  6%|▋         | 20/312 [08:10<1:44:42, 21.52s/it]  7%|▋         | 21/312 [08:13<1:18:00, 16.08s/it]  7%|▋         | 22/312 [08:19<1:03:06, 13.06s/it]  7%|▋         | 23/312 [08:22<48:30, 10.07s/it]    8%|▊         | 24/312 [08:49<1:11:48, 14.96s/it]  8%|▊         | 25/312 [09:08<1:17:33, 16.21s/it]  8%|▊         | 26/312 [09:26<1:19:49, 16.75s/it]  9%|▊         | 27/312 [09:45<1:22:33, 17.38s/it]  9%|▉         | 28/312 [09:58<1:16:23, 16.14s/it]  9%|▉         | 29/312 [10:13<1:15:09, 15.94s/it] 10%|▉         | 30/312 [10:28<1:12:32, 15.43s/it] 10%|▉         | 31/312 [10:40<1:07:39, 14.45s/it] 10%|█         | 32/312 [10:57<1:11:47, 15.38s/it] 11%|█         | 33/312 [11:06<1:02:25, 13.42s/it] 11%|█         | 34/312 [11:32<1:18:50, 17.02s/it] 11%|█         | 35/312 [11:46<1:14:31, 16.14s/it] 12%|█▏        | 36/312 [12:09<1:24:35, 18.39s/it] 12%|█▏        | 37/312 [12:29<1:26:25, 18.86s/it] 12%|█▏        | 38/312 [12:35<1:08:08, 14.92s/it] 12%|█▎        | 39/312 [12:42<56:30, 12.42s/it]   13%|█▎        | 40/312 [12:49<49:47, 10.98s/it] 13%|█▎        | 41/312 [13:07<58:39, 12.99s/it] 13%|█▎        | 42/312 [13:26<1:07:06, 14.91s/it] 14%|█▍        | 43/312 [13:40<1:04:51, 14.47s/it] 14%|█▍        | 44/312 [13:47<54:15, 12.15s/it]   14%|█▍        | 45/312 [14:03<59:22, 13.34s/it] 15%|█▍        | 46/312 [14:15<58:10, 13.12s/it] 15%|█▌        | 47/312 [14:24<51:41, 11.71s/it] 15%|█▌        | 48/312 [14:31<45:45, 10.40s/it] 16%|█▌        | 49/312 [14:40<44:07, 10.07s/it] 16%|█▌        | 50/312 [14:50<43:14,  9.90s/it] 16%|█▋        | 51/312 [14:54<36:02,  8.29s/it] 17%|█▋        | 52/312 [14:59<31:44,  7.32s/it] 17%|█▋        | 53/312 [15:13<39:57,  9.26s/it] 17%|█▋        | 54/312 [15:19<35:06,  8.17s/it] 18%|█▊        | 55/312 [15:27<35:19,  8.25s/it] 18%|█▊        | 56/312 [15:35<33:58,  7.96s/it] 18%|█▊        | 57/312 [16:04<1:01:33, 14.48s/it] 19%|█▊        | 58/312 [16:27<1:11:56, 16.99s/it] 19%|█▉        | 59/312 [17:04<1:36:39, 22.92s/it] 19%|█▉        | 60/312 [17:31<1:41:09, 24.08s/it] 20%|█▉        | 61/312 [17:38<1:20:07, 19.16s/it] 20%|█▉        | 62/312 [17:42<1:00:41, 14.56s/it] 20%|██        | 63/312 [18:02<1:06:54, 16.12s/it] 21%|██        | 64/312 [18:25<1:15:25, 18.25s/it] 21%|██        | 65/312 [18:43<1:15:06, 18.25s/it] 21%|██        | 66/312 [19:17<1:33:29, 22.80s/it] 21%|██▏       | 67/312 [19:42<1:36:04, 23.53s/it] 22%|██▏       | 68/312 [20:03<1:32:47, 22.82s/it] 22%|██▏       | 69/312 [20:31<1:38:37, 24.35s/it] 22%|██▏       | 70/312 [21:07<1:52:12, 27.82s/it] 23%|██▎       | 71/312 [21:19<1:32:48, 23.11s/it] 23%|██▎       | 72/312 [21:35<1:24:06, 21.03s/it] 23%|██▎       | 73/312 [21:48<1:14:12, 18.63s/it] 24%|██▎       | 74/312 [22:28<1:38:48, 24.91s/it] 24%|██▍       | 75/312 [22:46<1:29:46, 22.73s/it] 24%|██▍       | 76/312 [23:31<1:55:40, 29.41s/it] 25%|██▍       | 77/312 [27:20<5:49:51, 89.32s/it] 25%|██▌       | 78/312 [33:01<10:43:15, 164.94s/it] 25%|██▌       | 79/312 [33:39<8:12:15, 126.76s/it]  26%|██▌       | 80/312 [34:25<6:36:15, 102.48s/it] 26%|██▌       | 81/312 [34:51<5:06:47, 79.69s/it]  26%|██▋       | 82/312 [35:00<3:44:26, 58.55s/it] 27%|██▋       | 83/312 [35:12<2:49:32, 44.42s/it] 27%|██▋       | 84/312 [35:22<2:09:57, 34.20s/it] 27%|██▋       | 85/312 [35:43<1:54:18, 30.21s/it] 28%|██▊       | 86/312 [35:52<1:29:58, 23.89s/it] 28%|██▊       | 87/312 [36:00<1:11:43, 19.13s/it] 28%|██▊       | 88/312 [36:10<1:00:32, 16.22s/it] 29%|██▊       | 89/312 [36:18<51:20, 13.81s/it]   29%|██▉       | 90/312 [36:23<41:30, 11.22s/it] 29%|██▉       | 91/312 [36:39<46:53, 12.73s/it] 29%|██▉       | 92/312 [36:55<49:45, 13.57s/it] 30%|██▉       | 93/312 [37:20<1:02:35, 17.15s/it] 30%|███       | 94/312 [37:44<1:09:07, 19.03s/it] 30%|███       | 95/312 [38:21<1:28:55, 24.59s/it] 31%|███       | 96/312 [38:47<1:29:47, 24.94s/it] 31%|███       | 97/312 [38:59<1:15:22, 21.04s/it] 31%|███▏      | 98/312 [39:05<58:37, 16.44s/it]   32%|███▏      | 99/312 [39:15<51:57, 14.64s/it] 32%|███▏      | 100/312 [39:40<1:02:17, 17.63s/it] 32%|███▏      | 101/312 [39:56<1:00:27, 17.19s/it] 33%|███▎      | 102/312 [40:18<1:05:16, 18.65s/it] 33%|███▎      | 103/312 [40:40<1:08:12, 19.58s/it] 33%|███▎      | 104/312 [41:01<1:10:07, 20.23s/it] 34%|███▎      | 105/312 [41:25<1:13:21, 21.27s/it] 34%|███▍      | 106/312 [41:34<59:51, 17.44s/it]   34%|███▍      | 107/312 [41:40<48:30, 14.20s/it] 35%|███▍      | 108/312 [41:43<37:03, 10.90s/it] 35%|███▍      | 109/312 [41:54<36:34, 10.81s/it] 35%|███▌      | 110/312 [42:12<43:41, 12.98s/it] 36%|███▌      | 111/312 [42:27<45:49, 13.68s/it] 36%|███▌      | 112/312 [42:36<40:58, 12.29s/it] 36%|███▌      | 113/312 [43:02<53:35, 16.16s/it] 37%|███▋      | 114/312 [43:22<57:31, 17.43s/it] 37%|███▋      | 115/312 [43:42<1:00:10, 18.33s/it] 37%|███▋      | 116/312 [43:58<57:00, 17.45s/it]   38%|███▊      | 117/312 [44:28<1:08:45, 21.16s/it] 38%|███▊      | 118/312 [44:43<1:03:03, 19.50s/it] 38%|███▊      | 119/312 [44:56<56:31, 17.57s/it]   38%|███▊      | 120/312 [45:08<50:47, 15.87s/it] 39%|███▉      | 121/312 [45:16<42:38, 13.39s/it] 39%|███▉      | 122/312 [45:26<38:59, 12.31s/it] 39%|███▉      | 123/312 [45:36<36:57, 11.73s/it] 40%|███▉      | 124/312 [45:44<32:48, 10.47s/it] 40%|████      | 125/312 [45:53<31:28, 10.10s/it] 40%|████      | 126/312 [46:00<28:17,  9.13s/it] 41%|████      | 127/312 [46:18<36:44, 11.92s/it] 41%|████      | 128/312 [46:40<45:29, 14.84s/it] 41%|████▏     | 129/312 [47:00<50:12, 16.46s/it] 42%|████▏     | 130/312 [47:10<43:39, 14.39s/it] 42%|████▏     | 131/312 [47:16<35:58, 11.92s/it] 42%|████▏     | 132/312 [47:34<41:04, 13.69s/it] 43%|████▎     | 133/312 [47:40<34:11, 11.46s/it] 43%|████▎     | 134/312 [47:48<30:40, 10.34s/it] 43%|████▎     | 135/312 [47:54<26:50,  9.10s/it] 44%|████▎     | 136/312 [48:20<41:46, 14.24s/it] 44%|████▍     | 137/312 [48:38<44:36, 15.29s/it] 44%|████▍     | 138/312 [48:51<42:51, 14.78s/it] 45%|████▍     | 139/312 [49:06<42:52, 14.87s/it] 45%|████▍     | 140/312 [49:15<37:41, 13.15s/it] 45%|████▌     | 141/312 [49:31<39:30, 13.86s/it] 46%|████▌     | 142/312 [49:53<46:21, 16.36s/it] 46%|████▌     | 143/312 [50:13<48:49, 17.34s/it] 46%|████▌     | 144/312 [50:26<45:09, 16.13s/it] 46%|████▋     | 145/312 [50:38<41:28, 14.90s/it] 47%|████▋     | 146/312 [50:49<38:11, 13.80s/it] 47%|████▋     | 147/312 [51:18<50:07, 18.23s/it] 47%|████▋     | 148/312 [51:32<46:33, 17.03s/it] 48%|████▊     | 149/312 [51:35<34:49, 12.82s/it] 48%|████▊     | 150/312 [51:39<27:34, 10.21s/it] 48%|████▊     | 151/312 [52:10<44:10, 16.46s/it] 49%|████▊     | 152/312 [52:45<58:26, 21.91s/it] 49%|████▉     | 153/312 [53:07<57:46, 21.80s/it] 49%|████▉     | 154/312 [53:29<58:08, 22.08s/it] 50%|████▉     | 155/312 [53:33<43:39, 16.68s/it] 50%|█████     | 156/312 [53:46<40:26, 15.55s/it] 50%|█████     | 157/312 [54:03<41:07, 15.92s/it] 51%|█████     | 158/312 [54:07<31:39, 12.34s/it] 51%|█████     | 159/312 [54:20<31:41, 12.43s/it] 51%|█████▏    | 160/312 [54:38<35:37, 14.06s/it] 52%|█████▏    | 161/312 [54:59<41:13, 16.38s/it] 52%|█████▏    | 162/312 [55:23<46:40, 18.67s/it] 52%|█████▏    | 163/312 [55:41<45:36, 18.36s/it] 53%|█████▎    | 164/312 [55:52<40:10, 16.29s/it] 53%|█████▎    | 165/312 [56:07<38:55, 15.89s/it] 53%|█████▎    | 166/312 [56:12<30:03, 12.35s/it] 54%|█████▎    | 167/312 [56:23<29:17, 12.12s/it] 54%|█████▍    | 168/312 [56:38<30:50, 12.85s/it] 54%|█████▍    | 169/312 [56:44<26:16, 11.02s/it] 54%|█████▍    | 170/312 [57:04<32:11, 13.61s/it] 55%|█████▍    | 171/312 [57:35<44:03, 18.75s/it] 55%|█████▌    | 172/312 [58:03<50:03, 21.46s/it] 55%|█████▌    | 173/312 [58:15<43:45, 18.89s/it] 56%|█████▌    | 174/312 [58:21<34:04, 14.82s/it] 56%|█████▌    | 175/312 [58:29<29:08, 12.76s/it] 56%|█████▋    | 176/312 [58:49<34:20, 15.15s/it] 57%|█████▋    | 177/312 [59:21<44:52, 19.95s/it] 57%|█████▋    | 178/312 [59:43<46:23, 20.77s/it] 57%|█████▋    | 179/312 [59:55<39:44, 17.93s/it] 58%|█████▊    | 180/312 [1:00:02<32:31, 14.78s/it] 58%|█████▊    | 181/312 [1:00:13<29:43, 13.62s/it] 58%|█████▊    | 182/312 [1:00:22<26:38, 12.29s/it] 59%|█████▊    | 183/312 [1:00:34<26:01, 12.10s/it] 59%|█████▉    | 184/312 [1:00:39<21:22, 10.02s/it] 59%|█████▉    | 185/312 [1:00:56<25:47, 12.19s/it] 60%|█████▉    | 186/312 [1:01:14<29:04, 13.84s/it] 60%|█████▉    | 187/312 [1:01:24<26:36, 12.77s/it] 60%|██████    | 188/312 [1:01:32<23:05, 11.17s/it] 61%|██████    | 189/312 [1:01:44<23:41, 11.55s/it] 61%|██████    | 190/312 [1:02:04<28:24, 13.97s/it] 61%|██████    | 191/312 [1:02:26<33:28, 16.60s/it] 62%|██████▏   | 192/312 [1:02:49<36:54, 18.45s/it] 62%|██████▏   | 193/312 [1:03:11<38:52, 19.60s/it] 62%|██████▏   | 194/312 [1:03:19<31:12, 15.87s/it] 62%|██████▎   | 195/312 [1:03:33<29:57, 15.36s/it] 63%|██████▎   | 196/312 [1:03:48<29:19, 15.17s/it] 63%|██████▎   | 197/312 [1:04:23<40:51, 21.32s/it] 63%|██████▎   | 198/312 [1:05:03<51:07, 26.90s/it] 64%|██████▍   | 199/312 [1:05:35<53:41, 28.51s/it] 64%|██████▍   | 200/312 [1:05:52<46:46, 25.06s/it] 64%|██████▍   | 201/312 [1:06:11<42:44, 23.10s/it] 65%|██████▍   | 202/312 [1:06:27<38:24, 20.95s/it] 65%|██████▌   | 203/312 [1:07:10<50:07, 27.60s/it] 65%|██████▌   | 204/312 [1:07:43<52:45, 29.31s/it] 66%|██████▌   | 205/312 [1:08:01<45:52, 25.73s/it] 66%|██████▌   | 206/312 [1:08:17<40:30, 22.93s/it] 66%|██████▋   | 207/312 [1:08:35<37:20, 21.34s/it] 67%|██████▋   | 208/312 [1:08:50<34:01, 19.63s/it] 67%|██████▋   | 209/312 [1:09:12<34:54, 20.34s/it] 67%|██████▋   | 210/312 [1:09:37<36:56, 21.73s/it] 68%|██████▊   | 211/312 [1:10:01<37:47, 22.45s/it] 68%|██████▊   | 212/312 [1:10:16<33:35, 20.15s/it] 68%|██████▊   | 213/312 [1:10:30<30:04, 18.22s/it] 69%|██████▊   | 214/312 [1:10:35<23:28, 14.37s/it] 69%|██████▉   | 215/312 [1:10:46<21:24, 13.24s/it] 69%|██████▉   | 216/312 [1:11:08<25:27, 15.92s/it] 70%|██████▉   | 217/312 [1:11:32<29:03, 18.36s/it] 70%|██████▉   | 218/312 [1:12:01<33:36, 21.45s/it] 70%|███████   | 219/312 [1:12:33<38:05, 24.57s/it] 71%|███████   | 220/312 [1:12:50<34:27, 22.48s/it] 71%|███████   | 221/312 [1:13:10<32:52, 21.68s/it] 71%|███████   | 222/312 [1:13:31<32:22, 21.58s/it] 71%|███████▏  | 223/312 [1:13:44<28:13, 19.02s/it] 72%|███████▏  | 224/312 [1:13:50<21:54, 14.93s/it] 72%|███████▏  | 225/312 [1:14:12<24:58, 17.22s/it] 72%|███████▏  | 226/312 [1:14:33<26:01, 18.15s/it] 73%|███████▎  | 227/312 [1:14:55<27:28, 19.39s/it] 73%|███████▎  | 228/312 [1:15:12<25:59, 18.57s/it] 73%|███████▎  | 229/312 [1:15:24<23:12, 16.78s/it] 74%|███████▎  | 230/312 [1:15:56<29:15, 21.41s/it] 74%|███████▍  | 231/312 [1:17:22<54:55, 40.69s/it] 74%|███████▍  | 232/312 [1:23:04<2:54:49, 131.12s/it] 75%|███████▍  | 233/312 [1:26:02<3:11:06, 145.14s/it] 75%|███████▌  | 234/312 [1:26:23<2:20:16, 107.90s/it] 75%|███████▌  | 235/312 [1:27:08<1:54:18, 89.07s/it]  76%|███████▌  | 236/312 [1:27:41<1:31:28, 72.22s/it] 76%|███████▌  | 237/312 [1:28:11<1:14:29, 59.60s/it] 76%|███████▋  | 238/312 [1:28:27<57:20, 46.50s/it]   77%|███████▋  | 239/312 [1:28:39<43:43, 35.94s/it] 77%|███████▋  | 240/312 [1:28:45<32:41, 27.24s/it] 77%|███████▋  | 241/312 [1:29:06<29:49, 25.21s/it] 78%|███████▊  | 242/312 [1:29:33<30:07, 25.81s/it] 78%|███████▊  | 243/312 [1:30:37<42:46, 37.20s/it] 78%|███████▊  | 244/312 [1:31:48<53:33, 47.26s/it] 79%|███████▊  | 245/312 [1:32:27<50:06, 44.87s/it] 79%|███████▉  | 246/312 [1:32:46<40:50, 37.13s/it] 79%|███████▉  | 247/312 [1:33:08<35:21, 32.65s/it] 79%|███████▉  | 248/312 [1:33:41<34:55, 32.74s/it] 80%|███████▉  | 249/312 [1:34:22<36:54, 35.15s/it] 80%|████████  | 250/312 [1:34:32<28:31, 27.61s/it] 80%|████████  | 251/312 [1:34:38<21:21, 21.01s/it] 81%|████████  | 252/312 [1:34:49<18:09, 18.16s/it] 81%|████████  | 253/312 [1:35:04<16:51, 17.14s/it] 81%|████████▏ | 254/312 [1:35:46<23:46, 24.59s/it] 82%|████████▏ | 255/312 [1:36:49<34:22, 36.18s/it] 82%|████████▏ | 256/312 [1:36:56<25:38, 27.47s/it] 82%|████████▏ | 257/312 [1:37:10<21:20, 23.29s/it] 83%|████████▎ | 258/312 [1:37:18<16:51, 18.74s/it] 83%|████████▎ | 259/312 [1:37:23<12:56, 14.65s/it] 83%|████████▎ | 260/312 [1:37:42<13:46, 15.90s/it] 84%|████████▎ | 261/312 [1:38:10<16:44, 19.70s/it] 84%|████████▍ | 262/312 [1:38:41<19:09, 22.99s/it] 84%|████████▍ | 263/312 [1:39:09<19:58, 24.45s/it] 85%|████████▍ | 264/312 [1:39:15<15:07, 18.91s/it] 85%|████████▍ | 265/312 [1:39:21<11:45, 15.00s/it] 85%|████████▌ | 266/312 [1:39:27<09:34, 12.50s/it] 86%|████████▌ | 267/312 [1:39:50<11:34, 15.44s/it] 86%|████████▌ | 268/312 [1:40:08<11:53, 16.21s/it] 86%|████████▌ | 269/312 [1:40:37<14:27, 20.16s/it] 87%|████████▋ | 270/312 [1:41:07<16:11, 23.14s/it] 87%|████████▋ | 271/312 [1:41:20<13:38, 19.96s/it] 87%|████████▋ | 272/312 [1:41:27<10:49, 16.23s/it] 88%|████████▊ | 273/312 [1:42:08<15:23, 23.69s/it] 88%|████████▊ | 274/312 [1:42:52<18:51, 29.77s/it] 88%|████████▊ | 275/312 [1:43:36<20:57, 33.99s/it] 88%|████████▊ | 276/312 [1:43:41<15:04, 25.13s/it] 89%|████████▉ | 277/312 [1:43:43<10:43, 18.38s/it] 89%|████████▉ | 278/312 [1:43:59<09:58, 17.60s/it] 89%|████████▉ | 279/312 [1:44:15<09:21, 17.01s/it] 90%|████████▉ | 280/312 [1:44:43<10:51, 20.36s/it] 90%|█████████ | 281/312 [1:44:55<09:18, 18.00s/it] 90%|█████████ | 282/312 [1:45:04<07:34, 15.15s/it] 91%|█████████ | 283/312 [1:45:13<06:24, 13.27s/it] 91%|█████████ | 284/312 [1:45:26<06:08, 13.17s/it] 91%|█████████▏| 285/312 [1:45:32<05:00, 11.13s/it] 92%|█████████▏| 286/312 [1:45:37<03:58,  9.15s/it] 92%|█████████▏| 287/312 [1:45:44<03:39,  8.76s/it] 92%|█████████▏| 288/312 [1:45:52<03:20,  8.37s/it] 93%|█████████▎| 289/312 [1:46:00<03:12,  8.36s/it] 93%|█████████▎| 290/312 [1:46:14<03:39,  9.97s/it] 93%|█████████▎| 291/312 [1:46:28<03:53, 11.13s/it] 94%|█████████▎| 292/312 [1:46:42<04:01, 12.09s/it] 94%|█████████▍| 293/312 [1:46:59<04:19, 13.66s/it] 94%|█████████▍| 294/312 [1:47:17<04:24, 14.71s/it] 95%|█████████▍| 295/312 [1:47:56<06:15, 22.08s/it] 95%|█████████▍| 296/312 [1:48:20<06:03, 22.72s/it] 95%|█████████▌| 297/312 [1:48:37<05:13, 20.92s/it] 96%|█████████▌| 298/312 [1:48:53<04:31, 19.40s/it] 96%|█████████▌| 299/312 [1:49:15<04:22, 20.18s/it] 96%|█████████▌| 300/312 [1:49:31<03:48, 19.07s/it] 96%|█████████▋| 301/312 [1:49:54<03:42, 20.24s/it] 97%|█████████▋| 302/312 [1:50:33<04:17, 25.73s/it] 97%|█████████▋| 303/312 [1:51:07<04:16, 28.47s/it] 97%|█████████▋| 304/312 [1:51:40<03:58, 29.84s/it] 98%|█████████▊| 305/312 [1:51:48<02:41, 23.08s/it] 98%|█████████▊| 306/312 [1:51:59<01:56, 19.46s/it] 98%|█████████▊| 307/312 [1:52:17<01:35, 19.16s/it] 99%|█████████▊| 308/312 [1:52:24<01:01, 15.41s/it] 99%|█████████▉| 309/312 [1:52:30<00:37, 12.62s/it] 99%|█████████▉| 310/312 [1:52:35<00:20, 10.37s/it]100%|█████████▉| 311/312 [1:52:53<00:12, 12.63s/it]100%|██████████| 312/312 [1:53:08<00:00, 13.28s/it]100%|██████████| 312/312 [1:53:08<00:00, 21.76s/it]
+Temporal Consistency Scores measured over all validation scenes, using all image views
+Input 2D {'val_acc': 90.5584697538939, 'val_macc': 87.71282645898386, 'val_miou': 78.23198088488684}
+{0: '88.21', 1: '91.84', 2: '71.01', 3: '87.49', 4: '79.59', 5: '81.50', 6: '83.14', 7: '75.25', 8: '75.14', 9: '81.70', 10: '65.72', 11: '71.68', 12: '70.94', 13: '79.66', 14: '68.00', 15: '77.97', 16: '87.77', 17: '77.26', 18: '83.74', 19: '67.02'}
+Refined 2D  {'val_acc': 94.20246799076808, 'val_macc': 93.30046289733644, 'val_miou': 87.36141846074752}
+{0: '91.97', 1: '92.01', 2: '85.10', 3: '93.75', 4: '83.37', 5: '90.67', 6: '87.66', 7: '85.21', 8: '83.68', 9: '90.49', 10: '84.85', 11: '85.50', 12: '84.95', 13: '88.39', 14: '81.76', 15: '86.68', 16: '91.50', 17: '86.98', 18: '89.20', 19: '83.50'}
+
+JOB STATISTICS
+==============
+Job ID: 2248058
+Cluster: snellius
+User/Group: fsun/fsun
+State: COMPLETED (exit code 0)
+Nodes: 1
+Cores per node: 18
+CPU Utilized: 14:29:22
+CPU Efficiency: 27.94% of 2-03:51:00 core-walltime
+Job Wall-clock time: 02:52:50
+Memory Utilized: 29.30 GB
+Memory Efficiency: 25.01% of 117.19 GB

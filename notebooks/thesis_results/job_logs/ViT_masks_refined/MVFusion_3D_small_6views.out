@@ -1,0 +1,576 @@
+MMData debug() function changed, please uncomment the 3rd assert line when doing inference without M2F features!
+INFO - 2023-02-09 23:38:56,826 - evaluate_all_metrics - DEVICE : cuda
+INFO - 2023-02-09 23:38:56,827 - model_checkpoint - Loading checkpoint from /home/fsun/DeepViewAgg/outputs/ViT_masks_3rd_run/MVFusion_3D_small_6views.pt
+INFO - 2023-02-09 23:39:26,731 - modelfactory - The config will be used to build the model
+Maximum number of views per point:  6
+Load predicted 2D semantic segmentation labels from directory  ViT_masks
+initialize train dataset
+initialize val dataset
+Dataset Creation Time = 8.0 sec.
+dataset_class:  scannet.ScannetDatasetMM
+dataset_paths:  ['scannet', 'ScannetDatasetMM']
+module:  scannet
+class_name:  ScannetDatasetMM
+dataset_module:  torch_points3d.datasets.segmentation.multimodal.scannet
+Load predicted 2D semantic segmentation labels from directory  ViT_masks
+initialize train dataset
+initialize val dataset
+task:  segmentation.multimodal
+tested_model_name:  MVFusion_3D_small_6views
+class_name:  MVFusionAPIModel
+model_module:  torch_points3d.models.segmentation.multimodal.Feng.mvfusion_3d
+name, cls of chosen model_cls:  MVFusionAPIModel <class 'torch_points3d.models.segmentation.multimodal.Feng.mvfusion_3d.MVFusionAPIModel'>
+x feature dim:  {'FEAT': 3}
+nc_in:  67
+nc_in:  64
+nc_in:  32
+nc_in:  64
+nc_in:  128
+Return attention maps!
+nc_in:  256
+nc_in:  128
+nc_in:  128
+nc_in:  96
+nc_in:  96
+INFO - 2023-02-09 23:39:27,280 - model_checkpoint - Available weights : ['latest', 'acc', 'macc', 'miou']
+INFO - 2023-02-09 23:39:27,280 - model_checkpoint - Model loaded from MVFusion_3D_small_6views.pt:latest
+INFO - 2023-02-09 23:39:27,508 - evaluate_all_metrics - MVFusionAPIModel(
+  (backbone): MVFusionSparseConv3dUnet(
+    (inner_modules): ModuleList(
+      (0): Identity()
+    )
+    (down_modules): ModuleList(
+      (0): MultimodalBlockDown(
+        (block_1): Identity()
+        (block_2): Identity()
+        (image): MVFusionUnimodalBranch(
+          drop_3d=None
+          drop_mod=None
+          keep_last_view=False
+          checkpointing=c
+          (transformerfusion): DVA_cls_5_fusion_7(
+            (fusion): TransformerFusion(
+              (input_layer): Linear(in_features=29, out_features=64, bias=True)
+              (transformer_layers): ModuleList(
+                (0): AttentionBlock(
+                  (norm_1): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+                  (norm_2): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+                  (attn): MultiheadAttention(
+                    (out_proj): NonDynamicallyQuantizableLinear(in_features=64, out_features=64, bias=True)
+                  )
+                  (linear): Sequential(
+                    (0): Linear(in_features=64, out_features=256, bias=True)
+                    (1): GELU(approximate=none)
+                    (2): Dropout(p=0.2, inplace=False)
+                    (3): Linear(in_features=256, out_features=64, bias=True)
+                    (4): Dropout(p=0.2, inplace=False)
+                  )
+                )
+                (1): AttentionBlock(
+                  (norm_1): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+                  (norm_2): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+                  (attn): MultiheadAttention(
+                    (out_proj): NonDynamicallyQuantizableLinear(in_features=64, out_features=64, bias=True)
+                  )
+                  (linear): Sequential(
+                    (0): Linear(in_features=64, out_features=256, bias=True)
+                    (1): GELU(approximate=none)
+                    (2): Dropout(p=0.2, inplace=False)
+                    (3): Linear(in_features=256, out_features=64, bias=True)
+                    (4): Dropout(p=0.2, inplace=False)
+                  )
+                )
+                (2): AttentionBlock(
+                  (norm_1): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+                  (norm_2): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+                  (attn): MultiheadAttention(
+                    (out_proj): NonDynamicallyQuantizableLinear(in_features=64, out_features=64, bias=True)
+                  )
+                  (linear): Sequential(
+                    (0): Linear(in_features=64, out_features=256, bias=True)
+                    (1): GELU(approximate=none)
+                    (2): Dropout(p=0.2, inplace=False)
+                    (3): Linear(in_features=256, out_features=64, bias=True)
+                    (4): Dropout(p=0.2, inplace=False)
+                  )
+                )
+                (3): AttentionBlock(
+                  (norm_1): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+                  (norm_2): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+                  (attn): MultiheadAttention(
+                    (out_proj): NonDynamicallyQuantizableLinear(in_features=64, out_features=64, bias=True)
+                  )
+                  (linear): Sequential(
+                    (0): Linear(in_features=64, out_features=256, bias=True)
+                    (1): GELU(approximate=none)
+                    (2): Dropout(p=0.2, inplace=False)
+                    (3): Linear(in_features=256, out_features=64, bias=True)
+                    (4): Dropout(p=0.2, inplace=False)
+                  )
+                )
+              )
+            )
+            (layer_norm): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+          )
+          (fusion): BimodalFusion(mode=concatenation)
+        )
+      )
+      (1): MultimodalBlockDown(
+        (block_1): ResNetDown(
+          (conv_in): Seq(
+            (0): Conv3d(in_channels=67, out_channels=64, kernel_size=3, stride=1, dilation=1)
+            (1): BatchNorm(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): ReLU(inplace=True)
+          )
+        )
+        (block_2): Identity()
+        (image): IdentityBranch()
+      )
+      (2): MultimodalBlockDown(
+        (block_1): ResNetDown(
+          (conv_in): Seq(
+            (0): Conv3d(in_channels=64, out_channels=64, kernel_size=2, stride=2, dilation=1)
+            (1): BatchNorm(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): ReLU(inplace=True)
+          )
+          (blocks): Seq(
+            (0): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=64, out_channels=32, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=32, out_channels=32, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+              (downsample): Seq(
+                (0): Conv3d(in_channels=64, out_channels=32, kernel_size=1, stride=1, dilation=1)
+                (1): BatchNorm(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              )
+            )
+            (1): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=32, out_channels=32, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=32, out_channels=32, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+            )
+          )
+        )
+        (block_2): Identity()
+        (image): IdentityBranch()
+      )
+      (3): MultimodalBlockDown(
+        (block_1): ResNetDown(
+          (conv_in): Seq(
+            (0): Conv3d(in_channels=32, out_channels=32, kernel_size=2, stride=2, dilation=1)
+            (1): BatchNorm(32, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): ReLU(inplace=True)
+          )
+          (blocks): Seq(
+            (0): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=32, out_channels=64, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=64, out_channels=64, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+              (downsample): Seq(
+                (0): Conv3d(in_channels=32, out_channels=64, kernel_size=1, stride=1, dilation=1)
+                (1): BatchNorm(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              )
+            )
+            (1): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=64, out_channels=64, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=64, out_channels=64, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+            )
+            (2): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=64, out_channels=64, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=64, out_channels=64, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+            )
+          )
+        )
+        (block_2): Identity()
+        (image): IdentityBranch()
+      )
+      (4): MultimodalBlockDown(
+        (block_1): ResNetDown(
+          (conv_in): Seq(
+            (0): Conv3d(in_channels=64, out_channels=64, kernel_size=2, stride=2, dilation=1)
+            (1): BatchNorm(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): ReLU(inplace=True)
+          )
+          (blocks): Seq(
+            (0): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=64, out_channels=128, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+              (downsample): Seq(
+                (0): Conv3d(in_channels=64, out_channels=128, kernel_size=1, stride=1, dilation=1)
+                (1): BatchNorm(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              )
+            )
+            (1): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+            )
+            (2): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+            )
+            (3): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+            )
+          )
+        )
+        (block_2): Identity()
+        (image): IdentityBranch()
+      )
+      (5): MultimodalBlockDown(
+        (block_1): ResNetDown(
+          (conv_in): Seq(
+            (0): Conv3d(in_channels=128, out_channels=128, kernel_size=2, stride=2, dilation=1)
+            (1): BatchNorm(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (2): ReLU(inplace=True)
+          )
+          (blocks): Seq(
+            (0): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=128, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+              (downsample): Seq(
+                (0): Conv3d(in_channels=128, out_channels=256, kernel_size=1, stride=1, dilation=1)
+                (1): BatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              )
+            )
+            (1): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+            )
+            (2): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+            )
+            (3): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+            )
+            (4): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+            )
+            (5): ResBlock(
+              (block): Seq(
+                (0): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (1): BatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (2): ReLU(inplace=True)
+                (3): Conv3d(in_channels=256, out_channels=256, kernel_size=3, stride=1, dilation=1)
+                (4): BatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (5): ReLU(inplace=True)
+              )
+            )
+          )
+        )
+        (block_2): Identity()
+        (image): IdentityBranch()
+      )
+    )
+    (up_modules): ModuleList(
+      (0): ResNetUp(
+        (conv_in): Seq(
+          (0): Conv3d(in_channels=256, out_channels=256, kernel_size=2, stride=2, dilation=1)
+          (1): BatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+        )
+        (blocks): Seq(
+          (0): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=384, out_channels=128, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+            (downsample): Seq(
+              (0): Conv3d(in_channels=384, out_channels=128, kernel_size=1, stride=1, dilation=1)
+              (1): BatchNorm(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            )
+          )
+        )
+      )
+      (1): ResNetUp(
+        (conv_in): Seq(
+          (0): Conv3d(in_channels=128, out_channels=128, kernel_size=2, stride=2, dilation=1)
+          (1): BatchNorm(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+        )
+        (blocks): Seq(
+          (0): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=192, out_channels=128, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=128, out_channels=128, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+            (downsample): Seq(
+              (0): Conv3d(in_channels=192, out_channels=128, kernel_size=1, stride=1, dilation=1)
+              (1): BatchNorm(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            )
+          )
+        )
+      )
+      (2): ResNetUp(
+        (conv_in): Seq(
+          (0): Conv3d(in_channels=128, out_channels=128, kernel_size=2, stride=2, dilation=1)
+          (1): BatchNorm(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+        )
+        (blocks): Seq(
+          (0): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=160, out_channels=96, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=96, out_channels=96, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+            (downsample): Seq(
+              (0): Conv3d(in_channels=160, out_channels=96, kernel_size=1, stride=1, dilation=1)
+              (1): BatchNorm(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            )
+          )
+        )
+      )
+      (3): ResNetUp(
+        (conv_in): Seq(
+          (0): Conv3d(in_channels=96, out_channels=96, kernel_size=2, stride=2, dilation=1)
+          (1): BatchNorm(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+        )
+        (blocks): Seq(
+          (0): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=160, out_channels=96, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=96, out_channels=96, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+            (downsample): Seq(
+              (0): Conv3d(in_channels=160, out_channels=96, kernel_size=1, stride=1, dilation=1)
+              (1): BatchNorm(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            )
+          )
+        )
+      )
+      (4): ResNetUp(
+        (conv_in): Seq(
+          (0): Conv3d(in_channels=96, out_channels=96, kernel_size=3, stride=1, dilation=1)
+          (1): BatchNorm(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (2): ReLU(inplace=True)
+        )
+        (blocks): Seq(
+          (0): ResBlock(
+            (block): Seq(
+              (0): Conv3d(in_channels=96, out_channels=96, kernel_size=3, stride=1, dilation=1)
+              (1): BatchNorm(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (2): ReLU(inplace=True)
+              (3): Conv3d(in_channels=96, out_channels=96, kernel_size=3, stride=1, dilation=1)
+              (4): BatchNorm(96, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+              (5): ReLU(inplace=True)
+            )
+          )
+        )
+      )
+    )
+  )
+  (head): Sequential(
+    (0): Linear(in_features=96, out_features=20, bias=True)
+  )
+)
+INFO - 2023-02-09 23:39:27,511 - colors - [0;32mOptimizer: SGD (
+Parameter Group 0
+    base_momentum: 0.85
+    dampening: 0
+    foreach: None
+    initial_lr: 0.012
+    lr: 0.01200000000000001
+    max_lr: 0.3
+    max_momentum: 0.95
+    maximize: False
+    min_lr: 1.2e-06
+    momentum: 0.95
+    nesterov: False
+    weight_decay: 0.0001
+)[0m
+INFO - 2023-02-09 23:39:27,511 - colors - [0;32mLearning Rate Scheduler: OneCycleLR({'max_lr': 0.3, 'epochs': 60, 'steps_per_epoch': 200, 'anneal_strategy': 'cos', 'cycle_momentum': True, 'base_momentum': 0.85, 'max_momentum': 0.95, 'three_phase': False}, update_scheduler_on=on_num_batch)[0m
+INFO - 2023-02-09 23:39:27,511 - colors - [0;32mBatchNorm Scheduler: None[0m
+INFO - 2023-02-09 23:39:27,511 - colors - [0;32mAccumulated gradients: None[0m
+INFO - 2023-02-09 23:39:27,512 - evaluate_all_metrics - Model size = 30911764
+INFO - 2023-02-09 23:39:27,513 - evaluate_all_metrics - Dataset: ScannetDatasetMM 
+[0;95mtrain_pre_batch_collate_transform [0m= None
+[0;95mval_pre_batch_collate_transform [0m= None
+[0;95mtest_pre_batch_collate_transform [0m= None
+[0;95mpre_transform [0m= Compose([
+    SaveOriginalPosId,
+    PCAComputePointwise(num_neighbors=50, r=None, use_full_pos=False, use_cuda=False, use_faiss=False, ncells=None, nprobes=10, chunk_size=1000000),
+    EigenFeatures(norm=True, linearity=True, planarity=True, scattering=True, temperature=None),
+    RemoveAttributes(attr_names=['eigenvalues', 'eigenvectors'], strict=False),
+])
+[0;95mtest_transform [0m= Compose([
+    GridSampling3D(grid_size=0.03, quantize_coords=True, mode=last),
+    XYZFeature(axis=['x', 'y', 'z']),
+    AddFeatsByKeys(pos_x=True, pos_y=True, pos_z=True, rgb=False, linearity=False, norm=False, planarity=False, scattering=False),
+])
+[0;95mtrain_transform [0m= Compose([
+    ElasticDistortion(apply_distorsion=True, granularity=[0.2, 0.8], magnitude=[0.4, 1.6]),
+    Random3AxisRotation(apply_rotation=True, rot_x=8, rot_y=8, rot_z=180),
+    Random symmetry of axes: x=True, y=True, z=False,
+    RandomScaleAnisotropic([0.9, 1.1]),
+    GridSampling3D(grid_size=0.03, quantize_coords=True, mode=last),
+    XYZFeature(axis=['x', 'y', 'z']),
+    AddFeatsByKeys(pos_x=True, pos_y=True, pos_z=True, rgb=False, linearity=False, norm=False, planarity=False, scattering=False),
+])
+[0;95mval_transform [0m= Compose([
+    GridSampling3D(grid_size=0.03, quantize_coords=True, mode=last),
+    XYZFeature(axis=['x', 'y', 'z']),
+    AddFeatsByKeys(pos_x=True, pos_y=True, pos_z=True, rgb=False, linearity=False, norm=False, planarity=False, scattering=False),
+])
+[0;95minference_transform [0m= Compose([
+    SaveOriginalPosId,
+    PCAComputePointwise(num_neighbors=50, r=None, use_full_pos=False, use_cuda=False, use_faiss=False, ncells=None, nprobes=10, chunk_size=1000000),
+    EigenFeatures(norm=True, linearity=True, planarity=True, scattering=True, temperature=None),
+    RemoveAttributes(attr_names=['eigenvalues', 'eigenvectors'], strict=False),
+    GridSampling3D(grid_size=0.03, quantize_coords=True, mode=last),
+    XYZFeature(axis=['x', 'y', 'z']),
+    AddFeatsByKeys(pos_x=True, pos_y=True, pos_z=True, rgb=False, linearity=False, norm=False, planarity=False, scattering=False),
+])
+[0;95mpre_transform_image [0m= ComposeMultiModal([
+    LoadImages(ref_size=[320, 240], crop_size=None, crop_offsets=None, downscale=None, show_progress=False),
+    NonStaticMask(ref_size=(320, 240), proj_upscale=1, n_sample=5),
+    MapImages(key=mapping_index, verbose=False, cylinder=False, ref_size=[320, 240], proj_upscale=1, method=SplattingVisibility, use_cuda=False, kwargs={'voxel': 0.03, 'r_max': 8, 'r_min': 0.05, 'exact': True, 'camera': 'scannet'}),
+    NeighborhoodBasedMappingFeatures(k_list=[50], voxel=0.01, compute_density=True, compute_occlusion=True, use_faiss=False, use_cuda=False, ncells=None, nprobes=10, verbose=True),
+])
+[0;95mtest_transform_image [0m= ComposeMultiModal([
+    SelectMappingFromPointId(key=mapping_index),
+    ToImageData(),
+    PickImagesFromMemoryCredit(credit=7679999923200, use_coverage=True, k_coverage=2),
+])
+[0;95mtrain_transform_image [0m= ComposeMultiModal([
+    SelectMappingFromPointId(key=mapping_index),
+    ToImageData(),
+    PickImagesFromMemoryCredit(credit=7680000, use_coverage=True, k_coverage=2),
+    JitterMappingFeatures(sigma=0.02, clip=0.03),
+])
+[0;95mval_transform_image [0m= ComposeMultiModal([
+    SelectMappingFromPointId(key=mapping_index),
+    ToImageData(),
+    PickImagesFromMemoryCredit(credit=7679999923200, use_coverage=True, k_coverage=2),
+])
+[0;95minference_transform_image [0m= ComposeMultiModal([
+    LoadImages(ref_size=[320, 240], crop_size=None, crop_offsets=None, downscale=None, show_progress=False),
+    NonStaticMask(ref_size=(320, 240), proj_upscale=1, n_sample=5),
+    MapImages(key=mapping_index, verbose=False, cylinder=False, ref_size=[320, 240], proj_upscale=1, method=SplattingVisibility, use_cuda=False, kwargs={'voxel': 0.03, 'r_max': 8, 'r_min': 0.05, 'exact': True, 'camera': 'scannet'}),
+    NeighborhoodBasedMappingFeatures(k_list=[50], voxel=0.01, compute_density=True, compute_occlusion=True, use_faiss=False, use_cuda=False, ncells=None, nprobes=10, verbose=True),
+    SelectMappingFromPointId(key=mapping_index),
+    ToImageData(),
+    PickImagesFromMemoryCredit(credit=7679999923200, use_coverage=True, k_coverage=2),
+])
+Size of [0;95mtrain_dataset [0m= 1201
+Size of [0;95mtest_dataset [0m= 0
+Size of [0;95mval_dataset [0m= 312
+[0;95mBatch size =[0m 16
+INFO - 2023-02-09 23:39:36,348 - base_dataset - Available stage selection datasets: [0;95m ['val'] [0m
+INFO - 2023-02-09 23:39:36,352 - base_dataset - The models will be selected using the metrics on following dataset: [0;95m val [0m
+Evaluating on validation set
+Input mask name:  ViT_masks
+  0%|          | 0/312 [00:00<?, ?it/s]  0%|          | 0/312 [00:49<?, ?it/s, val_acc=94.72, val_loss_cross_entropy=0.166, val_loss_seg=0.166, val_macc=92.40, val_miou=71.42]  0%|          | 1/312 [00:49<4:14:05, 49.02s/it, val_acc=94.72, val_loss_cross_entropy=0.166, val_loss_seg=0.166, val_macc=92.40, val_miou=71.42]  0%|          | 1/312 [00:55<4:14:05, 49.02s/it, val_acc=93.41, val_loss_cross_entropy=0.249, val_loss_seg=0.249, val_macc=89.54, val_miou=67.31]  1%|          | 2/312 [00:55<2:04:32, 24.10s/it, val_acc=93.41, val_loss_cross_entropy=0.249, val_loss_seg=0.249, val_macc=89.54, val_miou=67.31]  1%|          | 2/312 [01:05<2:04:32, 24.10s/it, val_acc=93.97, val_loss_cross_entropy=0.224, val_loss_seg=0.224, val_macc=89.70, val_miou=66.70]  1%|          | 3/312 [01:05<1:30:45, 17.62s/it, val_acc=93.97, val_loss_cross_entropy=0.224, val_loss_seg=0.224, val_macc=89.70, val_miou=66.70]  1%|          | 3/312 [01:11<1:30:45, 17.62s/it, val_acc=93.87, val_loss_cross_entropy=0.230, val_loss_seg=0.230, val_macc=90.48, val_miou=68.16]  1%|▏         | 4/312 [01:11<1:06:24, 12.94s/it, val_acc=93.87, val_loss_cross_entropy=0.230, val_loss_seg=0.230, val_macc=90.48, val_miou=68.16]  1%|▏         | 4/312 [01:21<1:06:24, 12.94s/it, val_acc=93.62, val_loss_cross_entropy=0.244, val_loss_seg=0.244, val_macc=90.52, val_miou=67.25]  2%|▏         | 5/312 [01:21<1:00:23, 11.80s/it, val_acc=93.62, val_loss_cross_entropy=0.244, val_loss_seg=0.244, val_macc=90.52, val_miou=67.25]  2%|▏         | 5/312 [01:23<1:00:23, 11.80s/it, val_acc=93.87, val_loss_cross_entropy=0.231, val_loss_seg=0.231, val_macc=91.11, val_miou=69.35]  2%|▏         | 6/312 [01:23<43:43,  8.57s/it, val_acc=93.87, val_loss_cross_entropy=0.231, val_loss_seg=0.231, val_macc=91.11, val_miou=69.35]    2%|▏         | 6/312 [01:29<43:43,  8.57s/it, val_acc=93.75, val_loss_cross_entropy=0.227, val_loss_seg=0.227, val_macc=90.88, val_miou=68.04]  2%|▏         | 7/312 [01:29<39:23,  7.75s/it, val_acc=93.75, val_loss_cross_entropy=0.227, val_loss_seg=0.227, val_macc=90.88, val_miou=68.04]  2%|▏         | 7/312 [01:32<39:23,  7.75s/it, val_acc=94.03, val_loss_cross_entropy=0.212, val_loss_seg=0.212, val_macc=91.11, val_miou=68.98]  3%|▎         | 8/312 [01:32<32:10,  6.35s/it, val_acc=94.03, val_loss_cross_entropy=0.212, val_loss_seg=0.212, val_macc=91.11, val_miou=68.98]  3%|▎         | 8/312 [01:37<32:10,  6.35s/it, val_acc=94.52, val_loss_cross_entropy=0.197, val_loss_seg=0.197, val_macc=91.71, val_miou=75.95]  3%|▎         | 9/312 [01:37<30:09,  5.97s/it, val_acc=94.52, val_loss_cross_entropy=0.197, val_loss_seg=0.197, val_macc=91.71, val_miou=75.95]  3%|▎         | 9/312 [01:43<30:09,  5.97s/it, val_acc=94.91, val_loss_cross_entropy=0.184, val_loss_seg=0.184, val_macc=92.13, val_miou=76.70]  3%|▎         | 10/312 [01:43<29:46,  5.91s/it, val_acc=94.91, val_loss_cross_entropy=0.184, val_loss_seg=0.184, val_macc=92.13, val_miou=76.70]  3%|▎         | 10/312 [01:47<29:46,  5.91s/it, val_acc=95.21, val_loss_cross_entropy=0.174, val_loss_seg=0.174, val_macc=92.36, val_miou=77.12]  4%|▎         | 11/312 [01:47<26:11,  5.22s/it, val_acc=95.21, val_loss_cross_entropy=0.174, val_loss_seg=0.174, val_macc=92.36, val_miou=77.12]  4%|▎         | 11/312 [01:53<26:11,  5.22s/it, val_acc=94.92, val_loss_cross_entropy=0.182, val_loss_seg=0.182, val_macc=92.45, val_miou=82.41]  4%|▍         | 12/312 [01:53<26:51,  5.37s/it, val_acc=94.92, val_loss_cross_entropy=0.182, val_loss_seg=0.182, val_macc=92.45, val_miou=82.41]  4%|▍         | 12/312 [01:56<26:51,  5.37s/it, val_acc=94.38, val_loss_cross_entropy=0.196, val_loss_seg=0.196, val_macc=92.61, val_miou=81.47]  4%|▍         | 13/312 [01:56<24:14,  4.86s/it, val_acc=94.38, val_loss_cross_entropy=0.196, val_loss_seg=0.196, val_macc=92.61, val_miou=81.47]  4%|▍         | 13/312 [02:00<24:14,  4.86s/it, val_acc=93.92, val_loss_cross_entropy=0.216, val_loss_seg=0.216, val_macc=91.94, val_miou=79.13]  4%|▍         | 14/312 [02:00<22:24,  4.51s/it, val_acc=93.92, val_loss_cross_entropy=0.216, val_loss_seg=0.216, val_macc=91.94, val_miou=79.13]  4%|▍         | 14/312 [02:04<22:24,  4.51s/it, val_acc=93.54, val_loss_cross_entropy=0.228, val_loss_seg=0.228, val_macc=91.42, val_miou=78.70]  5%|▍         | 15/312 [02:04<20:56,  4.23s/it, val_acc=93.54, val_loss_cross_entropy=0.228, val_loss_seg=0.228, val_macc=91.42, val_miou=78.70]  5%|▍         | 15/312 [02:07<20:56,  4.23s/it, val_acc=93.16, val_loss_cross_entropy=0.240, val_loss_seg=0.240, val_macc=91.13, val_miou=78.53]  5%|▌         | 16/312 [02:07<19:19,  3.92s/it, val_acc=93.16, val_loss_cross_entropy=0.240, val_loss_seg=0.240, val_macc=91.13, val_miou=78.53]  5%|▌         | 16/312 [02:11<19:19,  3.92s/it, val_acc=93.06, val_loss_cross_entropy=0.244, val_loss_seg=0.244, val_macc=90.87, val_miou=78.20]  5%|▌         | 17/312 [02:11<19:42,  4.01s/it, val_acc=93.06, val_loss_cross_entropy=0.244, val_loss_seg=0.244, val_macc=90.87, val_miou=78.20]  5%|▌         | 17/312 [02:13<19:42,  4.01s/it, val_acc=93.10, val_loss_cross_entropy=0.240, val_loss_seg=0.240, val_macc=90.70, val_miou=77.98]  6%|▌         | 18/312 [02:13<17:08,  3.50s/it, val_acc=93.10, val_loss_cross_entropy=0.240, val_loss_seg=0.240, val_macc=90.70, val_miou=77.98]  6%|▌         | 18/312 [02:18<17:08,  3.50s/it, val_acc=93.13, val_loss_cross_entropy=0.247, val_loss_seg=0.247, val_macc=90.50, val_miou=77.64]  6%|▌         | 19/312 [02:18<18:13,  3.73s/it, val_acc=93.13, val_loss_cross_entropy=0.247, val_loss_seg=0.247, val_macc=90.50, val_miou=77.64]  6%|▌         | 19/312 [02:22<18:13,  3.73s/it, val_acc=93.02, val_loss_cross_entropy=0.256, val_loss_seg=0.256, val_macc=90.47, val_miou=77.14]  6%|▋         | 20/312 [02:22<19:07,  3.93s/it, val_acc=93.02, val_loss_cross_entropy=0.256, val_loss_seg=0.256, val_macc=90.47, val_miou=77.14]  6%|▋         | 20/312 [02:23<19:07,  3.93s/it, val_acc=93.08, val_loss_cross_entropy=0.250, val_loss_seg=0.250, val_macc=90.51, val_miou=77.36]  7%|▋         | 21/312 [02:23<15:16,  3.15s/it, val_acc=93.08, val_loss_cross_entropy=0.250, val_loss_seg=0.250, val_macc=90.51, val_miou=77.36]  7%|▋         | 21/312 [02:27<15:16,  3.15s/it, val_acc=93.15, val_loss_cross_entropy=0.243, val_loss_seg=0.243, val_macc=90.55, val_miou=77.56]  7%|▋         | 22/312 [02:27<16:03,  3.32s/it, val_acc=93.15, val_loss_cross_entropy=0.243, val_loss_seg=0.243, val_macc=90.55, val_miou=77.56]  7%|▋         | 22/312 [02:29<16:03,  3.32s/it, val_acc=93.21, val_loss_cross_entropy=0.236, val_loss_seg=0.236, val_macc=90.60, val_miou=77.72]  7%|▋         | 23/312 [02:29<13:43,  2.85s/it, val_acc=93.21, val_loss_cross_entropy=0.236, val_loss_seg=0.236, val_macc=90.60, val_miou=77.72]  7%|▋         | 23/312 [02:35<13:43,  2.85s/it, val_acc=93.37, val_loss_cross_entropy=0.231, val_loss_seg=0.231, val_macc=90.61, val_miou=77.76]  8%|▊         | 24/312 [02:35<17:56,  3.74s/it, val_acc=93.37, val_loss_cross_entropy=0.231, val_loss_seg=0.231, val_macc=90.61, val_miou=77.76]  8%|▊         | 24/312 [02:39<17:56,  3.74s/it, val_acc=93.50, val_loss_cross_entropy=0.226, val_loss_seg=0.226, val_macc=90.60, val_miou=77.80]  8%|▊         | 25/312 [02:39<18:51,  3.94s/it, val_acc=93.50, val_loss_cross_entropy=0.226, val_loss_seg=0.226, val_macc=90.60, val_miou=77.80]  8%|▊         | 25/312 [02:43<18:51,  3.94s/it, val_acc=93.61, val_loss_cross_entropy=0.221, val_loss_seg=0.221, val_macc=90.62, val_miou=78.11]  8%|▊         | 26/312 [02:43<18:47,  3.94s/it, val_acc=93.61, val_loss_cross_entropy=0.221, val_loss_seg=0.221, val_macc=90.62, val_miou=78.11]  8%|▊         | 26/312 [02:45<18:47,  3.94s/it, val_acc=93.70, val_loss_cross_entropy=0.216, val_loss_seg=0.216, val_macc=90.63, val_miou=78.35]  9%|▊         | 27/312 [02:45<15:25,  3.25s/it, val_acc=93.70, val_loss_cross_entropy=0.216, val_loss_seg=0.216, val_macc=90.63, val_miou=78.35]  9%|▊         | 27/312 [02:46<15:25,  3.25s/it, val_acc=93.78, val_loss_cross_entropy=0.212, val_loss_seg=0.212, val_macc=90.24, val_miou=78.22]  9%|▉         | 28/312 [02:46<12:50,  2.71s/it, val_acc=93.78, val_loss_cross_entropy=0.212, val_loss_seg=0.212, val_macc=90.24, val_miou=78.22]  9%|▉         | 28/312 [02:52<12:50,  2.71s/it, val_acc=93.84, val_loss_cross_entropy=0.208, val_loss_seg=0.208, val_macc=90.51, val_miou=78.62]  9%|▉         | 29/312 [02:52<16:47,  3.56s/it, val_acc=93.84, val_loss_cross_entropy=0.208, val_loss_seg=0.208, val_macc=90.51, val_miou=78.62]  9%|▉         | 29/312 [02:55<16:47,  3.56s/it, val_acc=93.92, val_loss_cross_entropy=0.204, val_loss_seg=0.204, val_macc=90.61, val_miou=78.85] 10%|▉         | 30/312 [02:55<16:02,  3.41s/it, val_acc=93.92, val_loss_cross_entropy=0.204, val_loss_seg=0.204, val_macc=90.61, val_miou=78.85] 10%|▉         | 30/312 [02:57<16:02,  3.41s/it, val_acc=93.97, val_loss_cross_entropy=0.201, val_loss_seg=0.201, val_macc=90.75, val_miou=79.06] 10%|▉         | 31/312 [02:57<14:27,  3.09s/it, val_acc=93.97, val_loss_cross_entropy=0.201, val_loss_seg=0.201, val_macc=90.75, val_miou=79.06] 10%|▉         | 31/312 [03:01<14:27,  3.09s/it, val_acc=94.12, val_loss_cross_entropy=0.196, val_loss_seg=0.196, val_macc=90.79, val_miou=79.09] 10%|█         | 32/312 [03:01<15:20,  3.29s/it, val_acc=94.12, val_loss_cross_entropy=0.196, val_loss_seg=0.196, val_macc=90.79, val_miou=79.09] 10%|█         | 32/312 [03:03<15:20,  3.29s/it, val_acc=93.94, val_loss_cross_entropy=0.202, val_loss_seg=0.202, val_macc=90.70, val_miou=78.67] 11%|█         | 33/312 [03:03<13:45,  2.96s/it, val_acc=93.94, val_loss_cross_entropy=0.202, val_loss_seg=0.202, val_macc=90.70, val_miou=78.67] 11%|█         | 33/312 [03:08<13:45,  2.96s/it, val_acc=93.91, val_loss_cross_entropy=0.205, val_loss_seg=0.205, val_macc=90.54, val_miou=78.39] 11%|█         | 34/312 [03:08<16:13,  3.50s/it, val_acc=93.91, val_loss_cross_entropy=0.205, val_loss_seg=0.205, val_macc=90.54, val_miou=78.39] 11%|█         | 34/312 [03:11<16:13,  3.50s/it, val_acc=94.03, val_loss_cross_entropy=0.200, val_loss_seg=0.200, val_macc=90.56, val_miou=78.44] 11%|█         | 35/312 [03:11<15:10,  3.29s/it, val_acc=94.03, val_loss_cross_entropy=0.200, val_loss_seg=0.200, val_macc=90.56, val_miou=78.44] 11%|█         | 35/312 [03:14<15:10,  3.29s/it, val_acc=93.93, val_loss_cross_entropy=0.209, val_loss_seg=0.209, val_macc=90.51, val_miou=78.42] 12%|█▏        | 36/312 [03:14<15:00,  3.26s/it, val_acc=93.93, val_loss_cross_entropy=0.209, val_loss_seg=0.209, val_macc=90.51, val_miou=78.42] 12%|█▏        | 36/312 [03:17<15:00,  3.26s/it, val_acc=93.96, val_loss_cross_entropy=0.206, val_loss_seg=0.206, val_macc=90.58, val_miou=78.45] 12%|█▏        | 37/312 [03:17<14:50,  3.24s/it, val_acc=93.96, val_loss_cross_entropy=0.206, val_loss_seg=0.206, val_macc=90.58, val_miou=78.45] 12%|█▏        | 37/312 [03:18<14:50,  3.24s/it, val_acc=93.96, val_loss_cross_entropy=0.206, val_loss_seg=0.206, val_macc=90.57, val_miou=78.42] 12%|█▏        | 38/312 [03:18<12:01,  2.63s/it, val_acc=93.96, val_loss_cross_entropy=0.206, val_loss_seg=0.206, val_macc=90.57, val_miou=78.42] 12%|█▏        | 38/312 [03:19<12:01,  2.63s/it, val_acc=93.94, val_loss_cross_entropy=0.208, val_loss_seg=0.208, val_macc=90.59, val_miou=78.40] 12%|█▎        | 39/312 [03:19<09:22,  2.06s/it, val_acc=93.94, val_loss_cross_entropy=0.208, val_loss_seg=0.208, val_macc=90.59, val_miou=78.40] 12%|█▎        | 39/312 [03:20<09:22,  2.06s/it, val_acc=93.94, val_loss_cross_entropy=0.208, val_loss_seg=0.208, val_macc=90.59, val_miou=78.41] 13%|█▎        | 40/312 [03:20<08:08,  1.79s/it, val_acc=93.94, val_loss_cross_entropy=0.208, val_loss_seg=0.208, val_macc=90.59, val_miou=78.41] 13%|█▎        | 40/312 [03:23<08:08,  1.79s/it, val_acc=93.92, val_loss_cross_entropy=0.209, val_loss_seg=0.209, val_macc=90.32, val_miou=78.32] 13%|█▎        | 41/312 [03:23<10:23,  2.30s/it, val_acc=93.92, val_loss_cross_entropy=0.209, val_loss_seg=0.209, val_macc=90.32, val_miou=78.32] 13%|█▎        | 41/312 [03:26<10:23,  2.30s/it, val_acc=93.97, val_loss_cross_entropy=0.208, val_loss_seg=0.208, val_macc=90.21, val_miou=78.35] 13%|█▎        | 42/312 [03:26<10:03,  2.24s/it, val_acc=93.97, val_loss_cross_entropy=0.208, val_loss_seg=0.208, val_macc=90.21, val_miou=78.35] 13%|█▎        | 42/312 [03:28<10:03,  2.24s/it, val_acc=94.01, val_loss_cross_entropy=0.209, val_loss_seg=0.209, val_macc=90.03, val_miou=78.27] 14%|█▍        | 43/312 [03:28<10:13,  2.28s/it, val_acc=94.01, val_loss_cross_entropy=0.209, val_loss_seg=0.209, val_macc=90.03, val_miou=78.27] 14%|█▍        | 43/312 [03:30<10:13,  2.28s/it, val_acc=94.01, val_loss_cross_entropy=0.211, val_loss_seg=0.211, val_macc=90.15, val_miou=78.47] 14%|█▍        | 44/312 [03:30<09:13,  2.07s/it, val_acc=94.01, val_loss_cross_entropy=0.211, val_loss_seg=0.211, val_macc=90.15, val_miou=78.47] 14%|█▍        | 44/312 [03:36<09:13,  2.07s/it, val_acc=93.91, val_loss_cross_entropy=0.216, val_loss_seg=0.216, val_macc=90.20, val_miou=78.39] 14%|█▍        | 45/312 [03:36<15:20,  3.45s/it, val_acc=93.91, val_loss_cross_entropy=0.216, val_loss_seg=0.216, val_macc=90.20, val_miou=78.39] 14%|█▍        | 45/312 [03:41<15:20,  3.45s/it, val_acc=93.89, val_loss_cross_entropy=0.216, val_loss_seg=0.216, val_macc=90.26, val_miou=78.40] 15%|█▍        | 46/312 [03:41<17:03,  3.85s/it, val_acc=93.89, val_loss_cross_entropy=0.216, val_loss_seg=0.216, val_macc=90.26, val_miou=78.40] 15%|█▍        | 46/312 [03:48<17:03,  3.85s/it, val_acc=93.91, val_loss_cross_entropy=0.214, val_loss_seg=0.214, val_macc=90.32, val_miou=78.45] 15%|█▌        | 47/312 [03:48<21:46,  4.93s/it, val_acc=93.91, val_loss_cross_entropy=0.214, val_loss_seg=0.214, val_macc=90.32, val_miou=78.45] 15%|█▌        | 47/312 [03:53<21:46,  4.93s/it, val_acc=93.95, val_loss_cross_entropy=0.211, val_loss_seg=0.211, val_macc=90.37, val_miou=78.52] 15%|█▌        | 48/312 [03:53<20:44,  4.72s/it, val_acc=93.95, val_loss_cross_entropy=0.211, val_loss_seg=0.211, val_macc=90.37, val_miou=78.52] 15%|█▌        | 48/312 [03:56<20:44,  4.72s/it, val_acc=93.98, val_loss_cross_entropy=0.208, val_loss_seg=0.208, val_macc=90.39, val_miou=78.56] 16%|█▌        | 49/312 [03:56<18:26,  4.21s/it, val_acc=93.98, val_loss_cross_entropy=0.208, val_loss_seg=0.208, val_macc=90.39, val_miou=78.56] 16%|█▌        | 49/312 [03:58<18:26,  4.21s/it, val_acc=93.95, val_loss_cross_entropy=0.208, val_loss_seg=0.208, val_macc=90.45, val_miou=78.62] 16%|█▌        | 50/312 [03:58<15:43,  3.60s/it, val_acc=93.95, val_loss_cross_entropy=0.208, val_loss_seg=0.208, val_macc=90.45, val_miou=78.62] 16%|█▌        | 50/312 [04:00<15:43,  3.60s/it, val_acc=93.98, val_loss_cross_entropy=0.205, val_loss_seg=0.205, val_macc=90.55, val_miou=78.94] 16%|█▋        | 51/312 [04:00<14:18,  3.29s/it, val_acc=93.98, val_loss_cross_entropy=0.205, val_loss_seg=0.205, val_macc=90.55, val_miou=78.94] 16%|█▋        | 51/312 [04:04<14:18,  3.29s/it, val_acc=93.99, val_loss_cross_entropy=0.204, val_loss_seg=0.204, val_macc=90.59, val_miou=79.13] 17%|█▋        | 52/312 [04:04<14:29,  3.34s/it, val_acc=93.99, val_loss_cross_entropy=0.204, val_loss_seg=0.204, val_macc=90.59, val_miou=79.13] 17%|█▋        | 52/312 [04:05<14:29,  3.34s/it, val_acc=93.99, val_loss_cross_entropy=0.203, val_loss_seg=0.203, val_macc=91.02, val_miou=79.77] 17%|█▋        | 53/312 [04:05<11:29,  2.66s/it, val_acc=93.99, val_loss_cross_entropy=0.203, val_loss_seg=0.203, val_macc=91.02, val_miou=79.77] 17%|█▋        | 53/312 [04:06<11:29,  2.66s/it, val_acc=94.01, val_loss_cross_entropy=0.202, val_loss_seg=0.202, val_macc=91.29, val_miou=80.30] 17%|█▋        | 54/312 [04:06<09:12,  2.14s/it, val_acc=94.01, val_loss_cross_entropy=0.202, val_loss_seg=0.202, val_macc=91.29, val_miou=80.30] 17%|█▋        | 54/312 [04:17<09:12,  2.14s/it, val_acc=94.01, val_loss_cross_entropy=0.202, val_loss_seg=0.202, val_macc=91.39, val_miou=80.66] 18%|█▊        | 55/312 [04:17<20:05,  4.69s/it, val_acc=94.01, val_loss_cross_entropy=0.202, val_loss_seg=0.202, val_macc=91.39, val_miou=80.66] 18%|█▊        | 55/312 [04:21<20:05,  4.69s/it, val_acc=93.94, val_loss_cross_entropy=0.205, val_loss_seg=0.205, val_macc=91.47, val_miou=80.88] 18%|█▊        | 56/312 [04:21<20:15,  4.75s/it, val_acc=93.94, val_loss_cross_entropy=0.205, val_loss_seg=0.205, val_macc=91.47, val_miou=80.88] 18%|█▊        | 56/312 [04:30<20:15,  4.75s/it, val_acc=93.94, val_loss_cross_entropy=0.206, val_loss_seg=0.206, val_macc=91.23, val_miou=81.29] 18%|█▊        | 57/312 [04:30<24:36,  5.79s/it, val_acc=93.94, val_loss_cross_entropy=0.206, val_loss_seg=0.206, val_macc=91.23, val_miou=81.29] 18%|█▊        | 57/312 [04:46<24:36,  5.79s/it, val_acc=93.90, val_loss_cross_entropy=0.209, val_loss_seg=0.209, val_macc=90.91, val_miou=81.33] 19%|█▊        | 58/312 [04:46<37:38,  8.89s/it, val_acc=93.90, val_loss_cross_entropy=0.209, val_loss_seg=0.209, val_macc=90.91, val_miou=81.33] 19%|█▊        | 58/312 [04:50<37:38,  8.89s/it, val_acc=93.96, val_loss_cross_entropy=0.207, val_loss_seg=0.207, val_macc=90.89, val_miou=81.30] 19%|█▉        | 59/312 [04:50<31:12,  7.40s/it, val_acc=93.96, val_loss_cross_entropy=0.207, val_loss_seg=0.207, val_macc=90.89, val_miou=81.30] 19%|█▉        | 59/312 [04:53<31:12,  7.40s/it, val_acc=93.95, val_loss_cross_entropy=0.208, val_loss_seg=0.208, val_macc=90.87, val_miou=81.15] 19%|█▉        | 60/312 [04:53<26:06,  6.22s/it, val_acc=93.95, val_loss_cross_entropy=0.208, val_loss_seg=0.208, val_macc=90.87, val_miou=81.15] 19%|█▉        | 60/312 [04:55<26:06,  6.22s/it, val_acc=93.91, val_loss_cross_entropy=0.212, val_loss_seg=0.212, val_macc=90.83, val_miou=81.06] 20%|█▉        | 61/312 [04:55<20:52,  4.99s/it, val_acc=93.91, val_loss_cross_entropy=0.212, val_loss_seg=0.212, val_macc=90.83, val_miou=81.06] 20%|█▉        | 61/312 [05:04<20:52,  4.99s/it, val_acc=93.86, val_loss_cross_entropy=0.218, val_loss_seg=0.218, val_macc=90.71, val_miou=80.89] 20%|█▉        | 62/312 [05:04<25:09,  6.04s/it, val_acc=93.86, val_loss_cross_entropy=0.218, val_loss_seg=0.218, val_macc=90.71, val_miou=80.89] 20%|█▉        | 62/312 [05:08<25:09,  6.04s/it, val_acc=93.92, val_loss_cross_entropy=0.216, val_loss_seg=0.216, val_macc=90.74, val_miou=80.92] 20%|██        | 63/312 [05:08<22:49,  5.50s/it, val_acc=93.92, val_loss_cross_entropy=0.216, val_loss_seg=0.216, val_macc=90.74, val_miou=80.92] 20%|██        | 63/312 [05:29<22:49,  5.50s/it, val_acc=93.78, val_loss_cross_entropy=0.222, val_loss_seg=0.222, val_macc=90.35, val_miou=80.55] 21%|██        | 64/312 [05:29<42:13, 10.22s/it, val_acc=93.78, val_loss_cross_entropy=0.222, val_loss_seg=0.222, val_macc=90.35, val_miou=80.55] 21%|██        | 64/312 [05:52<42:13, 10.22s/it, val_acc=93.78, val_loss_cross_entropy=0.221, val_loss_seg=0.221, val_macc=90.08, val_miou=80.57] 21%|██        | 65/312 [05:52<57:50, 14.05s/it, val_acc=93.78, val_loss_cross_entropy=0.221, val_loss_seg=0.221, val_macc=90.08, val_miou=80.57] 21%|██        | 65/312 [06:06<57:50, 14.05s/it, val_acc=93.71, val_loss_cross_entropy=0.223, val_loss_seg=0.223, val_macc=89.86, val_miou=80.41] 21%|██        | 66/312 [06:06<57:02, 13.91s/it, val_acc=93.71, val_loss_cross_entropy=0.223, val_loss_seg=0.223, val_macc=89.86, val_miou=80.41] 21%|██        | 66/312 [06:12<57:02, 13.91s/it, val_acc=93.56, val_loss_cross_entropy=0.228, val_loss_seg=0.228, val_macc=89.66, val_miou=80.03] 21%|██▏       | 67/312 [06:12<46:50, 11.47s/it, val_acc=93.56, val_loss_cross_entropy=0.228, val_loss_seg=0.228, val_macc=89.66, val_miou=80.03] 21%|██▏       | 67/312 [06:29<46:50, 11.47s/it, val_acc=93.51, val_loss_cross_entropy=0.228, val_loss_seg=0.228, val_macc=89.68, val_miou=79.95] 22%|██▏       | 68/312 [06:29<54:15, 13.34s/it, val_acc=93.51, val_loss_cross_entropy=0.228, val_loss_seg=0.228, val_macc=89.68, val_miou=79.95] 22%|██▏       | 68/312 [06:37<54:15, 13.34s/it, val_acc=93.53, val_loss_cross_entropy=0.228, val_loss_seg=0.228, val_macc=89.78, val_miou=79.99] 22%|██▏       | 69/312 [06:37<46:38, 11.52s/it, val_acc=93.53, val_loss_cross_entropy=0.228, val_loss_seg=0.228, val_macc=89.78, val_miou=79.99] 22%|██▏       | 69/312 [06:41<46:38, 11.52s/it, val_acc=93.26, val_loss_cross_entropy=0.233, val_loss_seg=0.233, val_macc=89.26, val_miou=79.38] 22%|██▏       | 70/312 [06:41<38:16,  9.49s/it, val_acc=93.26, val_loss_cross_entropy=0.233, val_loss_seg=0.233, val_macc=89.26, val_miou=79.38] 22%|██▏       | 70/312 [06:45<38:16,  9.49s/it, val_acc=93.30, val_loss_cross_entropy=0.231, val_loss_seg=0.231, val_macc=89.38, val_miou=79.55] 23%|██▎       | 71/312 [06:45<30:34,  7.61s/it, val_acc=93.30, val_loss_cross_entropy=0.231, val_loss_seg=0.231, val_macc=89.38, val_miou=79.55] 23%|██▎       | 71/312 [06:47<30:34,  7.61s/it, val_acc=93.28, val_loss_cross_entropy=0.231, val_loss_seg=0.231, val_macc=89.62, val_miou=79.72] 23%|██▎       | 72/312 [06:47<24:22,  6.09s/it, val_acc=93.28, val_loss_cross_entropy=0.231, val_loss_seg=0.231, val_macc=89.62, val_miou=79.72] 23%|██▎       | 72/312 [06:53<24:22,  6.09s/it, val_acc=93.29, val_loss_cross_entropy=0.230, val_loss_seg=0.230, val_macc=89.78, val_miou=79.95] 23%|██▎       | 73/312 [06:53<24:33,  6.17s/it, val_acc=93.29, val_loss_cross_entropy=0.230, val_loss_seg=0.230, val_macc=89.78, val_miou=79.95] 23%|██▎       | 73/312 [06:56<24:33,  6.17s/it, val_acc=93.27, val_loss_cross_entropy=0.232, val_loss_seg=0.232, val_macc=89.83, val_miou=80.04] 24%|██▎       | 74/312 [06:56<20:19,  5.12s/it, val_acc=93.27, val_loss_cross_entropy=0.232, val_loss_seg=0.232, val_macc=89.83, val_miou=80.04] 24%|██▎       | 74/312 [06:59<20:19,  5.12s/it, val_acc=93.25, val_loss_cross_entropy=0.233, val_loss_seg=0.233, val_macc=89.77, val_miou=80.03] 24%|██▍       | 75/312 [06:59<17:13,  4.36s/it, val_acc=93.25, val_loss_cross_entropy=0.233, val_loss_seg=0.233, val_macc=89.77, val_miou=80.03] 24%|██▍       | 75/312 [07:06<17:13,  4.36s/it, val_acc=93.29, val_loss_cross_entropy=0.232, val_loss_seg=0.232, val_macc=89.41, val_miou=80.24] 24%|██▍       | 76/312 [07:06<20:30,  5.22s/it, val_acc=93.29, val_loss_cross_entropy=0.232, val_loss_seg=0.232, val_macc=89.41, val_miou=80.24] 24%|██▍       | 76/312 [07:12<20:30,  5.22s/it, val_acc=93.32, val_loss_cross_entropy=0.232, val_loss_seg=0.232, val_macc=88.89, val_miou=80.15] 25%|██▍       | 77/312 [07:12<21:58,  5.61s/it, val_acc=93.32, val_loss_cross_entropy=0.232, val_loss_seg=0.232, val_macc=88.89, val_miou=80.15] 25%|██▍       | 77/312 [07:17<21:58,  5.61s/it, val_acc=93.24, val_loss_cross_entropy=0.234, val_loss_seg=0.234, val_macc=88.31, val_miou=79.71] 25%|██▌       | 78/312 [07:17<20:30,  5.26s/it, val_acc=93.24, val_loss_cross_entropy=0.234, val_loss_seg=0.234, val_macc=88.31, val_miou=79.71] 25%|██▌       | 78/312 [07:20<20:30,  5.26s/it, val_acc=93.24, val_loss_cross_entropy=0.235, val_loss_seg=0.235, val_macc=88.37, val_miou=79.87] 25%|██▌       | 79/312 [07:20<17:52,  4.60s/it, val_acc=93.24, val_loss_cross_entropy=0.235, val_loss_seg=0.235, val_macc=88.37, val_miou=79.87] 25%|██▌       | 79/312 [07:25<17:52,  4.60s/it, val_acc=93.27, val_loss_cross_entropy=0.235, val_loss_seg=0.235, val_macc=88.38, val_miou=79.87] 26%|██▌       | 80/312 [07:25<18:40,  4.83s/it, val_acc=93.27, val_loss_cross_entropy=0.235, val_loss_seg=0.235, val_macc=88.38, val_miou=79.87] 26%|██▌       | 80/312 [07:32<18:40,  4.83s/it, val_acc=93.31, val_loss_cross_entropy=0.234, val_loss_seg=0.234, val_macc=88.46, val_miou=79.96] 26%|██▌       | 81/312 [07:32<20:40,  5.37s/it, val_acc=93.31, val_loss_cross_entropy=0.234, val_loss_seg=0.234, val_macc=88.46, val_miou=79.96] 26%|██▌       | 81/312 [07:37<20:40,  5.37s/it, val_acc=93.31, val_loss_cross_entropy=0.234, val_loss_seg=0.234, val_macc=88.49, val_miou=80.01] 26%|██▋       | 82/312 [07:37<20:34,  5.37s/it, val_acc=93.31, val_loss_cross_entropy=0.234, val_loss_seg=0.234, val_macc=88.49, val_miou=80.01] 26%|██▋       | 82/312 [07:51<20:34,  5.37s/it, val_acc=93.31, val_loss_cross_entropy=0.234, val_loss_seg=0.234, val_macc=88.49, val_miou=80.02] 27%|██▋       | 83/312 [07:51<30:17,  7.94s/it, val_acc=93.31, val_loss_cross_entropy=0.234, val_loss_seg=0.234, val_macc=88.49, val_miou=80.02] 27%|██▋       | 83/312 [07:58<30:17,  7.94s/it, val_acc=93.31, val_loss_cross_entropy=0.235, val_loss_seg=0.235, val_macc=88.49, val_miou=79.97] 27%|██▋       | 84/312 [07:58<28:24,  7.48s/it, val_acc=93.31, val_loss_cross_entropy=0.235, val_loss_seg=0.235, val_macc=88.49, val_miou=79.97] 27%|██▋       | 84/312 [08:00<28:24,  7.48s/it, val_acc=93.30, val_loss_cross_entropy=0.235, val_loss_seg=0.235, val_macc=88.44, val_miou=79.83] 27%|██▋       | 85/312 [08:00<22:47,  6.03s/it, val_acc=93.30, val_loss_cross_entropy=0.235, val_loss_seg=0.235, val_macc=88.44, val_miou=79.83] 27%|██▋       | 85/312 [08:02<22:47,  6.03s/it, val_acc=93.28, val_loss_cross_entropy=0.237, val_loss_seg=0.237, val_macc=88.42, val_miou=79.81] 28%|██▊       | 86/312 [08:02<17:27,  4.64s/it, val_acc=93.28, val_loss_cross_entropy=0.237, val_loss_seg=0.237, val_macc=88.42, val_miou=79.81] 28%|██▊       | 86/312 [08:03<17:27,  4.64s/it, val_acc=93.26, val_loss_cross_entropy=0.239, val_loss_seg=0.239, val_macc=88.41, val_miou=79.77] 28%|██▊       | 87/312 [08:03<14:06,  3.76s/it, val_acc=93.26, val_loss_cross_entropy=0.239, val_loss_seg=0.239, val_macc=88.41, val_miou=79.77] 28%|██▊       | 87/312 [08:09<14:06,  3.76s/it, val_acc=93.23, val_loss_cross_entropy=0.242, val_loss_seg=0.242, val_macc=88.38, val_miou=79.72] 28%|██▊       | 88/312 [08:09<16:34,  4.44s/it, val_acc=93.23, val_loss_cross_entropy=0.242, val_loss_seg=0.242, val_macc=88.38, val_miou=79.72] 28%|██▊       | 88/312 [08:12<16:34,  4.44s/it, val_acc=93.24, val_loss_cross_entropy=0.240, val_loss_seg=0.240, val_macc=88.38, val_miou=79.75] 29%|██▊       | 89/312 [08:12<14:35,  3.93s/it, val_acc=93.24, val_loss_cross_entropy=0.240, val_loss_seg=0.240, val_macc=88.38, val_miou=79.75] 29%|██▊       | 89/312 [08:18<14:35,  3.93s/it, val_acc=93.22, val_loss_cross_entropy=0.241, val_loss_seg=0.241, val_macc=88.37, val_miou=79.60] 29%|██▉       | 90/312 [08:18<16:16,  4.40s/it, val_acc=93.22, val_loss_cross_entropy=0.241, val_loss_seg=0.241, val_macc=88.37, val_miou=79.60] 29%|██▉       | 90/312 [08:22<16:16,  4.40s/it, val_acc=93.21, val_loss_cross_entropy=0.242, val_loss_seg=0.242, val_macc=88.47, val_miou=79.78] 29%|██▉       | 91/312 [08:22<16:28,  4.47s/it, val_acc=93.21, val_loss_cross_entropy=0.242, val_loss_seg=0.242, val_macc=88.47, val_miou=79.78] 29%|██▉       | 91/312 [08:27<16:28,  4.47s/it, val_acc=93.14, val_loss_cross_entropy=0.244, val_loss_seg=0.244, val_macc=88.32, val_miou=79.73] 29%|██▉       | 92/312 [08:27<16:46,  4.57s/it, val_acc=93.14, val_loss_cross_entropy=0.244, val_loss_seg=0.244, val_macc=88.32, val_miou=79.73] 29%|██▉       | 92/312 [08:33<16:46,  4.57s/it, val_acc=93.14, val_loss_cross_entropy=0.244, val_loss_seg=0.244, val_macc=88.31, val_miou=79.71] 30%|██▉       | 93/312 [08:33<17:50,  4.89s/it, val_acc=93.14, val_loss_cross_entropy=0.244, val_loss_seg=0.244, val_macc=88.31, val_miou=79.71] 30%|██▉       | 93/312 [08:38<17:50,  4.89s/it, val_acc=93.05, val_loss_cross_entropy=0.248, val_loss_seg=0.248, val_macc=88.27, val_miou=79.56] 30%|███       | 94/312 [08:38<18:43,  5.16s/it, val_acc=93.05, val_loss_cross_entropy=0.248, val_loss_seg=0.248, val_macc=88.27, val_miou=79.56] 30%|███       | 94/312 [08:46<18:43,  5.16s/it, val_acc=92.96, val_loss_cross_entropy=0.250, val_loss_seg=0.250, val_macc=88.31, val_miou=79.48] 30%|███       | 95/312 [08:46<20:42,  5.73s/it, val_acc=92.96, val_loss_cross_entropy=0.250, val_loss_seg=0.250, val_macc=88.31, val_miou=79.48] 30%|███       | 95/312 [08:50<20:42,  5.73s/it, val_acc=92.78, val_loss_cross_entropy=0.257, val_loss_seg=0.257, val_macc=88.19, val_miou=79.27] 31%|███       | 96/312 [08:50<18:49,  5.23s/it, val_acc=92.78, val_loss_cross_entropy=0.257, val_loss_seg=0.257, val_macc=88.19, val_miou=79.27] 31%|███       | 96/312 [08:51<18:49,  5.23s/it, val_acc=92.69, val_loss_cross_entropy=0.266, val_loss_seg=0.266, val_macc=88.05, val_miou=79.13] 31%|███       | 97/312 [08:51<14:44,  4.11s/it, val_acc=92.69, val_loss_cross_entropy=0.266, val_loss_seg=0.266, val_macc=88.05, val_miou=79.13] 31%|███       | 97/312 [08:53<14:44,  4.11s/it, val_acc=92.70, val_loss_cross_entropy=0.265, val_loss_seg=0.265, val_macc=88.08, val_miou=79.14] 31%|███▏      | 98/312 [08:53<12:30,  3.51s/it, val_acc=92.70, val_loss_cross_entropy=0.265, val_loss_seg=0.265, val_macc=88.08, val_miou=79.14] 31%|███▏      | 98/312 [08:56<12:30,  3.51s/it, val_acc=92.69, val_loss_cross_entropy=0.265, val_loss_seg=0.265, val_macc=88.16, val_miou=79.23] 32%|███▏      | 99/312 [08:56<11:13,  3.16s/it, val_acc=92.69, val_loss_cross_entropy=0.265, val_loss_seg=0.265, val_macc=88.16, val_miou=79.23]slurmstepd: error: *** JOB 2205012 ON gcn25 CANCELLED AT 2023-02-09T23:48:33 ***
+
+JOB STATISTICS
+==============
+Job ID: 2205012
+Cluster: snellius
+User/Group: fsun/fsun
+State: CANCELLED (exit code 0)
+Nodes: 1
+Cores per node: 18
+CPU Utilized: 00:00:00
+CPU Efficiency: 0.00% of 03:01:48 core-walltime
+Job Wall-clock time: 00:10:06
+Memory Utilized: 37.89 GB
+Memory Efficiency: 32.33% of 117.19 GB

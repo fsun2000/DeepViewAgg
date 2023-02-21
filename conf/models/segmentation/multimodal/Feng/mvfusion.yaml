@@ -264,7 +264,7 @@ MVFusion_3D_small_6views_view_fusion_loss:
     backend: "torchsparse"
     use_cross_entropy: True
     use_view_fusion_loss: True
-    view_fusion_loss_weight: 0.0
+    view_fusion_loss_weight: 0.3
     backbone: # backbone offset specific for Sparse conv application builder
         define_constants:
             in_feat: 32
@@ -309,7 +309,7 @@ MVFusion_3D_small_6views_view_fusion_loss:
                     module_name: BimodalFusion
                     mode: concatenation
                 branching_index: 0
-#                 checkpointing: c
+                checkpointing: c
                 interpolate: True
 
         up_conv:
@@ -342,7 +342,7 @@ MVFusion_3D_small_6views_view_fusion_loss:
             use_attn_mask: True          # Transformer attention masking
             use_csr_mask: True           # Transformer pixel validity masking
             has_mlp_head: False          # False by default
-            max_n_points: 250000      # max. size of transformer batched input. Increase if memory allows
+            max_n_points: 200000      # max. size of transformer batched input. Increase if memory allows
             gating: False
             
 

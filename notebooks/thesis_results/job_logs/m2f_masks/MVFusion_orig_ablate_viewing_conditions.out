@@ -1,0 +1,47 @@
+MMData debug() function changed, please uncomment the 3rd assert line when doing inference without M2F features!
+Maximum number of views per point:  9
+Load predicted 2D semantic segmentation labels from directory  m2f_masks
+initialize train dataset
+initialize val dataset
+Dataset Creation Time = 8.9 sec.
+self.no_3d ==  True
+dataset_class:  scannet.ScannetDatasetMM
+dataset_paths:  ['scannet', 'ScannetDatasetMM']
+module:  scannet
+class_name:  ScannetDatasetMM
+dataset_module:  torch_points3d.datasets.segmentation.multimodal.scannet
+Load predicted 2D semantic segmentation labels from directory  m2f_masks
+initialize train dataset
+initialize val dataset
+task:  segmentation.multimodal
+tested_model_name:  MVFusion_orig
+loading gt mask from :  label-filt-scannet20
+class_name:  MVFusion_model_orig
+model_module:  torch_points3d.models.segmentation.multimodal.Feng.mvfusion_orig
+name, cls of chosen model_cls:  MVFusion_model_orig <class 'torch_points3d.models.segmentation.multimodal.Feng.mvfusion_orig.MVFusion_model_orig'>
+opt:   {'class': 'Feng.mvfusion_orig.MVFusion_model_orig', 'down_conv': {'image': {'down_conv': {'module_name': 'ADE20KResNet18PPM', 'frozen': False}, 'atomic_pooling': {'module_name': 'BimodalCSRPool', 'mode': 'max'}, 'view_pooling': {'module_name': 'GroupBimodalCSRPool', 'in_map': 8, 'in_mod': 512, 'num_groups': 4, 'use_mod': False, 'gating': True, 'group_scaling': True, 'map_encoder': 'DeepSetFeat', 'use_num': True, 'pool': 'max', 'fusion': 'concatenation'}, 'fusion': {'module_name': 'BimodalFusion', 'mode': 'concatenation'}, 'drop_mod': 0.0, 'branching_index': 0}}, 'backbone': {'transformer': {'n_views': 9, 'in_map': 9, 'in_m2f': 20, 'embed_dim': 256, 'hidden_dim': 512, 'num_heads': 4, 'num_layers': 4, 'use_batch_norm': False, 'feat_downproj_dim': 16, 'remove_first_dropout': False, 'dropout': 0.2, 'mlp_dropout': 0.0, 'use_attn_mask': True, 'use_csr_mask': True, 'has_mlp_head': True, 'max_n_points': 200000, 'gating': False, 'checkpointing': True, 'n_classes': 20}}}
+INITIALIZING PREVIOUS VERSION OF DVA_cls_5_fusion_7 view fusion module!
+Return attention maps!
+WARNING: input points clipped at  200000
+checkpointing enabled for model forward pass!
+loading gt mask from :  label-filt-scannet20
+Traceback (most recent call last):
+  File "evaluate_all_metrics.py", line 839, in <module>
+    evaluator.ablate_viewing_conditions()
+  File "evaluate_all_metrics.py", line 730, in ablate_viewing_conditions
+    with Ctq(dataset._val_loader) as tq_loader:
+AttributeError: 'ScannetDatasetMM' object has no attribute '_val_loader'
+
+JOB STATISTICS
+==============
+Job ID: 2248547
+Cluster: snellius
+User/Group: fsun/fsun
+State: FAILED (exit code 1)
+Nodes: 1
+Cores per node: 18
+CPU Utilized: 00:02:05
+CPU Efficiency: 3.82% of 00:54:36 core-walltime
+Job Wall-clock time: 00:03:02
+Memory Utilized: 30.74 GB
+Memory Efficiency: 26.23% of 117.19 GB
