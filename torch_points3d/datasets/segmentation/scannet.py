@@ -1157,6 +1157,8 @@ class Scannet(InMemoryDataset):
                         scan_name = arg[3]
                         print("scan_name: ", scan_name)
                         path_to_raw_scan = osp.join(self.processed_raw_paths[i], "{}.pt".format(scan_name))
+                        print("path_to_raw_scan: ", path_to_raw_scan)
+                        print(self.processed_paths, self.processed_raw_paths)
                         if not osp.exists(path_to_raw_scan):
                             data = Scannet.process_func(*arg)
                             id_scan = int(data.id_scan.item())

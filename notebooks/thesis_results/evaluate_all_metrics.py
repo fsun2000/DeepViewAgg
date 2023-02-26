@@ -197,7 +197,7 @@ class Evaluator():
 #         self._dataset = dataset
         self._cfg = cfg
     
-        if self._cfg.model_name in ['MVFusion_orig', 'DeepSetAttention']:
+        if self._cfg.model_name in ['MVFusion_orig', 'DeepSetAttention', 'MVFusion_small_6views']:
             self.no_3d = True
         else:
             self.no_3d = False
@@ -797,12 +797,13 @@ if __name__ == "__main__":
 
     
     if model_name == 'MVFusion_3D_small_6views':
-        checkpoint_dir = ["/home/fsun/DeepViewAgg/outputs/MVFusion_3D_6_views_m2f_masks",
-                          "/home/fsun/DeepViewAgg/outputs/ViT_masks_3rd_run"]
+        checkpoint_dir = ["/home/fsun/DeepViewAgg/outputs/2023-02-10/22-36-56", # old: "/home/fsun/DeepViewAgg/outputs/MVFusion_3D_6_views_m2f_masks",
+                          "/home/fsun/DeepViewAgg/outputs/ViT_masks_2nd_run"] # orig: /home/fsun/DeepViewAgg/outputs/ViT_masks_3rd_run
         models_config = 'segmentation/multimodal/Feng/mvfusion' 
     elif model_name == 'Deepset_3D':
         checkpoint_dir = ["/home/fsun/DeepViewAgg/outputs/2023-02-05/23-15-04",
-                          "/home/fsun/DeepViewAgg/outputs/2023-01-23/12-57-16"]        
+                          "/home/fsun/DeepViewAgg/outputs/2023-02-21/17-48-02" # old: "/home/fsun/DeepViewAgg/outputs/2023-01-23/12-57-16"
+                         ]        
         models_config = 'segmentation/multimodal/Feng/view_selection_experiment' 
     elif model_name == 'MVFusion_orig':
         checkpoint_dir = ['/home/fsun/DeepViewAgg_31-10-22/DeepViewAgg/outputs/2023-02-11/22-17-12',
@@ -812,6 +813,10 @@ if __name__ == "__main__":
         checkpoint_dir = ['/home/fsun/DeepViewAgg/outputs/2023-02-11/10-54-19',
                           '/home/fsun/DeepViewAgg/outputs/2023-02-11/10-52-09']   # old: 'DeepSet_feats_labels_superconvergence'
         models_config = 'segmentation/multimodal/Feng/view_selection_experiment' 
+    elif model_name == 'MVFusion_small_6views':
+        checkpoint_dir = ['/home/fsun/DeepViewAgg/outputs/2023-02-21/12-29-20',
+                          '']
+        models_config = 'segmentation/multimodal/Feng/view_selection_experiment'
 
 
     checkpoint_dir = checkpoint_dir[MASK_IDX]
