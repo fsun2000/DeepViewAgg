@@ -6,7 +6,7 @@ down_conv:
     block: block
     module_name: ResNetDown
     N: [0, 1, 2]
-    kernel_size: [ 2, 2 ]
+    kernel_size: [ 3, 2, 2 ] # Adjusted by Feng
     stride: [ 1, 2, 2 ]
     down_conv_nn:
         [
