@@ -19,6 +19,8 @@ selection_stage: ""
 pretty_print: False
 eval_frequency: 1
 lr_range_test: False
+early_stopping: False
+encoder_lr_factor: 1
 
 tracker_options: # Extra options for the tracker
   full_res: False

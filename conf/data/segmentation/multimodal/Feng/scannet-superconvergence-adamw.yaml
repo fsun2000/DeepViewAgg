@@ -89,7 +89,7 @@ train_transform:
     - transform: AddFeatsByKeys  # No RGB for points
       params:
           feat_names: [ pos_x, pos_y, pos_z, rgb, linearity, norm, planarity, scattering ]
-          list_add_to_x: [ True, True, True, False, False, False, False, False ]
+          list_add_to_x: [ False, False, True, False, False, False, False, False ]
           delete_feats: [ True, True, True, True, True, True, True, True ]
 
 val_transform:
@@ -106,7 +106,7 @@ val_transform:
     - transform: AddFeatsByKeys  # No RGB for points
       params:
           feat_names: [ pos_x, pos_y, pos_z, rgb, linearity, norm, planarity, scattering ]
-          list_add_to_x: [ True, True, True, False, False, False, False, False ]
+          list_add_to_x: [ False, False, True, False, False, False, False, False ]
           delete_feats: [ True, True, True, False, True, True, True, True ]
 
 test_transform: ${data.val_transform}

@@ -414,7 +414,9 @@ class ScannetMM(Scannet):
                 # Z is not centered because originally, Z ranged from 0 to ~3 and centering would break this
                 data_mean = torch.concat((data.pos[:, :2].mean(0), torch.zeros((1))), axis=-1)
             data.pos -= data_mean
-            data.x[:, :3] = data.pos
+            
+            input_axes = self.transform.transforms[-1]._list_add_to_x[:3]
+            data.x = data.pos[:, input_axes]
             images.pos -= data_mean        
                 
         # Run image transforms

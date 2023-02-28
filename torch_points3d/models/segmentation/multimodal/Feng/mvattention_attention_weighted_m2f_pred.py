@@ -1001,7 +1001,11 @@ class MVAttentionAPIModel(BaseModel):
                           + self._use_lovasz * ['loss_lovasz']
 
     def set_input(self, data, device):
-        self.batch_idx = data.batch.squeeze()
+        if hasattr(data, 'batch') and data.batch is not None:
+            self.batch_idx = data.batch.squeeze()
+        else:
+            self.batch_idx = None
+            
         self.input = data
         if getattr(data, 'y', None) is not None:
             self.labels = data.y.to(self.device)

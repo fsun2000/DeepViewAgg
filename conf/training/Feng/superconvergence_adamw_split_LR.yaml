@@ -14,9 +14,19 @@ optim:
   optimizer:
     class: AdamW
     params:
-      lr: ${training.optim.base_lr}
+      params:
+        - 'head'
+        - 'backbone'
+        - 'backbone.down_modules.0.image'
+      lr:
+        - ${training.optim.base_lr}
+        - ${training.optim.base_lr}
+        - ${training.optim.base_lr}
+      betas:
+        - 0.95, 0.99
+        - 0.95, 0.99
+        - 0.95, 0.99
       weight_decay: 0.01
-      betas: [0.95, 0.99]
   lr_scheduler:
     class: OneCycleLR
     params:

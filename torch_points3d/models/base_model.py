@@ -304,7 +304,7 @@ class BaseModel(torch.nn.Module, TrackerInterface, DatasetInterface, CheckpointI
             n_optim_groups = len(optimizer_opt.params.params)
 
             optimizer_params = [
-                fetch_arguments_from_list(optimizer_opt.params, i, ['params'])
+                fetch_arguments_from_list(optimizer_opt.params, i, ['params', 'betas'])
                 for i in range(n_optim_groups)]
 
             # Initialize lists of parameter names to be used for
@@ -322,6 +322,7 @@ class BaseModel(torch.nn.Module, TrackerInterface, DatasetInterface, CheckpointI
                 # Recover the submodule name
                 submodule_name = optimizer_params[i]['params']
                 print(submodule_name)
+                print(optimizer_params[i])
 
                 # Make sure the module exists in the model
                 if not any([x.startswith(submodule_name) for x in all_params]):
