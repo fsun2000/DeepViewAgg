@@ -6,7 +6,7 @@ from torch_geometric.data import extract_tar
 from torch_points3d.core.multimodal.data import MMData
 from torch_points3d.core.data_transform.multimodal.image import \
     SelectMappingFromPointId
-from .utils import read_image_pose_pairs, img_info_to_img_data
+from .utils import read_image_pose_pairs_s3dis, img_info_to_img_data
 
 ########################################################################
 #                             S3DIS Utils                              #
@@ -136,7 +136,7 @@ class S3DISOriginalFusedMM(InMemoryDataset):
 
     # 3D data from S3DIS
     form_url_3d = "https://docs.google.com/forms/d/e/1FAIpQLScDimvNMCGhy_rmBA2gHfDu3naktRm6A8BPwAWWDv-Uhm6Shw/viewform?c=0&w=1"
-    download_url_3d = "https://drive.google.com/uc?id=0BweDykwS9vIobkVPN0wzRzFwTDg&export=download"
+    download_url_3d = "https://storage.googleapis.com/s3dis_data/Stanford3dDataset_v1.2.zip" # "https://drive.google.com/uc?id=0BweDykwS9vIobkVPN0wzRzFwTDg&export=download"
     zip_name_3d = "Stanford3dDataset_v1.2_Version.zip"
     unzip_name_3d = "Stanford3dDataset_v1.2"
     folders_3d = [f"Area_{i}" for i in range(1, 7)]
@@ -260,13 +260,15 @@ class S3DISOriginalFusedMM(InMemoryDataset):
     def raw_test_data(self, value):
         self._raw_test_data = value
 
-    def download(self):
+    def download(self):        
         # Download 3D data from S3DIS
-        if not files_exist([osp.join(self.raw_dir, self.folders_3d)]):
+        if not files_exist([osp.join(self.raw_dir, x) for x in self.folders_3d]):
             self.download_3d()
 
         # Download 2D data from 2D-3D-Semantics
-        if not files_exist([osp.join(self.image_dir, self.folders_2d)]):
+        print([osp.join(self.image_dir, x) for x in self.folders_2d])
+        if not files_exist([osp.join(self.image_dir, x) for x in self.folders_2d]):
+#             print("Skip downloading of 2d files")
             self.download_2d()
 
     def download_3d(self):
@@ -277,6 +279,7 @@ class S3DISOriginalFusedMM(InMemoryDataset):
         |___raw
             |___Area_{1, 2, 3, 4, 5, 6}
         """
+        
         # Download .zip file holding all 3D data from S3DIS
         if not osp.exists(osp.join(self.root, self.zip_name_3d)):
             log.info("WARNING: You are downloading S3DIS dataset")
@@ -292,6 +295,7 @@ class S3DISOriginalFusedMM(InMemoryDataset):
 
         # If raw/ already exists, it will be entirely removed
         if osp.exists(self.raw_dir):
+            log.info("Raw Already Exists. removing it.")
             shutil.rmtree(self.raw_dir)
 
         # Extract the folders from the .zip and place them under raw/
@@ -344,10 +348,11 @@ class S3DISOriginalFusedMM(InMemoryDataset):
             tar_file = osp.join(self.root, f + '_no_xyz.tar')
             if not osp.exists(tar_file):
                 gdown.download(
-                    self.self.download_url_2d[f], tar_file, quiet=False)
+                    self.download_url_2d[f], tar_file, quiet=False)
 
             # Unzip the downloaded .tar file
-            extract_tar(tar_file, folder, mode='r:gz', log=True)
+            extract_tar(tar_file, folder, mode='r', log=True)
+#           extract_tar(tar_file, folder, mode='r:gz', log=True)
 
         # Make sure all downloads worked. If not, raise an error and
         # require a manual download
@@ -486,7 +491,11 @@ class S3DISOriginalFusedMM(InMemoryDataset):
             data_list = torch.load(self.pre_collated_path)
 
         print('Done\n')
-
+        
+        
+        print("folders_2d: ", ['area_5a'])
+        print("example rgb path: ", osp.join(self.image_dir, ['area_5a'][0], 'pano', 'rgb'))
+                
         # --------------------------------------------------------------
         # Recover image data
         # --------------------------------------------------------------
@@ -507,11 +516,12 @@ class S3DISOriginalFusedMM(InMemoryDataset):
                 # specific treatment for pose reading
                 folders_2d = \
                     [f"area_{i + 1}"] if i != 4 else ["area_5a", "area_5b"]
-
+                
+                
                 image_info_list = [
                     {'path': i_file, **read_s3dis_pose(p_file)}
                     for folder in folders_2d
-                    for i_file, p_file in read_image_pose_pairs(
+                    for i_file, p_file in read_image_pose_pairs_s3dis(
                         osp.join(self.image_dir, folder, 'pano', 'rgb'),
                         osp.join(self.image_dir, folder, 'pano', 'pose'),
                         skip_names=S3DIS_OUTSIDE_IMAGES)]
@@ -545,6 +555,7 @@ class S3DISOriginalFusedMM(InMemoryDataset):
         if not osp.exists(self.pre_transformed_image_path):
             print('Running the image pre-transforms...')
             mm_data_list = (data_list, image_data_list)
+            print(mm_data_list)
             if self.pre_transform_image:
                 mm_data_list = self.pre_transform_image(*mm_data_list)
             torch.save(mm_data_list, self.pre_transformed_image_path)
@@ -690,9 +701,60 @@ class S3DISSphereMM(S3DISOriginalFusedMM):
         # Get the 3D point sample and apply transforms
         i_area, data = self.get(self.indices()[idx])
         data = data if self.transform is None else self.transform(data)
+        
+        ### Load ViT-Adapter masks
+        
+        images = self._images[i_area].clone()
+        
+        # Loop over image types
+        for i in range(len(images)):
+            first_img_path = images[i].path[0]
+            scan_dir = first_img_path.split(os.sep)[:-3]
 
+            mask_dir = first_img_path.replace("rgb", "ViT_masks")
+
+    #             print("Changing gt_dir to m2f_masks_refined! ")
+    #             print("loading gt mask from : ", self.gt_dir_name)
+            gt_dir = os.path.join('/scratch-shared/fsun/data/scannet/scans', scan_dir[-1], self.gt_dir_name)#'label-filt-scannet20')
+
+            m2f_masks, m2f_mask_paths, gt_masks, gt_mask_paths = [], [], [], []
+            for rgb_path in images[0].path:
+                # Pred masks
+                m2f_filename, ext = osp.splitext(rgb_path.split(os.sep)[-1])
+                m2f_filename += '.png'
+                pred_mask_path = osp.join(m2f_dir, m2f_filename)
+                pred_mask = Image.open(pred_mask_path)
+                pred_mask = pred_mask.resize(self.img_ref_size, resample=Image.NEAREST) 
+                # minus 1 to match DVA label classes ranging [0, 19] instead of [1, 20]
+                m2f_masks.append(pil_to_tensor(pred_mask) - 1)
+                m2f_mask_paths.append(pred_mask_path)
+
+                # GT masks
+                gt_filename, ext = osp.splitext(rgb_path.split(os.sep)[-1])
+                gt_filename += '.png'
+                gt_mask_path = osp.join(gt_dir, gt_filename)
+                gt_mask = Image.open(gt_mask_path)
+                gt_mask = gt_mask.resize(self.img_ref_size, resample=Image.NEAREST) 
+                # minus 1 to match DVA label classes ranging [-1, 19] instead of [0, 20]
+                gt_masks.append(pil_to_tensor(gt_mask).long() - 1)
+                gt_mask_paths.append(gt_mask_path)
+
+
+        m2f_masks = torch.stack(m2f_masks)
+        gt_masks = torch.stack(gt_masks)
+
+        # Store M2F pred mask in data
+        images[0].m2f_pred_mask = m2f_masks
+        images[0].m2f_pred_mask_path = np.array(m2f_mask_paths)
+
+        # Store GT mask in data
+        images[0].gt_mask = gt_masks
+        images[0].gt_mask_path = np.array(gt_mask_paths)
+        
+        
+        
         # Get the corresponding images and mappings
-        data, images = self.transform_image(data, self._images[i_area].clone())
+        data, images = self.transform_image(data, images)
 
         return MMData(data, image=images)
 

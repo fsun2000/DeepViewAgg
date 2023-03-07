@@ -62,6 +62,52 @@ def get_mode_pred(data):
         
     return mode_preds
 
+def get_random_view_pred(data):
+    pixel_validity = data.data.mvfusion_input[:, :, 0].bool()
+    mv_preds = data.data.mvfusion_input[:, :, -1].long()
+            
+    valid_m2f_feats = []
+    for i in range(len(mv_preds)):
+        valid_m2f_feats.append(mv_preds[i][pixel_validity[i]])
+
+    selected_view_preds = []
+    for m2feats_of_seen_point in valid_m2f_feats:
+        selected_idx = torch.randint(low=0, high=m2feats_of_seen_point.shape[0], size=(1,))
+        selected_pred = m2feats_of_seen_point[selected_idx].squeeze(0)
+        selected_view_preds.append(selected_pred)
+    selected_view_preds = torch.stack(selected_view_preds, dim=0)
+        
+    return selected_view_preds
+
+
+def get_average_weighted_pred(data):
+    pixel_validity = data.data.mvfusion_input[:, :, 0].bool()
+    mv_preds = data.data.mvfusion_input[:, :, -1].long()
+    
+    normalized_depth = data.data.mvfusion_input[:, :, 1]
+            
+    valid_m2f_feats = []
+    depths = []
+    for i in range(len(mv_preds)):
+        valid_m2f_feats.append(mv_preds[i][pixel_validity[i]])
+        depths.append(normalized_depth[i][pixel_validity[i]])
+
+    preds = []
+    for m2feats_of_seen_point, depth in zip(valid_m2f_feats, depths):
+        
+        sum_of_all_dists = depth.sum()
+        weights = sum_of_all_dists / depth
+        one_hot = torch.nn.functional.one_hot(m2feats_of_seen_point, num_classes=20)
+        per_class_score = one_hot * weights.unsqueeze(1)
+        aggregated_weights = per_class_score.sum(0)
+        
+        final_pred = aggregated_weights.argmax(0)
+        preds.append(final_pred)
+    preds = torch.stack(preds, dim=0)
+        
+    return preds
+
+
 def get_normalized_entropy(labels):
     counts = torch.unique(labels, return_counts=True)[1]
     
@@ -261,9 +307,16 @@ class Evaluator():
         model_config = getattr(self._cfg.models, self._cfg.model_name, None)
         self._cfg.data.n_views = model_config.backbone.transformer.n_views
         
-        print("####################### Temporary Solution for baseline + 2D-3D projection: SETTING MODEL_NAME TO : majority_vote")
+        print("####################### Temporary Solution for baseline + 2D-3D projection: SETTING MODEL_NAME TO : weighted_averaging")
         print("Number of views for baseline input: ", self._cfg.data.n_views)        
-        self._cfg.model_name = 'majority_vote'
+        self._cfg.model_name = 'weighted_averaging'
+        
+        if self._cfg.model_name == 'select_random':
+            self.aggregation_func = get_random_view_pred
+        elif self._cfg.model_name == 'majority_vote':
+            self.aggregation_func = get_mode_pred
+        elif self._cfg.model_name == 'weighted_averaging':
+            self.aggregation_func = get_average_weighted_pred
         
         # Create model and datasets
         if not self._checkpoint.is_empty:
@@ -334,9 +387,9 @@ class Evaluator():
         path_to_submission = save_semantic_prediction_as_txt(
             self._tracker_refined, self._cfg.model_name, self._dataset.val_dataset.m2f_preds_dirname)
         
-#         # Back-project semantic mesh (from pcd) to 2D images given the maximum number of views per scene, and save.
-#         # Skips this step if refined images already exist for given model and mask
-#         self.mesh_to_image(self._cfg, self._dataset, path_to_submission, self.scans_dir, save_output='if_not_exists') 
+        # Back-project semantic mesh (from pcd) to 2D images given the maximum number of views per scene, and save.
+        # Skips this step if refined images already exist for given model and mask
+        self.mesh_to_image(self._cfg, self._dataset, path_to_submission, self.scans_dir, save_output='if_not_exists') 
         
         # Evaluate 2D semantic segmentation
         self._tracker_refined_2d_iou: BaseTracker = self._dataset.get_tracker(
@@ -506,7 +559,7 @@ class Evaluator():
                     
 
 
-                    temp_tracker.track(model=None, pred_labels=get_mode_pred(batch), gt_labels=batch.data.y)
+                    temp_tracker.track(model=None, pred_labels=self.aggregation_func(batch), gt_labels=batch.data.y)
 
                     # Accumulate entropy of seen points
                     self.add_entropy_to_accumulator(batch)
@@ -678,7 +731,7 @@ class Evaluator():
 #                             self._model.forward(epoch=epoch)
 
 
-                        self._model.output = torch.nn.functional.one_hot(get_mode_pred(data), num_classes=20)
+                        self._model.output = torch.nn.functional.one_hot(self.aggregation_func(data), num_classes=20)
 
 
                         data.data.pred = self._model.output.detach().cpu().argmax(1)

@@ -962,7 +962,7 @@ class MVAttentionSparseConv3dUnet(MVAttentionBaseSparseConv3d):
         # Recover the skip mode from the up modules
         if self.up_modules[0].skip_first:
             stack_down.append(None)
-
+                    
         # Up conv with skip connexions
         for i in range(len(self.up_modules)):
             skip = stack_down.pop(-1) if stack_down else None

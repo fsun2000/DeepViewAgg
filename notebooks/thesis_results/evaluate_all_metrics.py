@@ -27,8 +27,12 @@ from torch_points3d.datasets.segmentation import IGNORE_LABEL
 from torch_points3d.metrics.scannet_segmentation_tracker import ScannetSegmentationTracker
 from torch_points3d.metrics.colored_tqdm import Coloredtqdm as Ctq
 
-
+# Feng: extra imports for 2D evaluation
+from torch_points3d.utils.multimodal import lexargsort
+from torch_points3d.core.multimodal.csr import CSRData
+import scipy.ndimage
 from PIL import Image
+
 
 import matplotlib.pyplot as plt 
 
@@ -320,6 +324,9 @@ class Evaluator():
         self._tracker_refined_seen_points: BaseTracker = self._dataset.get_tracker(
             self.wandb_log, self.tensorboard_log)            
                         
+                
+        print("WARNING: ONLY EVALUATING 3D IOU")
+        
         if self._dataset.has_val_loader:
             if not stage_name or stage_name == "val":
                 print("Evaluating on validation set")
@@ -327,12 +334,20 @@ class Evaluator():
                 
         # Upscale predictions containing all points to 0.01 voxel size and save point cloud predictions   
         self._tracker_refined.finalise(full_res=True)
+        print("3D segmentation results on upscaled 0.01 point cloud, all points")
+        print(self._tracker_refined.get_metrics())
+        print(self._tracker_refined._miou_per_class)  
+        self._tracker_refined.print_summary()
+        
+#         return None
+        
+        
         path_to_submission = save_semantic_prediction_as_txt(
             self._tracker_refined, self._cfg.model_name, self._dataset.val_dataset.m2f_preds_dirname)
         
-#         # Back-project semantic mesh (from pcd) to 2D images given the maximum number of views per scene, and save.
-#         # Skips this step if refined images already exist for given model and mask
-#         self.mesh_to_image(self._cfg, self._dataset, path_to_submission, self.scans_dir, save_output='if_not_exists') 
+        # Back-project semantic mesh (from pcd) to 2D images given the maximum number of views per scene, and save.
+        # Skips this step if refined images already exist for given model and mask
+        self.mesh_to_image(self._cfg, self._dataset, path_to_submission, self.scans_dir, save_output='if_not_exists') 
         
         # Evaluate 2D semantic segmentation
         self._tracker_refined_2d_iou: BaseTracker = self._dataset.get_tracker(
@@ -720,6 +735,13 @@ class Evaluator():
                 
                 
     def ablate_viewing_conditions(self):
+#         self._tracker_2d_model_pred_masks = self._dataset.get_tracker(
+#             self.wandb_log, self.tensorboard_log)
+        
+        self._tracker_2d_mvfusion_pred_masks = self._dataset.get_tracker(
+            self.wandb_log, self.tensorboard_log)
+            
+        
         weighted_mean = torch.tensor([0.2711, 0.1401, 0.6778, 0.1822, 0.6568, 0.4669, 0.2979, 0.6933])
         
         tracker = self._dataset.get_tracker(False, False)
@@ -727,6 +749,7 @@ class Evaluator():
 
         for idx in range(8):
             tracker.reset(stage='val')
+            self._tracker_2d_mvfusion_pred_masks.reset(stage='val')
 
             with Ctq(self._dataset._val_loader) as tq_loader:
                 for data in tq_loader:
@@ -749,8 +772,137 @@ class Evaluator():
                         # 3D mIoU, seen points
                         data = get_seen_points(data)
                         tracker.track(self._model, full_res=False, data=data)
+                        
+                        # 2D mIoU
+                        self._track_2d_results(self._model, data, contains_pred=False, save_output=False)
+                        
             print(f"Refined 3D seen points without {idx}th feature: ", tracker.get_metrics())
+            print(f"Refined 2D scores without {idx}th feature: ", self._tracker_2d_mvfusion_pred_masks.get_metrics())
+            
+        # Evaluate with all features
+        tracker.reset(stage='val')
+        self._tracker_2d_mvfusion_pred_masks.reset(stage='val')
+        with Ctq(self._dataset._val_loader) as tq_loader:
+            for data in tq_loader:
+                with torch.no_grad():
+                    if self.no_3d:
+                        data = get_seen_points(data)
+                    self._model.set_input(data, self._device)
+                    with torch.cuda.amp.autocast(enabled=self._model.is_mixed_precision()):
+                        self._model.forward(epoch=1)
+                    # 3D mIoU, seen points
+                    data = get_seen_points(data)
+                    tracker.track(self._model, full_res=False, data=data)
+                    # 2D mIoU
+                    self._track_2d_results(self._model, data, contains_pred=False, save_output=False)
+        print(f"Refined 3D seen points with all features: ", tracker.get_metrics())
+        print(f"Refined 2D scores with all features: ", self._tracker_2d_mvfusion_pred_masks.get_metrics())
+            
+            
 
+
+            
+    def _track_2d_results(self, model, mm_data, contains_pred=False, save_output=False):
+        """ Track 2D scores for input semantic segmentation masks and output Multi-View Fusion refined 2D masks using simple nearest-neighbor interpolation and projected 3D point predictions.
+        """
+        if contains_pred == False:
+            mm_data.data.pred = model.output.detach().cpu().argmax(1)
+        
+        mappings = mm_data.modalities['image'][0].mappings
+        point_ids = torch.arange(
+                        mappings.num_groups, device=mappings.device).repeat_interleave(
+                        mappings.pointers[1:] - mappings.pointers[:-1])
+        image_ids = mappings.images.repeat_interleave(
+                        mappings.values[1].pointers[1:] - mappings.values[1].pointers[:-1])    
+        pixels_full = mappings.pixels
+
+        # Sort point and image ids based on image_id
+        idx_sort = lexargsort(image_ids, point_ids)
+        image_ids = image_ids[idx_sort]
+        point_ids = point_ids[idx_sort]
+        pixels_full = pixels_full[idx_sort].long()
+
+        # Get pointers for easy indexing
+        pointers = CSRData._sorted_indices_to_pointers(image_ids)
+
+        # Save refined masks
+        im_paths = mm_data.modalities['image'][0].gt_mask_path
+        scan_dir = os.sep.join(im_paths[0].split(os.sep)[:-2])
+        input_mask_name = mm_data.modalities['image'][0].m2f_pred_mask_path[0].split(os.sep)[-2]
+
+        # Dirty workaround for masks in different directory
+        if input_mask_name == 'ViT_masks':
+            scan_id = scan_dir.split(os.sep)[-1]
+            mask_im_dir = osp.join("/home/fsun/data/scannet/scans", scan_id, input_mask_name)
+            refined_mask_im_dir = osp.join(scan_dir, input_mask_name + '_refined')
+        else:
+            mask_im_dir = osp.join(scan_dir, input_mask_name)
+            refined_mask_im_dir = osp.join(scan_dir, input_mask_name + '_refined')
+            
+        if save_output:
+            print("Creating refined mask dir at ", refined_mask_im_dir)
+            os.makedirs(refined_mask_im_dir, exist_ok=True)
+        
+        # Loop over all N views
+        for i, x in enumerate(mm_data.modalities['image'][0]):
+
+            # Grab the 3D points corresponding to ith view
+            start, end = pointers[i], pointers[i+1]    
+            points = point_ids[start:end]
+            pixels = pixels_full[start:end]
+            # Image (x, y) pixel index
+            w, h = pixels[:, 0], pixels[:, 1]
+
+            # Grab set of points visible in current view
+            mm_data_of_view = mm_data[points]
+            
+            im_ref_w, im_ref_h = x.ref_size
+
+            # Get nearest neighbor interpolated projection image filled with 3D labels
+            pred_mask_2d = -1 * torch.ones((im_ref_h, im_ref_w), dtype=torch.long, device=mm_data_of_view.device)    
+            pred_mask_2d[h, w] = mm_data_of_view.data.pred.squeeze()
+            
+            nearest_neighbor = scipy.ndimage.morphology.distance_transform_edt(
+                pred_mask_2d==-1, return_distances=False, return_indices=True)    
+            pred_mask_2d = pred_mask_2d[nearest_neighbor].numpy().astype(np.uint8)
+            pred_mask_2d = Image.fromarray(pred_mask_2d, 'L')          
+            
+            # SAVE REFINED MASK IN GIVEN DIR
+            im_name = x.m2f_pred_mask_path[0].split("/")[-1]
+        
+            pred_mask_2d = pred_mask_2d.resize((640, 480), resample=0)
+            
+            if save_output:
+                pred_mask_2d.save(osp.join(refined_mask_im_dir, im_name))
+
+            pred_mask_2d = np.asarray(pred_mask_2d)
+            
+            # 2D mIoU calculation for M2F labels per view
+            # Get gt 2d image
+            gt_img_path = x.m2f_pred_mask_path[0].split("/")
+            # Adjust filepath after Snellius migration
+            gt_img_path[1] = 'scratch-shared'
+            gt_img_path[-2] = 'label-filt-scannet20'
+            gt_img_path = "/".join(gt_img_path)
+            gt_img = Image.open(gt_img_path)
+            
+            
+            gt_img = np.asarray(gt_img.resize((640, 480), resample=0)).astype(int) - 1   # -1 label offset
+
+            # Input mask and refined mask for current view
+            refined_2d_pred = pred_mask_2d
+            
+#             # Get gt 2d image
+#             orig_2d_pred = np.asarray(Image.open(x.m2f_pred_mask_path[0])).astype(int) - 1 # x.m2f_pred_mask[0][0]
+            
+#             # 2D segmentation network mIoU
+#             self._tracker_2d_model_pred_masks.track(
+#                 pred_labels=orig_2d_pred, gt_labels=gt_img, model=None)
+                            
+            # 2D MVFusion mIoU
+            self._tracker_2d_mvfusion_pred_masks.track(
+                pred_labels=refined_2d_pred, gt_labels=gt_img, model=None)
+            
 
     @property
     def has_training(self):
@@ -796,10 +948,17 @@ if __name__ == "__main__":
     dataset_config = 'segmentation/multimodal/Feng/scannet-neucon-smallres-m2f-allviews.yaml'   
 
     
+#     if model_name == 'MVFusion_3D_small_6views':
+#         checkpoint_dir = ["/home/fsun/DeepViewAgg/outputs/2023-02-10/22-36-56", # old: "/home/fsun/DeepViewAgg/outputs/MVFusion_3D_6_views_m2f_masks",
+#                           "/home/fsun/DeepViewAgg/outputs/ViT_masks_2nd_run"] # orig: /home/fsun/DeepViewAgg/outputs/ViT_masks_3rd_run
+#         models_config = 'segmentation/multimodal/Feng/mvfusion' 
+        
+    # HOTFIXED MVFUSION
     if model_name == 'MVFusion_3D_small_6views':
-        checkpoint_dir = ["/home/fsun/DeepViewAgg/outputs/2023-02-10/22-36-56", # old: "/home/fsun/DeepViewAgg/outputs/MVFusion_3D_6_views_m2f_masks",
-                          "/home/fsun/DeepViewAgg/outputs/ViT_masks_2nd_run"] # orig: /home/fsun/DeepViewAgg/outputs/ViT_masks_3rd_run
-        models_config = 'segmentation/multimodal/Feng/mvfusion' 
+        checkpoint_dir = ["/home/fsun/DeepViewAgg/outputs/2023-02-21/10-43-18",
+                          "/home/fsun/DeepViewAgg/outputs/2023-02-21/09-43-50"
+                         ]
+        models_config = 'segmentation/multimodal/Feng/mvfusion'         
     elif model_name == 'Deepset_3D':
         checkpoint_dir = ["/home/fsun/DeepViewAgg/outputs/2023-02-05/23-15-04",
                           "/home/fsun/DeepViewAgg/outputs/2023-02-21/17-48-02" # old: "/home/fsun/DeepViewAgg/outputs/2023-01-23/12-57-16"
@@ -815,8 +974,12 @@ if __name__ == "__main__":
         models_config = 'segmentation/multimodal/Feng/view_selection_experiment' 
     elif model_name == 'MVFusion_small_6views':
         checkpoint_dir = ['/home/fsun/DeepViewAgg/outputs/2023-02-21/12-29-20',
-                          '']
+                          '/home/fsun/DeepViewAgg/outputs/2023-02-18/14-42-22']
         models_config = 'segmentation/multimodal/Feng/view_selection_experiment'
+    elif model_name == 'SimpleLinear_Res16UNet34':
+        checkpoint_dir = ['/home/fsun/DeepViewAgg/outputs/2023-03-01/20-32-54',
+                          '/home/fsun/DeepViewAgg/outputs/2023-03-01/19-08-02']
+        models_config = 'segmentation/multimodal/Feng/small_3d'
 
 
     checkpoint_dir = checkpoint_dir[MASK_IDX]

@@ -3,13 +3,13 @@ defaults:
   - /data/segmentation/multimodal/default
 
 class: s3dis.S3DISFusedDataset
-dataroot: data
+dataroot: /scratch-shared/fsun/dvata
 fold: 5
 first_subsampling: ${data.resolution_3d}
 use_category: False
 sample_per_epoch: 3000
 
-resolution_3d: 0.02         # Point cloud resolution
+resolution_3d: 0.03 # orig: 0.02         # Point cloud resolution
 resolution_2d: [1024, 512]  # Image resolution
 padding_2d: 8               # Padding for CropImageGroups
 min_size_2d: 64             # Minimum size for CropImageGroups
