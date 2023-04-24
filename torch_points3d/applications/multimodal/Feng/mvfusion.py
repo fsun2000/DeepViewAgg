@@ -75,6 +75,8 @@ class MVFusionEncoder(MVFusionBackboneBasedModel, ABC):
         
         self.n_views = model_config.backbone.transformer.n_views
         self.n_classes = model_config.backbone.transformer.n_classes
+        self.num_viewfeats = model_config.backbone.transformer.in_map
+        
         self.MAX_SEEN_POINTS = model_config.backbone.transformer.max_n_points
         
         print("WARNING: input points clipped at ", self.MAX_SEEN_POINTS, flush=True)
@@ -132,9 +134,17 @@ class MVFusionEncoder(MVFusionBackboneBasedModel, ABC):
             
         # get logits
         if self._checkpointing:
-            out_scores = checkpoint(self.transformerfusion, invalid_pixel_mask, viewing_feats.requires_grad_(), m2f_feats)
+            if self.num_viewfeats == 0:
+                out_scores = checkpoint(self.transformerfusion, invalid_pixel_mask, None, m2f_feats.float().requires_grad_())
+            else:
+                out_scores = checkpoint(self.transformerfusion, invalid_pixel_mask, viewing_feats.requires_grad_(), m2f_feats)
+
         else:
-            out_scores = self.transformerfusion(invalid_pixel_mask, viewing_feats, m2f_feats)
+            if self.num_viewfeats == 0:
+                out_scores = self.transformerfusion(invalid_pixel_mask, None, m2f_feats.float())
+            else:
+                out_scores = self.transformerfusion(invalid_pixel_mask, viewing_feats, m2f_feats)
+            
             
         
         csr_idx = data.modalities['image'][0].view_csr_indexing

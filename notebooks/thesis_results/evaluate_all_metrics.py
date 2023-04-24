@@ -201,7 +201,7 @@ class Evaluator():
 #         self._dataset = dataset
         self._cfg = cfg
     
-        if self._cfg.model_name in ['MVFusion_orig', 'DeepSetAttention', 'MVFusion_small_6views']:
+        if self._cfg.model_name in ['MVFusion_orig', 'DeepSetAttention', 'MVFusion_small_6views', 'LabelFusion_Transformer']:
             self.no_3d = True
         else:
             self.no_3d = False
@@ -237,6 +237,9 @@ class Evaluator():
             resume = bool(self._cfg.checkpoint_dir)
         else:
             resume = bool(self._cfg.training.checkpoint_dir)
+            
+        resume = False
+        print("Disable model resume: this is hardcoded to false so optimizer will not be loaded")
 
         # Get device
         if self._cfg.training.cuda > -1 and torch.cuda.is_available():
@@ -270,6 +273,8 @@ class Evaluator():
             self._dataset: BaseDataset = instantiate_dataset(self._cfg.data)
             self._model: BaseModel = self._checkpoint.create_model(
                 self._dataset, weight_name="best_miou")
+
+
         else:
             log.warning("Checkpoint is empty or model cannot be instantiated from given checkpoint.")
 
@@ -325,7 +330,7 @@ class Evaluator():
             self.wandb_log, self.tensorboard_log)            
                         
                 
-        print("WARNING: ONLY EVALUATING 3D IOU")
+#         print("WARNING: ONLY EVALUATING 3D IOU")
         
         if self._dataset.has_val_loader:
             if not stage_name or stage_name == "val":
@@ -980,10 +985,35 @@ if __name__ == "__main__":
         checkpoint_dir = ['/home/fsun/DeepViewAgg/outputs/2023-03-01/20-32-54',
                           '/home/fsun/DeepViewAgg/outputs/2023-03-01/19-08-02']
         models_config = 'segmentation/multimodal/Feng/small_3d'
-
-
+    elif model_name == 'LabelFusion_ViewFeatures_Res16UNet34':
+        checkpoint_dir = ['',
+                          '/home/fsun/DeepViewAgg/outputs/2023-03-07/23-55-48']
+        models_config = 'segmentation/multimodal/Feng/view_selection_experiment'
+    elif model_name == 'LabelFusion_Res16UNet34':
+        checkpoint_dir = ['',
+                          '/home/fsun/DeepViewAgg/outputs/2023-03-08/00-25-23']
+        models_config = 'segmentation/multimodal/Feng/view_selection_experiment'
+    elif model_name == 'LabelFusion_Transformer':
+        checkpoint_dir = ['',
+                          '/home/fsun/DeepViewAgg/outputs/2023-03-07/20-46-45']
+        models_config = 'segmentation/multimodal/Feng/view_selection_experiment'
+    elif model_name == 'LabelFusion_Transformer_Res16UNet34':
+        checkpoint_dir = ['',
+                          '/home/fsun/DeepViewAgg/outputs/2023-03-07/23-50-06']
+        models_config = 'segmentation/multimodal/Feng/view_selection_experiment' 
+    elif model_name == 'MVFusion_small_6views_Res16UNet13-12':
+        checkpoint_dir = ['/home/fsun/DeepViewAgg/outputs/2023-03-16/07-29-17',
+                          '/home/fsun/DeepViewAgg/outputs/2023-03-16/07-29-17']
+        models_config = 'segmentation/multimodal/Feng/small_3d'
+        args.input_mask = 'pspnet18_no_flow'
+        dataset_config = 'segmentation/multimodal/Feng/scannet-superconvergence-adamw.yaml'
+        
+        print("WARNING: input mask set to pspnet18_no_flow and MVFusion_small_6views_Res16UNet13-12 is evaluated!")
+        
+        
     checkpoint_dir = checkpoint_dir[MASK_IDX]
     
+    print("dataset config: ", dataset_config)
             
             
     overrides = [

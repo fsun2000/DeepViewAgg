@@ -307,9 +307,9 @@ class Evaluator():
         model_config = getattr(self._cfg.models, self._cfg.model_name, None)
         self._cfg.data.n_views = model_config.backbone.transformer.n_views
         
-        print("####################### Temporary Solution for baseline + 2D-3D projection: SETTING MODEL_NAME TO : weighted_averaging")
+        print("####################### Temporary Solution for baseline + 2D-3D projection: SETTING MODEL_NAME TO : select_random")
         print("Number of views for baseline input: ", self._cfg.data.n_views)        
-        self._cfg.model_name = 'weighted_averaging'
+        self._cfg.model_name = 'select_random'
         
         if self._cfg.model_name == 'select_random':
             self.aggregation_func = get_random_view_pred
@@ -387,29 +387,33 @@ class Evaluator():
         path_to_submission = save_semantic_prediction_as_txt(
             self._tracker_refined, self._cfg.model_name, self._dataset.val_dataset.m2f_preds_dirname)
         
-        # Back-project semantic mesh (from pcd) to 2D images given the maximum number of views per scene, and save.
-        # Skips this step if refined images already exist for given model and mask
-        self.mesh_to_image(self._cfg, self._dataset, path_to_submission, self.scans_dir, save_output='if_not_exists') 
+        print("Upscaled predictions in 3D of all points: ", self._tracker_refined.get_metrics())
+        print("Exiting now, we do not evaluate other metrics")
         
-        # Evaluate 2D semantic segmentation
-        self._tracker_refined_2d_iou: BaseTracker = self._dataset.get_tracker(
-            self.wandb_log, self.tensorboard_log)
         
-        self._evaluate_2d_iou()
+#         # Back-project semantic mesh (from pcd) to 2D images given the maximum number of views per scene, and save.
+#         # Skips this step if refined images already exist for given model and mask
+#         self.mesh_to_image(self._cfg, self._dataset, path_to_submission, self.scans_dir, save_output='if_not_exists') 
         
-        # Evaluate 2D cross-view consistency
-        # Temporary solution to evaluate both 2D input masks and 2D refined masks for Cross-view Consistency:
-        # load refined masks into gt_mask attribute
-        self._dataset.val_dataset.gt_dir_name = osp.join(f"{self._dataset.val_dataset.m2f_preds_dirname}_refined", 
-                                                         self._cfg.model_name)
-        self._evaluate_2d_CC()        
+#         # Evaluate 2D semantic segmentation
+#         self._tracker_refined_2d_iou: BaseTracker = self._dataset.get_tracker(
+#             self.wandb_log, self.tensorboard_log)
         
-        # Evaluate 2D temporal consistency
-        self.tracker_TC_baseline: BaseTracker = self._dataset.get_tracker(
-            self.wandb_log, self.tensorboard_log)
-        self.tracker_TC_refined: BaseTracker = self._dataset.get_tracker(
-            self.wandb_log, self.tensorboard_log)
-        self._evaluate_2d_TC()   
+#         self._evaluate_2d_iou()
+        
+#         # Evaluate 2D cross-view consistency
+#         # Temporary solution to evaluate both 2D input masks and 2D refined masks for Cross-view Consistency:
+#         # load refined masks into gt_mask attribute
+#         self._dataset.val_dataset.gt_dir_name = osp.join(f"{self._dataset.val_dataset.m2f_preds_dirname}_refined", 
+#                                                          self._cfg.model_name)
+#         self._evaluate_2d_CC()        
+        
+#         # Evaluate 2D temporal consistency
+#         self.tracker_TC_baseline: BaseTracker = self._dataset.get_tracker(
+#             self.wandb_log, self.tensorboard_log)
+#         self.tracker_TC_refined: BaseTracker = self._dataset.get_tracker(
+#             self.wandb_log, self.tensorboard_log)
+#         self._evaluate_2d_TC()   
         
     def _evaluate_2d_TC(self):
         from mmflow.apis import init_model, inference_model

@@ -1135,6 +1135,7 @@ class MVAttentionUnimodalBranch(nn.Module, ABC):
         elif transformer_config.use_average:
             self.use_average = True
         else:
+            print("Adding simple linear layer projection!")
             self.use_simple_linear_projection = True
             self.attn_fusion = nn.Linear(transformer_config.n_views * (transformer_config.in_map + self.n_classes),
                                          transformer_config.input_dim_for_3D)
@@ -1378,32 +1379,35 @@ class MVAttentionUnimodalBranch(nn.Module, ABC):
             
         return x_mod
     
-    def forward_random(self, mm_data_dict, reset=True):
-        input_preds = mm_data_dict['transformer_input'][:, 0, -1].long()
-        
-        
-        selected_view_preds_one_hot = torch.nn.functional.one_hot(input_preds.squeeze(), self.n_classes)
     
-        # Assign fused features back to points that were seen 
-        x_mod = torch.zeros((mm_data_dict['modalities']['image'].num_points, 
-                             selected_view_preds_one_hot.shape[-1]), device=selected_view_preds_one_hot.device)
-        x_mod[mm_data_dict['transformer_x_seen']] = selected_view_preds_one_hot.float()
-        return x_mod
+    # WRONG
+#     def forward_random(self, mm_data_dict, reset=True):
+#         input_preds = mm_data_dict['transformer_input'][:, 0, -1].long()
+        
+        
+#         selected_view_preds_one_hot = torch.nn.functional.one_hot(input_preds.squeeze(), self.n_classes)
+    
+#         # Assign fused features back to points that were seen 
+#         x_mod = torch.zeros((mm_data_dict['modalities']['image'].num_points, 
+#                              selected_view_preds_one_hot.shape[-1]), device=selected_view_preds_one_hot.device)
+#         x_mod[mm_data_dict['transformer_x_seen']] = selected_view_preds_one_hot.float()
+#         return x_mod
     
     
-    def forward_average(self, mm_data_dict, reset=True):
-        input_preds = mm_data_dict['transformer_input'][:, 0, -1].long()
+    # WRONG
+#     def forward_average(self, mm_data_dict, reset=True):
+#         input_preds = mm_data_dict['transformer_input'][:, 0, -1].long()
         
-
         
-        mode_preds_one_hot = torch.nn.functional.one_hot(input_preds.squeeze(), self.n_classes)
+        
+#         mode_preds_one_hot = torch.nn.functional.one_hot(input_preds.squeeze(), self.n_classes)
         
     
-        # Assign fused features back to points that were seen 
-        x_mod = torch.zeros((mm_data_dict['modalities']['image'].num_points, 
-                             mode_preds_one_hot.shape[-1]), device=mode_preds_one_hot.device)
-        x_mod[mm_data_dict['transformer_x_seen']] = mode_preds_one_hot.float()
-        return x_mod
+#         # Assign fused features back to points that were seen 
+#         x_mod = torch.zeros((mm_data_dict['modalities']['image'].num_points, 
+#                              mode_preds_one_hot.shape[-1]), device=mode_preds_one_hot.device)
+#         x_mod[mm_data_dict['transformer_x_seen']] = mode_preds_one_hot.float()
+#         return x_mod
     
     def forward_linear(self, mm_data_dict, reset=True):
         # Features from only seen point-image matches are included in 'x'
@@ -2089,39 +2093,39 @@ class LabelFusionUnimodalBranch(nn.Module, ABC):
             
         return x_mod
     
-    def forward_random(self, mm_data_dict, reset=True):
-        input_preds = mm_data_dict['transformer_input'][:, 0, -1].long()
+#     def forward_random(self, mm_data_dict, reset=True):
+#         input_preds = mm_data_dict['transformer_input'][:, 0, -1].long()
         
         
-        selected_view_preds_one_hot = torch.nn.functional.one_hot(input_preds.squeeze(), self.n_classes)
+#         selected_view_preds_one_hot = torch.nn.functional.one_hot(input_preds.squeeze(), self.n_classes)
     
-        # Assign fused features back to points that were seen 
-        x_mod = torch.zeros((mm_data_dict['modalities']['image'].num_points, 
-                             selected_view_preds_one_hot.shape[-1]), device=selected_view_preds_one_hot.device)
-        x_mod[mm_data_dict['transformer_x_seen']] = selected_view_preds_one_hot.float()
-        return x_mod
+#         # Assign fused features back to points that were seen 
+#         x_mod = torch.zeros((mm_data_dict['modalities']['image'].num_points, 
+#                              selected_view_preds_one_hot.shape[-1]), device=selected_view_preds_one_hot.device)
+#         x_mod[mm_data_dict['transformer_x_seen']] = selected_view_preds_one_hot.float()
+#         return x_mod
     
     
-    def forward_average(self, mm_data_dict, reset=True):
-        input_preds = mm_data_dict['transformer_input'][:, 0, -1].long()
+#     def forward_average(self, mm_data_dict, reset=True):
+#         input_preds = mm_data_dict['transformer_input'][:, 0, -1].long()
         
 
         
-        mode_preds_one_hot = torch.nn.functional.one_hot(input_preds.squeeze(), self.n_classes)
+#         mode_preds_one_hot = torch.nn.functional.one_hot(input_preds.squeeze(), self.n_classes)
         
     
-        # Assign fused features back to points that were seen 
-        x_mod = torch.zeros((mm_data_dict['modalities']['image'].num_points, 
-                             mode_preds_one_hot.shape[-1]), device=mode_preds_one_hot.device)
-        x_mod[mm_data_dict['transformer_x_seen']] = mode_preds_one_hot.float()
-        return x_mod
+#         # Assign fused features back to points that were seen 
+#         x_mod = torch.zeros((mm_data_dict['modalities']['image'].num_points, 
+#                              mode_preds_one_hot.shape[-1]), device=mode_preds_one_hot.device)
+#         x_mod[mm_data_dict['transformer_x_seen']] = mode_preds_one_hot.float()
+#         return x_mod
     
     def forward_linear(self, mm_data_dict, reset=True):
         # Features from only seen point-image matches are included in 'x'
         input_preds = mm_data_dict['transformer_input'][:, :, -1]
         
         # One hot features of M2F preds
-        input_preds_one_hot = torch.nn.functional.one_hot(input_preds.squeeze().long(), self.n_classes)
+        input_preds_one_hot = torch.nn.functional.one_hot(input_preds.squeeze().long(), self.n_classes).float()
         
         attention_input = input_preds_one_hot.flatten(1, -1)
         seen_x_mod = self.attn_fusion(attention_input)

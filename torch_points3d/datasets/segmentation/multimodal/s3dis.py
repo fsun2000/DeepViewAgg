@@ -7,6 +7,8 @@ from torch_points3d.core.multimodal.data import MMData
 from torch_points3d.core.data_transform.multimodal.image import \
     SelectMappingFromPointId
 from .utils import read_image_pose_pairs_s3dis, img_info_to_img_data
+from PIL import Image
+from torchvision.transforms.functional import pil_to_tensor
 
 ########################################################################
 #                             S3DIS Utils                              #
@@ -706,55 +708,70 @@ class S3DISSphereMM(S3DISOriginalFusedMM):
         
         images = self._images[i_area].clone()
         
+        print(images)
+
+        
+        print(self.transform_image)
+        
+        
+        # Get the corresponding images and mappings
+        data, images = self.transform_image(data, images)
+        
+        return images
+        
         # Loop over image types
         for i in range(len(images)):
             first_img_path = images[i].path[0]
+            print("first_img_path: ", first_img_path)
+            
             scan_dir = first_img_path.split(os.sep)[:-3]
 
-            mask_dir = first_img_path.replace("rgb", "ViT_masks")
+            m2f_dir = first_img_path.replace("rgb", "ViT_masks")
+            m2f_dir = os.sep.join(m2f_dir.split(os.sep)[:-1])
+            
 
     #             print("Changing gt_dir to m2f_masks_refined! ")
     #             print("loading gt mask from : ", self.gt_dir_name)
-            gt_dir = os.path.join('/scratch-shared/fsun/data/scannet/scans', scan_dir[-1], self.gt_dir_name)#'label-filt-scannet20')
+#             gt_dir = os.path.join('/scratch-shared/fsun/data/scannet/scans', scan_dir[-1], self.gt_dir_name)#'label-filt-scannet20')
 
-            m2f_masks, m2f_mask_paths, gt_masks, gt_mask_paths = [], [], [], []
-            for rgb_path in images[0].path:
+            print("m2f_dir: ", m2f_dir)
+
+            m2f_masks, m2f_mask_paths = [], []#, gt_masks, gt_mask_paths = [], [], [], []
+            for rgb_path in images[i].path:
                 # Pred masks
                 m2f_filename, ext = osp.splitext(rgb_path.split(os.sep)[-1])
                 m2f_filename += '.png'
                 pred_mask_path = osp.join(m2f_dir, m2f_filename)
+                
+                
                 pred_mask = Image.open(pred_mask_path)
                 pred_mask = pred_mask.resize(self.img_ref_size, resample=Image.NEAREST) 
                 # minus 1 to match DVA label classes ranging [0, 19] instead of [1, 20]
                 m2f_masks.append(pil_to_tensor(pred_mask) - 1)
                 m2f_mask_paths.append(pred_mask_path)
 
-                # GT masks
-                gt_filename, ext = osp.splitext(rgb_path.split(os.sep)[-1])
-                gt_filename += '.png'
-                gt_mask_path = osp.join(gt_dir, gt_filename)
-                gt_mask = Image.open(gt_mask_path)
-                gt_mask = gt_mask.resize(self.img_ref_size, resample=Image.NEAREST) 
-                # minus 1 to match DVA label classes ranging [-1, 19] instead of [0, 20]
-                gt_masks.append(pil_to_tensor(gt_mask).long() - 1)
-                gt_mask_paths.append(gt_mask_path)
+#                 # GT masks
+#                 gt_filename, ext = osp.splitext(rgb_path.split(os.sep)[-1])
+#                 gt_filename += '.png'
+#                 gt_mask_path = osp.join(gt_dir, gt_filename)
+#                 gt_mask = Image.open(gt_mask_path)
+#                 gt_mask = gt_mask.resize(self.img_ref_size, resample=Image.NEAREST) 
+#                 # minus 1 to match DVA label classes ranging [-1, 19] instead of [0, 20]
+#                 gt_masks.append(pil_to_tensor(gt_mask).long() - 1)
+#                 gt_mask_paths.append(gt_mask_path)
 
 
         m2f_masks = torch.stack(m2f_masks)
-        gt_masks = torch.stack(gt_masks)
+#         gt_masks = torch.stack(gt_masks)
 
         # Store M2F pred mask in data
         images[0].m2f_pred_mask = m2f_masks
         images[0].m2f_pred_mask_path = np.array(m2f_mask_paths)
 
         # Store GT mask in data
-        images[0].gt_mask = gt_masks
-        images[0].gt_mask_path = np.array(gt_mask_paths)
-        
-        
-        
-        # Get the corresponding images and mappings
-        data, images = self.transform_image(data, images)
+#         images[0].gt_mask = gt_masks
+#         images[0].gt_mask_path = np.array(gt_mask_paths)
+
 
         return MMData(data, image=images)
 

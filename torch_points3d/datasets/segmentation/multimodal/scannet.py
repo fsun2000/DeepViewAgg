@@ -471,8 +471,13 @@ class ScannetMM(Scannet):
                 pred_mask_path = osp.join(m2f_dir, m2f_filename)
                 pred_mask = Image.open(pred_mask_path)
                 pred_mask = pred_mask.resize(self.img_ref_size, resample=Image.NEAREST) 
-                # minus 1 to match DVA label classes ranging [0, 19] instead of [1, 20]
-                m2f_masks.append(pil_to_tensor(pred_mask) - 1)
+                
+                if self.m2f_preds_dirname in ['pspnet18_no_flow', 'pspnet18_flow']:
+                    m2f_masks.append(pil_to_tensor(pred_mask))
+                else:
+                    # minus 1 to match DVA label classes ranging [0, 19] instead of [1, 20]
+                    m2f_masks.append(pil_to_tensor(pred_mask) - 1)
+
                 m2f_mask_paths.append(pred_mask_path)
                 
                 # GT masks

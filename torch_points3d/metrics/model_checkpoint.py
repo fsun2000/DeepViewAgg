@@ -297,6 +297,9 @@ class ModelCheckpoint(object):
         if not self._checkpoint.is_empty:
             state_dict = self._checkpoint.get_state_dict(weight_name)
             model.load_state_dict(state_dict, strict=False)
+            
+            
+#             print("Disabled loading of optimizer and scheduler in torch_points3d/metrics/model_checkpoint.py line 302!")
             self._checkpoint.load_optim_sched(model, load_state=self._resume)
 
     def find_func_from_metric_name(self, metric_name, default_metrics_func):
